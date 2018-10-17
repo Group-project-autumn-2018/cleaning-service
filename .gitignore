@@ -49,7 +49,7 @@ hs_err_pid*
 
 ### React ###
 # dependencies
-/node_modules
+*/node_modules
 
 # testing
 /coverage
