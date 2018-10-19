@@ -1,15 +1,26 @@
 import React, {Component} from 'react';
 import './sign-in.css';
+import MaskedInput from 'react-text-mask';
+
 
 export default class SignIn extends Component {
     render() {
         return (
-            <div className='text-center signin-component'>
+            <div className='text-center signin-component container'>
                 <form className="form-signin">
                     <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
                     <label htmlFor="username" className="sr-only">Username</label>
                     <input type="text" id="username" className="form-control" placeholder="Your username..." required
                            autoFocus/>
+                    <MaskedInput
+                        mask={['+','3','7','5','(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
+                        className="form-control"
+                        placeholder="+375(__)___-____"
+                        guide={false}
+                        id="my-input-id"
+                        onBlur={() => {}}
+                        onChange={() => {}}
+                    />
                     <label htmlFor="inputPassword" className="sr-only">Password</label>
                     <input type="password" id="inputPassword" className="form-control" placeholder="Password"
                            required/>
