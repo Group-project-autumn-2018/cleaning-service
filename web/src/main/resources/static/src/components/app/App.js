@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import AppHeader from '../app-header/index';
+import HomeWrapper from '../home/home-wrapper'
 
 
-export default class App extends Component{
-    render(){
-        return(
-              <div>
-                  <AppHeader/>
-              </div>
+
+
+export default class App extends Component {
+    render() {
+        return (
+            <HomeWrapper/>
         );
     }
 }

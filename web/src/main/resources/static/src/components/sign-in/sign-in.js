@@ -7,8 +7,9 @@ export default class SignIn extends Component {
     render() {
         return (
             <div className='text-center signin-component container'>
+                <div className="overlay"></div>
                 <form className="form-signin">
-                    <h1 className="h3 mb-3 font-weight-normal">Please sign in</h1>
+                    <h3 className="">Please sign in</h3>
                     <label htmlFor="username" className="sr-only">Username</label>
                     <input type="text" id="username" className="form-control" placeholder="Your username..." required
                            autoFocus/>
@@ -33,7 +34,7 @@ export default class SignIn extends Component {
                             onClick={this.props.onSuccessfullLogin}>
                         Sign in
                     </button>
-                    <p className="mt-5 mb-3 text-muted">&copy; 2018</p>
+                    <p className="mt-5 mb-3">&copy; 2018</p>
                 </form>
             </div>
         );

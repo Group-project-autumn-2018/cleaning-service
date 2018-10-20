@@ -1,0 +1,10 @@
+.navbar.navbar-expand-lg{
+    z-index: 0;
+    background-color: #7cc0e5;
+    box-shadow: 0 2px 10px #558aa9;
+    z-index: 3;
+}
+
+.navbar.navbar-expand-lg a{
+    color: white;
+}

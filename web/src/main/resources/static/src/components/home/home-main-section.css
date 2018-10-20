@@ -1,0 +1,12 @@
+.main-section.container{
+    margin-top: 10%;
+}
+
+.main-section.container h1, .main-section.container .btn{
+    margin: 2rem;
+}
+
+.main-section.container h1{
+    color: white;
+    text-shadow: 2px 2px 3px #363738;
+}

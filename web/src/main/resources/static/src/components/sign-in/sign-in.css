@@ -5,6 +5,15 @@
     align-items: center;
     padding-top: 5%;
     padding-bottom: 5%;
+    z-index: 2;
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+    z-index: 3;
 }
 
 .form-signin {
@@ -14,9 +23,7 @@
     margin: auto;
 }
 
-.form-signin .checkbox {
-    font-weight: 400;
-}
+
 
 .form-signin .form-control {
     position: relative;
@@ -30,14 +37,21 @@
     z-index: 2;
 }
 
-.form-signin input[type="text"] {
-    margin-bottom: -1px;
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
+.form-signin input{
+    margin-bottom: 5px;
 }
 
-.form-signin input[type="password"] {
-    margin-bottom: 10px;
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
+h3, .checkbox label, p{
+    color: white;
+    text-shadow: 1px 1px 3px #363738;
+}
+
+.overlay{
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(169, 169, 169, 0.69);
+    z-index: 2;
 }
