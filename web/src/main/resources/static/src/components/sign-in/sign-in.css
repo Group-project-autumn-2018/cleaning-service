@@ -23,8 +23,6 @@
     margin: auto;
 }
 
-
-
 .form-signin .form-control {
     position: relative;
     box-sizing: border-box;
@@ -37,16 +35,16 @@
     z-index: 2;
 }
 
-.form-signin input{
+.form-signin input {
     margin-bottom: 5px;
 }
 
-h3, .checkbox label, p{
+h3, .checkbox label, p {
     color: white;
     text-shadow: 1px 1px 3px #363738;
 }
 
-.overlay{
+.overlay {
     position: absolute;
     min-height: 100%;
     min-width: 100%;
