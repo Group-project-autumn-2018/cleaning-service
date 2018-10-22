@@ -18,7 +18,7 @@ export default class SimpleMap extends Component {
         this.setState({
             lat: pointLatLng.lat,
             lng: pointLatLng.lng,
-            zoom: 14
+            zoom: evt.target._zoom
         });
     };
 
