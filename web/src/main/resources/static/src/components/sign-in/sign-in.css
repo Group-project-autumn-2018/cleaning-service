@@ -16,14 +16,6 @@
     z-index: 3;
 }
 
-.form-signin {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
-}
-
-
 
 .form-signin .form-control {
     position: relative;
@@ -41,7 +33,7 @@
     margin-bottom: 5px;
 }
 
-h3, .checkbox label, p{
+.signin-component h3, .signin-component .checkbox label, .signin-component p{
     color: white;
     text-shadow: 1px 1px 3px #363738;
 }

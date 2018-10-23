@@ -12,6 +12,9 @@ const UnauthorizedHeader = () => {
                 <div className="navbar navbar-expand mr-5" id="navbarNav">
                     <ul className="navbar-nav">
                         <li className="nav-item">
+                            <Link to="/profile" className="nav-link">Профиль</Link>
+                        </li>
+                        <li className="nav-item">
                             <Link to="" className="nav-link">Sign up</Link>
                         </li>
                         <li className="nav-item">

@@ -34,7 +34,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "create-react-class": "^15.6.3",
-    "webpack": "^4.21.0",
+    "webpack": "4.19.1",
     "webpack-cli": "^3.1.2"
   },
   "main": "index.js",
