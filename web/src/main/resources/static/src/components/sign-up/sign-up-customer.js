@@ -1,7 +1,6 @@
 import React from 'react';
 import './sign-up.css';
 import MaskedInput from 'react-text-mask';
-import SimpleMap from '../map/simple-map';
 
 const SignUpCustomer = () => {
     return (
@@ -75,9 +74,6 @@ const SignUpCustomer = () => {
                             </div>
                         </div>
                     </div>
-                </div>
-                <div className="row leaflet-container">
-                    <SimpleMap/>
                 </div>
                 <div>
                     <button type="button" className="btn btn-primary btn-lg float-right">Sign up !</button>
