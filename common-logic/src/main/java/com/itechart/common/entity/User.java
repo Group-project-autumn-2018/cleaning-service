@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,4 +32,6 @@ public class User implements Serializable {
     private String bunReason;
     @Column(name = "address")
     private String address;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 }
