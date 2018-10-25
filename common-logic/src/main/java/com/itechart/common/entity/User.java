@@ -1,11 +1,10 @@
 package com.itechart.common.entity;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
-
 import javax.persistence.*;
 import java.io.Serializable;
+
 
 @Getter
 @Setter
@@ -25,10 +24,23 @@ public class User implements Serializable {
     private String email;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "bunned", nullable = false)
-    private Boolean bunned = Boolean.FALSE;
-    @Column(name = "bunReason")
-    private String bunReason;
+    @Column(name = "banned", nullable = false)
+    private Boolean banned = Boolean.FALSE;
+    @Column(name = "banReason")
+    private String banReason;
     @Column(name = "address")
     private String address;
+
+    public User(String username, String password, String email, String phone, Boolean banned, String banReason, String address) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.banned = banned;
+        this.banReason = banReason;
+        this.address = address;
+    }
+
+    public User() {
+    }
 }

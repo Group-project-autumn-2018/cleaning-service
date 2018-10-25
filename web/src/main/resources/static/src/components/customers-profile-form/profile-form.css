@@ -6,6 +6,7 @@
 
 .profile-form{
     max-width: 40%;
+    z-index: 3;
 }
 
 .profile-form button, .profile-form h3{

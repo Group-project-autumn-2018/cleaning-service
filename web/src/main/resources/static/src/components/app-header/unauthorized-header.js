@@ -15,7 +15,9 @@ const UnauthorizedHeader = () => {
                             <Link to="/profile" className="nav-link">Профиль</Link>
                         </li>
                         <li className="nav-item">
-                            <Link to="" className="nav-link">Sign up</Link>
+                            <Link to="/admin" className="nav-link">Admin</Link>
+                        </li>
+                        <li className="nav-item">
                             <Link to="/registration" className="nav-link">Sign up</Link>
                         </li>
                         <li className="nav-item">
