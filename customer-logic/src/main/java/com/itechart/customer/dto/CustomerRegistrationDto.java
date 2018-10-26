@@ -1,10 +1,8 @@
 package com.itechart.customer.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class CustomerRegistrationDto {
     private String username;
     private String phone;

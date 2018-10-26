@@ -1,6 +1,7 @@
 package com.itechart.customer.service;
 
 import com.itechart.customer.dto.CustomerRegistrationDto;
+import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.entity.Customer;
 
 import java.util.List;
@@ -11,5 +12,5 @@ public interface CustomerService {
 
     void preRegisterCustomer(CustomerRegistrationDto registrationDto);
 
-    Optional<Boolean> verify(String encodedString, Integer code);
+    Optional<Boolean> verify(VerifyDto verifyDto);
 }
