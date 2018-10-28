@@ -1,4 +1,4 @@
-package com.itechart.customer.controller;
+package com.itechart.web.controller;
 
 import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;

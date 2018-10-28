@@ -1,4 +1,4 @@
-package com.itechart.customer.config;
+package com.itechart.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/api/customer/registration", "/api/customer/verify",
+        http.authorizeRequests().antMatchers("/api/web/registration", "/api/web/verify",
                                                         "/dist/**", "/").permitAll()
                 .and().csrf().disable();
         http.httpBasic().and().authorizeRequests().antMatchers("/api/**").authenticated();
