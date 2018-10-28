@@ -26,10 +26,10 @@ public class User implements Serializable {
     private String email;
     @Column(name = "phone")
     private String phone;
-    @Column(name = "bunned", nullable = false)
-    private Boolean bunned = Boolean.FALSE;
-    @Column(name = "bunReason")
-    private String bunReason;
+    @Column(name = "banned", nullable = false)
+    private Boolean banned = Boolean.FALSE;
+    @Column(name = "banReason")
+    private String banReason;
     @Column(name = "address")
     private String address;
     @ManyToMany(fetch = FetchType.EAGER)

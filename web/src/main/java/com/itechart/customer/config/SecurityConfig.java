@@ -1,4 +1,4 @@
-package com.itechart.web.config;
+package com.itechart.customer.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailsService userDetailsService;
+    private final AuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
@@ -24,17 +25,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Autowired
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
+                          AuthenticationEntryPoint authenticationEntryPoint) {
         this.userDetailsService = userDetailsService;
+        this.authenticationEntryPoint = authenticationEntryPoint;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic()
-                .and().authorizeRequests().antMatchers("/customer/registration", "/customer/verify",
-                                                        "/static/**", "/").permitAll()
-                .anyRequest().authenticated()
+        http.authorizeRequests().antMatchers("/api/customer/registration", "/api/customer/verify",
+                                                        "/dist/**", "/").permitAll()
                 .and().csrf().disable();
+        http.httpBasic().and().authorizeRequests().antMatchers("/api/**").authenticated();
     }
 
     @Override

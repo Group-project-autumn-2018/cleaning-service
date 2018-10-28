@@ -77,11 +77,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<Boolean> verify(VerifyDto verifyDto) {
+        if (verifyDto.getCode() == null || verifyDto.getEncodedString() == null) return Optional.empty();
         String encodedString = verifyDto.getEncodedString();
         int code = verifyDto.getCode();
         CustomerVerification verification = verifications.get(encodedString);
         if (verification == null) return Optional.empty();
-        if (verification.getTryCount() > 5) {
+        if (verification.getTryCount() >= 5) {
             verifications.remove(encodedString);
             return Optional.empty();
         }
