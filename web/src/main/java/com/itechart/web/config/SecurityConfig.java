@@ -1,4 +1,4 @@
-package com.itechart.customer.config;
+package com.itechart.web.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

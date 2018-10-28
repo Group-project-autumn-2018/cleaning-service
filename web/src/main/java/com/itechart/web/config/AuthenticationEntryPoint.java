@@ -1,4 +1,4 @@
-package com.itechart.customer.config;
+package com.itechart.web.config;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint;

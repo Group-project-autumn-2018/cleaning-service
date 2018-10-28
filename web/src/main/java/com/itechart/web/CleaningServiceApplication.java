@@ -1,4 +1,4 @@
-package com.itechart.customer;
+package com.itechart.web;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
