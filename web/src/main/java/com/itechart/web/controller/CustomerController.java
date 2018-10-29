@@ -3,11 +3,8 @@ package com.itechart.web.controller;
 import com.itechart.customer.entity.Customer;
 import com.itechart.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/customer")
@@ -19,8 +16,19 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/all")
-    public List<Customer> getAll() {
-        return customerService.getAll();
+
+    @GetMapping()
+    public Page<Customer> findPaginated(
+            @RequestParam("page") int page, @RequestParam("size") int size) {
+
+        Page<Customer> resultPage = customerService.findPaginated(page, size);
+
+        return resultPage;
+    }
+
+
+    @PutMapping("/{сustomerId}")
+    public void getOneById(@RequestBody Customer customer) {
+        customerService.update(customer);
     }
 }

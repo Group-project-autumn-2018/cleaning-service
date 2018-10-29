@@ -3,9 +3,15 @@ package com.itechart.customer.service;
 import com.itechart.customer.entity.Customer;
 import com.itechart.customer.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+
+import static java.util.stream.LongStream.of;
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -16,9 +22,13 @@ public class CustomerServiceImpl implements CustomerService {
         this.customerRepository = customerRepository;
     }
 
-
-    @Override
-    public List<Customer> getAll() {
-        return customerRepository.findAll();
+    public Page<Customer> findPaginated(int page, int size) {
+        return customerRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
     }
+
+
+    public void update(Customer customer){
+        customerRepository.save(customer);
+    }
+    
 }

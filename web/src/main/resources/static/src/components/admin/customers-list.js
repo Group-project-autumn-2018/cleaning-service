@@ -3,7 +3,7 @@ import Customer from './customer'
 
 const CustomersList = ({customers}) =>{
     const customersList = customers.map(customer =>
-        <Customer key={customer._links.self.href} customer = {customer}/>
+        <Customer key={customer.id} customer = {customer}/>
     );
     return(
         <div className="container">

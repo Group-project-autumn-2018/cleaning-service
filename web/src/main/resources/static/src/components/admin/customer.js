@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
-import BanToggleButton from './ban-toggle-button';
+import ModalToggleButton from './modal-toggle-button';
+import BanToggleButton from "./ban-toggle-button";
+
 
 export default class Customer extends Component{
     constructor(props){
@@ -12,16 +14,19 @@ export default class Customer extends Component{
     }
 
     toggleBanState=()=>{
+        this.state.isBanned = !this.state.isBanned;
+        let customer = this.state.customer;
+        customer.banned = this.state.isBanned;
+
         let options = {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'patch',
-            body: JSON.stringify( { banned: !this.state.isBanned } )
+            method: 'PUT',
+            body: JSON.stringify(customer)
         };
-        fetch(this.state.customer._links.self.href, options);
-        this.state.isBanned = !this.state.isBanned;
+        fetch(`/customer/${customer.id}`, options);
 
     };
 
@@ -32,7 +37,9 @@ export default class Customer extends Component{
                 <td className="col">{this.state.customer.username}</td>
                 <td className="col">{this.state.customer.phone}</td>
                 <td className="col">{this.state.customer.email}</td>
-                <td className="col"><BanToggleButton onClick={this.toggleBanState} isBanned={this.state.isBanned}/></td>
+                <td className="col">
+                    {this.state.isBanned ?  <BanToggleButton isBanned={this.state.isBanned} onClick={this.toggleBanState}/> : <ModalToggleButton customer={}/>}
+                </td>
                 <td className="col">{this.state.customer.banReason}</td>
             </tr>
         )
