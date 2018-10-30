@@ -38,15 +38,12 @@ export default class Customer extends Component{
                 <td className="col">{this.state.customer.phone}</td>
                 <td className="col">{this.state.customer.email}</td>
                 <td className="col">
-                    {this.state.isBanned ?  <BanToggleButton isBanned={this.state.isBanned} onClick={this.toggleBanState}/> : <ModalToggleButton customer={}/>}
+                    {this.state.isBanned ?  <BanToggleButton isBanned={this.state.isBanned} onClick={this.toggleBanState}/> : <ModalToggleButton isBanned={this.state.isBanned}/>}
                 </td>
                 <td className="col">{this.state.customer.banReason}</td>
             </tr>
         )
     }
-
-
-
 
 };
 

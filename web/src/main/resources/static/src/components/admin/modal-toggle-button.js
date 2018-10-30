@@ -1,6 +1,6 @@
 import React from "react";
 
-const ModalToggleButton = ()=>{
+const ModalToggleButton = ({isBanned})=>{
     return(
 
         <button type="button" data-toggle="modal" data-target="#ban-modal"

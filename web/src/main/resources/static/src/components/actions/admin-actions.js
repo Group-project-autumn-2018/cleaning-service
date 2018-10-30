@@ -1,38 +1,40 @@
-const fetchCustomers = (page) =>
-{
-    fetch(`/customer?page=${pageNumber}&size=${this.state.itemsCountPerPage}`).then(resolve => resolve.json()).then(response => {
 
-        this.setState({
-            customers: response.content,
-            totalItemsCount: response.totalElements,
-            activePage: response.number,
-            totalPages: response.totalPages
+export const fetchCustomers = (page, size) =>
+{
+    return dispatch => {
+        fetch(`/customer?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
+            const pagination = {
+                totalItemsCount: response.totalElements,
+                activePage: response.number,
+                totalPages: response.totalPages
+            };
+            dispatch(fetchCustomersSuccess(response.content));
+            dispatch(setPagination(pagination));
         });
-    });
+    }
+
 };
 
-const fetchCustomersStart = () => {
+export const fetchCustomersStart = () => {
     return {
         type: 'FETCH_CUSTOMERS_START'
     };
 };
 
-const fetchCustomersSuccess = (content, pagination) => {
+export const fetchCustomersSuccess = (customers) => {
     return {
         type: 'FETCH_CUSTOMERS_SUCCESS',
-        payload: {
-            content,
-            pagination
-        }
+        payload: customers
+    };
+};
 
+export const setPagination = (pagination) =>{
+    return {
+        type: 'SET_PAGINATION',
+        payload: pagination
     };
 };
 
 
 
-export default {
-    setSearchText,
-    toggleShowCompleted,
-    addTodo,
-    toggleTodo
-};
+

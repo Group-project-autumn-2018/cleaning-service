@@ -1,49 +1,21 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import CustomersList from './customers-list';
 import './admin-customers.css';
 import Pagination from "react-js-pagination";
-import BanToggleButton from './ban-toggle-button';
+import * as actions from '../actions/admin-actions';
 
 
-export default class AdminCustomers extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            customers: [],
-            itemsCountPerPage: 10,
-            activePage: 0
-
-        };
-
-    }
-
-    fetchData = (pageNumber) => {
-        console.log(pageNumber);
-        fetch(`/customer?page=${pageNumber}&size=${this.state.itemsCountPerPage}`).then(resolve => resolve.json()).then(response => {
-            console.log(response);
-            console.log(pageNumber);
-            this.setState({
-                customers: response.content,
-                totalItemsCount: response.totalElements,
-                activePage: response.number,
-                totalPages: response.totalPages
-            });
-        });
-    };
+class AdminCustomers extends Component {
 
     componentDidMount() {
-        //
-        // client({method: 'GET', path: '/api/customers'}).done(response => {
-        //     this.setState({customers: response.entity._embedded.customers});
-        // });
-        this.fetchData(this.state.activePage);
-
+        const {fetchData} = this.props;
+        fetchData(this.props.activePage, this.props.itemsCountPerPage);
     }
 
-    handlePageChange = (pageNumber) => {
-        console.log(`active page is ${pageNumber}`);
-        this.fetchData(pageNumber - 1);
+    handlePageChange = (page) => {
+        this.props.fetchData(page -1, this.props.itemsCountPerPage);
     };
 
     render() {
@@ -52,10 +24,10 @@ export default class AdminCustomers extends Component {
                 <h1 className="text-center">Список клиентов</h1>
 
                 <nav aria-label="Page navigation" className="mx-auto">
-                    <Pagination activePage={this.state.activePage + 1}
-                                itemsCountPerPage={this.state.itemsCountPerPage}
-                                totalItemsCount={this.state.totalItemsCount}
-                                pageRangeDisplayed={this.state.totalPages < 5 ? this.state.totalPages: 5}
+                    <Pagination activePage={this.props.activePage + 1}
+                                itemsCountPerPage={this.props.itemsCountPerPage}
+                                totalItemsCount={this.props.totalItemsCount}
+                                pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages: 5}
                                 onChange={this.handlePageChange}
                                 itemClass="page-item"
                                 linkClass="page-link"
@@ -63,8 +35,25 @@ export default class AdminCustomers extends Component {
                     />
                 </nav>
 
-                <CustomersList customers={this.state.customers}/>
+                <CustomersList customers={this.props.customers}/>
             </div>)
 
     }
 }
+
+const mapStateToProps = (state) => {
+    return{
+        ...state.pagination,
+        customers: state.customers
+    }
+};
+
+const mapDispatchToProps = (dispatch)=>{
+    return{
+        fetchData: (page, size)=>{
+            dispatch(actions.fetchCustomers(page, size));
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AdminCustomers);
