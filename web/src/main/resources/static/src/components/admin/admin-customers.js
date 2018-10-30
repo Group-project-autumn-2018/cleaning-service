@@ -19,7 +19,7 @@ export default class AdminCustomers extends Component {
 
     fetchData = (pageNumber) => {
         console.log(pageNumber);
-        fetch(`/api/customers?page=${pageNumber - 1}&size=${this.state.itemsCountPerPage}`).then(resolve => resolve.json()).then(response => {
+        fetch(`/api/customers?page=${pageNumber - 1}&size=${this.state.itemsCountPerPage}&sort=id,asc`).then(resolve => resolve.json()).then(response => {
             console.log(response);
             console.log(pageNumber);
             this.setState({

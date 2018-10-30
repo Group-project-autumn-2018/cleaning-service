@@ -17,7 +17,7 @@ export default class Customer extends Component{
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            method: 'patch',
+            method: 'PATCH',
             body: JSON.stringify( { banned: !this.state.isBanned } )
         };
         fetch(this.state.customer._links.self.href, options);
