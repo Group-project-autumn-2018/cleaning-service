@@ -1,29 +1,17 @@
-import React, {Component} from 'react';
+import React from 'react';
 
-export default class BanToggleButton extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            isBanned: props.isBanned
 
-        };
-    }
+const BanToggleButton = ({isBanned, onClick}) => {
 
-    handleClick = () =>{
-        console.log(this.state.isBanned);
-      this.props.onClick();
-      this.setState({
-          isBanned: !this.state.isBanned
-      })
-    };
+    return (
+        <div>
+            <button className={isBanned ? "btn btn-danger" : "btn btn-success"}
+                    onClick={onClick}
+                    data-dismiss="modal">
+                {isBanned ? "Разблокировать" : "Заблокировать"}</button>
+        </div>
+    )
+};
 
-    render(){
-        return(
-            <div>
-                <button onClick={this.handleClick} className={this.state.isBanned ? "btn btn-danger" : "btn btn-success"}>
-                    {this.state.isBanned ? "Разблокировать" : "Заблокировать"}</button>
-            </div>
-        )
-    }
 
-}
+export default BanToggleButton;

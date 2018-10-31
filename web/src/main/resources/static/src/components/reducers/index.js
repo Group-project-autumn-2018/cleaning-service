@@ -7,7 +7,8 @@ import * as reducers from '../reducers/admin-reducers';
 const rootReducer = combineReducers(
     {
         customers: reducers.customersReducer,
-        pagination: reducers.paginationReducer
+        pagination: reducers.paginationReducer,
+        customerToUpdate: reducers.customerUpdateReducer
     }
 );
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import Customer from './customer'
+import Customer from './customer';
+import BanModal from './ban-modal';
 
 const CustomersList = ({customers}) =>{
     const customersList = customers.map(customer =>
-        <Customer key={customer.id} customer = {customer}/>
+        <Customer key={customer.id} customer = {customer} />
     );
     return(
         <div className="container">
@@ -19,6 +20,7 @@ const CustomersList = ({customers}) =>{
                 {customersList}
                 </tbody>
             </table>
+            <BanModal/>
         </div>
     )
 };

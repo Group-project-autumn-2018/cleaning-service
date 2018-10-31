@@ -1,50 +1,55 @@
 import React, {Component} from 'react';
 import ModalToggleButton from './modal-toggle-button';
 import BanToggleButton from "./ban-toggle-button";
+import * as actions from '../actions/admin-actions';
+import {connect} from 'react-redux';
 
 
-export default class Customer extends Component{
-    constructor(props){
-        super(props);
+class Customer extends Component {
 
-        this.state = {
-            isBanned: props.customer.banned,
-            customer: props.customer
-        };
-    }
-
-    toggleBanState=()=>{
-        this.state.isBanned = !this.state.isBanned;
-        let customer = this.state.customer;
-        customer.banned = this.state.isBanned;
-
-        let options = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT',
-            body: JSON.stringify(customer)
-        };
-        fetch(`/customer/${customer.id}`, options);
-
+    handleBanToggle = () => {
+        let customer = {...this.props.customer};
+        console.log(customer);
+        customer.banReason = '';
+        customer.banned = !this.props.customer.banned;
+        this.props.updateCustomer(customer);
+    };
+    handlePrepareForUpdate =()=>{
+        let customer = {...this.props.customer};
+        this.props.prepareCustomerForUpdate(customer);
     };
 
 
-    render(){
-        return(
+    render() {
+        return (
             <tr className="row">
-                <td className="col">{this.state.customer.username}</td>
-                <td className="col">{this.state.customer.phone}</td>
-                <td className="col">{this.state.customer.email}</td>
+                <td className="col">{this.props.customer.username}</td>
+                <td className="col">{this.props.customer.phone}</td>
+                <td className="col">{this.props.customer.email}</td>
                 <td className="col">
-                    {this.state.isBanned ?  <BanToggleButton isBanned={this.state.isBanned} onClick={this.toggleBanState}/> : <ModalToggleButton isBanned={this.state.isBanned}/>}
+                    {this.props.customer.banned ?
+                        <BanToggleButton isBanned={this.props.customer.banned} onClick={this.handleBanToggle}/> :
+                        <ModalToggleButton isBanned={this.props.customer.banned} onClick={this.handlePrepareForUpdate}/>}
                 </td>
-                <td className="col">{this.state.customer.banReason}</td>
+                <td className="col">{this.props.customer.banReason}</td>
             </tr>
         )
     }
 
 };
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateCustomer: (customer) => {
+            dispatch(actions.updateCustomer(customer))
+        },
+        prepareCustomerForUpdate: (customer)=>{
+            dispatch(actions.prepareCustomerForUpdate(customer))
+        }
+    }
+};
+
+
+export default connect(null, mapDispatchToProps)(Customer);
 
 

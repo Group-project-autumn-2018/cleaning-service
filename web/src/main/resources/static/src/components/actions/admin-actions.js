@@ -12,14 +12,26 @@ export const fetchCustomers = (page, size) =>
             dispatch(setPagination(pagination));
         });
     }
-
 };
 
-export const fetchCustomersStart = () => {
-    return {
-        type: 'FETCH_CUSTOMERS_START'
+
+export const updateCustomer = (customer)=> {
+    console.log(customer);
+    return dispatch => {
+        let options = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT',
+            body: JSON.stringify(customer)
+        };
+        fetch(`/customer/${customer.id}`, options);
+        dispatch(updateCustomerSuccess(customer));
+        };
     };
-};
+
+
 
 export const fetchCustomersSuccess = (customers) => {
     return {
@@ -35,6 +47,19 @@ export const setPagination = (pagination) =>{
     };
 };
 
+export const prepareCustomerForUpdate = (customer)=> {
+    return {
+        type: 'PREPARE_CUSTOMER_FOR_UPDATE',
+        payload: customer
+    }
+};
+
+export const updateCustomerSuccess = (customer)=> {
+    return {
+        type: 'UPDATE_CUSTOMER_SUCCESS',
+        payload: customer
+    }
+};
 
 
 
