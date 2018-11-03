@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import BanToggleButton from './ban-toggle-button';
+import BanToggleButton from '../ban-toggle-button';
 import {connect} from 'react-redux';
-import * as actions from '../actions/admin-actions';
+import * as actions from '../../actions/admin-actions';
 
 class BanModal extends Component {
 

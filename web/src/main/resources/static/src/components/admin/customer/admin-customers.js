@@ -6,7 +6,6 @@ import Pagination from "react-js-pagination";
 import * as actions from '../actions/admin-actions';
 
 
-
 class AdminCustomers extends Component {
 
     entityURN = '/customer';

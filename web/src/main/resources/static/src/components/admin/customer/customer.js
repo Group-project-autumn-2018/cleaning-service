@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import ModalToggleButton from './modal-toggle-button';
-import BanToggleButton from "./ban-toggle-button";
-import * as actions from '../actions/admin-actions';
+import ModalToggleButton from '../modal-toggle-button';
+import BanToggleButton from "../ban-toggle-button";
+import * as actions from '../../actions/admin-actions';
 import {connect} from 'react-redux';
 
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link, Route, Switch} from "react-router-dom";
-import AdminCustomers from './admin-customers'
-import ProfileForm from "../customers-profile-form/profile-form";
+import AdminCustomers from './customer/admin-customers'
+import AdminCleaning from "./cleaning/admin-cleaning";
 
 const AdminMain = () => {
     return(
@@ -16,7 +16,7 @@ const AdminMain = () => {
             </ul>
             <Switch>
                 <Route exact path="/admin" component={AdminCustomers}/>
-                <Route exact path="/admin/services" component={ProfileForm}/>
+                <Route exact path="/admin/services" component={AdminCleaning}/>
             </Switch>
         </div>
     )
