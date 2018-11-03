@@ -6,9 +6,9 @@ import * as reducers from '../reducers/admin-reducers';
 
 const rootReducer = combineReducers(
     {
-        customers: reducers.customersReducer,
+        entities: reducers.entityReducer,
         pagination: reducers.paginationReducer,
-        customerToUpdate: reducers.customerUpdateReducer
+        entityToUpdate: reducers.entityUpdateReducer
     }
 );
 

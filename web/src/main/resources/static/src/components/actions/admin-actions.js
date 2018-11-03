@@ -1,22 +1,21 @@
 
-export const fetchCustomers = (page, size) =>
+export const fetchEntities = (page, size, entityURN) =>
 {
     return dispatch => {
-        fetch(`/customer?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
+        fetch(`${entityURN}?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
             const pagination = {
                 totalItemsCount: response.totalElements,
                 activePage: response.number,
                 totalPages: response.totalPages
             };
-            dispatch(fetchCustomersSuccess(response.content));
+            dispatch(fetchEntitiesSuccess(response.content));
             dispatch(setPagination(pagination));
         });
     }
 };
 
 
-export const updateCustomer = (customer)=> {
-    console.log(customer);
+export const updateEntity = (entity, entityURN)=> {
     return dispatch => {
         let options = {
             headers: {
@@ -24,19 +23,19 @@ export const updateCustomer = (customer)=> {
                 'Content-Type': 'application/json'
             },
             method: 'PUT',
-            body: JSON.stringify(customer)
+            body: JSON.stringify(entity)
         };
-        fetch(`/customer/${customer.id}`, options);
-        dispatch(updateCustomerSuccess(customer));
+        fetch(`${entityURN}/${entity.id}`, options);
+        dispatch(updateEntitySuccess(entity));
         };
     };
 
 
 
-export const fetchCustomersSuccess = (customers) => {
+export const fetchEntitiesSuccess = (entity) => {
     return {
-        type: 'FETCH_CUSTOMERS_SUCCESS',
-        payload: customers
+        type: 'FETCH_ENTITIES_SUCCESS',
+        payload: entity
     };
 };
 
@@ -47,17 +46,17 @@ export const setPagination = (pagination) =>{
     };
 };
 
-export const prepareCustomerForUpdate = (customer)=> {
+export const prepareEntityForUpdate = (entity)=> {
     return {
-        type: 'PREPARE_CUSTOMER_FOR_UPDATE',
-        payload: customer
+        type: 'PREPARE_ENTITY_FOR_UPDATE',
+        payload: entity
     }
 };
 
-export const updateCustomerSuccess = (customer)=> {
+export const updateEntitySuccess = (entity)=> {
     return {
-        type: 'UPDATE_CUSTOMER_SUCCESS',
-        payload: customer
+        type: 'UPDATE_ENTITY_SUCCESS',
+        payload: entity
     }
 };
 

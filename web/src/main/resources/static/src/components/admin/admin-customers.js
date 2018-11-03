@@ -9,18 +9,20 @@ import * as actions from '../actions/admin-actions';
 
 class AdminCustomers extends Component {
 
+    entityURN = '/customer';
+
     componentDidMount() {
         const {fetchData} = this.props;
-        fetchData(this.props.activePage, this.props.itemsCountPerPage);
+        fetchData(this.props.activePage, this.props.itemsCountPerPage, this.entityURN);
     }
 
     handlePageChange = (page) => {
-        this.props.fetchData(page -1, this.props.itemsCountPerPage);
+        this.props.fetchData(page -1, this.props.itemsCountPerPage, this.entityURN);
     };
 
     render() {
         return (
-            <div className="bg-light container-fluid w-100 h-100">
+            <div id="admin-customers">
                 <h1 className="text-center">Список клиентов</h1>
 
                 <nav aria-label="Page navigation" className="mx-auto">
@@ -44,14 +46,14 @@ class AdminCustomers extends Component {
 const mapStateToProps = (state) => {
     return{
         ...state.pagination,
-        customers: state.customers
+        customers: state.entities
     }
 };
 
 const mapDispatchToProps = (dispatch)=>{
     return{
-        fetchData: (page, size)=>{
-            dispatch(actions.fetchCustomers(page, size));
+        fetchData: (page, size, entityURN)=>{
+            dispatch(actions.fetchEntities(page, size, entityURN));
         }
     }
 };

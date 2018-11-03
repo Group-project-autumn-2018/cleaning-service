@@ -7,12 +7,13 @@ import {connect} from 'react-redux';
 
 class Customer extends Component {
 
+    entityURN = '/customer';
+
     handleBanToggle = () => {
         let customer = {...this.props.customer};
-        console.log(customer);
         customer.banReason = '';
         customer.banned = !this.props.customer.banned;
-        this.props.updateCustomer(customer);
+        this.props.updateCustomer(customer, this.entityURN);
     };
     handlePrepareForUpdate =()=>{
         let customer = {...this.props.customer};
@@ -40,11 +41,11 @@ class Customer extends Component {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (customer) => {
-            dispatch(actions.updateCustomer(customer))
+        updateCustomer: (customer, entityURN) => {
+            dispatch(actions.updateEntity(customer, entityURN))
         },
         prepareCustomerForUpdate: (customer)=>{
-            dispatch(actions.prepareCustomerForUpdate(customer))
+            dispatch(actions.prepareEntityForUpdate(customer))
         }
     }
 };

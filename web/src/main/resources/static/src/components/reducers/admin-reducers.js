@@ -6,19 +6,19 @@ const initialPaginationState = {
     activePage: 0
 };
 
-export const customersReducer = (state = [], action) =>{
+export const entityReducer = (state = [], action) =>{
     switch (action.type) {
-        case 'FETCH_CUSTOMERS_SUCCESS':
+        case 'FETCH_ENTITIES_SUCCESS':
             return [
                 ...action.payload
             ];
-        case 'UPDATE_CUSTOMER_SUCCESS':
+        case 'UPDATE_ENTITY_SUCCESS':
 
-            return state.map(customer =>{
-                if(customer.id === action.payload.id){
+            return state.map(entity =>{
+                if(entity.id === action.payload.id){
                     return action.payload
                 }
-                return customer
+                return entity
             });
         default:
             return state;
@@ -37,9 +37,9 @@ export const paginationReducer = (state = initialPaginationState, action)=>{
     }
 };
 
-export const customerUpdateReducer = (state = {}, action) =>{
+export const entityUpdateReducer = (state = {}, action) =>{
     switch (action.type){
-        case 'PREPARE_CUSTOMER_FOR_UPDATE':
+        case 'PREPARE_ENTITY_FOR_UPDATE':
             return{
                 ...action.payload
             };

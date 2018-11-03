@@ -5,13 +5,14 @@ import * as actions from '../actions/admin-actions';
 
 class BanModal extends Component {
 
+    entityURN = '/customer';
 
     handleClick = () => {
 
         let customer = {...this.props.customer};
         let banned = !customer.banned;
         let banReason = this.refs.banReasonOption.value + " " + this.refs.banReasonText.value;
-        this.props.updateCustomer({...customer, banned, banReason});
+        this.props.updateCustomer({...customer, banned, banReason}, this.entityURN);
         this.refs.banReasonText.value = '';
     };
 
@@ -50,14 +51,14 @@ class BanModal extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        customer: state.customerToUpdate
+        customer: state.entityToUpdate
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (customer) => {
-            dispatch(actions.updateCustomer(customer))
+        updateCustomer: (customer, entityURN) => {
+            dispatch(actions.updateEntity(customer, entityURN))
         }
     }
 };
