@@ -1,5 +1,5 @@
 import React from 'react';
-import {Route, Switch, Link} from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 import AdminCustomers from './admin-customers'
 import ProfileForm from "../customers-profile-form/profile-form";
 
@@ -20,7 +20,7 @@ const AdminMain = () => {
             </Switch>
         </div>
     )
-}
+};
 
 
 export default AdminMain;
