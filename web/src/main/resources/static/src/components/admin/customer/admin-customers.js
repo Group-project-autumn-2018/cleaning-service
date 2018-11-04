@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import CustomersList from './customers-list';
 import './admin-customers.css';
 import Pagination from "react-js-pagination";
-import * as actions from '../actions/admin-actions';
+import * as actions from '../../actions/admin-actions';
 
 
 class AdminCustomers extends Component {

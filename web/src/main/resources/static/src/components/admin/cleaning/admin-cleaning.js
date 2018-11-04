@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import CleaningList from './cleaning-list';
-import './admin-cleaning.css.css';
+import './admin-cleaning.css';
 import Pagination from "react-js-pagination";
-import * as actions from '../actions/admin-actions';
+import * as actions from '../../actions/admin-actions';
 
 
 class AdminCleaning extends Component {

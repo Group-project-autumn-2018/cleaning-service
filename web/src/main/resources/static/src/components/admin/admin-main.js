@@ -11,12 +11,13 @@ const AdminMain = () => {
                     <Link to="/admin" className="nav-link active" data-toggle="tab" role="tab" aria-controls="admin-customers" aria-selected="true" >Customers</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/admin/services" className="nav-link" data-toggle="tab" role="tab" aria-selected="false" >Cleaning services</Link>
+                    <Link to="/admin" className="nav-link" data-toggle="tab" role="tab" aria-selected="false">Cleaning
+                        services</Link>
                 </li>
             </ul>
             <Switch>
                 <Route exact path="/admin" component={AdminCustomers}/>
-                <Route exact path="/admin/services" component={AdminCleaning}/>
+                <Route exact path="/admin" component={AdminCleaning}/>
             </Switch>
         </div>
     )
