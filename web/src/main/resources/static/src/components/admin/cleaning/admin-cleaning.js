@@ -10,9 +10,9 @@ class AdminCleaning extends Component {
 
     entityURN = '/cleaning';
 
-    componentDidMount() {
+    componentWillMount() {
         const {fetchData} = this.props;
-        fetchData(this.props.activePage, this.props.itemsCountPerPage, this.entityURN);
+        fetchData(0, this.props.itemsCountPerPage, this.entityURN);
     }
 
     handlePageChange = (page) => {
@@ -46,6 +46,7 @@ const mapStateToProps = (state) => {
     return {
         ...state.pagination,
         cleanings: state.entities
+
     }
 };
 

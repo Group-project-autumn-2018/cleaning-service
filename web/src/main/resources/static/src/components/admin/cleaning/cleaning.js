@@ -27,7 +27,7 @@ class Cleaning extends Component {
                 <td className="col">{this.props.cleaning.label}</td>
                 <td className="col">{this.props.cleaning.email}</td>
                 <td className="col">
-                    {this.props.customer.banned ?
+                    {this.props.cleaning.banned ?
                         <BanToggleButton isBanned={this.props.cleaning.banned} onClick={this.handleBanToggle}/> :
                         <ModalToggleButton isBanned={this.props.cleaning.banned}
                                            onClick={this.handlePrepareForUpdate}/>}

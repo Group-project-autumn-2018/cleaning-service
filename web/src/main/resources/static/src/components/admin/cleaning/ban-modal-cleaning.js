@@ -18,7 +18,7 @@ class BanModalCleaning extends Component {
 
     render() {
         return (
-            <div className="modal fade" id="ban-modal-cleaning" tabIndex="-1" role="dialog"
+            <div className="modal fade" id="ban-modal" tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
@@ -30,7 +30,7 @@ class BanModalCleaning extends Component {
                         </div>
                         <div className="modal-body container d-flex flex-column justify-content-center">
                             <select ref="banReasonOption">
-                                <option value="No payment">No payment</option>
+                                <option value="Low rating">Low rating</option>
                                 <option value="False registration data">False registration data</option>
                                 <option value="Rules violation">Rules violation</option>
                             </select>

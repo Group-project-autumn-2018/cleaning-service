@@ -12,11 +12,11 @@ class AdminCustomers extends Component {
 
     componentDidMount() {
         const {fetchData} = this.props;
-        fetchData(this.props.activePage, this.props.itemsCountPerPage, this.entityURN);
+        fetchData(0, this.props.itemsCountPerPage, this.entityURN);
     }
 
     handlePageChange = (page) => {
-        this.props.fetchData(page -1, this.props.itemsCountPerPage, this.entityURN);
+        this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN);
     };
 
     render() {
@@ -28,7 +28,7 @@ class AdminCustomers extends Component {
                     <Pagination activePage={this.props.activePage + 1}
                                 itemsCountPerPage={this.props.itemsCountPerPage}
                                 totalItemsCount={this.props.totalItemsCount}
-                                pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages: 5}
+                                pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages : 5}
                                 onChange={this.handlePageChange}
                                 itemClass="page-item"
                                 linkClass="page-link"
@@ -43,15 +43,15 @@ class AdminCustomers extends Component {
 }
 
 const mapStateToProps = (state) => {
-    return{
+    return {
         ...state.pagination,
         customers: state.entities
     }
 };
 
-const mapDispatchToProps = (dispatch)=>{
-    return{
-        fetchData: (page, size, entityURN)=>{
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchData: (page, size, entityURN) => {
             dispatch(actions.fetchEntities(page, size, entityURN));
         }
     }
