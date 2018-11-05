@@ -7,7 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/cleaning")
+@RequestMapping("/api/cleaning")
 public class CleaningServiceController {
 
     private final CleaningService cleaningService;
