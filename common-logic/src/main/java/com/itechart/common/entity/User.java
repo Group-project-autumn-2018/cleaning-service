@@ -4,6 +4,7 @@ import lombok.*;
 import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 
 @Getter
@@ -30,17 +31,6 @@ public class User implements Serializable {
     private String banReason;
     @Column(name = "address")
     private String address;
-
-    public User(String username, String password, String email, String phone, Boolean banned, String banReason, String address) {
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.phone = phone;
-        this.banned = banned;
-        this.banReason = banReason;
-        this.address = address;
-    }
-
-    public User() {
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Role> roles;
 }

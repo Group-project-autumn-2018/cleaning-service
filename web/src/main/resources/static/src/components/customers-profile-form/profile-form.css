@@ -1,14 +1,14 @@
-.profile-form-container{
+.profile-form-container {
     min-height: 100%;
     background-color: white;
     padding-top: 40px;
 }
 
-.profile-form{
+.profile-form {
     max-width: 40%;
     z-index: 3;
 }
 
-.profile-form button, .profile-form h3{
+.profile-form button, .profile-form h3 {
     margin: 20px auto;
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Password from './Password'
+import ChangePassword from './change-password'
 import MaskedInput from 'react-text-mask';
 import './profile-form.css';
 
@@ -11,10 +11,8 @@ export default class ProfileForm extends Component {
     };
 
     handleClick = () => {
-
         this.setState({
             changePassword: !this.state.changePassword
-
         });
         console.log(!this.state.changePassword)
     };
@@ -73,7 +71,7 @@ export default class ProfileForm extends Component {
                     </div>
 
 
-                    {this.state.changePassword && <Password/>}
+                    {this.state.changePassword && <ChangePassword/>}
 
 
                     <div className="text-center">
