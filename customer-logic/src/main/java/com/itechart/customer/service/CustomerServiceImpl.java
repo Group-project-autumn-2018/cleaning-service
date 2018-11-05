@@ -50,6 +50,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
     }
 
+
     private void registerCustomer(CustomerRegistrationDto registrationDto) {
         Customer customer = new Customer();
         customer.setUsername(registrationDto.getUsername());
