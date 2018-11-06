@@ -11,6 +11,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -24,6 +25,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private int accessTokenValiditySeconds = 10000;
     private int refreshTokenValiditySeconds = 30000;
@@ -48,8 +51,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         endpoints
                 .tokenStore(tokenStore())
                 .accessTokenConverter(accessTokenConverter())
-                .authenticationManager(authenticationManager).allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);;
+                .authenticationManager(authenticationManager).allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
     }
+
+
+
 
     @Bean
     public TokenStore tokenStore() {
@@ -89,7 +95,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .resourceIds(resourceId)
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
                 .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
-                .secret("secret");
+                .secret(bCryptPasswordEncoder.encode("secret"));
     }
 
 

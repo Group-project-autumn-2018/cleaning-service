@@ -11,8 +11,6 @@ import java.util.List;
 @Setter
 @Entity
 @Component
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements Serializable {
