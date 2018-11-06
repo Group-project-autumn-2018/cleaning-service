@@ -1,4 +1,3 @@
-
 export const fetchEntities = (page, size, entityURN) =>
 {
     return dispatch => {

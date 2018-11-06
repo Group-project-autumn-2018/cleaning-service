@@ -1,6 +1,6 @@
 import React from 'react';
 import './home-main-section.css';
-
+import {Link} from "react-router-dom";
 
 
 const HomeMainSection = () => {
@@ -11,7 +11,7 @@ const HomeMainSection = () => {
                     <h1>
                         Чисто там - где убирают
                     </h1>
-                    <button className="btn btn-primary btn-lg col-sm-3">Заказать уборку</button>
+                    <Link className="btn btn-primary btn-lg col-sm-3" to="/booking">Заказать уборку</Link>
                 </div>
             </div>
         </div>
