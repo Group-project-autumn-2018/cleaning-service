@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,20 +28,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
-//    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
-//                          AuthenticationEntryPoint authenticationEntryPoint) {
-//        this.userDetailsService = userDetailsService;
-//        this.authenticationEntryPoint = authenticationEntryPoint;
-//    }
 
     @Autowired
-    @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService;
+    @Qualifier("userDetailsServiceImpl")
+    UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/api/customer/registration", "/api/customer/verify",
-                                                        "/dist/**", "/", "/oauth/token").permitAll()
+        http.authorizeRequests()
+                .antMatchers("/api/customer/registration", "/api/customer/verify",
+                        "/dist/**", "/", "/oauth/token").permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .and().csrf().disable();
     }
 

@@ -45,6 +45,10 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
     }
 
+    @Override
+    public Customer getCustomer(Long id) {
+        return customerRepository.getOne(id);
+    }
 
     public void update(Customer customer){
         customerRepository.save(customer);
