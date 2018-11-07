@@ -7,7 +7,7 @@ const rootReducer = combineReducers(
     {
         entities: reducers.entityReducer,
         pagination: reducers.paginationReducer,
-        entityToUpdate: reducers.entityUpdateReducer
+        entityToUpdate: reducers.entityUpdateReducer,
         credentials: credentialReducer
     }
 );
