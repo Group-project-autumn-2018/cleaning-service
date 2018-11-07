@@ -6,7 +6,6 @@
     "install": "^0.12.2",
     "leaflet": "^1.3.4",
     "npm": "^6.4.1",
-<<<<<<< HEAD
     "react": "^16.6.1",
     "react-dom": "^16.6.1",
     "react-js-pagination": "^3.0.2",
@@ -18,17 +17,6 @@
     "redux": "^4.0.1",
     "redux-thunk": "^2.3.0",
     "rest": "^2.0.0"
-=======
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-leaflet": "^2.1.1",
-    "react-redux": "^5.1.0",
-    "react-router-dom": "^4.3.1",
-    "react-scripts": "2.1.0",
-    "react-text-mask": "^5.4.3",
-    "redux": "^4.0.1",
-    "redux-thunk": "^2.3.0"
->>>>>>> remotes/origin/task-779526-customer-reg-fe
   },
   "scripts": {
     "start": "react-scripts start",
