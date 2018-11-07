@@ -7,7 +7,6 @@ import {store} from './components/store/configStore'
 
 ReactDOM.render(
     <Provider store={store}>
-    <App/>
+        <App/>
     </Provider>,
     document.getElementById('App'));
-

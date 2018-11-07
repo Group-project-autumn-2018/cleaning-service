@@ -9,11 +9,13 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CustomerService {
+    List<Customer> getAll();
 
-    Page<Customer> findPaginated(int page, int size);
-    void update(Customer customer);
-
-    void preRegisterCustomer(CustomerRegistrationDto registrationDto);
+    void registerCustomer(CustomerRegistrationDto registrationDto);
 
     Optional<Boolean> verify(VerifyDto verifyDto);
+
+    Page<Customer> findPaginated(int page, int size);
+
+    void update(Customer customer);
 }

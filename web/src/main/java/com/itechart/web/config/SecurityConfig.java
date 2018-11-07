@@ -20,28 +20,24 @@ import org.springframework.web.filter.CorsFilter;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-
+    private final UserDetailsService userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-//    @Autowired
-//    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService,
-//                          AuthenticationEntryPoint authenticationEntryPoint) {
-//        this.userDetailsService = userDetailsService;
-//        this.authenticationEntryPoint = authenticationEntryPoint;
-//    }
-
     @Autowired
-    @Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService;
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/api/customer/registration", "/api/customer/verify",
-                                                        "/dist/**", "/", "/oauth/token").permitAll()
+             "/dist/*", "/").permitAll()
                 .and().csrf().disable();
+        http.httpBasic().and().authorizeRequests().antMatchers("/api/**").authenticated();
     }
 
     @Override
