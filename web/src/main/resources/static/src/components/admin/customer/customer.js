@@ -13,7 +13,7 @@ class Customer extends Component {
         let customer = {...this.props.customer};
         customer.banReason = '';
         customer.banned = !this.props.customer.banned;
-        this.props.updateCustomer(customer, this.entityURN);
+        this.props.updateCustomer(customer, this.entityURN, this.props.token);
     };
     handlePrepareForUpdate =()=>{
         let customer = {...this.props.customer};
@@ -39,10 +39,17 @@ class Customer extends Component {
 
 };
 
+const mapStateToProps = (state) =>{
+    return{
+        token: state.user.token
+    }
+};
+
+
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (customer, entityURN) => {
-            dispatch(actions.updateEntity(customer, entityURN))
+        updateCustomer: (customer, entityURN, token) => {
+            dispatch(actions.updateEntity(customer, entityURN, token))
         },
         prepareCustomerForUpdate: (customer)=>{
             dispatch(actions.prepareEntityForUpdate(customer))
@@ -51,6 +58,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(null, mapDispatchToProps)(Customer);
+export default connect(mapStateToProps, mapDispatchToProps)(Customer);
 
 

@@ -36,9 +36,11 @@ public class CustomerController {
 
 
     @PutMapping("/{сustomerId}")
-    public void getOneById(@RequestBody Customer customer) {
+    public void setOneById(@RequestBody Customer customer) {
         customerService.update(customer);
     }
+
+
 
     @PostMapping("/registration")
     public ResponseEntity preRegister(@RequestBody CustomerRegistrationDto registrationDto) {

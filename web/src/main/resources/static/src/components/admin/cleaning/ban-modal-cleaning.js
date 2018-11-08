@@ -12,7 +12,7 @@ class BanModalCleaning extends Component {
         let cleaning = {...this.props.cleaning};
         let banned = !cleaning.banned;
         let banReason = this.refs.banReasonOption.value + " " + this.refs.banReasonText.value;
-        this.props.updateCustomer({...cleaning, banned, banReason}, this.entityURN);
+        this.props.updateCustomer({...cleaning, banned, banReason}, this.entityURN, this.props.token);
         this.refs.banReasonText.value = '';
     };
 
@@ -51,14 +51,15 @@ class BanModalCleaning extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        cleaning: state.entityToUpdate
+        cleaning: state.entityToUpdate,
+        token: state.user.token
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (cleaning, entityURN) => {
-            dispatch(actions.updateEntity(cleaning, entityURN))
+        updateCustomer: (cleaning, entityURN, token) => {
+            dispatch(actions.updateEntity(cleaning, entityURN, token))
         }
     }
 };

@@ -12,7 +12,7 @@ class BanModal extends Component {
         let customer = {...this.props.customer};
         let banned = !customer.banned;
         let banReason = this.refs.banReasonOption.value + " " + this.refs.banReasonText.value;
-        this.props.updateCustomer({...customer, banned, banReason}, this.entityURN);
+        this.props.updateCustomer({...customer, banned, banReason}, this.entityURN, this.props.token);
         this.refs.banReasonText.value = '';
     };
 
@@ -51,14 +51,15 @@ class BanModal extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        customer: state.entityToUpdate
+        customer: state.entityToUpdate,
+        token: state.user.token
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (customer, entityURN) => {
-            dispatch(actions.updateEntity(customer, entityURN))
+        updateCustomer: (customer, entityURN, token) => {
+            dispatch(actions.updateEntity(customer, entityURN, token))
         }
     }
 };
