@@ -14,6 +14,8 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Component
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "customers")
 @PrimaryKeyJoinColumn(name = "id")
 public class Customer extends User {
@@ -23,13 +25,4 @@ public class Customer extends User {
     private Boolean cleaningNotifications;
 
 
-
-    public Customer(String name, String password, String email, String phone, Boolean banned, String banReason, String address, Boolean confirmed, Boolean cleaningNotifications) {
-        super(name, password, email, phone, banned, banReason, address);
-        this.cleaningNotifications = cleaningNotifications;
-        this.confirmed = confirmed;
-    }
-
-    public Customer() {
-    }
 }

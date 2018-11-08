@@ -1,13 +1,20 @@
 package com.itechart.web.controller;
 
+import com.itechart.customer.dto.CustomerRegistrationDto;
+import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.entity.Customer;
 import com.itechart.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("/api/customer")
 public class CustomerController {
     private final CustomerService customerService;
 
@@ -16,6 +23,10 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
+    @GetMapping("/all")
+    public List<Customer> getAll() {
+        return customerService.getAll();
+    }
 
     @GetMapping()
     public Page<Customer> findPaginated(
@@ -26,9 +37,26 @@ public class CustomerController {
         return resultPage;
     }
 
-
     @PutMapping("/{сustomerId}")
-    public void getOneById(@RequestBody Customer customer) {
+    public void updateOneById(@RequestBody Customer customer) {
         customerService.update(customer);
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity register(@RequestBody CustomerRegistrationDto registrationDto) {
+        customerService.registerCustomer(registrationDto);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity verify(@RequestBody VerifyDto verifyDto) {
+        Optional<Boolean> result = customerService.verify(verifyDto);
+        if (result.isPresent()) {
+            ResponseEntity response;
+            response = ResponseEntity.status(result.get() ?  HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE).build();
+            return response;
+        } else {
+            return ResponseEntity.status(HttpStatus.LOCKED).build();
+        }
     }
 }

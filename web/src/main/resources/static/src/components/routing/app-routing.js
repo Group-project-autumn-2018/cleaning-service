@@ -5,8 +5,8 @@ import SignIn from '../sign-in';
 import BookingForm from '../booking-form';
 import CustomerRegistration from '../sign-up/sign-up-customer';
 import SignUpMainSection from "../sign-up/sign-up-main-section";
+import ProfileForm from '../customers-profile-form/profile-form'
 import AdminMain from "../admin/admin-main";
-import ProfileForm from "../customers-profile-form/profile-form";
 
 const AppRouting = () => {
   return (

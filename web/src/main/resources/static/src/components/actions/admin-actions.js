@@ -1,7 +1,7 @@
 export const fetchEntities = (page, size, entityURN) =>
 {
     return dispatch => {
-        fetch(`${entityURN}?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
+        fetch(`/api${entityURN}?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
             const pagination = {
                 totalItemsCount: response.totalElements,
                 activePage: response.number,
@@ -24,7 +24,7 @@ export const updateEntity = (entity, entityURN)=> {
             method: 'PUT',
             body: JSON.stringify(entity)
         };
-        fetch(`${entityURN}/${entity.id}`, options);
+        fetch(`/api${entityURN}/${entity.id}`, options);
         dispatch(updateEntitySuccess(entity));
         };
     };

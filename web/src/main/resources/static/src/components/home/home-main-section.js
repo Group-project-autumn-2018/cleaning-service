@@ -2,9 +2,8 @@ import React from 'react';
 import './home-main-section.css';
 import {Link} from "react-router-dom";
 
-
 const HomeMainSection = () => {
-    return(
+    return (
         <div>
             <div className="container main-section">
                 <div className="description text-center">
