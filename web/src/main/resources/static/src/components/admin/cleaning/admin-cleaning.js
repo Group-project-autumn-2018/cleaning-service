@@ -35,7 +35,6 @@ class AdminCleaning extends Component {
                                 innerClass="pagination justify-content-center"
                     />
                 </nav>
-
                 <CleaningList cleanings={this.props.cleanings}/>
             </div>)
 
@@ -47,7 +46,6 @@ const mapStateToProps = (state) => {
         ...state.pagination,
         cleanings: state.entities,
         token: state.user.token
-
     }
 };
 

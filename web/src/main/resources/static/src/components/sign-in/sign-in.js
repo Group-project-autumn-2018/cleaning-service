@@ -15,8 +15,10 @@ class SignIn extends Component {
     };
 
     componentDidUpdate(){
-        if(this.props.isAuthenticated){
-
+        switch(this.props.role[0]){
+            case "admin": this.props.history.push("/admin"); break;
+            // case "customer": this.props.history.push("/customer"); break;
+            case "service": this.props.history.push("/service"); break;
         }
     }
 
@@ -27,6 +29,7 @@ class SignIn extends Component {
                 <div className="overlay"></div>
                 <form className="form-signin" onSubmit={this.submitHandler}>
                     <h3 className="">Please sign in</h3>
+                    {this.props.error ? <p>{this.props.error}</p>:""}
                     <label htmlFor="username" className="sr-only">Username</label>
                     <input ref="login" type="text" id="username" className="form-control" placeholder="Your username..." required
                            autoFocus/>
@@ -56,6 +59,11 @@ class SignIn extends Component {
 
 };
 
+const mapStateToProps = (state) => {
+    return {
+        ...state.user
+    }
+};
 
 const mapDispatchToProps = (dispatch) =>{
     return{
@@ -65,4 +73,4 @@ const mapDispatchToProps = (dispatch) =>{
     }
 };
 
-export default connect(null, mapDispatchToProps)(SignIn);
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn);

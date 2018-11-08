@@ -62,7 +62,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             @Override
             public boolean isAccountNonLocked() {
-                return true;
+                return !user.getBanned();
             }
 
             @Override
