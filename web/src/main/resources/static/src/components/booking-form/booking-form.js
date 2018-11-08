@@ -37,13 +37,13 @@ export default class BookingForm extends Component {
                         <div className="form-group">
                             <label htmlFor="smallRooms" className="col-form-label">Small rooms</label>
                             <input type="text" id="smallRooms" className="form-control row-2"
-                                   placeholder="number of small rooms..." required
+                                   placeholder="under 20 m²" required
                                    autoFocus/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bigRooms" className="col-form-label">Big rooms</label>
                             <input type="text" id="bigRooms" className="form-control row-2"
-                                   placeholder="number of big rooms..." required
+                                   placeholder="over 20 m²" required
                                    autoFocus/>
                         </div>
                         <div className="form-group">
