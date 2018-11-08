@@ -9,6 +9,7 @@ const SignUpMainSection = () => {
             <div className="overlay"/>
             <div className="registration-mode">
                 <Link to='/registration/customer' className="btn btn-info btn-lg">Sign up for our customers</Link>
+                <Link to='/registration/service' className="btn btn-info btn-lg">Sign up for our service</Link>
             </div>
         </div>
     )

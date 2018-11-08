@@ -3,6 +3,7 @@ import HomeMainSection from '../home/home-main-section';
 import {Route, Switch} from "react-router-dom";
 import SignIn from '../sign-in';
 import CustomerRegistration from '../sign-up/sign-up-customer';
+import ServiceRegistration from '../sign-up/sign-up-service';
 import SignUpMainSection from "../sign-up/sign-up-main-section";
 import ProfileForm from '../customers-profile-form/profile-form'
 import AdminMain from "../admin/admin-main";
@@ -15,6 +16,7 @@ const AppRouting = () => {
           <Route path="/login" component={SignIn}/>
           <Route exact path="/registration" component={SignUpMainSection}/>
           <Route path="/registration/customer" component={CustomerRegistration}/>
+          <Route path="/registration/service" component={ServiceRegistration}/>
           <Route path="/admin" component={AdminMain}/>
           <Route path="/profile" component={ProfileForm}/>
           <Route path="/feedback" component={Feedback}/>
