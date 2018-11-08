@@ -29,7 +29,7 @@ class SignIn extends Component {
                 <div className="overlay"></div>
                 <form className="form-signin" onSubmit={this.submitHandler}>
                     <h3 className="">Please sign in</h3>
-                    {this.props.error ? <p>{this.props.error}</p>:""}
+                    {this.props.error ? <p className="text-danger">{this.props.error}</p>:""}
                     <label htmlFor="username" className="sr-only">Username</label>
                     <input ref="login" type="text" id="username" className="form-control" placeholder="Your username..." required
                            autoFocus/>

@@ -16,7 +16,7 @@ class AppHeader extends Component {
                         {this.props.isAuthenticated ?
                             <ul className="navbar-nav">
                                 <li className="nav-item">
-                                    <Link to="/profile" className="nav-link">You logged in as {this.props.name}</Link>
+                                    <Link to="/profile" className="nav-link">You logged in as <u>{this.props.name}</u></Link>
                                 </li>
                             </ul> :
                             <ul className="navbar-nav">
