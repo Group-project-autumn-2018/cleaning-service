@@ -1,13 +1,21 @@
 import React, {Component} from 'react';
 import './booking-form.css';
-import EstimatedTimeList from './estimated-time-list';
-import TransactionDurationList from './transaction-duration-list';
-import CleaningFrequencyList from './cleaning-frequency-list';
-import DaysForCleaningList from './days-for-cleaning-list';
-import CleaningTypesList from "./cleaning-types-list";
+import CheckboxItemsList from './checkbox-items-list';
+import SelectItemsList from "./select-items-list";
 
 
 export default class BookingForm extends Component {
+
+    frequency = ["Only once", "Every week", "Every two weeks", "Four month", "Every month"];
+    days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    duration = ["One month", "Two month", "Three month", "Four month", "Five month", "Six month"];
+    time = ["9-00 AM", "9-30 AM", "10-00 AM", "10-30 AM", "11-00 AM", "11-30 AM", "12-00 AM", "12-30 AM",
+        "13-00 AM", "13-30 AM", "14-00 AM", "14-30 AM", "15-00 AM", "15-30 AM", "16-00 AM", "16-30 AM", "17-00 AM",
+        "17-30 AM", "18-00 AM"];
+    types = ["Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
+        "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
+        "Industrial cleaning", "Pool cleaning"];
+
     render() {
         return (
             <div className='text-center booking-component container'>
@@ -22,7 +30,7 @@ export default class BookingForm extends Component {
                                    required
                                    autoFocus/>
                         </div>
-                        <CleaningTypesList/>
+                        <SelectItemsList array={this.types} label={"Cleaning type"} />
                     </div>
 
                     <div className="second-row">
@@ -47,14 +55,14 @@ export default class BookingForm extends Component {
                     </div>
 
                     <p className="title"><b>Choose days for cleaning:</b></p>
-                    <DaysForCleaningList/>
+                    <CheckboxItemsList array={this.days} />
 
                     <p className="title"><b>Planned cleaning frequency:</b></p>
-                    <CleaningFrequencyList/>
+                    <CheckboxItemsList array={this.frequency} />
 
                     <div className="fifth-row">
-                        <TransactionDurationList/>
-                        <EstimatedTimeList/>
+                        <SelectItemsList array={this.duration} label={"Transaction duration"} className={"row-5"} />
+                        <SelectItemsList array={this.time} label={"Estimated time"} className={"row-5"} />
 
                         <div className="form-group">
                             <label htmlFor="email" className="col-form-label">Email</label>

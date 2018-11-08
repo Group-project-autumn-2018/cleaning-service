@@ -7,7 +7,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.ResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 
@@ -18,7 +18,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Configuration
-public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
+public class SinglePageAppConfig implements WebMvcConfigurer {
     @Bean
     public RestTemplate restTemplate() {
         return new RestTemplate();
@@ -45,8 +45,8 @@ public class SinglePageAppConfig extends WebMvcConfigurerAdapter {
             StringBuilder handledRequestPath = new StringBuilder();
             if (requestEntities.length > 1 && requestPath.contains(".js")) {
                 handledRequestPath.append(requestEntities[requestEntities.length - 2])
-                                  .append('/')
-                                  .append(requestEntities[requestEntities.length - 1]);
+                        .append('/')
+                        .append(requestEntities[requestEntities.length - 1]);
             } else {
                 handledRequestPath.append(requestEntities[0]);
             }
