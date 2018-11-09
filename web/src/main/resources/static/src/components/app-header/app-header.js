@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './app-header.css';
 import {connect} from 'react-redux';
 import {Link} from "react-router-dom";
+import NavigationItem from './NavigationItem';
 
 class AppHeader extends Component {
 
@@ -15,28 +16,14 @@ class AppHeader extends Component {
 
                         {this.props.isAuthenticated ?
                             <ul className="navbar-nav">
-                                <li className="nav-item">
-                                    <Link to="/profile" className="nav-link">You logged in as <u>{this.props.name}</u></Link>
-                                </li>
+                                <NavigationItem link="/profile">You logged in as <u>{this.props.name}</u></NavigationItem>
+                                <NavigationItem link="/logout">Log Out</NavigationItem>
                             </ul> :
                             <ul className="navbar-nav">
-                                <li className="nav-item">
-                                    <Link to="/registration" className="nav-link">Sign up</Link>
-                                </li>
-                                <li className="nav-item">
-                                    <Link to="/login" className="nav-link">Sign in</Link>
-                                </li>
+                                <NavigationItem link="/registration">Sign Up</NavigationItem>
+                                <NavigationItem link="/login">Sign In</NavigationItem>
                             </ul>
                         }
-
-                        {/*{this.props.role.indexOf("admin") >= 0 ?*/}
-                            {/*<ul className="navbar-nav">*/}
-                                {/*<li className="nav-item">*/}
-                                    {/*<Link to="/admin" className="nav-link">Admin</Link>*/}
-                                {/*</li>*/}
-                            {/*</ul> : ''*/}
-                        {/*}*/}
-
                     </div>
                 </nav>
             </div>

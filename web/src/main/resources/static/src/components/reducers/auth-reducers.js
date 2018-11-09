@@ -1,4 +1,4 @@
-const initialPaginationState = {
+const initialAuthState = {
     isAuthenticated: false,
     name: null,
     email: null,
@@ -9,7 +9,7 @@ const initialPaginationState = {
 
 };
 
-export const authReducer = (state = initialPaginationState, action) =>{
+export const authReducer = (state = initialAuthState, action) =>{
     switch (action.type) {
         case 'AUTH_SUCCESS':
             return {
@@ -20,6 +20,10 @@ export const authReducer = (state = initialPaginationState, action) =>{
                 return {...state, error: 'Invalid login or password'};
             }
             return {...state, error: action.payload};
+        case 'LOGOUT':
+            return {
+                ...initialAuthState
+            };
         default:
             return state;
     }

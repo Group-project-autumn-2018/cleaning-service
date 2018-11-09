@@ -7,7 +7,23 @@ const parseJwt = (token) => {
 };
 
 
-const fetchAuth = (options, dispatch) => {
+const basicAuth =()=>{
+    let clientId = "cleaning-app";
+    let secret = "secret";
+    let clientCredentials = btoa(clientId + ':' + secret);
+    return 'Basic ' + clientCredentials;
+};
+
+
+const fetchToken = (body, dispatch) =>{
+    let options = {
+        headers: {
+            'Authorization': basicAuth(),
+            'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        method: 'POST',
+        body: body
+    };
     fetch(`/oauth/token`, options)
         .then( (response) =>{
             if (response.status >= 200 && response.status < 300) {
@@ -28,6 +44,7 @@ const fetchAuth = (options, dispatch) => {
                         refreshToken: data.refresh_token
                     };
                     dispatch(authSuccess(payload));
+                    dispatch(checkAuthTimeout(data.expires_in))
                 });
             }
         ).catch((response) => {
@@ -40,38 +57,18 @@ const fetchAuth = (options, dispatch) => {
 
 export const fetchAccessToken = (login, password)=> {
     return dispatch => {
-        let clientId = "cleaning-app";
-        let secret = "secret";
-        let clientCredentials = btoa(clientId + ':' + secret);
-        let basicAuth = 'Basic ' + clientCredentials;
-        let options = {
-            headers: {
-                'Authorization': basicAuth,
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST',
-            body: `grant_type=password&username=${login}&password=${password}`
-        };
-        fetchAuth(options, dispatch);
+        let body = `grant_type=password&username=${login}&password=${password}`;
+        fetchToken(body, dispatch);
     };
 };
 
 
-
-export const fetchRefreshToken = (login, token)=> {
+export const fetchRefreshToken = (refreshToken)=> {
     return dispatch => {
-
-        let options = {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            method: 'POST',
-            body: `grant_type=refresh_token&username=${login}&refresh_token=${token}`
-        };
-        fetchAuth(options, dispatch);
+        let body = `grant_type=refresh_token&refresh_token=${refreshToken}`
+        fetchToken(body, dispatch);
     };
 };
-
 
 export const authSuccess = (payload) => {
     return {
@@ -85,4 +82,18 @@ export const authFail = (error) => {
         type: 'AUTH_FAIL',
         payload: error
     };
+};
+
+export const logout = () =>{
+    return {
+        type: 'LOGOUT'
+    };
+};
+
+export const checkAuthTimeout = (expirationTime) =>{
+    return dispatch => {
+        setTimeout( ()=>{
+            dispatch(logout())
+        }, expirationTime * 1000)
+    }
 };
