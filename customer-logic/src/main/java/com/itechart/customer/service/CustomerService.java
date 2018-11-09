@@ -18,4 +18,6 @@ public interface CustomerService {
     Page<Customer> findPaginated(int page, int size);
 
     void update(Customer customer);
+
+    Customer getOne(Long id);
 }
