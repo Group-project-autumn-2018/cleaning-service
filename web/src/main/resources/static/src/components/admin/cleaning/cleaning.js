@@ -24,7 +24,7 @@ class Cleaning extends Component {
     render() {
         return (
             <tr className="row">
-                <td className="col">{this.props.cleaning.label}</td>
+                <td className="col">{this.props.cleaning.title}</td>
                 <td className="col">{this.props.cleaning.email}</td>
                 <td className="col">
                     {this.props.cleaning.banned ?
