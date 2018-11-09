@@ -1,33 +1,26 @@
 package com.itechart.service.entity;
 
-import com.itechart.customer.entity.Customer;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 @Entity
 @Component
-@Table(name = "ratings")
-public class Rating {
+@Table(name = "prices")
+public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @ManyToOne
     @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     private CleaningCompany company;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Customer customer;
-
-    @Column(name = "text")
-    private String text;
-
-    @Column(name = "rate")
-    private Integer rate;
+    @Column(name = "base_price")
+    private BigDecimal basePrice;
+    @Column(name = "coefficient")
+    private BigDecimal coefficient;
 }
