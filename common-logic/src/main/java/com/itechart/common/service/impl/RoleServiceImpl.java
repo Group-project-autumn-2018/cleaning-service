@@ -1,7 +1,8 @@
-package com.itechart.common.service;
+package com.itechart.common.service.impl;
 
 import com.itechart.common.entity.Role;
 import com.itechart.common.repository.RoleRepository;
+import com.itechart.common.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

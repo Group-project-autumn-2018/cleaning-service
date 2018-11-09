@@ -22,7 +22,7 @@
             <groupId>com.itechart</groupId>
             <artifactId>customer-logic</artifactId>
             <version>1.0-SNAPSHOT</version>
-            <scope>compile</scope>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

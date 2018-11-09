@@ -1,4 +1,4 @@
-package com.itechart.common.service;
+package com.itechart.common.service.impl;
 
 import com.itechart.common.entity.User;
 import com.itechart.common.repository.UserRepository;

@@ -7,6 +7,7 @@ import CustomerRegistration from '../sign-up/sign-up-customer';
 import SignUpMainSection from "../sign-up/sign-up-main-section";
 import ProfileForm from '../customers-profile-form/profile-form'
 import AdminMain from "../admin/admin-main";
+import Feedback from '../feedback';
 
 const AppRouting = () => {
   return (
@@ -18,6 +19,7 @@ const AppRouting = () => {
           <Route path="/registration/customer" component={CustomerRegistration}/>
           <Route path="/admin" component={AdminMain}/>
           <Route path="/profile" component={ProfileForm}/>
+          <Route path="/feedback" component={Feedback}/>
       </Switch>
   )
 };
