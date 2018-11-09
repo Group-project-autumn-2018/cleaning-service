@@ -1,6 +1,5 @@
 package com.itechart.cleaning.service;
 
-import com.itechart.cleaning.entity.Cleaning;
 import org.springframework.data.domain.Page;
 
 public interface CleaningService {

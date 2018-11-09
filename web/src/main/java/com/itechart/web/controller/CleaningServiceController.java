@@ -1,6 +1,5 @@
 package com.itechart.web.controller;
 
-import com.itechart.cleaning.entity.Cleaning;
 import com.itechart.cleaning.service.CleaningService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

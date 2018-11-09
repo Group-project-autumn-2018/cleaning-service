@@ -1,6 +1,5 @@
 package com.itechart.cleaning.repository;
 
-import com.itechart.cleaning.entity.Cleaning;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

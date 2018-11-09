@@ -1,6 +1,5 @@
 package com.itechart.cleaning.service.impl;
 
-import com.itechart.cleaning.entity.Cleaning;
 import com.itechart.cleaning.repository.CleaningRepository;
 import com.itechart.cleaning.service.CleaningService;
 import org.springframework.beans.factory.annotation.Autowired;
