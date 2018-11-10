@@ -29,19 +29,19 @@ class SignIn extends Component {
                 <div className="overlay"></div>
                 <form className="form-signin" onSubmit={this.submitHandler}>
                     <h3 className="">Please sign in</h3>
-                    {this.props.error ? <p className="text-danger">{this.props.error}</p>:""}
+                    {this.props.error ? <p className="text-danger">{this.props.error}</p>:null}
                     <label htmlFor="username" className="sr-only">Username</label>
-                    <input ref="login" type="text" id="username" className="form-control" placeholder="Your username..." required
+                    <input ref="login" type="text" id="username" className="form-control" placeholder="Your username or phone" required
                            autoFocus/>
-                    <MaskedInput
-                        mask={['+','3','7','5','(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}
-                        className="form-control"
-                        placeholder="+375(__)___-____"
-                        guide={false}
-                        id="my-input-id"
-                        onBlur={() => {}}
-                        onChange={() => {}}
-                    />
+                    {/*<MaskedInput*/}
+                        {/*mask={['+','3','7','5','(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}*/}
+                        {/*className="form-control"*/}
+                        {/*placeholder="+375(__)___-____"*/}
+                        {/*guide={false}*/}
+                        {/*id="my-input-id"*/}
+                        {/*onBlur={() => {}}*/}
+                        {/*onChange={() => {}}*/}
+                    {/*/>*/}
                     <label htmlFor="inputPassword" className="sr-only">Password</label>
                     <input ref="password" type="password" id="inputPassword" className="form-control" placeholder="Password"
                            required/>

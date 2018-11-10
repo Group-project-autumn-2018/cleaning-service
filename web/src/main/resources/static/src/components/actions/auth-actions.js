@@ -7,7 +7,7 @@ const parseJwt = (token) => {
 };
 
 
-const basicAuth =()=>{
+const basicAuth = () => {
     let clientId = "cleaning-app";
     let secret = "secret";
     let clientCredentials = btoa(clientId + ':' + secret);
@@ -15,7 +15,7 @@ const basicAuth =()=>{
 };
 
 
-const fetchToken = (body, dispatch) =>{
+const fetchToken = (body, dispatch) => {
     let options = {
         headers: {
             'Authorization': basicAuth(),
@@ -25,22 +25,24 @@ const fetchToken = (body, dispatch) =>{
         body: body
     };
     fetch(`/oauth/token`, options)
-        .then( (response) =>{
+        .then((response) => {
             if (response.status >= 200 && response.status < 300) {
                 return Promise.resolve(response);
             } else {
                 return Promise.reject(response);
             }
         })
-        .then( (response)=> {
+        .then((response) => {
                 response.json().then((data) => {
                     let decodedToken = parseJwt(data.access_token);
+                    let expirationDate = new Date(new Date() + decodedToken.exp);
                     let payload = {
                         isAuthenticated: true,
                         name: data.name,
                         email: decodedToken.user_name,
                         role: decodedToken.authorities,
                         token: data.access_token,
+                        tokenExpirationDate: expirationDate,
                         refreshToken: data.refresh_token
                     };
                     dispatch(authSuccess(payload));
@@ -55,15 +57,28 @@ const fetchToken = (body, dispatch) =>{
     });
 };
 
-export const fetchAccessToken = (login, password)=> {
+export const fetchAccessToken = (login, password) => {
     return dispatch => {
         let body = `grant_type=password&username=${login}&password=${password}`;
         fetchToken(body, dispatch);
     };
 };
 
+export const checkAuthTimeout = (expirationTime) => {
+    return (dispatch, getState) => {
 
-export const fetchRefreshToken = (refreshToken)=> {
+        setTimeout(() => {
+                let refreshToken = getState().user.refreshToken;
+                if (refreshToken) {
+                    dispatch(fetchRefreshToken(refreshToken))
+                }
+            }, expirationTime
+        )
+
+    };
+};
+
+export const fetchRefreshToken = (refreshToken) => {
     return dispatch => {
         let body = `grant_type=refresh_token&refresh_token=${refreshToken}`
         fetchToken(body, dispatch);
@@ -84,16 +99,9 @@ export const authFail = (error) => {
     };
 };
 
-export const logout = () =>{
+export const logout = () => {
     return {
         type: 'LOGOUT'
     };
 };
 
-export const checkAuthTimeout = (expirationTime) =>{
-    return dispatch => {
-        setTimeout( ()=>{
-            dispatch(logout())
-        }, expirationTime * 1000)
-    }
-};

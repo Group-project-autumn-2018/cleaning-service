@@ -6,7 +6,6 @@ const initialAuthState = {
     token: null,
     refreshToken: null,
     error: null
-
 };
 
 export const authReducer = (state = initialAuthState, action) =>{

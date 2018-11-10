@@ -16,6 +16,8 @@ class AppHeader extends Component {
 
                         {this.props.isAuthenticated ?
                             <ul className="navbar-nav">
+                                {this.props.role[0] === 'admin' ?
+                                    <NavigationItem link="/admin">Admin</NavigationItem> : null}
                                 <NavigationItem link="/profile">You logged in as <u>{this.props.name}</u></NavigationItem>
                                 <NavigationItem link="/logout">Log Out</NavigationItem>
                             </ul> :
