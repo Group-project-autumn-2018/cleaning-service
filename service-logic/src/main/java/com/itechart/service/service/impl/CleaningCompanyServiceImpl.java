@@ -1,5 +1,6 @@
 package com.itechart.service.service.impl;
 
+import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
@@ -27,5 +28,10 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     @Override
     public void update(CleaningCompany cleaningCompany) {
         cleaningCompanyRepository.save(cleaningCompany);
+    }
+
+    @Override
+    public void registerCompany(CleaningCompanyDto cleaningCompanyDto) {
+        //cleaningCompanyRepository.saveAndFlush()
     }
 }

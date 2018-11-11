@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface CleaningCompanyRepository extends JpaRepository<CleaningCompany, Long> {
     List<CleaningCompany> findAll();
+
 }
