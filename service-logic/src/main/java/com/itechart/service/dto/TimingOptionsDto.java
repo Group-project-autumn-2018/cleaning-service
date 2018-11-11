@@ -12,7 +12,7 @@ public class TimingOptionsDto {
     private int timeOfCleaningBigRooms;
     private int timeOfCleaningBathrooms;
     private double coefficient;
-    private int numberOfCleaningTimes=1;
+
 
 
 }
