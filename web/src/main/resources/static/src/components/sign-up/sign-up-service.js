@@ -71,8 +71,8 @@ const SignUpService = () => {
                                                 <label>Big room </label>
                                                 <input type="checkBox" />
                                             </div>
-                                            <div id="WCRoomDiv">
-                                                <label>WC</label>
+                                            <div id="bathRoomBDiV">
+                                                <label>Bathroom</label>
                                                 <input type="checkBox" />
                                             </div>
                                             <div className="email-feedback" />

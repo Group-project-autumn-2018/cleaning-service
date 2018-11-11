@@ -21,4 +21,10 @@ import javax.persistence.Table;
 @PrimaryKeyJoinColumn(name = "id")
 public class CleaningCompany extends User {
     private String description;
+
+    private Adress adress;
+
+    private Price typeProvidedService;
+
+
 }
