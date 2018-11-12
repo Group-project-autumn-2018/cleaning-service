@@ -23,7 +23,10 @@ import javax.persistence.Table;
 public class CleaningCompany extends User {
     @Column(name = "description")
     private String description;
-
+    @Column(name = "confirmed")
+    private Boolean confirmed;
+    @Column(name = "cleaning_notifications")
+    private Boolean cleaningNotifications;
 //    private Adress adress;
 
 
