@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import './booking-form.css';
 import CheckboxItemsList from './checkbox-items-list';
 import SelectItemsList from "./select-items-list";
+import {Link} from "react-router-dom";
 
 
 export default class BookingForm extends Component {
@@ -73,9 +74,9 @@ export default class BookingForm extends Component {
                     </div>
 
                     <div className="confirm">
-                        <button className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
+                        <Link to="/companies" className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
                             Consider proposals
-                        </button>
+                        </Link>
                     </div>
                 </form>
             </div>
