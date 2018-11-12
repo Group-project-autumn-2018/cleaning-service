@@ -6,7 +6,6 @@ const parseJwt = (token) => {
     }
 };
 
-
 const basicAuth = () => {
     let clientId = "cleaning-app";
     let secret = "secret";
@@ -36,7 +35,6 @@ const fetchToken = (body, dispatch) => {
                 response.json().then((data) => {
                     let decodedToken = parseJwt(data.access_token);
                     const tokenExpirationDate = Date.now() + (data.expires_in * 1000);
-                    console.log(tokenExpirationDate);
                     let payload = {
                         isAuthenticated: true,
                         name: data.name,
@@ -69,22 +67,20 @@ export const setAuthTimeout = (expirationTime) => {
     return (dispatch, getState) => {
 
         setTimeout(() => {
-            const refreshToken = getState().user.refreshToken;
-            if (refreshToken) {
-                dispatch(fetchRefreshToken(refreshToken))
-            }
-        }, expirationTime
+                const refreshToken = getState().user.refreshToken;
+                if (refreshToken) {
+                    dispatch(fetchRefreshToken(refreshToken))
+                }
+            }, expirationTime
         )
 
     };
 };
 
-
 export const checkAuthStatus = () => {
     return (dispatch, getState) => {
         const tokenExpirationDate = new Date(getState().user.tokenExpirationDate);
         if (!tokenExpirationDate || tokenExpirationDate < new Date()) {
-            console.log("out");
             dispatch(logout())
         } else {
             dispatch(setAuthTimeout(tokenExpirationDate - new Date()));

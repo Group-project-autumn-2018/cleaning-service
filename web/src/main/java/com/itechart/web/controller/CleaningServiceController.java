@@ -5,6 +5,7 @@ import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/cleaning")
 public class CleaningServiceController {
 
+
     private final CleaningCompanyService cleaningCompanyService;
+
     private final FeedbackService feedbackService;
 
     @Autowired

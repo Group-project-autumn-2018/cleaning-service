@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './sign-in.css';
 import * as actions from '../actions/auth-actions';
-// import {withRouter} from "react-router-dom";
 
 class SignIn extends Component {
 
@@ -13,16 +12,18 @@ class SignIn extends Component {
         this.props.fetchAccessToken(login, password);
     };
 
-    componentDidUpdate(){
-        console.log(this.props);
-        switch(this.props.role[0]){
+    componentDidUpdate() {
+        switch (this.props.role[0]) {
             case "admin": {
-                console.log("admin push");
                 this.props.history.push("/admin")
             }
-            break;
-            case "customer": this.props.history.push("/profile"); break;
-            case "service": this.props.history.push("/service"); break;
+                break;
+            case "customer":
+                this.props.history.push("/profile");
+                break;
+            case "service":
+                this.props.history.push("/service");
+                break;
         }
     }
 
@@ -33,19 +34,21 @@ class SignIn extends Component {
                 <div className="overlay"></div>
                 <form className="form-signin" onSubmit={this.submitHandler}>
                     <h3 className="">Please sign in</h3>
-                    {this.props.error ? <p className="text-danger">{this.props.error}</p>:null}
+                    {this.props.error ? <p className="text-danger">{this.props.error}</p> : null}
                     <label htmlFor="username" className="sr-only">Username</label>
-                    <input ref="login" type="text" id="username" className="form-control" placeholder="Your username or phone" required
+                    <input ref="login" type="text" id="username" className="form-control"
+                           placeholder="Your username or phone" required
                            autoFocus/>
                     <label htmlFor="inputPassword" className="sr-only">Password</label>
-                    <input ref="password" type="password" id="inputPassword" className="form-control" placeholder="Password"
+                    <input ref="password" type="password" id="inputPassword" className="form-control"
+                           placeholder="Password"
                            required/>
                     <div className="checkbox mb-3">
                         <label>
                             <input type="checkbox" value="remember-me"/> Remember me
                         </label>
                     </div>
-                    <button className="btn btn-lg btn-primary btn-block" >Sign in</button>
+                    <button className="btn btn-lg btn-primary btn-block">Sign in</button>
                     <p className="mt-5 mb-3">&copy; 2018</p>
                 </form>
             </div>
@@ -59,9 +62,9 @@ const mapStateToProps = (state) => {
     }
 };
 
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        fetchAccessToken: (login, password) =>{
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchAccessToken: (login, password) => {
             dispatch(actions.fetchAccessToken(login, password));
         }
     }

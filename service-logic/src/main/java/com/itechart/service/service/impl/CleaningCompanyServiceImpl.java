@@ -14,7 +14,9 @@ import java.util.Optional;
 @Service
 public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
+
     private final CleaningCompanyRepository cleaningCompanyRepository;
+
 
     @Autowired
     public CleaningCompanyServiceImpl(CleaningCompanyRepository cleaningCompanyRepository) {
@@ -23,7 +25,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Override
     public Page<CleaningCompany> findPaginated(int page, int size) {
-        return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("label", "id")));
+        return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
     }
 
     @Override
