@@ -25,13 +25,22 @@ public class CalculationRules {
 
 
             CalculationRules object =new CalculationRules();
-            price=object.calculateCost(pricingOptionsDto.getNumberOfSmallRooms(),pricingOptionsDto.getCostOfCleaningSmallRooms());
-            price.add(object.calculateCost(pricingOptionsDto.getNumberOfBigRooms(),pricingOptionsDto.getCostOfCleaningBigRooms()));
-            price.add(object.calculateCost(pricingOptionsDto.getNumberOfBathrooms(),pricingOptionsDto.getCostOfCleaningBathrooms()));
-            price.multiply(new BigDecimal(pricingOptionsDto.getCoefficient()));
-            price=object.calculateCost(pricingOptionsDto.getNumberOfCleaningTimes(),price);
+            /*price=(object.calculateCost(pricingOptionsDto.getNumberOfSmallRooms(),pricingOptionsDto.getCostOfCleaningSmallRooms())).add(
+                    object.calculateCost(pricingOptionsDto.getNumberOfBigRooms(),pricingOptionsDto.getCostOfCleaningBigRooms()).add(
+                            object.calculateCost(pricingOptionsDto.getNumberOfBathrooms(),pricingOptionsDto.getCostOfCleaningBathrooms()).multiply((
+                                    new BigDecimal(pricingOptionsDto.getCoefficient())
+                                    )
+                            )
+                    )
+            );*/
 
-
+            price=(new BigDecimal(pricingOptionsDto.getCoefficient())).multiply(
+                  new BigDecimal(pricingOptionsDto.getNumberOfSmallRooms()).multiply(pricingOptionsDto.getCostOfCleaningSmallRooms()).add(
+                         new BigDecimal(pricingOptionsDto.getNumberOfBigRooms()).multiply(pricingOptionsDto.getCostOfCleaningBigRooms()).add(
+                                new BigDecimal(pricingOptionsDto.getNumberOfBathrooms()).multiply(pricingOptionsDto.getCostOfCleaningBathrooms())
+                         )
+                  )
+            );
 
         return price;
     }
