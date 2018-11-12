@@ -26,7 +26,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
 
-        http.authorizeRequests().antMatchers("/api/**").authenticated()
+        http.authorizeRequests()
                 .antMatchers("/api/customer/registration", "/api/customer/verify",
                 "/dist/**", "/", "/oauth/token").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll();
@@ -50,8 +50,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         converter.setSigningKey("123");
         return converter;
     }
-
-
 
     @Bean
     @Primary

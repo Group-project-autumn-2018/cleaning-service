@@ -40,9 +40,9 @@ public class CustomerController {
 
 
     @PostMapping("/registration")
-    public ResponseEntity preRegister(@RequestBody CustomerRegistrationDto registrationDto) {
-        customerService.preRegisterCustomer(registrationDto);
-        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    public ResponseEntity register(@RequestBody CustomerRegistrationDto registrationDto) {
+        customerService.registerCustomer(registrationDto);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
     }
 
     @PostMapping("/verify")
@@ -50,10 +50,10 @@ public class CustomerController {
         Optional<Boolean> result = customerService.verify(verifyDto);
         if (result.isPresent()) {
             ResponseEntity response;
-            response = ResponseEntity.ok(result.get() ?  HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE);
+            response = ResponseEntity.status(result.get() ?  HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE).build();
             return response;
         } else {
-            return ResponseEntity.ok(HttpStatus.LOCKED);
+            return ResponseEntity.status(HttpStatus.LOCKED).build();
         }
     }
 }

@@ -47,8 +47,6 @@ class BanModalCleaning extends Component {
     }
 
 }
-;
-
 const mapStateToProps = (state) => {
     return {
         cleaning: state.entityToUpdate,

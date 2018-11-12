@@ -1,7 +1,8 @@
 package com.itechart.customer.service;
 
-import com.itechart.common.service.EmailServiceImpl;
+import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
+import com.itechart.common.service.SMSService;
 import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.repository.CustomerRepository;
@@ -41,7 +42,10 @@ public class CustomerServiceImplTest {
     private RoleService roleService;
 
     @Mock
-    private EmailServiceImpl emailService;
+    private EmailService emailService;
+
+    @Mock
+    private SMSService smsService;
     private ConcurrentMap<String, CustomerVerification> verifications;
     private CustomerRegistrationDto registrationDto = new CustomerRegistrationDto();
     private VerifyDto verifyDto = new VerifyDto();
@@ -63,10 +67,9 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testPreRegistration() {
-        customerService.preRegisterCustomer(registrationDto);
+        customerService.registerCustomer(registrationDto);
         CustomerVerification verification = verifications.get(encodedToken);
         Assert.assertNotNull(verification);
-        Assert.assertNotNull(verification.getRegistrationDto());
         Assert.assertEquals(0, verification.getTryCount());
         Assert.assertTrue(verification.getCode() > 99_999 && verification.getCode() < 1_000_000);
     }
@@ -74,7 +77,7 @@ public class CustomerServiceImplTest {
     @Test
     public void testVerify() {
         Optional<Boolean> result;
-        customerService.preRegisterCustomer(registrationDto);
+        customerService.registerCustomer(registrationDto);
         CustomerVerification verification = verifications.get(encodedToken);
 
         verifyDto.setCode(0);
@@ -97,7 +100,7 @@ public class CustomerServiceImplTest {
         Assert.assertEquals(result, Optional.of(true));
         Assert.assertNull(verifications.get(encodedToken));
 
-        customerService.preRegisterCustomer(registrationDto);
+        customerService.registerCustomer(registrationDto);
         for (int i = 0; i < 5; i++) {
             verifyDto.setCode(i);
             customerService.verify(verifyDto);
@@ -108,10 +111,10 @@ public class CustomerServiceImplTest {
 
     @Test
     public void testClearOldVerifications() {
-        customerService.preRegisterCustomer(registrationDto);
+        customerService.registerCustomer(registrationDto);
         CustomerVerification verification = verifications.get(encodedToken);
 
-        verification.setAddingTime(LocalTime.now().minusMinutes(14));
+        verification.setAddingTime(LocalTime.now().minusMinutes(15));
         customerService.clearOldVerifications();
         Assert.assertNotNull(verifications.get(encodedToken));
 

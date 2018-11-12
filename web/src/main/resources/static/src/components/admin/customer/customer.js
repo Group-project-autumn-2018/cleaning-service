@@ -37,14 +37,12 @@ class Customer extends Component {
         )
     }
 
-};
-
+}
 const mapStateToProps = (state) =>{
     return{
         token: state.user.token
     }
 };
-
 
 const mapDispatchToProps = (dispatch) => {
     return {

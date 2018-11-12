@@ -1,12 +1,13 @@
 package com.itechart.common.entity;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -20,11 +21,9 @@ public class User implements Serializable {
     private Long id;
 
     @Size(min=2, max=50)
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
 
-
-    @Size(min=6, max=20)
     @Column(name = "password")
     private String password;
 
@@ -42,6 +41,8 @@ public class User implements Serializable {
     private String banReason;
     @Column(name = "address")
     private String address;
+    @Column(name = "adding_date")
+    private LocalDate addingDate;
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 }

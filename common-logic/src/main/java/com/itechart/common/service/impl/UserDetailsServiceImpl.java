@@ -1,7 +1,8 @@
-package com.itechart.common.service;
+package com.itechart.common.service.impl;
 
 import com.itechart.common.entity.User;
 import com.itechart.common.repository.UserRepository;
+import com.itechart.common.service.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

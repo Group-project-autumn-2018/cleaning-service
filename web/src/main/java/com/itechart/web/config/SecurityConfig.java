@@ -1,5 +1,4 @@
 package com.itechart.web.config;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,16 +14,15 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.oauth2.client.CommonOAuth2Provider;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
+import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
-import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
@@ -61,34 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     CustomAuthenticationFailureHandler authenticationFailureHandler;
 
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
-    }
-
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/api/customer/registration", "/api/customer/verify",
-                        "/dist/**", "/", "/oauth/token").permitAll()
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .and().csrf().disable();
-    }
-
-
-
-    @Bean
-    public ClientRegistrationRepository clientRegistrationRepository() {
-        List<ClientRegistration> registrations = clients.stream()
-                .map(c -> getRegistration(c))
-                .filter(registration -> registration != null)
-                .collect(Collectors.toList());
-
-        return new InMemoryClientRegistrationRepository(registrations);
-    }
-
-
     @Autowired
     private Environment env;
 
@@ -114,15 +84,31 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return null;
     }
 
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
+                .antMatchers("/api/customer/registration", "/api/customer/verify",
+                        "/dist/**", "/", "/oauth/token").permitAll()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
+                .and().httpBasic().disable()
+               .csrf().disable();
+    }
 
+    @Bean
+    public ClientRegistrationRepository clientRegistrationRepository() {
+        List<ClientRegistration> registrations = clients.stream()
+                .map(c -> getRegistration(c))
+                .filter(registration -> registration != null)
+                .collect(Collectors.toList());
 
+        return new InMemoryClientRegistrationRepository(registrations);
+    }
 
     @Bean
     SimpleUrlAuthenticationFailureHandler failureHandler() {
         return new SimpleUrlAuthenticationFailureHandler(failureUrl);
     }
-
-
 
 
     @Bean(name = BeanIds.AUTHENTICATION_MANAGER)

@@ -1,6 +1,6 @@
 
 module.exports = {
-    entry: './src/index.js',
+    entry: ['babel-polyfill', './src/index.js'],
     resolve:{
         extensions:['.js', '.jsx']
     },

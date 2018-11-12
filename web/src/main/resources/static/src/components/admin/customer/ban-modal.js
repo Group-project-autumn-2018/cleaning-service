@@ -47,8 +47,6 @@ class BanModal extends Component {
     }
 
 }
-;
-
 const mapStateToProps = (state) => {
     return {
         customer: state.entityToUpdate,
