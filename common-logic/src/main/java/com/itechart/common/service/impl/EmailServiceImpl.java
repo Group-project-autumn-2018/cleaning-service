@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource({"classpath:application.properties"})
 public class EmailServiceImpl implements EmailService {
+
     private final JavaMailSender mailSender;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${spring.mail.username}")

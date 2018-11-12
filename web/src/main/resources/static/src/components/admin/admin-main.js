@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import {Link, Route, Switch} from "react-router-dom";
+import {Link, Route, Switch, withRouter} from "react-router-dom";
 import AdminCustomers from './customer/admin-customers'
 import AdminCleaning from "./cleaning/admin-cleaning";
 
 class AdminMain extends Component {
 
     componentDidMount(){
+        console.log('admin mount');
+        console.log(this.props.history);
+        console.log(this.props.match.url);
         this.props.history.push(this.props.match.url + '/customers')
     }
 
@@ -29,7 +32,5 @@ class AdminMain extends Component {
         )
     }
 
-};
-
-
-export default AdminMain;
+}
+export default withRouter(AdminMain);

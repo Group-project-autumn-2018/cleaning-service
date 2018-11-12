@@ -1,5 +1,4 @@
 package com.itechart.web.config;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -18,9 +16,13 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableAuthorizationServer
@@ -28,7 +30,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private int accessTokenValiditySeconds = 10000;
+    private int accessTokenValiditySeconds = 3600;
     private int refreshTokenValiditySeconds = 30000;
 
     @Value("${security.oauth2.resource.id}")
@@ -46,16 +48,24 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         builder.userDetailsService(userDetailsService);
     }
 
+
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints){
+
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(
+                Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+
         endpoints
                 .tokenStore(tokenStore())
-                .accessTokenConverter(accessTokenConverter())
+                .tokenEnhancer(tokenEnhancerChain)
                 .authenticationManager(authenticationManager).allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
     }
 
-
-
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
+    }
 
     @Bean
     public TokenStore tokenStore() {
@@ -92,7 +102,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")
                 .authorities("ROLE_TRUSTED_CLIENT")
                 .scopes("read", "write")
-                .resourceIds(resourceId)
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
                 .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
                 .secret(bCryptPasswordEncoder.encode("secret"));
