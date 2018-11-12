@@ -35,18 +35,19 @@ const fetchToken = (body, dispatch) => {
         .then((response) => {
                 response.json().then((data) => {
                     let decodedToken = parseJwt(data.access_token);
-                    let expirationDate = new Date(new Date() + decodedToken.exp);
+                    const tokenExpirationDate = Date.now() + (data.expires_in * 1000);
+                    console.log(tokenExpirationDate);
                     let payload = {
                         isAuthenticated: true,
                         name: data.name,
                         email: decodedToken.user_name,
                         role: decodedToken.authorities,
                         token: data.access_token,
-                        tokenExpirationDate: expirationDate,
+                        tokenExpirationDate: tokenExpirationDate,
                         refreshToken: data.refresh_token
                     };
                     dispatch(authSuccess(payload));
-                    dispatch(checkAuthTimeout(data.expires_in))
+                    dispatch(setAuthTimeout(data.expires_in * 1000))
                 });
             }
         ).catch((response) => {
@@ -59,28 +60,41 @@ const fetchToken = (body, dispatch) => {
 
 export const fetchAccessToken = (login, password) => {
     return dispatch => {
-        let body = `grant_type=password&username=${login}&password=${password}`;
+        const body = `grant_type=password&username=${login}&password=${password}`;
         fetchToken(body, dispatch);
     };
 };
 
-export const checkAuthTimeout = (expirationTime) => {
+export const setAuthTimeout = (expirationTime) => {
     return (dispatch, getState) => {
 
         setTimeout(() => {
-                let refreshToken = getState().user.refreshToken;
-                if (refreshToken) {
-                    dispatch(fetchRefreshToken(refreshToken))
-                }
-            }, expirationTime
+            const refreshToken = getState().user.refreshToken;
+            if (refreshToken) {
+                dispatch(fetchRefreshToken(refreshToken))
+            }
+        }, expirationTime
         )
 
     };
 };
 
+
+export const checkAuthStatus = () => {
+    return (dispatch, getState) => {
+        const tokenExpirationDate = new Date(getState().user.tokenExpirationDate);
+        if (!tokenExpirationDate || tokenExpirationDate < new Date()) {
+            console.log("out");
+            dispatch(logout())
+        } else {
+            dispatch(setAuthTimeout(tokenExpirationDate - new Date()));
+        }
+    }
+};
+
 export const fetchRefreshToken = (refreshToken) => {
     return dispatch => {
-        let body = `grant_type=refresh_token&refresh_token=${refreshToken}`
+        const body = `grant_type=refresh_token&refresh_token=${refreshToken}`;
         fetchToken(body, dispatch);
     };
 };

@@ -1,5 +1,4 @@
 package com.itechart.web.config;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -32,7 +30,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    private int accessTokenValiditySeconds = 10000;
+    private int accessTokenValiditySeconds = 3600;
     private int refreshTokenValiditySeconds = 30000;
 
     @Value("${security.oauth2.resource.id}")
@@ -104,7 +102,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")
                 .authorities("ROLE_TRUSTED_CLIENT")
                 .scopes("read", "write")
-                .resourceIds(resourceId)
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
                 .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
                 .secret(bCryptPasswordEncoder.encode("secret"));

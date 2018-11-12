@@ -5,6 +5,7 @@ const initialAuthState = {
     role: [],
     token: null,
     refreshToken: null,
+    tokenExpirationDate: null,
     error: null
 };
 

@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './sign-in.css';
-import MaskedInput from 'react-text-mask';
 import * as actions from '../actions/auth-actions';
+// import {withRouter} from "react-router-dom";
 
 class SignIn extends Component {
-
 
     submitHandler = (e) => {
         e.preventDefault();
@@ -15,9 +14,14 @@ class SignIn extends Component {
     };
 
     componentDidUpdate(){
+        console.log(this.props);
         switch(this.props.role[0]){
-            case "admin": this.props.history.push("/admin"); break;
-            // case "customer": this.props.history.push("/customer"); break;
+            case "admin": {
+                console.log("admin push");
+                this.props.history.push("/admin")
+            }
+            break;
+            case "customer": this.props.history.push("/profile"); break;
             case "service": this.props.history.push("/service"); break;
         }
     }
@@ -33,15 +37,6 @@ class SignIn extends Component {
                     <label htmlFor="username" className="sr-only">Username</label>
                     <input ref="login" type="text" id="username" className="form-control" placeholder="Your username or phone" required
                            autoFocus/>
-                    {/*<MaskedInput*/}
-                        {/*mask={['+','3','7','5','(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]}*/}
-                        {/*className="form-control"*/}
-                        {/*placeholder="+375(__)___-____"*/}
-                        {/*guide={false}*/}
-                        {/*id="my-input-id"*/}
-                        {/*onBlur={() => {}}*/}
-                        {/*onChange={() => {}}*/}
-                    {/*/>*/}
                     <label htmlFor="inputPassword" className="sr-only">Password</label>
                     <input ref="password" type="password" id="inputPassword" className="form-control" placeholder="Password"
                            required/>
@@ -57,8 +52,7 @@ class SignIn extends Component {
         );
     }
 
-};
-
+}
 const mapStateToProps = (state) => {
     return {
         ...state.user

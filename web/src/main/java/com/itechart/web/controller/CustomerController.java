@@ -1,22 +1,14 @@
 package com.itechart.web.controller;
-
-import com.itechart.common.entity.Role;
 import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.entity.Customer;
 import com.itechart.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
-import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -45,11 +37,6 @@ public class CustomerController {
         customerService.update(customer);
     }
 
-//    @GetMapping("/details")
-//    public String getOneById(Principal principal) {
-//        SecurityContextHolder.getContext().getAuthentication().
-//        return principal.getName();
-//    }
 
     @PostMapping("/registration")
     public ResponseEntity preRegister(@RequestBody CustomerRegistrationDto registrationDto) {
