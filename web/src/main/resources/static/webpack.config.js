@@ -1,12 +1,10 @@
 
 module.exports = {
     entry: './src/index.js',
-    // output: {
-    //     filename: 'bundle.js'
-    // },
     resolve:{
         extensions:['.js', '.jsx']
     },
+    devtool: 'eval-source-map',
     module: {
         rules: [
             {

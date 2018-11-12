@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @RestController
@@ -33,7 +34,7 @@ public class CustomerController {
 
 
     @PutMapping("/{сustomerId}")
-    public void setOneById(@RequestBody Customer customer) {
+    public void setOneById(@RequestBody @Valid Customer customer) {
         customerService.update(customer);
     }
 
