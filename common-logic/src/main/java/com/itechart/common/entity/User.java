@@ -32,7 +32,6 @@ public class User implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Size(min = 6, max = 20)
     @Column(name = "phone")
     private String phone;
 
