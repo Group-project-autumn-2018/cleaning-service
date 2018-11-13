@@ -1,5 +1,6 @@
 package com.itechart.web.controller;
 
+import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.RatingDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
@@ -33,10 +34,17 @@ public class CleaningServiceController {
         cleaningCompanyService.update(cleaningCompany);
     }
 
+    @PostMapping("/registration")
+    public ResponseEntity register(@RequestBody CleaningCompanyDto registrationDto) {
+        cleaningCompanyService.registerCompany(registrationDto);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+    }
+
     @PostMapping("/rating")
     public ResponseEntity addRating(@RequestBody RatingDto ratingDto) {
         Long ratingId = ratingService.addRating(ratingDto);
         if (ratingId == 0) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         else return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 }
