@@ -7,6 +7,48 @@ import CustomerApi from '../services/customer-api';
 import VerificationForm from './verification-form';
 
 class SignUpService extends Component{
+    constructor() {
+        super();
+        this.state = {
+            description:'',
+            priceDto:{
+                standardRoomCleaning:'',
+                springCleaning:'',
+                repairAndConstructionCleaning:'',
+                dryCarpetCleaning:'',
+                officeCleaning:'',
+                furnitureAndCoatingsCleaning:'',
+                industrialCleaning:'',
+                poolCleaning:'',
+                smallRoom:'',
+                bigRoom:'',
+                bathroom:''
+            },
+            cleaningTimeDto:{
+                standardRoomCleaningTime:'',
+                springCleaningTime:'',
+                repairAndConstructionCleaningTime:'',
+                dryCarpetCleaningTime:'',
+                officeCleaningTime:'',
+                furnitureAndCoatingsCleaningTime:'',
+                industrialCleaningTime:'',
+                poolCleaningTime:'',
+                smallRoomCleaningTime:'',
+                bigRoomCleaningTime:'',
+                bathroomCleaningTime:''
+            },
+            username: '',
+            email: '',
+            phone: '',
+            password: '',
+            confirmPassword: '',
+            disabled: false,
+            code: '',
+            verificationStatus: false,
+            message: ''
+        }
+    }
+
     changeUsername = (event) => {
         this.setState({username: event.target.value});
         if (event.target.value.length < 3) {
@@ -104,19 +146,54 @@ class SignUpService extends Component{
                                     <h2 htmlFor="Types" className="card-title">
                                         Types of services provided and their cost
                                     </h2>
-                                    <div id="smallRoomDiv">
+                                    <div id="standardRoomCleaning">
+                                        <label>Standard room cleaning coefficient</label>
+                                        <input type="text" value={1} disabled={true} />
+                                    </div>
+
+                                    <div id="springCleaning">
+                                        <label>Spring cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+
+                                    <div id="repairAndConstructionCleaning">
+                                        <label>Repair and construction cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+
+                                    <div id="dryCarpetCleaning">
+                                        <label>Dry carpet cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+
+                                    <div id="officeCleaning">
+                                        <label>Office cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+
+                                    <div id="furnitureAndCoatingsCleaning">
+                                        <label>Furniture and coatings cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+
+                                    <div id="industrialCleaning">
+                                        <label>Industrial cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+                                    <div id="poolCleaning">
+                                        <label>Pool cleaning</label>
+                                        <input type="checkBox" />
+                                    </div>
+
+                                    <div id="RoomsDiv">
                                         <label>Small room </label>
-                                        <input type="checkBox" />
-                                    </div>
-                                    <div id="bigRoomDiv">
+                                        <input type="text" />
                                         <label>Big room </label>
-                                        <input type="checkBox" />
-                                    </div>
-                                    <div id="bathRoomBDiV">
+                                        <input type="text" />
                                         <label>Bathroom</label>
-                                        <input type="checkBox" />
+                                        <input type="text" />
                                     </div>
-                                    <div className="email-feedback" />
+
                                 </div>
                             </div>
                         </div>
@@ -133,9 +210,9 @@ class SignUpService extends Component{
                                         type="text"
                                         className="form-control"
                                         placeholder="Username"
-                                        value={this.state.username}
-                                        onChange={this.changeUsername}
-                                        disabled={this.state.disabled}
+                                        // value={this.state.username}
+                                        // onChange={this.changeUsername}
+                                        // disabled={this.state.disabled}
                                     />
                                     <div id="first_name_feedback" className="invalid-feedback" />
                                 </div>
@@ -156,9 +233,9 @@ class SignUpService extends Component{
                                             className="form-control"
                                             id="email"
                                             placeholder="example@gmail.com"
-                                            value={this.state.email}
-                                            onChange={this.changeEmail}
-                                            disabled={this.state.disabled}
+                                            // value={this.state.email}
+                                            // onChange={this.changeEmail}
+                                            // disabled={this.state.disabled}
                                         />
                                         <div className="email-feedback" />
                                     </div>
@@ -191,9 +268,9 @@ class SignUpService extends Component{
                                             placeholder="+375(__)___-__-__"
                                             guide={false}
                                             id="customer-phone"
-                                            value={this.state.phone}
-                                            onChange={this.changePhone}
-                                            disabled={this.state.disabled}
+                                            // value={this.state.phone}
+                                            // onChange={this.changePhone}
+                                            // disabled={this.state.disabled}
                                         />
                                         <div className="phone-feedback" />
                                     </div>
@@ -213,9 +290,9 @@ class SignUpService extends Component{
                                             className="form-control"
                                             id="password"
                                             placeholder="Type your password"
-                                            value={this.state.password}
-                                            onChange={this.changePassword}
-                                            disabled={this.state.disabled}
+                                            // value={this.state.password}
+                                            // onChange={this.changePassword}
+                                            // disabled={this.state.disabled}
                                         />
                                         <div className="password-feedback" />
                                     </div>
@@ -228,9 +305,9 @@ class SignUpService extends Component{
                                             className="form-control"
                                             id="password_conf"
                                             placeholder="Type your password again"
-                                            value={this.state.confirmPassword}
-                                            onChange={this.changePasswordConfirm}
-                                            disabled={this.state.disabled}
+                                            // value={this.state.confirmPassword}
+                                            // onChange={this.changePasswordConfirm}
+                                            // disabled={this.state.disabled}
                                         />
                                         <div className="password_conf-feedback" />
                                     </div>
@@ -242,8 +319,8 @@ class SignUpService extends Component{
                         <button
                             type="button"
                             className="btn btn-primary btn-lg float-right"
-                             onClick={this.preRegister}
-                             disabled={this.state.disabled}
+                             // onClick={this.preRegister}
+                             // disabled={this.state.disabled}
                         >
                             Sign up !
                         </button>
