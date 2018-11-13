@@ -75,7 +75,9 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     private Long saveCompany(CleaningCompanyDto registrationDto) {
         CleaningCompany company = new CleaningCompany();
-        company.setDescription(registrationDto.getDescription);
+        //logotype
+
+        company.setDescription(registrationDto.getDescription());
         company.setUsername(registrationDto.getUsername());
         company.setConfirmed(false);
         company.setEmail(registrationDto.getEmail());
@@ -84,12 +86,13 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         company.setRoles(Collections.singletonList(customerRole));
         company.setPassword(bCryptPasswordEncoder.encode(registrationDto.getPassword()));
         company.setAddingDate(LocalDate.now());
-        priceService.savePrice(registrationDto.getPriceDto());
-        cleaningTimeService.saveCleaningTime(registrationDto.getCleaningTimeDto());
+
         cleaningCompanyRepository.saveAndFlush(company);
 
         registrationDto.getPriceDto().setCompany(company);
         registrationDto.getCleaningTimeDto().setCompany(company);
+        priceService.savePrice(registrationDto.getPriceDto());
+        cleaningTimeService.saveCleaningTime(registrationDto.getCleaningTimeDto());
 
         return company.getId();
     }
