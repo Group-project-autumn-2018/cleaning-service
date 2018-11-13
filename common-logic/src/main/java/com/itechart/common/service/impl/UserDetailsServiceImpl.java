@@ -1,7 +1,8 @@
-package com.itechart.common.service;
+package com.itechart.common.service.impl;
 
 import com.itechart.common.entity.User;
 import com.itechart.common.repository.UserRepository;
+import com.itechart.common.service.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,7 +14,9 @@ import java.util.Collection;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
+
     private final UserRepository userRepository;
+
 
     @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -31,7 +34,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
-        return new UserDetails() {
+
+
+        return new CustomUserDetails() {
             @Override
             public Collection<? extends GrantedAuthority> getAuthorities() {
                 return user.getRoles();
@@ -44,6 +49,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             @Override
             public String getUsername() {
+                return user.getEmail();
+            }
+
+            public String getName() {
                 return user.getUsername();
             }
 
@@ -54,7 +63,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             @Override
             public boolean isAccountNonLocked() {
-                return true;
+                return !user.getBanned();
             }
 
             @Override

@@ -12,11 +12,11 @@ class AdminCleaning extends Component {
 
     componentWillMount() {
         const {fetchData} = this.props;
-        fetchData(0, this.props.itemsCountPerPage, this.entityURN);
+        fetchData(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     }
 
     handlePageChange = (page) => {
-        this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN);
+        this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     };
 
     render() {
@@ -35,7 +35,6 @@ class AdminCleaning extends Component {
                                 innerClass="pagination justify-content-center"
                     />
                 </nav>
-
                 <CleaningList cleanings={this.props.cleanings}/>
             </div>)
 
@@ -45,15 +44,15 @@ class AdminCleaning extends Component {
 const mapStateToProps = (state) => {
     return {
         ...state.pagination,
-        cleanings: state.entities
-
+        cleanings: state.entities,
+        token: state.user.token
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: (page, size, entityURN) => {
-            dispatch(actions.fetchEntities(page, size, entityURN));
+        fetchData: (page, size, entityURN, token) => {
+            dispatch(actions.fetchEntities(page, size, entityURN, token));
         }
     }
 };

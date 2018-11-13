@@ -13,7 +13,7 @@ class Cleaning extends Component {
         let cleaning = {...this.props.cleaning};
         cleaning.banReason = '';
         cleaning.banned = !this.props.cleaning.banned;
-        this.props.updateCleaning(cleaning, this.entityURN);
+        this.props.updateCleaning(cleaning, this.entityURN, this.props.token);
     };
     handlePrepareForUpdate = () => {
         let cleaning = {...this.props.cleaning};
@@ -24,7 +24,7 @@ class Cleaning extends Component {
     render() {
         return (
             <tr className="row">
-                <td className="col">{this.props.cleaning.label}</td>
+                <td className="col">{this.props.cleaning.username}</td>
                 <td className="col">{this.props.cleaning.email}</td>
                 <td className="col">
                     {this.props.cleaning.banned ?
@@ -37,12 +37,18 @@ class Cleaning extends Component {
         )
     }
 
+}
+
+const mapStateToProps = (state) => {
+    return {
+        token: state.user.token
+    }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCleaning: (cleaning, entityURN) => {
-            dispatch(actions.updateEntity(cleaning, entityURN))
+        updateCleaning: (cleaning, entityURN, token) => {
+            dispatch(actions.updateEntity(cleaning, entityURN, token))
         },
         prepareCleaningForUpdate: (cleaning) => {
             dispatch(actions.prepareEntityForUpdate(cleaning))
@@ -51,6 +57,6 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 
-export default connect(null, mapDispatchToProps)(Cleaning);
+export default connect(mapStateToProps, mapDispatchToProps)(Cleaning);
 
 

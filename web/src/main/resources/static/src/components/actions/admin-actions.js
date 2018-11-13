@@ -1,8 +1,7 @@
-
-export const fetchEntities = (page, size, entityURN) =>
+export const fetchEntities = (page, size, entityURN, token) =>
 {
     return dispatch => {
-        fetch(`/api${entityURN}?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
+        fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}`).then(resolve => resolve.json()).then(response => {
             const pagination = {
                 totalItemsCount: response.totalElements,
                 activePage: response.number,
@@ -15,10 +14,11 @@ export const fetchEntities = (page, size, entityURN) =>
 };
 
 
-export const updateEntity = (entity, entityURN)=> {
+export const updateEntity = (entity, entityURN, token) => {
     return dispatch => {
         let options = {
             headers: {
+                'Authorization': `Bearer ${token}`,
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },

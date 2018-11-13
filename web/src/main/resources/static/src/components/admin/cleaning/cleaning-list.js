@@ -7,7 +7,6 @@ const CleaningList = ({cleanings}) => {
     const cleaningList = cleanings.map(cleaning =>
         <Cleaning key={cleaning.id} cleaning={cleaning}/>
     );
-    console.log(cleanings);
     return (
         <div className="container">
             <table className="table .table-hover">

@@ -9,8 +9,8 @@ import VerificationForm from './verification-form';
 class SignUpCustomer extends Component {
     customerApiService = new CustomerApi();
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             username: '',
             email: '',
@@ -75,10 +75,7 @@ class SignUpCustomer extends Component {
         if (this.state.username.length < 3) {
             return false;
         }
-        if (this.state.email === '' && this.state.phone === '+375') {
-            return false;
-        }
-        return true;
+        return !(this.state.email === '' && this.state.phone === '+375');
     };
 
     preRegister = () => {
@@ -222,8 +219,7 @@ class SignUpCustomer extends Component {
             </div>
         );
     };
-};
-
+}
 
 const mapStateToProps = (state) => {
     return {

@@ -1,7 +1,10 @@
 package com.itechart.customer.entity;
 
 import com.itechart.common.entity.User;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.Column;
@@ -23,6 +26,4 @@ public class Customer extends User {
     private Boolean confirmed;
     @Column(name = "cleaning_notifications")
     private Boolean cleaningNotifications;
-
-
 }
