@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -80,13 +79,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()").allowFormAuthenticationForClients();
     }
 
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
+
         clients.inMemory()
                 .withClient("cleaning-app")
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")
