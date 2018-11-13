@@ -1,0 +1,125 @@
+.form-booking {
+    width: 100%;
+    max-width: 800px;
+    padding: 15px;
+    margin: auto;
+    z-index: 3;
+}
+
+.form-control {
+    width: 350px;
+}
+
+.card {
+    opacity: 0.8;
+}
+
+.row-2 {
+    width: 220px;
+}
+
+.row-5 {
+    width: 220px;
+}
+
+.booking-component {
+    display: -ms-flexbox;
+    display: flex;
+    max-width: 800px;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    z-index: 2;
+}
+
+.form-booking .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-booking .form-control:focus {
+    z-index: 2;
+}
+
+.form-booking input select {
+    margin-bottom: 5px;
+}
+
+.first-row {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    max-height: 90px;
+}
+
+.second-row {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    max-height: 90px;
+    /*padding-top: 10px;*/
+}
+
+.third-row {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    padding-top: 5px;
+    background-color: lightgray;
+    vertical-align: center;
+    opacity: 0.8;
+}
+
+.fourth-row {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    padding-top: 5px;
+    background-color: lightgray;
+    vertical-align: center;
+    opacity: 0.8;
+}
+
+.fifth-row {
+    display: flex;
+    justify-content: space-between;
+    max-width: 800px;
+    max-height: 90px;
+}
+
+.overlay {
+    position: absolute;
+    min-height: 100%;
+    min-width: 100%;
+    left: 0;
+    top: 0;
+    background: rgba(169, 169, 169, 0.69);
+    z-index: 2;
+}
+
+.title {
+    font-size: 18px;
+    padding-top: 10px;
+    margin: 0;
+}
+
+.btnProposals {
+    max-width: 300px;
+}
+
+.confirm {
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    max-width: 800px;
+    max-height: 70px;
+}
+
+.copy {
+    padding: 0;
+    margin: 0;
+}

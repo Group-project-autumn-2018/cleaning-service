@@ -18,7 +18,7 @@ public class Rating {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
     private CleaningCompany company;
 
     @ManyToOne
