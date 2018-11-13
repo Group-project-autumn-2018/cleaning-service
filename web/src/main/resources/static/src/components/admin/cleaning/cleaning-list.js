@@ -3,7 +3,6 @@ import Cleaning from './cleaning';
 import BanModal from './ban-modal-cleaning';
 
 const CleaningList = ({cleanings}) => {
-    // syntax error cleaning vs cleanings. You map props as cleanings in AdminCleaning mapStateToProps
     const cleaningList = cleanings.map(cleaning =>
         <Cleaning key={cleaning.id} cleaning={cleaning}/>
     );
