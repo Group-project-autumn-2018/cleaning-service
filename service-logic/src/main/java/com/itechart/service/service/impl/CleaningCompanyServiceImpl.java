@@ -98,8 +98,8 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     }
 
     @Override
-    public void registerCompany(CleaningCompanyDto cleaningCompanyDto) {
-        Long serviceId = saveCompany(cleaningCompanyDto);
+    public void registerCompany(CleaningCompanyDto registrationDto) {
+        Long serviceId = saveCompany(registrationDto);
         ServiceVerification verification = new ServiceVerification();
         verification.setServiceId(serviceId);
         verification.setAddingTime(LocalTime.now());
@@ -132,7 +132,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
             return Optional.empty();
         }
         if (verification.getCode() == code) {
-            cleaningCompanyRepository.changeConfirmStatus(true, verification.getCustomerId());
+            cleaningCompanyRepository.changeConfirmStatus(true, verification.getServiceId());
             verifications.remove(encodedString);
             return Optional.of(true);
         } else {
