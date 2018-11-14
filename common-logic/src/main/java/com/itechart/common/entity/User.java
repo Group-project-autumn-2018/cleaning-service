@@ -22,17 +22,17 @@ public class User implements Serializable {
     private Long id;
 
     @Size(min = 2, max = 50)
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
 
     @Column(name = "password")
     private String password;
 
-    @Size(min = 6, max = 30)
-    @Column(name = "email")
+    @Size(min = 6)
+    @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "phone")
+    @Column(name = "phone", unique = true)
     private String phone;
 
     @Column(name = "banned", nullable = false)
