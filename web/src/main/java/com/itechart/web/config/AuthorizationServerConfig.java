@@ -90,13 +90,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+    public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()").allowFormAuthenticationForClients();
     }
 
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
+
         clients.inMemory()
                 .withClient("cleaning-app")
                 .authorizedGrantTypes("client_credentials", "password", "refresh_token")

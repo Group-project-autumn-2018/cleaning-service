@@ -56,6 +56,7 @@ class SignIn extends Component {
     }
 
 }
+
 const mapStateToProps = (state) => {
     return {
         ...state.user

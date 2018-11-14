@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import * as actions from '../actions/auth-actions';
 import {connect} from 'react-redux';
-import {withRouter} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
 import AppHeader from '../app-header/index';
 import AppRouting from "../routing";
 import './home-wrapper.css';
-import {BrowserRouter} from "react-router-dom";
 
 class App extends Component {
 
@@ -15,12 +14,12 @@ class App extends Component {
 
     render() {
         return (
-        <BrowserRouter>
-            <div className="home-wrapper">
-                <AppHeader/>
-                <AppRouting isAuthenticated={this.props.isAuthenticated} isAdmin={this.props.role[0] === 'admin'}/>
-            </div>
-        </BrowserRouter>
+            <BrowserRouter>
+                <div className="home-wrapper">
+                    <AppHeader/>
+                    <AppRouting isAuthenticated={this.props.isAuthenticated} isAdmin={this.props.role[0] === 'admin'}/>
+                </div>
+            </BrowserRouter>
         );
     }
 }
@@ -37,4 +36,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default  connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

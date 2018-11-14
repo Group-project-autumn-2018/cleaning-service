@@ -38,6 +38,7 @@ class Cleaning extends Component {
     }
 
 }
+
 const mapStateToProps = (state) => {
     return {
         token: state.user.token

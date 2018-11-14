@@ -1,4 +1,5 @@
 package com.itechart.web.config;
+
 import com.itechart.common.service.CustomUserDetails;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
@@ -12,11 +13,11 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 
 
     @Override
-    public OAuth2AccessToken enhance( OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+    public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
 
         Map<String, Object> additionalInfo = new HashMap<>();
 
-        CustomUserDetails userDetails = (CustomUserDetails)authentication.getPrincipal();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String name = userDetails.getName();
         additionalInfo.put(
                 "name", name);

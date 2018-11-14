@@ -52,7 +52,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 return user.getEmail();
             }
 
-            public String getName(){
+            public String getName() {
                 return user.getUsername();
             }
 

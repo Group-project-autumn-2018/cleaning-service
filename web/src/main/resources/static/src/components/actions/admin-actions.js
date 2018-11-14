@@ -1,4 +1,3 @@
-
 export const fetchEntities = (page, size, entityURN, token) =>
 {
     return dispatch => {
@@ -15,7 +14,7 @@ export const fetchEntities = (page, size, entityURN, token) =>
 };
 
 
-export const updateEntity = (entity, entityURN, token)=> {
+export const updateEntity = (entity, entityURN, token) => {
     return dispatch => {
         let options = {
             headers: {
