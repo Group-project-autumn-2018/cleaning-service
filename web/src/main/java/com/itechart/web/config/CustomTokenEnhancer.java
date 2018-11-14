@@ -19,8 +19,9 @@ public class CustomTokenEnhancer implements TokenEnhancer {
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         String name = userDetails.getName();
-        additionalInfo.put(
-                "name", name);
+        Long id = userDetails.getId();
+        additionalInfo.put("name", name);
+        additionalInfo.put("id", id);
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(
                 additionalInfo);

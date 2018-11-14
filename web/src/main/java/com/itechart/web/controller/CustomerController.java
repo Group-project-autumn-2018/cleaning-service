@@ -33,8 +33,13 @@ public class CustomerController {
         return resultPage;
     }
 
+    @GetMapping("/{id}")
+    public Customer getOneById(@PathVariable Long id) {
+       return customerService.getCustomerById(id);
+    }
 
-    @PutMapping("/{сustomerId}")
+
+    @PutMapping("/{id}")
     public void setOneById(@RequestBody @Valid Customer customer) {
         customerService.update(customer);
     }

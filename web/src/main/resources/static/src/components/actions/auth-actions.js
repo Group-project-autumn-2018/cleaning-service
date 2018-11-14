@@ -36,6 +36,7 @@ const fetchToken = (body, dispatch) => {
                     let decodedToken = parseJwt(data.access_token);
                     const tokenExpirationDate = Date.now() + (data.expires_in * 1000);
                     let payload = {
+                        id: decodedToken.id,
                         isAuthenticated: true,
                         name: data.name,
                         email: decodedToken.user_name,

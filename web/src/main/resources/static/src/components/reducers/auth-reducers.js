@@ -9,7 +9,7 @@ const initialAuthState = {
     error: null
 };
 
-export const authReducer = (state = initialAuthState, action) => {
+const authReducer = (state = initialAuthState, action) => {
     switch (action.type) {
         case 'AUTH_SUCCESS':
             return {
@@ -29,3 +29,4 @@ export const authReducer = (state = initialAuthState, action) => {
     }
 };
 
+export default authReducer;

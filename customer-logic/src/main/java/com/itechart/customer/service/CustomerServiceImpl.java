@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.transaction.Transactional;
 import java.nio.charset.Charset;
@@ -57,8 +58,9 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Customer getOne(Long id) {
-        return customerRepository.findById(id).orElse(null);
+    public Customer getCustomerById(Long id) {
+        Customer customer = customerRepository.findById(id).orElse(null);
+        return customer;
     }
 
     @Override
