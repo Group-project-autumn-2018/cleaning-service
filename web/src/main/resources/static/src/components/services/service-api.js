@@ -9,22 +9,19 @@ export default class CustomerApi {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json; charset=utf-8'
             },
-            body: JSON.stringify(object)
+            body: object
         };
         const res = await fetch(url, init);
         return await res;
     }
 
-
-    async preRegister(object) {
-        const res = await this.sendPostRequest(object, 'api/customer/registration');
+    async preRegisterService(object) {
+        const res = await this.sendPostRequest(object, 'api/cleaning/registration');
         return res.status;
     }
 
-    async verify(object) {
-        const res = await this.sendPostRequest(object, 'api/customer/verify');
+    async verifyService(object) {
+        const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/verify');
         return res.status;
     }
-
-
 }

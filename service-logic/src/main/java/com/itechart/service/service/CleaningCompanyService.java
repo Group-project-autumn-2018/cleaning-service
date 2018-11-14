@@ -4,6 +4,7 @@ import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Optional;
 
@@ -13,7 +14,7 @@ public interface CleaningCompanyService {
 
     void update(CleaningCompany company);
 
-    void registerCompany(CleaningCompanyDto cleaningCompanyDto);
+    void registerCompany(CleaningCompanyDto cleaningCompanyDto, MultipartFile logotype);
 
     Optional<Boolean> verify(VerifyDto verifyDto);
 }

@@ -16,14 +16,14 @@ public class Rating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
+//    private CleaningCompany company;
 
-    @ManyToOne
-    @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
-    private CleaningCompany company;
-
-    @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Customer customer;
+//    @ManyToOne
+//    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
+//    private Customer customer;
 
     @Column(name = "text")
     private String text;
