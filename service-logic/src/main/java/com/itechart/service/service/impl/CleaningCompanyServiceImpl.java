@@ -25,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.File;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -38,6 +40,7 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
+    private final String FILE_PATH = "files/";
     private final CleaningCompanyRepository cleaningCompanyRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private ConcurrentMap<String, ServiceVerification> verifications = new ConcurrentHashMap<>();;
@@ -97,14 +100,23 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         return company.getId();
     }
 
-    private void saveLogotype(MultipartFile logotype){
-
+    private void saveLogotype(MultipartFile logotype,long id){
+        File logoFile = new File(FILE_PATH+id);
+        if(!logoFile .exists())
+        {
+            logoFile .mkdir();
+        }
+        try {
+            logotype.transferTo(logoFile );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void registerCompany(CleaningCompanyDto registrationDto, MultipartFile logotype) {
         Long serviceId = saveCompany(registrationDto);
-        saveLogotype(logotype);
+        saveLogotype(logotype,serviceId);
         ServiceVerification verification = new ServiceVerification();
         verification.setServiceId(serviceId);
         verification.setAddingTime(LocalTime.now());

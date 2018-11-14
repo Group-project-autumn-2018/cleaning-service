@@ -41,11 +41,11 @@ public class CleaningServiceController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity register(@RequestParam(value = "objDto") String companyJson,
-                                   @RequestParam(value = "logotype", required = false) MultipartFile logotype) throws IOException {
+    public ResponseEntity register(@RequestParam(name = "objDto") String objDto,
+                                   @RequestParam(name = "logotype", required = false) MultipartFile logotype) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        CleaningCompanyDto registrationDto = mapper.readValue(companyJson, CleaningCompanyDto.class);
-        cleaningCompanyService.registerCompany(registrationDto,logotype);
+        CleaningCompanyDto registrationDto = mapper.readValue(objDto, CleaningCompanyDto.class);
+        cleaningCompanyService.registerCompany(registrationDto, logotype);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 
     }
@@ -55,7 +55,7 @@ public class CleaningServiceController {
         Optional<Boolean> result = cleaningCompanyService.verify(verifyDto);
         if (result.isPresent()) {
             ResponseEntity response;
-            response = ResponseEntity.status(result.get() ?  HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE).build();
+            response = ResponseEntity.status(result.get() ? HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE).build();
             return response;
         } else {
             return ResponseEntity.status(HttpStatus.LOCKED).build();

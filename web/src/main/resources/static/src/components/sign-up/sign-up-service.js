@@ -338,6 +338,7 @@ class SignUpService extends Component {
         var input = event.target;
         this.state.logotype = input.files[0];
         var fileReader = new FileReader();
+        console.log(this.state.logotype);
         fileReader.readAsDataURL(this.state.logotype);
         fileReader.onload = function() {
             this.state.avatar = fileReader.result;
@@ -349,8 +350,9 @@ class SignUpService extends Component {
         const target = event.target;
         const value = target.type === 'checkbox' ? target.checked : target.value;
         const name = target.name;
+        this.state.checkFurnitureAndCoatingsCleaning = value;
         this.setState({
-            [name]: value
+            "checkFurnitureAndCoatingsCleaning": value
         });
     }
 
