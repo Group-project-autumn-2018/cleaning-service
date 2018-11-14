@@ -6,36 +6,36 @@ import MaskedInput from 'react-text-mask';
 import CustomerApi from '../services/customer-api';
 import VerificationForm from './verification-form';
 
-class SignUpService extends Component{
+class SignUpService extends Component {
     constructor() {
         super();
         this.state = {
-            description:'',
-            priceDto:{
-                standardRoomCleaning:'',
-                springCleaning:'',
-                repairAndConstructionCleaning:'',
-                dryCarpetCleaning:'',
-                officeCleaning:'',
-                furnitureAndCoatingsCleaning:'',
-                industrialCleaning:'',
-                poolCleaning:'',
-                smallRoom:'',
-                bigRoom:'',
-                bathroom:''
+            description: '',
+            priceDto: {
+                standardRoomCleaning: '',
+                springCleaning: '',
+                repairAndConstructionCleaning: '',
+                dryCarpetCleaning: '',
+                officeCleaning: '',
+                furnitureAndCoatingsCleaning: '',
+                industrialCleaning: '',
+                poolCleaning: '',
+                smallRoom: '',
+                bigRoom: '',
+                bathroom: ''
             },
-            cleaningTimeDto:{
-                standardRoomCleaningTime:'',
-                springCleaningTime:'',
-                repairAndConstructionCleaningTime:'',
-                dryCarpetCleaningTime:'',
-                officeCleaningTime:'',
-                furnitureAndCoatingsCleaningTime:'',
-                industrialCleaningTime:'',
-                poolCleaningTime:'',
-                smallRoomCleaningTime:'',
-                bigRoomCleaningTime:'',
-                bathroomCleaningTime:''
+            cleaningTimeDto: {
+                standardRoomCleaningTime: '',
+                springCleaningTime: '',
+                repairAndConstructionCleaningTime: '',
+                dryCarpetCleaningTime: '',
+                officeCleaningTime: '',
+                furnitureAndCoatingsCleaningTime: '',
+                industrialCleaningTime: '',
+                poolCleaningTime: '',
+                smallRoomCleaningTime: '',
+                bigRoomCleaningTime: '',
+                bathroomCleaningTime: ''
             },
             username: '',
             email: '',
@@ -45,7 +45,8 @@ class SignUpService extends Component{
             disabled: false,
             code: '',
             verificationStatus: false,
-            message: ''
+            message: '',
+            checkRoom: false
         }
     }
 
@@ -84,10 +85,28 @@ class SignUpService extends Component{
         }
     };
 
+    inputForCoeffAndTimeng = (props) => {
+        return (
+            <div>
+                <input type="text"
+                       value={"coefficient for " + props.text}
+                       id={props.IdForInput}
+
+                />
+                <input type="text"
+                       value={"Time for cleaning " + props.text}
+                       id={props.IdForInput + "CleaningTime"}
+
+                />
+            </div>
+        )
+    };
+
+
     render() {
         return (
             <div className="container signup-component">
-                <div className="overlay" />
+                <div className="overlay"/>
                 <form>
                     <div className="row">
                         <div className="col-md-6">
@@ -148,50 +167,54 @@ class SignUpService extends Component{
                                     </h2>
                                     <div id="standardRoomCleaning">
                                         <label>Standard room cleaning coefficient</label>
-                                        <input type="text" value={1} disabled={true} />
+                                        <input type="text" value={1} disabled={true}/>
                                     </div>
 
                                     <div id="springCleaning">
                                         <label>Spring cleaning</label>
-                                        <input type="checkBox" />
+                                        <input type="checkBox"/>
                                     </div>
 
                                     <div id="repairAndConstructionCleaning">
                                         <label>Repair and construction cleaning</label>
-                                        <input type="checkBox" />
+                                        <input type="checkBox"/>
                                     </div>
 
                                     <div id="dryCarpetCleaning">
                                         <label>Dry carpet cleaning</label>
-                                        <input type="checkBox" />
+                                        <input type="checkBox"/>
                                     </div>
 
                                     <div id="officeCleaning">
                                         <label>Office cleaning</label>
-                                        <input type="checkBox" />
+                                        <input type="checkBox"/>
                                     </div>
 
                                     <div id="furnitureAndCoatingsCleaning">
                                         <label>Furniture and coatings cleaning</label>
-                                        <input type="checkBox" />
+                                        <input type="checkBox"/>
                                     </div>
 
                                     <div id="industrialCleaning">
                                         <label>Industrial cleaning</label>
-                                        <input type="checkBox" />
+                                        <input type="checkBox"/>
                                     </div>
                                     <div id="poolCleaning">
                                         <label>Pool cleaning</label>
-                                        <input type="checkBox" />
+
+
+                                        <input type="checkBox" onChange={this.props.checkRoom}/>
+                                        {this.props.checkRoom ? <inputForCoeffAndTimeng
+                                            text="pool cleaning" IdForInput="poolCleaning"/> : ''}
                                     </div>
 
                                     <div id="RoomsDiv">
                                         <label>Small room </label>
-                                        <input type="text" />
+                                        <input type="text"/>
                                         <label>Big room </label>
-                                        <input type="text" />
+                                        <input type="text"/>
                                         <label>Bathroom</label>
-                                        <input type="text" />
+                                        <input type="text"/>
                                     </div>
 
                                 </div>
@@ -214,7 +237,7 @@ class SignUpService extends Component{
                                         // onChange={this.changeUsername}
                                         // disabled={this.state.disabled}
                                     />
-                                    <div id="first_name_feedback" className="invalid-feedback" />
+                                    <div id="first_name_feedback" className="invalid-feedback"/>
                                 </div>
                             </div>
                         </div>
@@ -237,7 +260,7 @@ class SignUpService extends Component{
                                             // onChange={this.changeEmail}
                                             // disabled={this.state.disabled}
                                         />
-                                        <div className="email-feedback" />
+                                        <div className="email-feedback"/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">
@@ -272,7 +295,7 @@ class SignUpService extends Component{
                                             // onChange={this.changePhone}
                                             // disabled={this.state.disabled}
                                         />
-                                        <div className="phone-feedback" />
+                                        <div className="phone-feedback"/>
                                     </div>
                                 </div>
                             </div>
@@ -294,7 +317,7 @@ class SignUpService extends Component{
                                             // onChange={this.changePassword}
                                             // disabled={this.state.disabled}
                                         />
-                                        <div className="password-feedback" />
+                                        <div className="password-feedback"/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="password_conf" className="col-form-label">
@@ -309,7 +332,7 @@ class SignUpService extends Component{
                                             // onChange={this.changePasswordConfirm}
                                             // disabled={this.state.disabled}
                                         />
-                                        <div className="password_conf-feedback" />
+                                        <div className="password_conf-feedback"/>
                                     </div>
                                 </div>
                             </div>
@@ -319,8 +342,8 @@ class SignUpService extends Component{
                         <button
                             type="button"
                             className="btn btn-primary btn-lg float-right"
-                             // onClick={this.preRegister}
-                             // disabled={this.state.disabled}
+                            // onClick={this.preRegister}
+                            // disabled={this.state.disabled}
                         >
                             Sign up !
                         </button>
@@ -330,4 +353,20 @@ class SignUpService extends Component{
         );
     };
 }
-export default SignUpService;
+
+
+const mapStateToProps = (state) => {
+    return {
+        ...state.credentials
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setCredentials: (credentials) => {
+            dispatch(credentialActions.setCredentials(credentials));
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpService);
