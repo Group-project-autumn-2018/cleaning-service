@@ -22,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
 import java.nio.charset.Charset;
@@ -93,13 +94,17 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         registrationDto.getCleaningTimeDto().setCompany(company);
         priceService.savePrice(registrationDto.getPriceDto());
         cleaningTimeService.saveCleaningTime(registrationDto.getCleaningTimeDto());
-
         return company.getId();
     }
 
+    private void saveLogotype(MultipartFile logotype){
+
+    }
+
     @Override
-    public void registerCompany(CleaningCompanyDto registrationDto) {
+    public void registerCompany(CleaningCompanyDto registrationDto, MultipartFile logotype) {
         Long serviceId = saveCompany(registrationDto);
+        saveLogotype(logotype);
         ServiceVerification verification = new ServiceVerification();
         verification.setServiceId(serviceId);
         verification.setAddingTime(LocalTime.now());

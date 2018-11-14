@@ -1,15 +1,21 @@
 package com.itechart.web.controller;
 
+import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.RatingDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.RatingService;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/cleaning")
@@ -35,9 +41,25 @@ public class CleaningServiceController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity register(@RequestBody CleaningCompanyDto registrationDto) {
-        cleaningCompanyService.registerCompany(registrationDto);
+    public ResponseEntity register(@RequestParam(value = "objDto") String companyJson,
+                                   @RequestParam(value = "logotype", required = false) MultipartFile logotype) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        CleaningCompanyDto registrationDto = mapper.readValue(companyJson, CleaningCompanyDto.class);
+        cleaningCompanyService.registerCompany(registrationDto,logotype);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
+
+    }
+
+    @PostMapping("/verify")
+    public ResponseEntity verify(@RequestBody VerifyDto verifyDto) {
+        Optional<Boolean> result = cleaningCompanyService.verify(verifyDto);
+        if (result.isPresent()) {
+            ResponseEntity response;
+            response = ResponseEntity.status(result.get() ?  HttpStatus.CREATED : HttpStatus.NOT_ACCEPTABLE).build();
+            return response;
+        } else {
+            return ResponseEntity.status(HttpStatus.LOCKED).build();
+        }
     }
 
     @PostMapping("/rating")
