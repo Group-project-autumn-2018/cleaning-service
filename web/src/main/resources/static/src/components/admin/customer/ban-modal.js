@@ -23,7 +23,7 @@ class BanModal extends Component {
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLongTitle">Укажите причину блокировки</h5>
+                            <h5 className="modal-title" id="exampleModalLongTitle">Choose ban reason</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>

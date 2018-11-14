@@ -22,7 +22,7 @@ class AdminCustomers extends Component {
     render() {
         return (
             <div id="admin-customers">
-                <h1 className="text-center">Список клиентов</h1>
+                <h1 className="text-center">Customer list</h1>
 
                 <nav aria-label="Page navigation" className="mx-auto">
                     <Pagination activePage={this.props.activePage + 1}
