@@ -6,7 +6,7 @@ const ModalToggleButton = ({isBanned, onClick}) => {
         <button type="button" data-toggle="modal" data-target="#ban-modal"
                 className={isBanned ? "btn btn-danger" : "btn btn-success"}
                 onClick={onClick}>
-            {isBanned ? "Разблокировать" : "Заблокировать"}
+            {isBanned ? "Unblock" : "Block"}
         </button>
     )
 };

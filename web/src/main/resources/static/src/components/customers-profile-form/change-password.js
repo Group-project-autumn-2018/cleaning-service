@@ -5,25 +5,24 @@ const ChangePassword = () => {
     return (
         <div>
             <div className="form-group row">
-                <label htmlFor="profileFormOldPassword" className="col-sm-4 col-form-label">Старый пароль</label>
+                <label htmlFor="profileFormOldPassword" className="col-sm-4 col-form-label">Old password</label>
                 <div className="col-sm-8">
                     <input type="password" className="form-control" id="profileFormOldPassword"
-                           placeholder="Старый пароль"/>
+                           placeholder="Old password"/>
                 </div>
             </div>
             <div className="form-group row">
-                <label htmlFor="profileFormNewPassword" className="col-sm-4 col-form-label">Новый пароль</label>
+                <label htmlFor="profileFormNewPassword" className="col-sm-4 col-form-label">New password</label>
                 <div className="col-sm-8">
                     <input type="password" className="form-control" id="profileFormNewPassword"
-                           placeholder="Новый пароль"/>
+                           placeholder="New password"/>
                 </div>
             </div>
             <div className="form-group row">
-                <label htmlFor="profileFormConfirmPassword" className="col-sm-4 col-form-label">Подтвердите
-                    пароль</label>
+                <label htmlFor="profileFormConfirmPassword" className="col-sm-4 col-form-label">Confirm password</label>
                 <div className="col-sm-8">
                     <input type="password" className="form-control" id="profileFormConfirmPassword"
-                           placeholder="Подтвердите пароль"/>
+                           placeholder="Confirm password"/>
                 </div>
             </div>
         </div>

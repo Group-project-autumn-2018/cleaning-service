@@ -35,9 +35,9 @@ class SignIn extends Component {
                 <form className="form-signin" onSubmit={this.submitHandler}>
                     <h3 className="">Please sign in</h3>
                     {this.props.error ? <p className="text-danger">{this.props.error}</p> : null}
-                    <label htmlFor="username" className="sr-only">Username</label>
+                    <label htmlFor="username" className="sr-only">Email or phone</label>
                     <input ref="login" type="text" id="username" className="form-control"
-                           placeholder="Your username or phone" required
+                           placeholder="Your email or phone" required
                            autoFocus/>
                     <label htmlFor="inputPassword" className="sr-only">Password</label>
                     <input ref="password" type="password" id="inputPassword" className="form-control"
