@@ -89,6 +89,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
                 .antMatchers("/api/customer/registration", "/api/customer/verify",
+                        "/api/cleaning/registration", "/api/cleaning/verify",
                         "/dist/**", "/", "/oauth/token").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .and().httpBasic().disable()
