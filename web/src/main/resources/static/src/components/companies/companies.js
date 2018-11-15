@@ -35,7 +35,7 @@ export default class Companies extends Component {
     render() {
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
-                <h3 className="text-center pt-4"><b>List of available services by specified criteria</b></h3>
+                <h3 className="text-center pt-4"><b>Available services</b></h3>
                 <SortList sort={this.sorting}/>
                 <CompaniesList companies={this.companies}/>
 

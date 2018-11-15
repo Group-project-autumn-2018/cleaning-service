@@ -12,7 +12,8 @@ class ProfileForm extends Component {
     state = {
         changePassword: false,
         customer: {},
-        phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+        phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/],
+        passwordMatch: true
     };
 
     componentDidMount() {
@@ -40,16 +41,27 @@ class ProfileForm extends Component {
 
     onChangeHandler = (e) => {
         const name = e.target.name;
+        console.log(e.target.value);
         const updatedCustomer = {...this.state.customer,
             [name]: name === "cleaningNotifications" ? e.target.checked: e.target.value};
         this.setState({customer:updatedCustomer})
+    };
+
+    checkPasswordMatch = (e) => {
+        const name = e.target.name;
+        console.log(e.target.value);
+        console.log(e.target.name);
+        this.setState({[name]: e.target.value});
+        if (name === 'confPassword') {
+            this.setState({passwordMatch: e.target.value === this.state.newPassword});
+        }
     };
 
     render() {
         return (
             <div className="profile-form-container">
                 <form className="container profile-form" onSubmit={this.submmitHandler}>
-                    <h3 className="text-center">Профиль</h3>
+                    <h3 className="text-center"> My profile</h3>
                     <div className="form-group row">
                         <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
                         <div className="col-sm-8">
@@ -104,17 +116,18 @@ class ProfileForm extends Component {
                                onChange={this.onChangeHandler}
                         />
                         <label className="form-check-label" htmlFor="gridCheck1">
-                            Напомнить об уборке
+                            Remind me about cleaning
                         </label>
                     </div>
 
                     <div className="text-center">
                         <button type="button" className="btn btn-secondary"
-                                onClick={this.changePasswordToggle}>{this.state.changePassword ? 'Отменить' : 'Изменить пароль'}</button>
+                                onClick={this.changePasswordToggle}>{this.state.changePassword ? 'Cancel' : 'Change password'}</button>
                     </div>
-                    {this.state.changePassword && <ChangePassword/>}
+                    {this.state.changePassword && <ChangePassword passwordMatch={this.state.passwordMatch}
+                                                                  checkPasswordMatch={this.checkPasswordMatch}/>}
                     <div className="text-center">
-                        <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Сохранить</button>
+                        <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
                     </div>
                 </form>
             </div>

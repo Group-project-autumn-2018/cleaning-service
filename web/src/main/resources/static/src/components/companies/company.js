@@ -17,6 +17,6 @@ class Company extends Component {
             </tr>
         )
     }
-};
+}
 
 export default Company;
