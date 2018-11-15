@@ -28,19 +28,21 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Size(min = 6)
-    @Column(name = "email", unique = true)
+    @Size(min = 6, max = 30)
+    @Column(name = "email")
     private String email;
 
-    @Column(name = "phone", unique = true)
+    @Column(name = "phone")
     private String phone;
 
     @Column(name = "banned", nullable = false)
     private Boolean banned = Boolean.FALSE;
     @Column(name = "banReason")
     private String banReason;
-    @Column(name = "address")
-    private String address;
+
+    @Embedded
+    private Address address;
+
     @Column(name = "adding_date")
     private LocalDate addingDate;
     @ManyToMany(fetch = FetchType.EAGER)

@@ -25,4 +25,6 @@ export default class CustomerApi {
         const res = await this.sendPostRequest(object, 'api/customer/verify');
         return res.status;
     }
+
+
 }
