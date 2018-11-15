@@ -22,7 +22,7 @@ class AdminCleaning extends Component {
     render() {
         return (
             <div id="admin-cleaning">
-                <h1 className="text-center">Список клининговых компаний</h1>
+                <h1 className="text-center">Cleaning company list</h1>
 
                 <nav aria-label="Page navigation" className="mx-auto">
                     <Pagination activePage={this.props.activePage + 1}

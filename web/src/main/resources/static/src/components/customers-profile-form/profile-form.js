@@ -21,7 +21,7 @@ export default class ProfileForm extends Component {
         return (
             <div className="profile-form-container">
                 <form className="container profile-form">
-                    <h3 className="text-center">Профиль</h3>
+                    <h3 className="text-center">Profile</h3>
                     <div className="form-group row">
                         <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
                         <div className="col-sm-8">
@@ -61,13 +61,13 @@ export default class ProfileForm extends Component {
                     <div className="form-check text-center">
                         <input className="form-check-input" type="checkbox" id="gridCheck1"/>
                         <label className="form-check-label" htmlFor="gridCheck1">
-                            Напомнить об уборке
+                            Notify about cleaning
                         </label>
                     </div>
 
                     <div className="text-center">
                         <button type="button" className="btn btn-secondary"
-                                onClick={this.handleClick}>{this.state.changePassword ? 'Отменить' : 'Изменить пароль'}</button>
+                                onClick={this.handleClick}>{this.state.changePassword ? 'Cancel' : 'Change password'}</button>
                     </div>
 
 
@@ -75,7 +75,7 @@ export default class ProfileForm extends Component {
 
 
                     <div className="text-center">
-                        <button type="button" className="btn btn-lg btn-primary col-sm-4 ">Сохранить</button>
+                        <button type="button" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
                     </div>
 
 
