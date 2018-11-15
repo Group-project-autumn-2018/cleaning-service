@@ -40,7 +40,7 @@ public class CustomerController {
 
 
     @PutMapping("/{id}")
-    public void setOneById(@RequestBody @Valid Customer customer) {
+    public void updateById(@RequestBody @Valid Customer customer) {
         customerService.update(customer);
     }
 

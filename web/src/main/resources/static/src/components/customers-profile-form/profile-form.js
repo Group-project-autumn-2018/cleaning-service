@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import ChangePassword from './change-password'
 import MaskedInput, {conformToMask} from 'react-text-mask';
 import './profile-form.css';
-import {fetchCustomer} from '../actions/customer-actions';
+import {updateCustomer} from '../actions/customer-actions';
 import {fetchEntity} from '../api/api-actions';
 
 
@@ -16,17 +16,11 @@ class ProfileForm extends Component {
     };
 
     componentDidMount() {
-        this.props.getCustomer(this.props.customerId, this.props.token);
         fetchEntity(this.props.customerId, "/customer", this.props.token)
             .then((customer)=>{
             this.setState({customer:customer})
             });
     };
-
-    // componentWillReceiveProps(props){
-    //     console.log("props", props);
-    //     this.setState({customer: props.customer} )
-    // };
 
     changePasswordToggle = () => {
         this.setState({
@@ -37,16 +31,17 @@ class ProfileForm extends Component {
 
     submmitHandler = (e) => {
         e.preventDefault();
-    };
+        console.log("submit");
+        this.props.updateCustomer(this.state.customer, this.props.token);
+        //todo error handler
 
+    };
 
 
     onChangeHandler = (e) => {
         const name = e.target.name;
         const updatedCustomer = {...this.state.customer,
             [name]: name === "cleaningNotifications" ? e.target.checked: e.target.value};
-        console.log(updatedCustomer);
-        console.log({customer:updatedCustomer});
         this.setState({customer:updatedCustomer})
     };
 
@@ -119,7 +114,7 @@ class ProfileForm extends Component {
                     </div>
                     {this.state.changePassword && <ChangePassword/>}
                     <div className="text-center">
-                        <button type="button" className="btn btn-lg btn-primary col-sm-4 ">Сохранить</button>
+                        <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Сохранить</button>
                     </div>
                 </form>
             </div>
@@ -133,16 +128,14 @@ const mapStateToProps = (state) => {
     return {
         token: state.user.token,
         customerId: state.user.id,
-        customer: state.customer
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getCustomer: (customerId, token) => {
-            dispatch(fetchCustomer(customerId, token))
+        updateCustomer: (customerId, token) => {
+            dispatch(updateCustomer(customerId, token))
         }
-
     }
 };
 

@@ -9,6 +9,9 @@ const customerReducer = (state = {}, action) =>{
             return {
             ...action.payload
         };
+        case 'UPDATE_CUSTOMER_SUCCESS':
+            return action.payload;
+
         default: return state;
     }
 };

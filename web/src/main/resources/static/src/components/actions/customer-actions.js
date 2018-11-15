@@ -15,3 +15,20 @@ export const fetchCustomerSuccess = (customer)=>{
         payload: customer
     }
 };
+
+
+export const updateCustomer = (entity, token) => {
+
+    return async dispatch => {
+        const res = await api.fetchUpdateEntity(entity, customerURN, token);
+        console.log('[Entity update status] ' + res.status);
+        dispatch(updateCustomerSuccess(entity));
+    }
+};
+
+export const updateCustomerSuccess = (customer) => {
+    return {
+        type: 'UPDATE_CUSTOMER_SUCCESS',
+        payload: customer
+    }
+};
