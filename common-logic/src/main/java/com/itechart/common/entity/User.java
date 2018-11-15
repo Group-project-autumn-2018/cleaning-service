@@ -39,8 +39,10 @@ public class User implements Serializable {
     private Boolean banned = Boolean.FALSE;
     @Column(name = "banReason")
     private String banReason;
-    @Column(name = "address")
-    private String address;
+
+    @Embedded
+    private Address address;
+
     @Column(name = "adding_date")
     private LocalDate addingDate;
     @ManyToMany(fetch = FetchType.EAGER)

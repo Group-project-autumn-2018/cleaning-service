@@ -1,7 +1,15 @@
 package com.itechart.common.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Address {
+
     private String address;
-    private double firstCoord;
-    private double secondCoord;
+
+    private Double lat;
+
+    private Double lng;
 }

@@ -12,7 +12,10 @@ import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.CleaningTimeService;
 import com.itechart.service.service.PriceService;
 import com.itechart.service.util.ServiceVerification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,7 +25,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Base64;
@@ -35,15 +41,17 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
-    private final String FILE_PATH = "files/";
+    @Value("${logo.path}")
+    private String FILE_PATH;
     private final CleaningCompanyRepository cleaningCompanyRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private ConcurrentMap<String, ServiceVerification> verifications = new ConcurrentHashMap<>();;
+    private ConcurrentMap<String, ServiceVerification> verifications = new ConcurrentHashMap<>();
     private final EmailService emailService;
     private final RoleService roleService;
     private final SMSService smsService;
     private final PriceService priceService;
     private final CleaningTimeService cleaningTimeService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
     public CleaningCompanyServiceImpl(CleaningCompanyRepository cleaningCompanyRepository,
@@ -95,23 +103,20 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         return company.getId();
     }
 
-    private void saveLogotype(MultipartFile logotype,long id){
-        /*File logoFile = new File(FILE_PATH+id);
-        if(!logoFile .exists())
-        {
-            logoFile .mkdir();
-        }
-        try {
-            logotype.transferTo(logoFile );
+    private void saveLogotype(MultipartFile logotype, Long id) {
+         try {
+            if (logotype != null && logotype.getBytes().length > 0) {
+                Files.write(Paths.get(FILE_PATH, id.toString()), logotype.getBytes());
+            }
         } catch (IOException e) {
-            e.printStackTrace();
-        }*/
+            logger.error(e.getMessage());
+        }
     }
 
     @Override
     public void registerCompany(CleaningCompanyDto registrationDto, MultipartFile logotype) {
         Long serviceId = saveCompany(registrationDto);
-        saveLogotype(logotype,serviceId);
+        saveLogotype(logotype, serviceId);
         ServiceVerification verification = new ServiceVerification();
         verification.setServiceId(serviceId);
         verification.setAddingTime(LocalTime.now());
