@@ -12,3 +12,7 @@
 .profile-form button, .profile-form h3 {
     margin: 20px auto;
 }
+
+input[type="password"].invalid {
+    border-color: #b64644;
+}

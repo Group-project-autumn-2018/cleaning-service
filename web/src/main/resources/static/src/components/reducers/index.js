@@ -1,14 +1,18 @@
 import {combineReducers} from 'redux';
-import * as reducers from '../reducers/admin-reducers';
-import * as authReducers from '../reducers/auth-reducers';
+import * as adminReducers from '../reducers/admin-reducers';
+import authReducer from '../reducers/auth-reducers';
+import credentialReducer from './credential-reducers';
+import customerReducer from './customer-reducer';
 
 
 const rootReducer = combineReducers(
     {
-        user: authReducers.authReducer,
-        entities: reducers.entityReducer,
-        pagination: reducers.paginationReducer,
-        entityToUpdate: reducers.entityUpdateReducer
+        user: authReducer,
+        entities: adminReducers.entityReducer,
+        pagination: adminReducers.paginationReducer,
+        entityToUpdate: adminReducers.entityUpdateReducer,
+        credentials: credentialReducer,
+        customer: customerReducer
     }
 );
 

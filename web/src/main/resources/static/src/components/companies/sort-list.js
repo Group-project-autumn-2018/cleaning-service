@@ -5,7 +5,7 @@ const SortList = (props) => {
         <option key={sort.toString()} value={sort}>{sort}</option>
     );
 
-    return(
+    return (
         <div className="form-group">
             <label htmlFor="sortType" className="col-form-label"><b>Sort type</b></label>
             <select className="form-control" style={{width: 200 + 'px'}} id="sortType" placeholder="Sort type">

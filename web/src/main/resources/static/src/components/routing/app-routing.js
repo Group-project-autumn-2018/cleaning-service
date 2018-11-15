@@ -8,6 +8,8 @@ import {Redirect, Route, Switch} from "react-router-dom";
 import SignUpMainSection from '../sign-up/sign-up-main-section';
 import CustomerRegistration from '../sign-up/sign-up-customer';
 import Feedback from '../feedback';
+import BookingForm from '../booking-form/booking-form'
+import Companies from '../companies/companies'
 
 class AppRouting extends Component {
 
@@ -20,6 +22,8 @@ class AppRouting extends Component {
                 <Route path="/login" component={SignIn}/>
                 <Route exact path="/registration" component={SignUpMainSection}/>
                 <Route path="/registration/customer" component={CustomerRegistration}/>
+                <Route path="/booking" component={BookingForm}/>
+                <Route path="/companies" component={Companies}/>
                 <Redirect to="/"/>
             </Switch>
         );
@@ -42,6 +46,8 @@ class AppRouting extends Component {
                         <Route path="/logout" component={Logout}/>
                         <Route path="/login" component={SignIn}/>
                         <Route path="/feedback" component={Feedback}/>
+                        <Route path="/booking" component={BookingForm}/>
+                        <Route path="/companies" component={Companies}/>
                         <Redirect to="/"/>
                     </Switch>)
         }
@@ -54,4 +60,5 @@ class AppRouting extends Component {
     }
 
 }
+
 export default AppRouting;

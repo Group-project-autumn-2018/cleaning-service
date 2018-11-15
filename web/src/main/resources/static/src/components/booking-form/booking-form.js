@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import './booking-form.css';
 import CheckboxItemsList from './checkbox-items-list';
 import SelectItemsList from "./select-items-list";
 import {Link} from "react-router-dom";
 
 
-export default class BookingForm extends Component {
+class BookingForm extends Component {
 
     frequency = ["Only once", "Every week", "Every two weeks", "Four month", "Every month"];
     days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -31,7 +32,7 @@ export default class BookingForm extends Component {
                                    required
                                    autoFocus/>
                         </div>
-                        <SelectItemsList array={this.types} label={"Cleaning type"} />
+                        <SelectItemsList array={this.types} label={"Cleaning type"}/>
                     </div>
 
                     <div className="second-row">
@@ -56,14 +57,14 @@ export default class BookingForm extends Component {
                     </div>
 
                     <p className="title"><b>Choose days for cleaning:</b></p>
-                    <CheckboxItemsList array={this.days} />
+                    <CheckboxItemsList array={this.days}/>
 
                     <p className="title"><b>Planned cleaning frequency:</b></p>
-                    <CheckboxItemsList array={this.frequency} />
+                    <CheckboxItemsList array={this.frequency}/>
 
                     <div className="fifth-row">
-                        <SelectItemsList array={this.duration} label={"Transaction duration"} className={"row-5"} />
-                        <SelectItemsList array={this.time} label={"Estimated time"} className={"row-5"} />
+                        <SelectItemsList array={this.duration} label={"Transaction duration"} className={"row-5"}/>
+                        <SelectItemsList array={this.time} label={"Estimated time"} className={"row-5"}/>
 
                         <div className="form-group">
                             <label htmlFor="email" className="col-form-label">Email</label>
@@ -82,4 +83,12 @@ export default class BookingForm extends Component {
             </div>
         );
     }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        ...state.user.isAuthenticated
+    }
 };
+
+export default connect(mapStateToProps)(BookingForm);
