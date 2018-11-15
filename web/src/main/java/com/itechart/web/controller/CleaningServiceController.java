@@ -2,10 +2,10 @@ package com.itechart.web.controller;
 
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
-import com.itechart.service.dto.RatingDto;
+import com.itechart.service.dto.FeedbackDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
-import com.itechart.service.service.RatingService;
+import com.itechart.service.service.FeedbackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -19,13 +19,15 @@ import java.util.Optional;
 @RequestMapping("/api/cleaning")
 public class CleaningServiceController {
 
+
     private final CleaningCompanyService cleaningCompanyService;
-    private final RatingService ratingService;
+
+    private final FeedbackService feedbackService;
 
     @Autowired
-    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, RatingService ratingService) {
+    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, FeedbackService feedbackService) {
         this.cleaningCompanyService = cleaningCompanyService;
-        this.ratingService = ratingService;
+        this.feedbackService = feedbackService;
     }
 
     @GetMapping()
@@ -38,9 +40,15 @@ public class CleaningServiceController {
         cleaningCompanyService.update(cleaningCompany);
     }
 
+    @PostMapping("/feedback")
+    public ResponseEntity addFeedback(@RequestBody FeedbackDto feedbackDto) {
+        Long ratingId = feedbackService.addFeedback(feedbackDto);
+        if (ratingId == 0) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+        else return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
     @PostMapping("/registration")
     public ResponseEntity register(@RequestBody CleaningCompanyDto objDto
-            //, @RequestParam(name = "logotype", required = false) MultipartFile logotype
+                                   //, @RequestParam(name = "logotype", required = false) MultipartFile logotype
     ) throws IOException {
         //ObjectMapper mapper = new ObjectMapper();
         //CleaningCompanyDto registrationDto = mapper.readValue(objDto, CleaningCompanyDto.class);
@@ -60,12 +68,4 @@ public class CleaningServiceController {
             return ResponseEntity.status(HttpStatus.LOCKED).build();
         }
     }
-
-    @PostMapping("/rating")
-    public ResponseEntity addRating(@RequestBody RatingDto ratingDto) {
-        Long ratingId = ratingService.addRating(ratingDto);
-        if (ratingId == 0) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
-        else return ResponseEntity.status(HttpStatus.CREATED).build();
-    }
-
 }

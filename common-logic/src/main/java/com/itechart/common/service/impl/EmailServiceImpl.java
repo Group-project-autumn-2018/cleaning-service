@@ -1,5 +1,6 @@
-package com.itechart.common.service;
+package com.itechart.common.service.impl;
 
+import com.itechart.common.service.EmailService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Component
 @PropertySource({"classpath:application.properties"})
 public class EmailServiceImpl implements EmailService {
+
     private final JavaMailSender mailSender;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     @Value("${spring.mail.username}")

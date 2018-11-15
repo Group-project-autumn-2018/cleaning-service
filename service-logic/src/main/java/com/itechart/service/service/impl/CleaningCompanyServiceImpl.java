@@ -63,7 +63,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Override
     public Page<CleaningCompany> findPaginated(int page, int size) {
-        return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("label", "id")));
+        return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("title", "id")));
     }
 
     @Override
@@ -161,5 +161,11 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
                 verifications.remove(entry.getKey());
             }
         }
+    }
+
+    @Override
+    public CleaningCompany getOne(Long id) {
+        Optional<CleaningCompany> companyOptional = cleaningCompanyRepository.findById(id);
+        return companyOptional.orElse(null);
     }
 }

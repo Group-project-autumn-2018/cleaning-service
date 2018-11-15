@@ -17,4 +17,5 @@ public interface CleaningCompanyService {
     void registerCompany(CleaningCompanyDto cleaningCompanyDto, MultipartFile logotype);
 
     Optional<Boolean> verify(VerifyDto verifyDto);
+    CleaningCompany getOne(Long id);
 }

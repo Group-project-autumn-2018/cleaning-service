@@ -49,23 +49,23 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
 
-//    @Override
-//    public void configure(AuthorizationServerEndpointsConfigurer endpoints){
-//
-//        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-//        tokenEnhancerChain.setTokenEnhancers(
-//                Arrays.asList(tokenEnhancer(), accessTokenConverter()));
-//
-//        endpoints
-//                .tokenStore(tokenStore())
-//                .tokenEnhancer(tokenEnhancerChain)
-//                .authenticationManager(authenticationManager).allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
-//    }
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints){
 
-//    @Bean
-//    public TokenEnhancer tokenEnhancer() {
-//        return new CustomTokenEnhancer();
-//    }
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        tokenEnhancerChain.setTokenEnhancers(
+                Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+
+        endpoints
+                .tokenStore(tokenStore())
+                .tokenEnhancer(tokenEnhancerChain)
+                .authenticationManager(authenticationManager).allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST);
+    }
+
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return new CustomTokenEnhancer();
+    }
 
     @Bean
     public TokenStore tokenStore() {

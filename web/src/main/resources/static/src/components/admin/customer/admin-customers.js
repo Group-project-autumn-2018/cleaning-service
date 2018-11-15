@@ -12,11 +12,11 @@ class AdminCustomers extends Component {
 
     componentDidMount() {
         const {fetchData} = this.props;
-        fetchData(0, this.props.itemsCountPerPage, this.entityURN);
+        fetchData(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     }
 
     handlePageChange = (page) => {
-        this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN);
+        this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     };
 
     render() {
@@ -45,14 +45,15 @@ class AdminCustomers extends Component {
 const mapStateToProps = (state) => {
     return {
         ...state.pagination,
-        customers: state.entities
+        customers: state.entities,
+        token: state.user.token
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchData: (page, size, entityURN) => {
-            dispatch(actions.fetchEntities(page, size, entityURN));
+        fetchData: (page, size, entityURN, token) => {
+            dispatch(actions.fetchEntities(page, size, entityURN, token));
         }
     }
 };

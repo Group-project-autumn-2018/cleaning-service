@@ -1,4 +1,4 @@
-export default class CustomerApi {
+export default class ServiceApi {
     _baseUrl = '/';
 
     async sendPostRequest(object, tailUrl, accept) {
@@ -19,6 +19,13 @@ export default class CustomerApi {
         const res = await this.sendPostRequest(object, 'api/cleaning/registration', 'multipart/form-data');
         return res.status;
     }
+
+
+    async sendFeedback(object) {
+        const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/feedback');
+        return res.status;
+    }
+
 
     async verifyService(object) {
         const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/verify', 'application/json');
