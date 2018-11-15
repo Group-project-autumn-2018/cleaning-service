@@ -122,31 +122,31 @@ class SignUpService extends Component {
                 phone: this.state.phone,
                 password: this.state.password,
                 priceDto: {
-                    basePrice: this.state.priceDto.basePrice,
-                    standardRoomCleaning: this.state.priceDto.standardRoomCleaning,
-                    springCleaning: this.state.priceDto.springCleaning,
-                    repairAndConstructionCleaning: this.state.priceDto.repairAndConstructionCleaning,
-                    dryCarpetCleaning: this.state.priceDto.dryCarpetCleaning,
-                    officeCleaning: this.state.priceDto.officeCleaning,
-                    furnitureAndCoatingsCleaning: this.state.priceDto.furnitureAndCoatingsCleaning,
-                    industrialCleaning: this.state.priceDto.industrialCleaning,
-                    poolCleaning: this.state.priceDto.poolCleaning,
-                    smallRoom: this.state.priceDto.smallRoom,
-                    bigRoom: this.state.priceDto.bigRoom,
-                    bathroom: this.state.priceDto.bathroom
+                    basePrice: this.state.priceDto.basePrice===''?0:this.state.priceDto.basePrice,
+                    standardRoomCleaning: this.state.priceDto.standardRoomCleaning===''?0 :this.state.priceDto.standardRoomCleaning,
+                    springCleaning: this.state.priceDto.springCleaning?0:this.state.priceDto.springCleaning,
+                    repairAndConstructionCleaning: this.state.priceDto.repairAndConstructionCleaning===''?0:this.state.priceDto.repairAndConstructionCleaning,
+                    dryCarpetCleaning: this.state.priceDto.dryCarpetCleaning===''?0:this.state.priceDto.dryCarpetCleaning,
+                    officeCleaning: this.state.priceDto.officeCleaning===''?0:this.state.priceDto.officeCleaning,
+                    furnitureAndCoatingsCleaning: this.state.priceDto.furnitureAndCoatingsCleaning===''?0:this.state.priceDto.furnitureAndCoatingsCleaning,
+                    industrialCleaning: this.state.priceDto.industrialCleaning===''?0:this.state.priceDto.industrialCleaning,
+                    poolCleaning: this.state.priceDto.poolCleaning===''?0:this.state.priceDto.poolCleaning,
+                    smallRoom: this.state.priceDto.smallRoom===''?0:this.state.priceDto.smallRoom,
+                    bigRoom: this.state.priceDto.bigRoom===''?0:this.state.priceDto.bigRoom,
+                    bathroom: this.state.priceDto.bathroom===''?0:this.state.priceDto.bathroom
                 },
                 cleaningTimeDto: {
-                    standardRoomCleaningTime: this.state.cleaningTimeDto.standardRoomCleaningTime,
-                    springCleaningTime: this.state.cleaningTimeDto.springCleaningTime,
-                    repairAndConstructionCleaningTime: this.state.cleaningTimeDto.repairAndConstructionCleaningTime,
-                    dryCarpetCleaningTime: this.state.cleaningTimeDto.dryCarpetCleaningTime,
-                    officeCleaningTime: this.state.cleaningTimeDto.officeCleaningTime,
-                    furnitureAndCoatingsCleaningTime: this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime,
-                    industrialCleaningTime: this.state.cleaningTimeDto.industrialCleaningTime,
-                    poolCleaningTime: this.state.cleaningTimeDto.poolCleaningTime,
-                    smallRoomCleaningTime: this.state.cleaningTimeDto.smallRoomCleaningTime,
-                    bigRoomCleaningTime: this.state.cleaningTimeDto.bigRoomCleaningTime,
-                    bathroomCleaningTime: this.state.cleaningTimeDto.bathroomCleaningTime
+                    standardRoomCleaningTime: this.state.cleaningTimeDto.standardRoomCleaningTime===''?0:this.state.cleaningTimeDto.standardRoomCleaningTime,
+                    springCleaningTime: this.state.cleaningTimeDto.springCleaningTime===''?0:this.state.cleaningTimeDto.springCleaningTime,
+                    repairAndConstructionCleaningTime: this.state.cleaningTimeDto.repairAndConstructionCleaningTime===''?0:this.state.cleaningTimeDto.repairAndConstructionCleaningTime,
+                    dryCarpetCleaningTime: this.state.cleaningTimeDto.dryCarpetCleaningTime===''?0:this.state.cleaningTimeDto.dryCarpetCleaningTime,
+                    officeCleaningTime: this.state.cleaningTimeDto.officeCleaningTime===''?0:this.state.cleaningTimeDto.officeCleaningTime,
+                    furnitureAndCoatingsCleaningTime: this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime===''?0:this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime,
+                    industrialCleaningTime: this.state.cleaningTimeDto.industrialCleaningTime===''?0:this.state.cleaningTimeDto.industrialCleaningTime,
+                    poolCleaningTime: this.state.cleaningTimeDto.poolCleaningTime===''?0:this.state.cleaningTimeDto.poolCleaningTime,
+                    smallRoomCleaningTime: this.state.cleaningTimeDto.smallRoomCleaningTime===''?0:this.state.cleaningTimeDto.smallRoomCleaningTime,
+                    bigRoomCleaningTime: this.state.cleaningTimeDto.bigRoomCleaningTime===''?0:this.state.cleaningTimeDto.bigRoomCleaningTime,
+                    bathroomCleaningTime: this.state.cleaningTimeDto.bathroomCleaningTime===''?0:this.state.cleaningTimeDto.bathroomCleaningTime
                 }
             };
 
@@ -352,7 +352,7 @@ class SignUpService extends Component {
         const name = target.name;
         this.state.checkFurnitureAndCoatingsCleaning = value;
         this.setState({
-            "checkFurnitureAndCoatingsCleaning": value
+            name: value
         });
     }
 
@@ -438,6 +438,7 @@ class SignUpService extends Component {
                                         <label>Repair and construction cleaning</label>
                                         <input type="checkBox" name={"checkRepairAndConstructionCleaning"}
                                                onChange={this.handleInputChange}/>
+                                                <inputRepairAndConstructionCleaning/>
                                         {this.state.checkRepairAndConstructionCleaning ?
                                             <inputRepairAndConstructionCleaning/> : ''}
                                     </div>
