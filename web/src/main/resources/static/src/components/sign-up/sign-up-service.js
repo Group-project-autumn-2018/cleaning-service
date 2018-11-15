@@ -1,6 +1,4 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import * as credentialActions from '../actions/credential-actions';
 import './sign-up.css';
 import MaskedInput from 'react-text-mask';
 import ServiceApi from '../services/Service-api';
@@ -9,38 +7,38 @@ import VerificationForm from './verification-form';
 class SignUpService extends Component {
     serviceApi = new ServiceApi();
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
-            avatar:'',
-            logotype : '',
+            avatar: '',
+            logotype: '',
             description: '',
             priceDto: {
-                basePrice: '',
+                basePrice: 0,
                 standardRoomCleaning: 1,
-                springCleaning: '',
-                repairAndConstructionCleaning: '',
-                dryCarpetCleaning: '',
-                officeCleaning: '',
-                furnitureAndCoatingsCleaning: '',
-                industrialCleaning: '',
-                poolCleaning: '',
-                smallRoom: '',
-                bigRoom: '',
-                bathroom: ''
+                springCleaning: 0,
+                repairAndConstructionCleaning: 0,
+                dryCarpetCleaning: 0,
+                officeCleaning: 0,
+                furnitureAndCoatingsCleaning: 0,
+                industrialCleaning: 0,
+                poolCleaning: 0,
+                smallRoom: 0,
+                bigRoom: 0,
+                bathroom: 0
             },
             cleaningTimeDto: {
-                standardRoomCleaningTime: '',
-                springCleaningTime: '',
-                repairAndConstructionCleaningTime: '',
-                dryCarpetCleaningTime: '',
-                officeCleaningTime: '',
-                furnitureAndCoatingsCleaningTime: '',
-                industrialCleaningTime: '',
-                poolCleaningTime: '',
-                smallRoomCleaningTime: '',
-                bigRoomCleaningTime: '',
-                bathroomCleaningTime: ''
+                standardRoomCleaningTime: 0,
+                springCleaningTime: 0,
+                repairAndConstructionCleaningTime: 0,
+                dryCarpetCleaningTime: 0,
+                officeCleaningTime: 0,
+                furnitureAndCoatingsCleaningTime: 0,
+                industrialCleaningTime: 0,
+                poolCleaningTime: 0,
+                smallRoomCleaningTime: 0,
+                bigRoomCleaningTime: 0,
+                bathroomCleaningTime: 0
             },
             username: '',
             email: '',
@@ -66,6 +64,15 @@ class SignUpService extends Component {
     changeUsername = (event) => {
         this.setState({username: event.target.value});
         if (event.target.value.length < 3) {
+            event.target.classList.add('is-invalid');
+        } else {
+            event.target.classList.remove('is-invalid');
+        }
+    };
+
+    changeCode = (event) => {
+        this.setState({code: event.target.value});
+        if (event.target.value.length !== 6) {
             event.target.classList.add('is-invalid');
         } else {
             event.target.classList.remove('is-invalid');
@@ -105,10 +112,7 @@ class SignUpService extends Component {
         if (this.state.username.length < 3) {
             return false;
         }
-        if (this.state.email === '' && this.state.phone === '+375') {
-            return false;
-        }
-        return true;
+        return !(this.state.email === '' && this.state.phone === '+375');
     };
 
 
@@ -122,38 +126,38 @@ class SignUpService extends Component {
                 phone: this.state.phone,
                 password: this.state.password,
                 priceDto: {
-                    basePrice: this.state.priceDto.basePrice===''?0:this.state.priceDto.basePrice,
-                    standardRoomCleaning: this.state.priceDto.standardRoomCleaning===''?0 :this.state.priceDto.standardRoomCleaning,
-                    springCleaning: this.state.priceDto.springCleaning?0:this.state.priceDto.springCleaning,
-                    repairAndConstructionCleaning: this.state.priceDto.repairAndConstructionCleaning===''?0:this.state.priceDto.repairAndConstructionCleaning,
-                    dryCarpetCleaning: this.state.priceDto.dryCarpetCleaning===''?0:this.state.priceDto.dryCarpetCleaning,
-                    officeCleaning: this.state.priceDto.officeCleaning===''?0:this.state.priceDto.officeCleaning,
-                    furnitureAndCoatingsCleaning: this.state.priceDto.furnitureAndCoatingsCleaning===''?0:this.state.priceDto.furnitureAndCoatingsCleaning,
-                    industrialCleaning: this.state.priceDto.industrialCleaning===''?0:this.state.priceDto.industrialCleaning,
-                    poolCleaning: this.state.priceDto.poolCleaning===''?0:this.state.priceDto.poolCleaning,
-                    smallRoom: this.state.priceDto.smallRoom===''?0:this.state.priceDto.smallRoom,
-                    bigRoom: this.state.priceDto.bigRoom===''?0:this.state.priceDto.bigRoom,
-                    bathroom: this.state.priceDto.bathroom===''?0:this.state.priceDto.bathroom
+                    basePrice: this.state.priceDto.basePrice,
+                    standardRoomCleaning: this.state.priceDto.standardRoomCleaning,
+                    springCleaning: this.state.priceDto.springCleaning,
+                    repairAndConstructionCleaning: this.state.priceDto.repairAndConstructionCleaning,
+                    dryCarpetCleaning: this.state.priceDto.dryCarpetCleaning,
+                    officeCleaning: this.state.priceDto.officeCleaning,
+                    furnitureAndCoatingsCleaning: this.state.priceDto.furnitureAndCoatingsCleaning,
+                    industrialCleaning: this.state.priceDto.industrialCleaning,
+                    poolCleaning: this.state.priceDto.poolCleaning,
+                    smallRoom: this.state.priceDto.smallRoom,
+                    bigRoom: this.state.priceDto.bigRoom,
+                    bathroom: this.state.priceDto.bathroom
                 },
                 cleaningTimeDto: {
-                    standardRoomCleaningTime: this.state.cleaningTimeDto.standardRoomCleaningTime===''?0:this.state.cleaningTimeDto.standardRoomCleaningTime,
-                    springCleaningTime: this.state.cleaningTimeDto.springCleaningTime===''?0:this.state.cleaningTimeDto.springCleaningTime,
-                    repairAndConstructionCleaningTime: this.state.cleaningTimeDto.repairAndConstructionCleaningTime===''?0:this.state.cleaningTimeDto.repairAndConstructionCleaningTime,
-                    dryCarpetCleaningTime: this.state.cleaningTimeDto.dryCarpetCleaningTime===''?0:this.state.cleaningTimeDto.dryCarpetCleaningTime,
-                    officeCleaningTime: this.state.cleaningTimeDto.officeCleaningTime===''?0:this.state.cleaningTimeDto.officeCleaningTime,
-                    furnitureAndCoatingsCleaningTime: this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime===''?0:this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime,
-                    industrialCleaningTime: this.state.cleaningTimeDto.industrialCleaningTime===''?0:this.state.cleaningTimeDto.industrialCleaningTime,
-                    poolCleaningTime: this.state.cleaningTimeDto.poolCleaningTime===''?0:this.state.cleaningTimeDto.poolCleaningTime,
-                    smallRoomCleaningTime: this.state.cleaningTimeDto.smallRoomCleaningTime===''?0:this.state.cleaningTimeDto.smallRoomCleaningTime,
-                    bigRoomCleaningTime: this.state.cleaningTimeDto.bigRoomCleaningTime===''?0:this.state.cleaningTimeDto.bigRoomCleaningTime,
-                    bathroomCleaningTime: this.state.cleaningTimeDto.bathroomCleaningTime===''?0:this.state.cleaningTimeDto.bathroomCleaningTime
+                    standardRoomCleaningTime: this.state.cleaningTimeDto.standardRoomCleaningTime,
+                    springCleaningTime: this.state.cleaningTimeDto.springCleaningTime,
+                    repairAndConstructionCleaningTime: this.state.cleaningTimeDto.repairAndConstructionCleaningTime,
+                    dryCarpetCleaningTime: this.state.cleaningTimeDto.dryCarpetCleaningTime,
+                    officeCleaningTime: this.state.cleaningTimeDto.officeCleaningTime,
+                    furnitureAndCoatingsCleaningTime: this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime,
+                    industrialCleaningTime: this.state.cleaningTimeDto.industrialCleaningTime,
+                    poolCleaningTime: this.state.cleaningTimeDto.poolCleaningTime,
+                    smallRoomCleaningTime: this.state.cleaningTimeDto.smallRoomCleaningTime,
+                    bigRoomCleaningTime: this.state.cleaningTimeDto.bigRoomCleaningTime,
+                    bathroomCleaningTime: this.state.cleaningTimeDto.bathroomCleaningTime
                 }
             };
 
-            var obj = new FormData();
-            obj.append("objDto",JSON.stringify(objDto));
-            if(this.logotype!='') obj.append("logotype",this.state.logotype);
-
+            //let obj = new FormData();
+            //obj.append("objDto", JSON.stringify(objDto));
+            //if (this.logotype !== '') obj.append("logotype", this.state.logotype);
+            let obj = JSON.stringify(objDto);
             this.serviceApi.preRegisterService(obj).then(resp => {
                 if (resp === 202) {
                     const key = (this.state.email !== '') ? this.state.email : this.state.phone;
@@ -161,7 +165,7 @@ class SignUpService extends Component {
                         username: this.state.username,
                         base64Token: this.base64EncodeUnicode(key + this.state.password)
                     };
-                    this.props.setCredentials(credentials);
+                    //this.props.setCredentials(credentials);
                 } else {
                     this.setState({disabled: false});
                 }
@@ -202,7 +206,7 @@ class SignUpService extends Component {
     };
 
 
-    inputSpringCleaning = () => {
+    InputSpringCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -221,7 +225,7 @@ class SignUpService extends Component {
         )
     };
 
-    inputRepairAndConstructionCleaning = () => {
+    InputRepairAndConstructionCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -240,7 +244,7 @@ class SignUpService extends Component {
         )
     };
 
-    inputDryCarpetCleaning = () => {
+    InputDryCarpetCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -259,7 +263,7 @@ class SignUpService extends Component {
         )
     };
 
-    inputOfficeCleaning = () => {
+    InputOfficeCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -278,7 +282,7 @@ class SignUpService extends Component {
         )
     };
 
-    inputFurnitureAndCoatingsCleaning = () => {
+    InputFurnitureAndCoatingsCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -297,7 +301,7 @@ class SignUpService extends Component {
         )
     };
 
-    inputindustrialCleaning = () => {
+    InputIndustrialCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -317,7 +321,7 @@ class SignUpService extends Component {
     };
 
 
-    inputPoolCleaning = () => {
+    InputPoolCleaning = () => {
         return (
             <div>
                 <input type="text"
@@ -335,14 +339,12 @@ class SignUpService extends Component {
     };
 
     openAvatar = (event) => {
-        var input = event.target;
-        this.state.logotype = input.files[0];
-        var fileReader = new FileReader();
-        console.log(this.state.logotype);
-        fileReader.readAsDataURL(this.state.logotype);
-        fileReader.onload = function() {
-            this.state.avatar = fileReader.result;
-
+        let input = event.target;
+        this.setState({logotype: input.files[0]});
+        let fileReader = new FileReader();
+        fileReader.readAsDataURL(input.files[0]);
+        fileReader.onload = () => {
+            this.setState({avatar: fileReader.result});
         }
     };
 
@@ -352,7 +354,7 @@ class SignUpService extends Component {
         const name = target.name;
         this.state.checkFurnitureAndCoatingsCleaning = value;
         this.setState({
-            name: value
+            [name]: value
         });
     }
 
@@ -369,7 +371,7 @@ class SignUpService extends Component {
                                         Logotype
                                     </h2>
                                     <div className="form-group col-md-5">
-                                        <img src={this.state.avatar}></img>
+                                        <img src={this.state.avatar}/>
                                         <input
                                             id="logotype"
                                             type="file"
@@ -422,55 +424,59 @@ class SignUpService extends Component {
                                     </h2>
                                     <div id="standardRoomCleaning">
                                         <label>Standard room cleaning coefficient</label>
-                                        <input type="text" value={1} disabled={true}
-                                               onChange={this.state.priceDto.standardRoomCleaning}/>
-                                        <input type="text"
-                                               onChange={this.state.cleaningTimeDto.standardRoomCleaningTime}/>
+                                        <input type="text" defaultValue={1} disabled={true}/>
+                                        <input type="text"/>
                                     </div>
 
                                     <div id="springCleaningDiv">
                                         <label>Spring cleaning</label>
-                                        <input type="checkBox" name={"checkSpringCleaning"} onChange={this.handleInputChange}/>
-                                        {this.state.checkSpringCleaning ? <inputSpringCleaning/> : ''}
+                                        <input type="checkBox" name={"checkSpringCleaning"}
+                                               onChange={this.handleInputChange}/>
+                                        {this.state.checkSpringCleaning ? <InputSpringCleaning /> : ''}
                                     </div>
 
                                     <div id="repairAndConstructionCleaningDiv">
                                         <label>Repair and construction cleaning</label>
                                         <input type="checkBox" name={"checkRepairAndConstructionCleaning"}
                                                onChange={this.handleInputChange}/>
-                                                <inputRepairAndConstructionCleaning/>
+
                                         {this.state.checkRepairAndConstructionCleaning ?
-                                            <inputRepairAndConstructionCleaning/> : ''}
+                                            <InputRepairAndConstructionCleaning /> : ''}
                                     </div>
 
                                     <div id="dryCarpetCleaningDiv">
                                         <label>Dry carpet cleaning</label>
-                                        <input type="checkBox" name={"checkDryCarpetCleaning"} onChange={this.handleInputChange}/>
-                                        {this.state.checkDryCarpetCleaning ? <inputDryCarpetCleaning/> : ''}
+                                        <input type="checkBox" name={"checkDryCarpetCleaning"}
+                                               onChange={this.handleInputChange}/>
+                                        {this.state.checkDryCarpetCleaning ? <InputDryCarpetCleaning /> : ''}
                                     </div>
 
                                     <div id="officeCleaningDiv">
                                         <label>Office cleaning</label>
-                                        <input type="checkBox" name={"checkOfficeCleaning"} onChange={this.handleInputChange}/>
-                                        {this.state.checkOfficeCleaning ? <inputOfficeCleaning/> : ''}
+                                        <input type="checkBox" name={"checkOfficeCleaning"}
+                                               onChange={this.handleInputChange}/>
+                                        {this.state.checkOfficeCleaning ? <InputOfficeCleaning /> : ''}
                                     </div>
 
                                     <div id="furnitureAndCoatingsCleaningDiv">
                                         <label>Furniture and coatings cleaning</label>
-                                        <input type="checkBox" name={"checkFurnitureAndCoatingsCleaning"} onChange={this.handleInputChange}/>
+                                        <input type="checkBox" name={"checkFurnitureAndCoatingsCleaning"}
+                                               onChange={this.handleInputChange}/>
                                         {this.state.checkFurnitureAndCoatingsCleaning ?
-                                            <inputFurnitureAndCoatingsCleaning/> : ''}
+                                            <InputFurnitureAndCoatingsCleaning /> : ''}
                                     </div>
 
                                     <div id="industrialCleaningDiv">
                                         <label>Industrial cleaning</label>
-                                        <input type="checkBox" name={"checkIndustrialCleaning"} onChange={this.handleInputChange}/>
-                                        {this.state.checkIndustrialCleaning ? <inputIndustrialCleaning/> : ''}
+                                        <input type="checkBox" name={"checkIndustrialCleaning"}
+                                               onChange={this.handleInputChange}/>
+                                        {this.state.checkIndustrialCleaning ? <InputIndustrialCleaning /> : ''}
                                     </div>
                                     <div id="poolCleaningDiv">
                                         <label>Pool cleaning</label>
-                                        <input type="checkBox" name={"checkPoolCleaning"} onChange={this.handleInputChange}/>
-                                        {this.state.checkPoolCleaning ? <inputPoolCleaning/> : ''}
+                                        <input type="checkBox" name={"checkPoolCleaning"}
+                                               onChange={this.handleInputChange}/>
+                                        {this.state.checkPoolCleaning ? <InputPoolCleaning /> : ''}
                                     </div>
 
                                     <div id="RoomsDiv">
@@ -561,26 +567,11 @@ class SignUpService extends Component {
                     <span>{this.state.message}</span>
                     {this.state.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
                                                              verify={this.verify}
-                                                             verificationStatus={this.state.verificationStatus}/> : ''}
+                                                             verificationStatus={this.state.verificationStatus} /> : ''}
                 </form>
             </div>
         );
     };
 }
 
-
-const mapStateToProps = (state) => {
-    return {
-        ...state.credentials
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        setCredentials: (credentials) => {
-            dispatch(credentialActions.setCredentials(credentials));
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpService);
+export default SignUpService;

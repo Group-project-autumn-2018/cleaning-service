@@ -4,10 +4,7 @@ import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
 import com.itechart.common.service.SMSService;
-import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;
-import com.itechart.customer.entity.Customer;
-import com.itechart.customer.util.CustomerVerification;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.repository.CleaningCompanyRepository;
@@ -25,8 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -101,7 +96,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     }
 
     private void saveLogotype(MultipartFile logotype,long id){
-        File logoFile = new File(FILE_PATH+id);
+        /*File logoFile = new File(FILE_PATH+id);
         if(!logoFile .exists())
         {
             logoFile .mkdir();
@@ -110,7 +105,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
             logotype.transferTo(logoFile );
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     @Override

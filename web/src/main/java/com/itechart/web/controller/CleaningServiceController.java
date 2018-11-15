@@ -6,13 +6,11 @@ import com.itechart.service.dto.RatingDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.RatingService;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -41,11 +39,12 @@ public class CleaningServiceController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity register(@RequestParam(name = "objDto") String objDto,
-                                   @RequestParam(name = "logotype", required = false) MultipartFile logotype) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        CleaningCompanyDto registrationDto = mapper.readValue(objDto, CleaningCompanyDto.class);
-        cleaningCompanyService.registerCompany(registrationDto, logotype);
+    public ResponseEntity register(@RequestBody CleaningCompanyDto objDto
+            //, @RequestParam(name = "logotype", required = false) MultipartFile logotype
+    ) throws IOException {
+        //ObjectMapper mapper = new ObjectMapper();
+        //CleaningCompanyDto registrationDto = mapper.readValue(objDto, CleaningCompanyDto.class);
+        cleaningCompanyService.registerCompany(objDto, null);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
 
     }
