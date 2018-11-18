@@ -17,23 +17,7 @@ public class CleaningTimeServiceImpl implements CleaningTimeService {
         this.cleaningTimeRepository=cleaningTimeRepository;
     }
 
-    @Override
-    public void saveCleaningTime(CleaningTimeDto cleaningTimeDto) {
-        CleaningTime cleaningTime = new CleaningTime();
-        cleaningTime.setCompany(cleaningTimeDto.getCompany());
-        cleaningTime.setStandardRoomCleaningTime(cleaningTimeDto.getStandardRoomCleaningTime());
-        cleaningTime.setSpringCleaningTime(cleaningTimeDto.getSpringCleaningTime());
-        cleaningTime.setRepairAndConstructionCleaningTime(cleaningTimeDto.getRepairAndConstructionCleaningTime());
-        cleaningTime.setDryCarpetCleaningTime(cleaningTimeDto.getDryCarpetCleaningTime());
-        cleaningTime.setOfficeCleaningTime(cleaningTimeDto.getOfficeCleaningTime());
-        cleaningTime.setFurnitureAndCoatingsCleaningTime(cleaningTimeDto.getFurnitureAndCoatingsCleaningTime());
-        cleaningTime.setIndustrialCleaningTime(cleaningTimeDto.getIndustrialCleaningTime());
-        cleaningTime.setPoolCleaningTime(cleaningTimeDto.getPoolCleaningTime());
-        cleaningTime.setSmallRoomCleaningTime(cleaningTimeDto.getSmallRoomCleaningTime());
-        cleaningTime.setBigRoomCleaningTime(cleaningTimeDto.getBigRoomCleaningTime());
-        cleaningTime.setBathroomCleaningTime(cleaningTimeDto.getBathroomCleaningTime());
-        cleaningTimeRepository.saveAndFlush(cleaningTime);
-    }
+
 
 
 }

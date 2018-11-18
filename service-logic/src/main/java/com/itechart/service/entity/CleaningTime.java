@@ -15,11 +15,6 @@ public class CleaningTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
-    private CleaningCompany company;
-
-
     @Column(name = "standard_room_cleaning_time")
     private int standardRoomCleaningTime;
     @Column(name = "spring_cleaning_time")
@@ -42,4 +37,9 @@ public class CleaningTime {
     private int bigRoomCleaningTime;
     @Column(name = "bathroom_cleaning_time")
     private int bathroomCleaningTime;
+
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "cleaningTime")
+    private TypesOfProvidedService typesOfProvidedService;
 }

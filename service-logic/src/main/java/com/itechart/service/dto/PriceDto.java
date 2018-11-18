@@ -1,6 +1,7 @@
 package com.itechart.service.dto;
 
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.entity.TypesOfProvidedService;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -20,5 +21,5 @@ public class PriceDto {
     private BigDecimal smallRoom;
     private BigDecimal bigRoom;
     private BigDecimal bathroom;
-    private CleaningCompany company;
+    private TypesOfProvidedService typesOfProvidedService;
 }

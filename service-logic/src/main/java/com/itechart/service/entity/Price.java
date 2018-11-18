@@ -15,9 +15,6 @@ public class Price {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "company_id", referencedColumnName = "id", nullable = false)
-    private CleaningCompany company;
     @Column(name = "base_price")
     private BigDecimal basePrice;
     @Column(name = "standard_room_cleaning")
@@ -42,5 +39,10 @@ public class Price {
     private BigDecimal bigRoom;
     @Column(name = "bathroom")
     private BigDecimal bathroom;
+
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "price")
+    private TypesOfProvidedService typesOfProvidedService;
 
 }
