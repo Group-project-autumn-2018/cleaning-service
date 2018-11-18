@@ -7,11 +7,14 @@ const ChangePassword = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormOldPassword" className="col-sm-4 col-form-label">Old password</label>
                 <div className="col-sm-8">
-                    <input type="password" className="form-control"
+                    <input type="password" className={`form-control ${props.error ? "invalid" : null}`}
                            id="profileFormOldPassword"
                            placeholder="Old password"
-                           name="oldPassword"
+                           name="password"
+                           onChange={props.updatePassword}
                     />
+                    <p className="errorMessage">{props.error ? "Invalid password" :
+                        "Password needs to be between 6 and 30 characters long"}</p>
                 </div>
             </div>
             <div className="form-group row">
@@ -23,6 +26,8 @@ const ChangePassword = (props) => {
                            name="newPassword"
                            onChange={props.checkPasswordMatch}
                     />
+                    {props.newPasswordError ? <p className="errorMessage">Password needs to be between 6 and 30 characters long</p> :
+                        <p className="errorMessage"></p>}
                 </div>
             </div>
 

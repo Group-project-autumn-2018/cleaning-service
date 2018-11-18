@@ -25,3 +25,4 @@ export const fetchEntity = async (entityId, entityURN, token) =>{
 
     return await response.json();
 };
+
