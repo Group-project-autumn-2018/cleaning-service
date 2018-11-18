@@ -1,14 +1,19 @@
 package com.itechart.web.controller;
 
 import com.itechart.service.dto.FeedbackDto;
+import com.itechart.service.dto.PricingOptionsDto;
+import com.itechart.service.dto.TimingOptionsDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
+import com.itechart.service.util.CalculationRules;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping("/api/cleaning")
@@ -38,5 +43,15 @@ public class CleaningServiceController {
         Long ratingId = feedbackService.addFeedback(feedbackDto);
         if (ratingId == 0) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         else return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @PostMapping("/cleaningPrice")
+    public BigDecimal getCleaningPrice(@RequestBody PricingOptionsDto pricingOptionsDto){
+        return CalculationRules.PriceCalculation(pricingOptionsDto);
+    }
+
+    @PostMapping("/cleaningTime")
+    public  double getCleaningTime (@RequestBody TimingOptionsDto timingOptionsDto){
+        return  CalculationRules.CountingTime(timingOptionsDto);
     }
 }
