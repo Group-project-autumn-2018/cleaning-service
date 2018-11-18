@@ -1,3 +1,5 @@
+import * as api from '../api/api-actions';
+
 export const fetchEntities = (page, size, entityURN, token) => {
     return dispatch => {
         fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}`).then(resolve => resolve.json()).then(response => {
@@ -20,9 +22,6 @@ export const updateEntity = (entity, entityURN, token) => {
         dispatch(updateEntitySuccess(entity));
     }
 };
-
-
-
 
 
 export const fetchEntitiesSuccess = (entity) => {

@@ -1,13 +1,13 @@
 export default class ServiceApi {
     _baseUrl = '/';
 
-    async sendPostRequest(object, tailUrl, accept) {
+    async sendPostRequest(object, tailUrl) {
         const url = this._baseUrl + tailUrl;
         const init = {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json' + '; charset=utf-8'
+                'Content-Type': 'application/json; charset=utf-8'
             },
             body: object
         };
@@ -16,7 +16,7 @@ export default class ServiceApi {
     }
 
     async preRegisterService(object) {
-        const res = await this.sendPostRequest(object, 'api/cleaning/registration', 'multipart/form-data');
+        const res = await this.sendPostRequest(object, 'api/cleaning/registration');
         return res.status;
     }
 
@@ -28,7 +28,7 @@ export default class ServiceApi {
 
 
     async verifyService(object) {
-        const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/verify', 'application/json');
+        const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/verify');
         return res.status;
     }
 }

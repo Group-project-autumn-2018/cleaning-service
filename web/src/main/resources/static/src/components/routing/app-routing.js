@@ -10,11 +10,11 @@ import CustomerRegistration from '../sign-up/sign-up-customer';
 import Feedback from '../feedback';
 import BookingForm from '../booking-form/booking-form'
 import Companies from '../companies/companies'
+import ProfileService from '../service-profile/profile-form';
 
 class AppRouting extends Component {
 
     render() {
-
 
         let routes = (
             <Switch>
@@ -24,12 +24,12 @@ class AppRouting extends Component {
                 <Route path="/registration/customer" component={CustomerRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies}/>
+                <Route exact path="/profile/service" component={ProfileService}/>
                 <Redirect to="/"/>
             </Switch>
         );
         if (this.props.isAuthenticated) {
-            routes = this.props.isAdmin ?
-                (
+            routes = this.props.isAdmin ? (
                     <Switch>
                         <Route exact path="/" component={HomeMainSection}/>
                         <Route path="/profile" component={ProfileForm}/>
@@ -38,8 +38,7 @@ class AppRouting extends Component {
                         <Route path="/login" component={SignIn}/>
                         <Redirect to="/"/>
                     </Switch>
-                ) :
-                (
+                ) : (
                     <Switch>
                         <Route exact path="/" component={HomeMainSection}/>
                         <Route path="/profile" component={ProfileForm}/>
@@ -49,7 +48,8 @@ class AppRouting extends Component {
                         <Route path="/booking" component={BookingForm}/>
                         <Route path="/companies" component={Companies}/>
                         <Redirect to="/"/>
-                    </Switch>)
+                    </Switch>
+            )
         }
 
         return (
