@@ -15,7 +15,9 @@ const CleaningTypesForm = (props) => {
                 <input type="checkBox" name="springCleaning"
                        onChange={props.onChangeTypeHandler}/>
                 {props.cleaningTypesDto.springCleaning ?
-                    <AdditionalInput names={['springCleaningPrice', 'springCleaningTime']}/> : ''}
+                    <AdditionalInput names={['springCleaningPrice', 'springCleaningTime']}
+                                     onChangePriceHandler={props.onChangePriceHandler}
+                                     onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">

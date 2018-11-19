@@ -29,7 +29,9 @@ class ProfileForm extends Component {
                 officeCleaning: false,
                 furnitureAndCoatingsCleaning: false,
                 industrialCleaning: false,
-                poolCleaning: false
+                poolCleaning: false,
+                priceDto: {},
+                cleaningTimeDto: {}
             }
         },
         phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
@@ -94,6 +96,40 @@ class ProfileForm extends Component {
         this.setState({service: updatedService});
     };
 
+    onChangeTimeHandler = (event) => {
+        const name = event.target.name;
+        const updatedCleaningTimeDto = {
+            ...this.state.service.cleaningTypesDto.cleaningTimeDto,
+            [name]: event.target.value
+        };
+        const updatedTypes = {
+            ...this.state.service.cleaningTypesDto,
+            cleaningTimeDto: updatedCleaningTimeDto
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypesDto: updatedTypes
+        };
+        this.setState({service: updatedService});
+    };
+
+    onChangePriceHandler = (event) => {
+        const name = event.target.name;
+        const updatedPriceDto = {
+            ...this.state.service.cleaningTypesDto.priceDto,
+            [name]: event.target.value
+        };
+        const updatedTypes = {
+            ...this.state.service.cleaningTypesDto,
+            priceDto: updatedPriceDto
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypesDto: updatedTypes
+        };
+        this.setState({service: updatedService});
+    };
+
 
     checkPasswordMatch = (e) => {
         const name = e.target.name;
@@ -142,8 +178,12 @@ class ProfileForm extends Component {
                                    onClickAddressHandler={this.onClickAddressHandler}/> : null}
                     {this.state.modeToggle === 'security' ? <ChangePassword passwordMatch={this.state.passwordMatch}
                                                                             checkPasswordMatch={this.checkPasswordMatch}/> : null}
-                    {this.state.modeToggle === 'other' ? <CleaningTypesForm {...this.state.service}
-                                                                            onChangeTypeHandler={this.onChangeTypeHandler}/> : null}
+                    {this.state.modeToggle === 'other' ?
+                        <CleaningTypesForm {...this.state.service}
+                                           onChangeTypeHandler={this.onChangeTypeHandler}
+                                           onChangePriceHandler={this.onChangePriceHandler}
+                                           onChangeTimeHandler={this.onChangeTimeHandler}
+                        /> : null}
                     <div className="text-center">
                         <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
                     </div>
