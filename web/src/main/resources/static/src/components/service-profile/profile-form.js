@@ -70,6 +70,11 @@ class ProfileForm extends Component {
         this.setState({service: updatedService, addresses: []});
     };
 
+    onClickTypeHandler = (event) => {
+
+    };
+
+
     checkPasswordMatch = (e) => {
         const name = e.target.name;
         console.log(e.target.value);

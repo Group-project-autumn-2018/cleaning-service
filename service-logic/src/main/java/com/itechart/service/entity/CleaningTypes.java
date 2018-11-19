@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Component
 @Table(name = "types_of_provided_service")
-public class TypesOfProvidedService {
+public class CleaningTypes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

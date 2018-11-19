@@ -9,9 +9,7 @@ import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
-import com.itechart.service.service.CleaningTimeService;
-import com.itechart.service.service.PriceService;
-import com.itechart.service.service.TypesOfProvidedServiceService;
+import com.itechart.service.service.CleaningTypesService;
 import com.itechart.service.util.ServiceVerification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,7 +48,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     private final EmailService emailService;
     private final RoleService roleService;
     private final SMSService smsService;
-    private final TypesOfProvidedServiceService typesOfProvidedServiceService;
+    private final CleaningTypesService cleaningTypesService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -58,13 +56,13 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
                                       BCryptPasswordEncoder bCryptPasswordEncoder,
                                       EmailService emailService, RoleService roleService,
                                       SMSService smsService,
-                                      TypesOfProvidedServiceService typesOfProvidedServiceService) {
+                                      CleaningTypesService cleaningTypesService) {
         this.cleaningCompanyRepository = cleaningCompanyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.emailService = emailService;
         this.roleService = roleService;
         this.smsService = smsService;
-        this.typesOfProvidedServiceService = typesOfProvidedServiceService;
+        this.cleaningTypesService = cleaningTypesService;
     }
 
     @Override
@@ -87,14 +85,14 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         company.setConfirmed(false);
         company.setEmail(registrationDto.getEmail());
         company.setPhone(registrationDto.getPhone());
-        Role customerRole = roleService.getRole("customer");
-        company.setRoles(Collections.singletonList(customerRole));
+        Role companyRole = roleService.getRole("service");
+        company.setRoles(Collections.singletonList(companyRole));
         company.setPassword(bCryptPasswordEncoder.encode(registrationDto.getPassword()));
         company.setAddingDate(LocalDate.now());
 
         cleaningCompanyRepository.saveAndFlush(company);
-        registrationDto.getTypesOfProvidedServiceDto().setCompany(company);
-        typesOfProvidedServiceService.saveTypesOfProvidedService(registrationDto.getTypesOfProvidedServiceDto());
+        cleaningTypesService.
+                saveTypes(registrationDto.getCleaningTypesDto(), company);
         return company.getId();
     }
 
