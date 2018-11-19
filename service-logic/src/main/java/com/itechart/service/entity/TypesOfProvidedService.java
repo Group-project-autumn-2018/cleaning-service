@@ -17,16 +17,12 @@ public class TypesOfProvidedService {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "typesOfProvidedService")
+    @OneToOne
+    @JoinColumn(name = "price_id", referencedColumnName = "id")
     private Price price;
 
-    @OneToOne(fetch = FetchType.LAZY,
-            cascade =  CascadeType.ALL,
-            mappedBy = "typesOfProvidedService")
+    @OneToOne
+    @JoinColumn(name = "cleaning_time_id", referencedColumnName = "id")
     private CleaningTime cleaningTime;
 
     @ManyToOne
@@ -35,19 +31,25 @@ public class TypesOfProvidedService {
 
     @Column(name = "standard_room_cleaning")
     private Boolean standardRoomCleaning;
+
     @Column(name = "spring_cleaning")
     private Boolean springCleaning;
+
     @Column(name = "repair_and_construction_cleaning")
     private Boolean repairAndConstructionCleaning;
+
     @Column(name = "dry_carpet_cleaning")
     private Boolean dryCarpetCleaning;
+
     @Column(name = "office_cleaning")
     private Boolean officeCleaning;
+
     @Column(name = "furniture_and_coatings_cleaning")
     private Boolean furnitureAndCoatingsCleaning;
+
     @Column(name = "industrial_cleaning")
     private Boolean industrialCleaning;
+
     @Column(name = "pool_cleaning")
     private Boolean poolCleaning;
-
 }
