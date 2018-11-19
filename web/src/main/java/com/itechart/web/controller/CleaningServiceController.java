@@ -36,8 +36,13 @@ public class CleaningServiceController {
     }
 
     @PutMapping("/{cleaningId}")
-    public void getOneById(@RequestBody CleaningCompany cleaningCompany) {
+    public void update(@RequestBody CleaningCompanyDto cleaningCompany) {
         cleaningCompanyService.update(cleaningCompany);
+    }
+
+    @GetMapping("/{cleaningId}")
+    public ResponseEntity update(@PathVariable Long cleaningId) {
+        return ResponseEntity.ok(cleaningCompanyService.getOne(cleaningId));
     }
 
     @PostMapping("/feedback")

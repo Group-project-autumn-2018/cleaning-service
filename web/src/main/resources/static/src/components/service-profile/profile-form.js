@@ -8,6 +8,7 @@ import {fetchEntity} from '../api/api-actions';
 import './service-profile.css';
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import DropdownAddressList from './dropdown-address-list';
+import CleaningTypesForm from './cleaning-types-form';
 
 
 class ProfileForm extends Component {
@@ -19,7 +20,17 @@ class ProfileForm extends Component {
         service: {
             username: '',
             address: '',
-            phone: ''
+            phone: '',
+            cleaningTypesDto: {
+                standardRoomCleaning: false,
+                springCleaning: false,
+                repairAndConstructionCleaning: false,
+                dryCarpetCleaning: false,
+                officeCleaning: false,
+                furnitureAndCoatingsCleaning: false,
+                industrialCleaning: false,
+                poolCleaning: false
+            }
         },
         phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
             '-', /\d/, /\d/],
@@ -70,8 +81,17 @@ class ProfileForm extends Component {
         this.setState({service: updatedService, addresses: []});
     };
 
-    onClickTypeHandler = (event) => {
-
+    onChangeTypeHandler = (event) => {
+        const name = event.target.name;
+        const updatedTypes = {
+            ...this.state.service.cleaningTypesDto,
+            [name]: event.target.checked
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypesDto: updatedTypes
+        };
+        this.setState({service: updatedService});
     };
 
 
@@ -122,7 +142,8 @@ class ProfileForm extends Component {
                                    onClickAddressHandler={this.onClickAddressHandler}/> : null}
                     {this.state.modeToggle === 'security' ? <ChangePassword passwordMatch={this.state.passwordMatch}
                                                                             checkPasswordMatch={this.checkPasswordMatch}/> : null}
-                    {this.state.modeToggle === 'other' ? <OtherPanel/> : null}
+                    {this.state.modeToggle === 'other' ? <CleaningTypesForm {...this.state.service}
+                                                                            onChangeTypeHandler={this.onChangeTypeHandler}/> : null}
                     <div className="text-center">
                         <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
                     </div>
@@ -206,13 +227,6 @@ const MainPanel = (props) => {
     )
 };
 
-const OtherPanel = () => {
-    return (
-        <p>Hello</p>
-    )
-};
-
-
 const mapStateToProps = (state) => {
     return {
         token: state.user.token,
@@ -226,17 +240,6 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(updateService(serviceId, token))
         }
     }
-};
-
-const AdditionalInput = (props) => {
-    return (
-        <React.Fragment>
-            <input type="text" className="form-control" placeholder={props.placeholders[0]}
-                   name={props.names[0]} onChange={props.onChangeHandler}/>
-            <input type="text" className="form-control" placeholder={props.placeholders[1]}
-                   name={props.names[1]} onChange={props.onChangeHandler}/>
-        </React.Fragment>
-    )
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);

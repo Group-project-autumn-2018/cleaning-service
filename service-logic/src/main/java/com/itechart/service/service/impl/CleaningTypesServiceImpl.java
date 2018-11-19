@@ -14,6 +14,8 @@ import com.itechart.service.service.CleaningTypesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 public class CleaningTypesServiceImpl implements CleaningTypesService {
     private final PriceRepository priceRepository;
@@ -29,6 +31,7 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
         this.cleaningTimeRepository = cleaningTimeRepository;
     }
 
+    @Transactional
     @Override
     public void saveTypes(CleaningTypesDto cleaningTypesDto, CleaningCompany company) {
         CleaningTypes cleaningTypes = new CleaningTypes();

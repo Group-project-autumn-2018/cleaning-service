@@ -11,6 +11,7 @@ import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.CleaningTypesService;
 import com.itechart.service.util.ServiceVerification;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +43,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Value("${logo.path}")
     private String FILE_PATH;
+    private final ModelMapper modelMapper;
     private final CleaningCompanyRepository cleaningCompanyRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private ConcurrentMap<String, ServiceVerification> verifications = new ConcurrentHashMap<>();
@@ -56,13 +58,14 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
                                       BCryptPasswordEncoder bCryptPasswordEncoder,
                                       EmailService emailService, RoleService roleService,
                                       SMSService smsService,
-                                      CleaningTypesService cleaningTypesService) {
+                                      CleaningTypesService cleaningTypesService, ModelMapper modelMapper) {
         this.cleaningCompanyRepository = cleaningCompanyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.emailService = emailService;
         this.roleService = roleService;
         this.smsService = smsService;
         this.cleaningTypesService = cleaningTypesService;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -71,8 +74,9 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     }
 
     @Override
-    public void update(CleaningCompany cleaningCompany) {
-        cleaningCompanyRepository.save(cleaningCompany);
+    public void update(CleaningCompanyDto cleaningCompanyDto) {
+        CleaningCompany company = modelMapper.map(cleaningCompanyDto, CleaningCompany.class);
+        cleaningCompanyRepository.save(company);
     }
 
 
