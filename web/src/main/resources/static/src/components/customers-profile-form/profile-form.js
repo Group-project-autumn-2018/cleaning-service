@@ -45,7 +45,10 @@ class ProfileForm extends Component {
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError && !this.state.passwordError) {
             fetchUpdateEntity(this.state.customer, this.state.URN, this.props.token).then(response => {
                 if (response.status === 200) {
-                    this.setState({success: true, changePassword: false, confirmPassword: null})
+                    this.setState({
+                        success: true, changePassword: false, confirmPassword: null,
+                        customer: {...this.state.customer, password: null, newPassword: null}
+                    })
                 }
                 if (response.status === 406) {
                     this.setState({error: true})
