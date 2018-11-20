@@ -13,7 +13,7 @@ const CleaningTypesForm = (props) => {
             <div className="form-group row">
                 <label className="col-sm-5">Spring cleaning</label>
                 <input type="checkBox" name="springCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler} value={props.cleaningTypesDto.springCleaning}/>
                 {props.cleaningTypesDto.springCleaning ?
                     <AdditionalInput names={['springCleaningPrice', 'springCleaningTime']}
                                      onChangePriceHandler={props.onChangePriceHandler}
@@ -23,51 +23,65 @@ const CleaningTypesForm = (props) => {
             <div className="form-group row">
                 <label className="col-sm-5">Repair and construction cleaning</label>
                 <input type="checkBox" name="repairAndConstructionCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler}
+                       value={props.cleaningTypesDto.repairAndConstructionCleaning}/>
 
                 {props.cleaningTypesDto.repairAndConstructionCleaning ?
                     <AdditionalInput
-                        names={['repairAndConstructionCleaningPrice', 'repairAndConstructionCleaningTime']}/> : ''}
+                        names={['repairAndConstructionCleaningPrice', 'repairAndConstructionCleaningTime']}
+                        onChangePriceHandler={props.onChangePriceHandler}
+                        onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">
                 <label className="col-sm-5">Dry carpet cleaning</label>
                 <input type="checkBox" name="dryCarpetCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler} value={props.cleaningTypesDto.dryCarpetCleaning}/>
                 {props.cleaningTypesDto.dryCarpetCleaning ?
-                    <AdditionalInput names={['dryCarpetCleaningPrice', 'dryCarpetCleaningTime']}/> : ''}
+                    <AdditionalInput names={['dryCarpetCleaningPrice', 'dryCarpetCleaningTime']}
+                                     onChangePriceHandler={props.onChangePriceHandler}
+                                     onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">
                 <label className="col-sm-5">Office cleaning</label>
                 <input type="checkBox" name="officeCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler} value={props.cleaningTypesDto.officeCleaning}/>
                 {props.cleaningTypesDto.officeCleaning ?
-                    <AdditionalInput names={['officeCleaningPrice', 'officeCleaningTime']}/> : ''}
+                    <AdditionalInput names={['officeCleaningPrice', 'officeCleaningTime']}
+                                     onChangePriceHandler={props.onChangePriceHandler}
+                                     onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">
                 <label className="col-sm-5">Furniture and coatings cleaning</label>
                 <input type="checkBox" name="furnitureAndCoatingsCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler}
+                       value={props.cleaningTypesDto.furnitureAndCoatingsCleaning}/>
                 {props.cleaningTypesDto.furnitureAndCoatingsCleaning ?
                     <AdditionalInput
-                        names={['furnitureAndCoatingsCleaningPrice', 'furnitureAndCoatingsCleaningTime']}/> : ''}
+                        names={['furnitureAndCoatingsCleaningPrice', 'furnitureAndCoatingsCleaningTime']}
+                        onChangePriceHandler={props.onChangePriceHandler}
+                        onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">
                 <label className="col-sm-5">Industrial cleaning</label>
                 <input type="checkBox" name="industrialCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler} value={props.cleaningTypesDto.industrialCleaning}/>
                 {props.cleaningTypesDto.industrialCleaning ?
-                    <AdditionalInput names={['industrialCleaningPrice', 'industrialCleaningTime']}/> : ''}
+                    <AdditionalInput names={['industrialCleaningPrice', 'industrialCleaningTime']}
+                                     onChangePriceHandler={props.onChangePriceHandler}
+                                     onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Pool cleaning</label>
                 <input type="checkBox" name="poolCleaning"
-                       onChange={props.onChangeTypeHandler}/>
+                       onChange={props.onChangeTypeHandler} value={props.cleaningTypesDto.poolCleaning}/>
                 {props.cleaningTypesDto.poolCleaning ?
-                    <AdditionalInput names={['poolCleaningPrice', 'poolCleaningTime']}/> : ''}
+                    <AdditionalInput names={['poolCleaningPrice', 'poolCleaningTime']}
+                                     onChangePriceHandler={props.onChangePriceHandler}
+                                     onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">

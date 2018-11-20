@@ -126,31 +126,10 @@ class SignUpService extends Component {
                 phone: this.state.phone,
                 password: this.state.password,
                 priceDto: {
-                    basePrice: this.state.priceDto.basePrice,
-                    standardRoomCleaning: this.state.priceDto.standardRoomCleaning,
-                    springCleaning: this.state.priceDto.springCleaning,
-                    repairAndConstructionCleaning: this.state.priceDto.repairAndConstructionCleaning,
-                    dryCarpetCleaning: this.state.priceDto.dryCarpetCleaning,
-                    officeCleaning: this.state.priceDto.officeCleaning,
-                    furnitureAndCoatingsCleaning: this.state.priceDto.furnitureAndCoatingsCleaning,
-                    industrialCleaning: this.state.priceDto.industrialCleaning,
-                    poolCleaning: this.state.priceDto.poolCleaning,
-                    smallRoom: this.state.priceDto.smallRoom,
-                    bigRoom: this.state.priceDto.bigRoom,
-                    bathroom: this.state.priceDto.bathroom
+                    ...this.state.priceDto
                 },
                 cleaningTimeDto: {
-                    standardRoomCleaningTime: this.state.cleaningTimeDto.standardRoomCleaningTime,
-                    springCleaningTime: this.state.cleaningTimeDto.springCleaningTime,
-                    repairAndConstructionCleaningTime: this.state.cleaningTimeDto.repairAndConstructionCleaningTime,
-                    dryCarpetCleaningTime: this.state.cleaningTimeDto.dryCarpetCleaningTime,
-                    officeCleaningTime: this.state.cleaningTimeDto.officeCleaningTime,
-                    furnitureAndCoatingsCleaningTime: this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime,
-                    industrialCleaningTime: this.state.cleaningTimeDto.industrialCleaningTime,
-                    poolCleaningTime: this.state.cleaningTimeDto.poolCleaningTime,
-                    smallRoomCleaningTime: this.state.cleaningTimeDto.smallRoomCleaningTime,
-                    bigRoomCleaningTime: this.state.cleaningTimeDto.bigRoomCleaningTime,
-                    bathroomCleaningTime: this.state.cleaningTimeDto.bathroomCleaningTime
+                    ...this.state.cleaningTimeDto
                 }
             };
 
