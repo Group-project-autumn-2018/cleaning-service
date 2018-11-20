@@ -1,12 +1,10 @@
-require("@babel/polyfill");
+
 module.exports = {
-    entry: ['@babel/polyfill', './src/index.js'],
-    // output: {
-    //     filename: 'bundle.js'
-    // },
+    entry: ['babel-polyfill', './src/index.js'],
     resolve:{
         extensions:['.js', '.jsx']
     },
+    devtool: 'eval-source-map',
     module: {
         rules: [
             {

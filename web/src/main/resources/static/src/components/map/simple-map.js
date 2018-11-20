@@ -1,5 +1,5 @@
 import React from 'react';
-import {Marker, Popup, TileLayer, Map} from "react-leaflet";
+import {Map, Marker, Popup, TileLayer} from "react-leaflet";
 import './simple-map.css';
 
 /**
@@ -16,7 +16,7 @@ const SimpleMap = (props) => {
             />
             <Marker position={[props.lat, props.lng]}>
                 <Popup>
-                    Указанный адрес
+                    Chosen address
                 </Popup>
             </Marker>
         </Map>

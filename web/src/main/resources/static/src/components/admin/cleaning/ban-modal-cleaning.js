@@ -12,7 +12,7 @@ class BanModalCleaning extends Component {
         let cleaning = {...this.props.cleaning};
         let banned = !cleaning.banned;
         let banReason = this.refs.banReasonOption.value + " " + this.refs.banReasonText.value;
-        this.props.updateCustomer({...cleaning, banned, banReason}, this.entityURN);
+        this.props.updateCustomer({...cleaning, banned, banReason}, this.entityURN, this.props.token);
         this.refs.banReasonText.value = '';
     };
 
@@ -23,7 +23,7 @@ class BanModalCleaning extends Component {
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLongTitle">Укажите причину блокировки</h5>
+                            <h5 className="modal-title" id="exampleModalLongTitle">Choose ban reason</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -47,18 +47,17 @@ class BanModalCleaning extends Component {
     }
 
 }
-;
-
 const mapStateToProps = (state) => {
     return {
-        cleaning: state.entityToUpdate
+        cleaning: state.entityToUpdate,
+        token: state.user.token
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (cleaning, entityURN) => {
-            dispatch(actions.updateEntity(cleaning, entityURN))
+        updateCustomer: (cleaning, entityURN, token) => {
+            dispatch(actions.updateEntity(cleaning, entityURN, token))
         }
     }
 };

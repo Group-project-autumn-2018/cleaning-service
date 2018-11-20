@@ -19,8 +19,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-        UserDetails userDetails = UserDetails.class.cast(SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal());
+        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
+                .getAuthentication().getPrincipal();
         String username = userDetails.getUsername();
         return userRepository.findByUsername(username);
     }

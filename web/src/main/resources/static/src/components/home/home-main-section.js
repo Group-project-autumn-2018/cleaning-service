@@ -8,9 +8,10 @@ const HomeMainSection = () => {
             <div className="container main-section">
                 <div className="description text-center">
                     <h1>
-                        Чисто там - где убирают
+                        “. . . meekness, love, purity, these are the things that should magnify us.”
+                        ― Joseph Smith Jr.
                     </h1>
-                    <Link className="btn btn-primary btn-lg col-sm-3" to="/booking">Заказать уборку</Link>
+                    <Link className="btn btn-primary btn-lg col-sm-3" to="/booking">Book a cleaner</Link>
                 </div>
             </div>
         </div>

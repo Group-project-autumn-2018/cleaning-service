@@ -1,7 +1,6 @@
-export const fetchEntities = (page, size, entityURN) =>
-{
+export const fetchEntities = (page, size, entityURN, token) => {
     return dispatch => {
-        fetch(`/api${entityURN}?page=${page}&size=${size}`).then(resolve => resolve.json()).then(response => {
+        fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}`).then(resolve => resolve.json()).then(response => {
             const pagination = {
                 totalItemsCount: response.totalElements,
                 activePage: response.number,
@@ -14,20 +13,15 @@ export const fetchEntities = (page, size, entityURN) =>
 };
 
 
-export const updateEntity = (entity, entityURN)=> {
-    return dispatch => {
-        let options = {
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT',
-            body: JSON.stringify(entity)
-        };
-        fetch(`/api${entityURN}/${entity.id}`, options);
+export const updateEntity = (entity, entityURN, token) => {
+    return async dispatch => {
+        const res = await api.fetchUpdateEntity(entity, entityURN, token);
+        console.log('[Entity update status] ' + res.status);
         dispatch(updateEntitySuccess(entity));
-        };
-    };
+    }
+};
+
+
 
 
 
@@ -38,21 +32,21 @@ export const fetchEntitiesSuccess = (entity) => {
     };
 };
 
-export const setPagination = (pagination) =>{
+export const setPagination = (pagination) => {
     return {
         type: 'SET_PAGINATION',
         payload: pagination
     };
 };
 
-export const prepareEntityForUpdate = (entity)=> {
+export const prepareEntityForUpdate = (entity) => {
     return {
         type: 'PREPARE_ENTITY_FOR_UPDATE',
         payload: entity
     }
 };
 
-export const updateEntitySuccess = (entity)=> {
+export const updateEntitySuccess = (entity) => {
     return {
         type: 'UPDATE_ENTITY_SUCCESS',
         payload: entity

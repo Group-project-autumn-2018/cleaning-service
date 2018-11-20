@@ -12,7 +12,7 @@ class BanModal extends Component {
         let customer = {...this.props.customer};
         let banned = !customer.banned;
         let banReason = this.refs.banReasonOption.value + " " + this.refs.banReasonText.value;
-        this.props.updateCustomer({...customer, banned, banReason}, this.entityURN);
+        this.props.updateCustomer({...customer, banned, banReason}, this.entityURN, this.props.token);
         this.refs.banReasonText.value = '';
     };
 
@@ -23,7 +23,7 @@ class BanModal extends Component {
                 <div className="modal-dialog modal-dialog-centered" role="document">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h5 className="modal-title" id="exampleModalLongTitle">Укажите причину блокировки</h5>
+                            <h5 className="modal-title" id="exampleModalLongTitle">Choose ban reason</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -47,18 +47,17 @@ class BanModal extends Component {
     }
 
 }
-;
-
 const mapStateToProps = (state) => {
     return {
-        customer: state.entityToUpdate
+        customer: state.entityToUpdate,
+        token: state.user.token
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateCustomer: (customer, entityURN) => {
-            dispatch(actions.updateEntity(customer, entityURN))
+        updateCustomer: (customer, entityURN, token) => {
+            dispatch(actions.updateEntity(customer, entityURN, token))
         }
     }
 };
