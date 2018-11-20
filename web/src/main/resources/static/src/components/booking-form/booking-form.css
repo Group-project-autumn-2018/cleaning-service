@@ -49,42 +49,21 @@
     margin-bottom: 5px;
 }
 
-.first-row {
+.long-inputs {
     display: flex;
     justify-content: space-between;
     max-width: 800px;
     max-height: 90px;
 }
 
-.second-row {
+.rooms {
     display: flex;
     justify-content: space-between;
     max-width: 800px;
     max-height: 90px;
-    /*padding-top: 10px;*/
-}
-
-.third-row {
-    display: flex;
-    justify-content: space-between;
-    max-width: 800px;
-    padding-top: 5px;
-    background-color: lightgray;
-    vertical-align: center;
-    opacity: 0.8;
 }
 
 .fourth-row {
-    display: flex;
-    justify-content: space-between;
-    max-width: 800px;
-    padding-top: 5px;
-    background-color: lightgray;
-    vertical-align: center;
-    opacity: 0.8;
-}
-
-.fifth-row {
     display: flex;
     justify-content: space-between;
     max-width: 800px;
