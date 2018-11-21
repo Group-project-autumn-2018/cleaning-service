@@ -1,29 +1,34 @@
 package com.itechart.customer.service;
-
 import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
 import com.itechart.common.service.SMSService;
+import com.itechart.customer.dto.CustomerProfileDto;
+import com.itechart.customer.dto.CustomerProfileUpdateDto;
 import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.entity.Customer;
 import com.itechart.customer.repository.CustomerRepository;
+import com.itechart.customer.util.CustomerEntityDtoMapper;
 import com.itechart.customer.util.CustomerVerification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
+import javax.transaction.Transactional;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+
 
 @Service
 public class CustomerServiceImpl implements CustomerService {
@@ -35,6 +40,9 @@ public class CustomerServiceImpl implements CustomerService {
     private final SMSService smsService;
 
     @Autowired
+    private CustomerEntityDtoMapper mapper;
+
+    @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository,
                                BCryptPasswordEncoder bCryptPasswordEncoder,
                                EmailService emailService, RoleService roleService,
@@ -44,7 +52,14 @@ public class CustomerServiceImpl implements CustomerService {
         this.emailService = emailService;
         this.roleService = roleService;
         this.smsService = smsService;
+
     }
+
+    @Bean
+    CustomerEntityDtoMapper customerEntityDtoMapper(){
+        return new CustomerEntityDtoMapper(bCryptPasswordEncoder);
+    }
+
 
     @Override
     public Page<Customer> findPaginated(int page, int size) {
@@ -57,9 +72,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public ResponseEntity updateProfile(CustomerProfileUpdateDto customerDto) {
+        Customer customer = customerRepository.findById(customerDto.getId()).orElse(null);
+        if(customerDto.getPassword() != null){
+            if(bCryptPasswordEncoder.matches(customerDto.getPassword(), customer.getPassword())){
+                Customer customerToSave = mapper.mapProfileUpdateDtoToCustomer(customer, customerDto);
+                customerRepository.saveAndFlush(customerToSave);
+                return ResponseEntity.status(HttpStatus.OK).build();
+            }else{
+                return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
+            }
+        }
+        Customer customerToSave = mapper.mapProfileUpdateDtoToCustomer(customer, customerDto);
+        customerRepository.saveAndFlush(customerToSave);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Override
     public Customer getCustomerById(Long id) {
         Customer customer = customerRepository.findById(id).orElse(null);
         return customer;
+    }
+
+    @Override
+    public CustomerProfileDto getCustomerProfileById(Long id) {
+        Customer customer = customerRepository.findById(id).orElse(null);
+        return mapper.mapCustomerToCustomerProfileDto(customer);
     }
 
     @Override
@@ -134,4 +172,5 @@ public class CustomerServiceImpl implements CustomerService {
             }
         }
     }
+
 }

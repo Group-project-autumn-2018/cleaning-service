@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import OrderServiceButton from '../companies/order-service-button';
+import ConfirmModalToggleButton from './confirm-modal-toggle-button'
 
 class Company extends Component {
 
@@ -12,7 +12,7 @@ class Company extends Component {
                 <td className="col">{this.props.company.ranking}</td>
                 <td className="col">{this.props.company.price}</td>
                 <td className="col">
-                    <OrderServiceButton/>
+                    <ConfirmModalToggleButton onClick={this.onConfirm}/>
                 </td>
             </tr>
         )
