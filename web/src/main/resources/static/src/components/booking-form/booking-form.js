@@ -18,64 +18,68 @@ class BookingForm extends Component {
 
 
     render() {
-        console.log(this.props.isAuthenticated);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
                 <form className="form-booking card person-card">
                     <h3 className=""><b>Booking form</b></h3>
 
-                    <div className="long-inputs">
+                    <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            <input type="text" id="address" className="form-control" placeholder="Your address..."
+                            <input type="text" id="address" className="form-control long" placeholder="Your address..."
                                    required autoFocus/>
                         </div>
-                        <SelectItemsList array={this.types} label={"Cleaning type"}/>
+                        <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
+                                         id={"cleaningType"}/>
                     </div>
 
-                    <div className="rooms">
+                    <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="smallRooms" className="col-form-label">Small rooms</label>
-                            <input type="text" id="smallRooms" className="form-control row-2"
+                            <input type="text" id="smallRooms" className="form-control short"
                                    placeholder="under 20 m²" required autoFocus/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bigRooms" className="col-form-label">Big rooms</label>
-                            <input type="text" id="bigRooms" className="form-control row-2"
+                            <input type="text" id="bigRooms" className="form-control short"
                                    placeholder="over 20 m²" required autoFocus/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bathrooms" className="col-form-label">Bathrooms</label>
-                            <input type="text" id="bathrooms" className="form-control row-2"
+                            <input type="text" id="bathrooms" className="form-control short"
                                    placeholder="number of bathrooms..." required autoFocus/>
                         </div>
                     </div>
 
-                    <div className="long-inputs">
+                    <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="cleaningDays" className="col-form-label">Choose day for cleaning:</label>
-                            <input type="date" id="cleaningDays" className="form-control " required autoFocus/>
+                            <input type="date" id="cleaningDays" className="form-control long" required autoFocus/>
                         </div>
-                        <SelectItemsList array={this.frequency} label={"Planned cleaning frequency:"}/>
+                        <SelectItemsList array={this.frequency} label={"Planned cleaning frequency:"} className={"long"}
+                                         id={"cleaningFrequency"}/>
                     </div>
 
-                    <div className="fourth-row">
+                    <div>
                         {this.props.isAuthenticated ?
-                            <div>
-                                <SelectItemsList array={this.duration} label={"Transaction duration"}
-                                                 className={"row-5"}/>
-                                <SelectItemsList array={this.time} label={"Estimated time"} className={"row-5"}/>
+                            <div className="bookingRow">
+                                <SelectItemsList array={this.duration} label={"Transaction duration"} className={"long"}
+                                                 id={"transactionDuration"}/>
+                                <SelectItemsList array={this.time} label={"Estimated time"} className={"long"}
+                                                 id={"estimatedTime"}/>
                             </div>
                             :
-                            <div>
+                            <div className="bookingRow">
                                 <SelectItemsList array={this.duration} label={"Transaction duration"}
-                                                 className={"row-5"}/>
-                                <SelectItemsList array={this.time} label={"Estimated time"} className={"row-5"}/>
+                                                 className={"short"}
+                                                 id={"transactionDuration"}/>
+                                <SelectItemsList array={this.time} label={"Estimated time"} className={"short"}
+                                                 id={"estimatedTime"}/>
 
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
-                                    <input type="email" className="form-control row-5" id="email"
+                                    <input type="email" className="form-control short" id="email"
                                            placeholder="example@gmail.com" required/>
                                     <div className="email-feedback"/>
                                 </div>
