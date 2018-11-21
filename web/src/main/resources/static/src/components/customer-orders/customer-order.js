@@ -3,7 +3,18 @@ import React from 'react';
 
 const CustomerOrder = ({order}) => {
     return (
-        <div></div>
+        <tr className="row">
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+            <td className="col">{this.props.order}</td>
+        </tr>
     )
 };
 
