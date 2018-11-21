@@ -1,5 +1,6 @@
 import React from 'react';
 import Company from './company';
+import CustomerConfirmModalForm from './customer-confirm-modal-form';
 
 const CompaniesList = ({companies}) => {
     const companiesList = companies.map((company) =>
@@ -8,7 +9,7 @@ const CompaniesList = ({companies}) => {
 
     return (
         <div className="container">
-            <table className="table .table-hover">
+            <table className="table table-hover">
                 <tbody>
                 <tr className="row">
                     <th scope="col" className="col">Logotype</th>
@@ -21,6 +22,7 @@ const CompaniesList = ({companies}) => {
                 {companiesList}
                 </tbody>
             </table>
+            <CustomerConfirmModalForm/>
         </div>
     )
 };

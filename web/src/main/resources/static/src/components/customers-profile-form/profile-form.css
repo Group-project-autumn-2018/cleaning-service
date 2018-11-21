@@ -13,6 +13,39 @@
     margin: 20px auto;
 }
 
-input[type="password"].invalid {
+input.form-control {
+    width: 100%
+}
+
+div.col-sm-8 {
+    padding: 0;
+}
+
+#profileFormPhone {
+    margin-bottom: 1.5rem;
+}
+
+input.invalid {
     border-color: #b64644;
+}
+
+input.invalid:focus {
+    border-color: #f94345;
+    box-shadow: 0 0 14px 1px #f94345 !important;
+}
+
+p.errorMessage {
+    color: #b62920;
+    visibility: hidden;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+p.success {
+    color: #0e9f51;
+    font-size: 2.5rem;
+}
+
+input.invalid ~ p.errorMessage {
+    visibility: visible;
 }
