@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import './booking-form.css';
 import SelectItemsList from "./select-items-list";
 import {Link} from "react-router-dom";
+import * as orderActions from "../actions/order-actions";
 
 
 class BookingForm extends Component {
@@ -16,8 +17,8 @@ class BookingForm extends Component {
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
-
     render() {
+        console.log(this.props);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -104,4 +105,12 @@ const mapStateToProps = (state) => {
     }
 };
 
-export default connect(mapStateToProps)(BookingForm);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateOrder: (order) => {
+            dispatch(orderActions.prepareOrderForUpdate(order))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(BookingForm);
