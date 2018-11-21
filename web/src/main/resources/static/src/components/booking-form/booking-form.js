@@ -16,7 +16,9 @@ class BookingForm extends Component {
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
+
     render() {
+        console.log(this.props.isAuthenticated);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -59,7 +61,7 @@ class BookingForm extends Component {
                     </div>
 
                     <div className="fourth-row">
-                        {user.isAuthenticated ?
+                        {this.props.isAuthenticated ?
                             <div>
                                 <SelectItemsList array={this.duration} label={"Transaction duration"}
                                                  className={"row-5"}/>
@@ -94,7 +96,7 @@ class BookingForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.user.isAuthenticated
+        ...state.user
     }
 };
 

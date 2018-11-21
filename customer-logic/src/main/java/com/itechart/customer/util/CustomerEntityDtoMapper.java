@@ -1,4 +1,6 @@
 package com.itechart.customer.util;
+
+import com.itechart.common.entity.Address;
 import com.itechart.customer.dto.CustomerProfileDto;
 import com.itechart.customer.dto.CustomerProfileUpdateDto;
 import com.itechart.customer.entity.Customer;
@@ -21,7 +23,7 @@ public class CustomerEntityDtoMapper {
          }
          customer.setEmail(customerProfileUpdateDto.getEmail());
          customer.setPhone(customerProfileUpdateDto.getPhone());
-         customer.setAddress(customerProfileUpdateDto.getAddress());
+//         customer.setAddress(customerProfileUpdateDto.getAddress());
          customer.setCleaningNotifications(customerProfileUpdateDto.getCleaningNotifications());
          return customer;
     }
@@ -32,7 +34,7 @@ public class CustomerEntityDtoMapper {
         customerDto.setUsername(customer.getUsername());
         customerDto.setEmail(customer.getEmail());
         customerDto.setPhone(customer.getPhone());
-        customerDto.setAddress(customer.getAddress());
+        customerDto.setAddress(customer.getAddress().getAddress());
         customerDto.setCleaningNotifications(customer.getCleaningNotifications());
         return customerDto;
     }
