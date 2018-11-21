@@ -8,7 +8,7 @@ const CompaniesList = ({companies}) => {
 
     return (
         <div className="container">
-            <table className="table .table-hover">
+            <table className="table table-hover">
                 <tbody>
                 <tr className="row">
                     <th scope="col" className="col">Logotype</th>
