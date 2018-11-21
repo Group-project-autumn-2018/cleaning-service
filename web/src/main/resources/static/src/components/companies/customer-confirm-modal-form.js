@@ -5,6 +5,7 @@ import {connect} from 'react-redux';
 class CustomerConfirmModalForm extends Component {
 
     render() {
+        console.log(this.props);
         return (
             <div className="modal fade" id="confirm-modal" tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -19,7 +20,7 @@ class CustomerConfirmModalForm extends Component {
                         <div className="modal-body container">
                             <div className="row">
                                 <div className="col-4">Address</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.address}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Cleaning Type</div>
@@ -74,7 +75,9 @@ class CustomerConfirmModalForm extends Component {
 
 
 const mapStateToProps = (state) => {
-    return {}
+    return {
+        ...state.order
+    }
 };
 
 export default connect(mapStateToProps)(CustomerConfirmModalForm);

@@ -159,7 +159,7 @@ class BookingForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.user,
+        ...state.user
     }
 };
 
