@@ -28,10 +28,7 @@ public class CustomerController {
     @GetMapping()
     public Page<Customer> findPaginated(
             @RequestParam("page") int page, @RequestParam("size") int size) {
-
-        Page<Customer> resultPage = customerService.findPaginated(page, size);
-
-        return resultPage;
+        return customerService.findPaginated(page, size);
     }
 
     @GetMapping("/profile/{id}")

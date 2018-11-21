@@ -4,16 +4,18 @@ import com.itechart.common.entity.Address;
 import com.itechart.customer.dto.CustomerProfileDto;
 import com.itechart.customer.dto.CustomerProfileUpdateDto;
 import com.itechart.customer.entity.Customer;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-public class CustomerEntityDtoMapper {
+@Mapper(componentModel = "spring")
+public abstract class CustomerMapper {
 
-    private final BCryptPasswordEncoder encoder;
+    @Autowired
+    private BCryptPasswordEncoder encoder;
 
-    public CustomerEntityDtoMapper(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.encoder = bCryptPasswordEncoder;
-    }
 
     public Customer mapProfileUpdateDtoToCustomer(Customer customer, CustomerProfileUpdateDto customerProfileUpdateDto) {
         customer.setId(customerProfileUpdateDto.getId());
@@ -23,21 +25,13 @@ public class CustomerEntityDtoMapper {
         }
         customer.setEmail(customerProfileUpdateDto.getEmail());
         customer.setPhone(customerProfileUpdateDto.getPhone());
-//         customer.setAddress(customerProfileUpdateDto.getAddress());
+        Address address = customer.getAddress();
+        address.setAddress(customerProfileUpdateDto.getAddress());
+        customer.setAddress(address);
         customer.setCleaningNotifications(customerProfileUpdateDto.getCleaningNotifications());
         return customer;
     }
 
-    public CustomerProfileDto mapCustomerToCustomerProfileDto(Customer customer) {
-        CustomerProfileDto customerDto = new CustomerProfileDto();
-        customerDto.setId(customer.getId());
-        customerDto.setUsername(customer.getUsername());
-        customerDto.setEmail(customer.getEmail());
-        customerDto.setPhone(customer.getPhone());
-        customerDto.setAddress(customer.getAddress().getAddress());
-        customerDto.setCleaningNotifications(customer.getCleaningNotifications());
-        return customerDto;
-    }
-
-
+    @Mapping(target = "address", source = "address.address")
+    public abstract CustomerProfileDto mapCustomerToCustomerProfileDto(Customer customer);
 }

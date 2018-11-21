@@ -1,5 +1,4 @@
 package com.itechart.customer.dto;
-
 import lombok.Data;
 
 @Data

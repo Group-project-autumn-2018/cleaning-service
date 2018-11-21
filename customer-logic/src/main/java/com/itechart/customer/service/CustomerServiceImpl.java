@@ -9,10 +9,9 @@ import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.entity.Customer;
 import com.itechart.customer.repository.CustomerRepository;
-import com.itechart.customer.util.CustomerEntityDtoMapper;
+import com.itechart.customer.util.CustomerMapper;
 import com.itechart.customer.util.CustomerVerification;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.nio.charset.Charset;
 import java.time.LocalDate;
@@ -40,8 +38,9 @@ public class CustomerServiceImpl implements CustomerService {
     private final RoleService roleService;
     private final SMSService smsService;
 
+
     @Autowired
-    private CustomerEntityDtoMapper mapper;
+    private CustomerMapper mapper;
 
     @Autowired
     public CustomerServiceImpl(CustomerRepository customerRepository,
@@ -56,12 +55,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     }
 
-    @Bean
-    CustomerEntityDtoMapper customerEntityDtoMapper() {
-        return new CustomerEntityDtoMapper(bCryptPasswordEncoder);
-    }
-
-
     @Override
     public Page<Customer> findPaginated(int page, int size) {
         return customerRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
@@ -75,6 +68,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public ResponseEntity updateProfile(CustomerProfileUpdateDto customerDto) {
         Customer customer = customerRepository.findById(customerDto.getId()).orElse(null);
+
         if (customerDto.getPassword() != null) {
             if (bCryptPasswordEncoder.matches(customerDto.getPassword(), customer.getPassword())) {
                 Customer customerToSave = mapper.mapProfileUpdateDtoToCustomer(customer, customerDto);
