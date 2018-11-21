@@ -47,6 +47,7 @@ public class Order {
     @Column(name = "bathrooms_count")
     private Integer bathroomsCount;
 
+    @Column(name = "cleaning_day")
     private DayOfWeek cleaningDay;
 
     @Enumerated(EnumType.STRING)
@@ -55,6 +56,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Duration duration;
 
+    @Column(name = "estimated_time")
     private LocalTime estimatedTime;
 
     private BigDecimal price;
