@@ -59,7 +59,7 @@ class BookingForm extends Component {
                     </div>
 
                     <div className="fourth-row">
-                        {this.isAuthenticated ?
+                        {user.isAuthenticated ?
                             <div>
                                 <SelectItemsList array={this.duration} label={"Transaction duration"}
                                                  className={"row-5"}/>
@@ -70,7 +70,6 @@ class BookingForm extends Component {
                                 <SelectItemsList array={this.duration} label={"Transaction duration"}
                                                  className={"row-5"}/>
                                 <SelectItemsList array={this.time} label={"Estimated time"} className={"row-5"}/>
-
 
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
