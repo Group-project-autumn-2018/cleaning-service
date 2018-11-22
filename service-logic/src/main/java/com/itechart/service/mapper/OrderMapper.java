@@ -13,6 +13,6 @@ public abstract class OrderMapper {
     @Mapping(target = "address", source = "address.address")
     public abstract OrderDto mapOrderToOrderDto(Order order);
 
-
+    @Mapping(target = "address.address", source = "address")
     public abstract Order mapOrderDtoToOrder(OrderDto orderDto);
 }

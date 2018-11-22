@@ -1,8 +1,16 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-
+import * as orderActions from "../actions/order-actions";
+import {fetchSaveEntity} from '../api/api-actions';
 
 class CustomerConfirmModalForm extends Component {
+
+    URN = "/order";
+
+    onConfirm = () => {
+        fetchSaveEntity({...this.props.order}, this.URN, this.props.user.token)
+    };
+
 
     render() {
         return (
@@ -19,41 +27,49 @@ class CustomerConfirmModalForm extends Component {
                         <div className="modal-body container">
                             <div className="row">
                                 <div className="col-4">Address</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.address}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Cleaning Type</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.cleaningType}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Rooms</div>
                                 <div className="col-8">
-                                    <ul></ul>
+                                    <ul>
+                                        <li>{`Small rooms ${this.props.order.smallRooms}`}</li>
+                                        <li>{`Big rooms ${this.props.order.bigRooms}`}</li>
+                                        <li>{`Bathrooms ${this.props.order.bathrooms}`}</li>
+                                    </ul>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Cleaning Date</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.cleaningDay}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Cleaning Start Time</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.cleaningTime}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Frequency</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.frequency}</div>
+                            </div>
+                            <div className="row">
+                                <div className="col-4">Duration</div>
+                                <div className="col-8">{this.props.order.duration}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Cleaning Company</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.company}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Estimated Price</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.estimatedPrice}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Estimated Time</div>
-                                <div className="col-8"></div>
+                                <div className="col-8">{this.props.order.estimatedTime}</div>
                             </div>
 
                         </div>
@@ -61,7 +77,9 @@ class CustomerConfirmModalForm extends Component {
                             <button type="button" className="btn btn-secondary btn-danger" data-dismiss="modal">
                                 Close
                             </button>
-                            <button type="submit" className="btn btn-secondary btn btn-success">Confirm</button>
+                            <button type="submit" className="btn btn-secondary btn btn-success"
+                                    onClick={this.onConfirm}>Confirm
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -73,8 +91,20 @@ class CustomerConfirmModalForm extends Component {
 }
 
 
-const mapStateToProps = (state) => {
-    return {}
+const mapStateToProps = ({user, orderUpdate}) => {
+    return {
+        user: user,
+        order: orderUpdate
+    }
 };
 
-export default connect(mapStateToProps)(CustomerConfirmModalForm);
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateOrder: (order) => {
+            dispatch(orderActions.prepareOrderForUpdate(order))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomerConfirmModalForm);

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Getter
@@ -49,7 +50,10 @@ public class Order {
     private Integer bathroomsCount;
 
     @Column(name = "cleaning_day")
-    private DayOfWeek cleaningDay;
+    private LocalDate cleaningDay;
+
+    @Column(name = "cleaning_time")
+    private String cleaningTime;
 
     @Enumerated(EnumType.STRING)
     private Frequency frequency;

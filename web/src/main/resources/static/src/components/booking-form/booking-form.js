@@ -10,16 +10,19 @@ class BookingForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            customer: '',
             address: '',
             cleaningType: '',
             smallRooms: '',
             bigRooms: '',
             bathrooms: '',
-            cleaningDays: '',
-            cleaningFrequency: '',
-            transactionDuration: '',
-            estimatedTime: '',
-            email: ''
+            cleaningDay: '',
+            cleaningTime: '',
+            frequency: '',
+            duration: '',
+            email: '',
+            estimatedPrice: 120,
+            estimatedTime: ''
         }
     }
 
@@ -43,28 +46,38 @@ class BookingForm extends Component {
         this.setState({bathrooms: event.target.value});
     };
 
-    changeCleaningDays = (event) => {
-        this.setState({cleaningDays: event.target.value});
+    changeCleaningDay = (event) => {
+        console.log(event.target);
+        console.log(event.target.value);
+        this.setState({cleaningDay: event.target.value});
     };
 
     changeCleaningFrequency = (event) => {
-        this.setState({cleaningFrequency: event.target.value});
+        this.setState({frequency: event.target.value});
     };
 
     changeTransactionDuration = (event) => {
-        this.setState({transactionDuration: event.target.value});
+        this.setState({duration: event.target.value});
     };
 
-    changeEstimatedTime = (event) => {
-        this.setState({estimatedTime: event.target.value});
+    changeCleaningTime = (event) => {
+        this.setState({cleaningTime: event.target.value});
     };
 
     changEmail = (event) => {
         this.setState({email: event.target.value});
     };
 
-    frequency = ["Not chosen...", "Only once", "Every week", "Every two weeks", "Every month"];
-    duration = ["None", "One month", "Two month", "Three month", "Four month", "Five month", "Six month"];
+    onSubmit = () => {
+        if (this.props.id) {
+            this.props.updateOrder({...this.state, customer: this.props.id})
+        } else {
+            this.props.updateOrder({...this.state})
+        }
+    };
+
+    frequency = ["ONLY_ONCE", "EVERY_WEEK", "EVERY_TWO_WEEKS", "EVERY_MONTH"];
+    duration = ["ONE_MONTH", "TWO_MONTH", "THREE_MONTH", "FOUR_MONTH", "FIVE_MONTH", "SIX_MONTH"];
     time = ["Not chosen...", "9-00 AM", "9-30 AM", "10-00 AM", "10-30 AM", "11-00 AM", "11-30 AM", "12-00 AM", "12-30 AM",
         "13-00 AM", "13-30 AM", "14-00 AM", "14-30 AM", "15-00 AM", "15-30 AM", "16-00 AM", "16-30 AM", "17-00 AM",
         "17-30 AM", "18-00 AM"];
@@ -73,7 +86,6 @@ class BookingForm extends Component {
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
-        console.log(this.state);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -113,7 +125,7 @@ class BookingForm extends Component {
                         <div className="form-group">
                             <label htmlFor="cleaningDays" className="col-form-label">Choose day for cleaning:</label>
                             <input type="date" id="cleaningDays" className="form-control long" required autoFocus
-                                   onChange={this.changeCleaningDays}/>
+                                   onChange={this.changeCleaningDay}/>
                         </div>
                         <SelectItemsList array={this.frequency} label={"Planned cleaning frequency:"} className={"long"}
                                          id={"cleaningFrequency"} onChange={this.changeCleaningFrequency}/>
@@ -123,18 +135,18 @@ class BookingForm extends Component {
                         {this.props.isAuthenticated ?
                             <div className="bookingRow">
                                 <SelectItemsList array={this.duration} label={"Transaction duration"} className={"long"}
-                                                 id={"transactionDuration"}
+                                                 id={"duration"}
                                                  onChange={this.changeTransactionDuration}/>
-                                <SelectItemsList array={this.time} label={"Estimated time"} className={"long"}
-                                                 id={"estimatedTime"} onChange={this.changeEstimatedTime}/>
+                                <SelectItemsList array={this.time} label={"Cleaning Time"} className={"long"}
+                                                 id={"cleaningTime"} onChange={this.changeCleaningTime}/>
                             </div>
                             :
                             <div className="bookingRow">
                                 <SelectItemsList array={this.duration} label={"Transaction duration"}
-                                                 className={"short"} id={"transactionDuration"}
+                                                 className={"short"} id={"duration"}
                                                  onChange={this.changeTransactionDuration}/>
-                                <SelectItemsList array={this.time} label={"Estimated time"} className={"short"}
-                                                 id={"estimatedTime"} onChange={this.changeEstimatedTime}/>
+                                <SelectItemsList array={this.time} label={"Cleaning Time"} className={"short"}
+                                                 id={"cleaningTime"} onChange={this.changeCleaningTime}/>
 
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
@@ -146,7 +158,7 @@ class BookingForm extends Component {
                         }
                     </div>
 
-                    <div className="confirm">
+                    <div className="confirm" onClick={this.onSubmit}>
                         <Link to="/companies" className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
                             Consider proposals
                         </Link>
