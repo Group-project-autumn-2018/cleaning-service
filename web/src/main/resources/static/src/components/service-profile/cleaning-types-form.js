@@ -14,7 +14,7 @@ const CleaningTypesForm = (props) => {
                 <label className="col-sm-5">Standard room cleaning coefficient</label>
                 <AdditionalInput names={['standardRoomCleaning', 'standardRoomCleaningTime']}
                                  onChangePriceHandler={props.onChangePriceHandler}
-                                 onChangeTimeHandler={props.onChangeTimeHandler}/> :
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
             </div>
 
             <div className="form-group row">

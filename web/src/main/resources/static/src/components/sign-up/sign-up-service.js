@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import './sign-up.css';
-import '../service-profile/service-profile.css';
+
 import ServiceApi from '../services/service-api';
 import VerificationForm from './verification-form';
 import CleaningTypesForm from '../service-profile/cleaning-types-form';
@@ -164,9 +164,9 @@ class SignUpService extends Component {
                     password: this.state.service.password,
                     description: this.state.service.description,
                     address: {
-                        address: '',  //this.state.service.address,
-                        lat: '',      //this.state.service.lat,
-                        lon: ''       //this.state.service.lon
+                        address: this.state.service.address,
+                        lat: this.state.service.lat,
+                        lon: this.state.service.lon
                     },
                     cleaningTypesDto: {
                         ...this.state.service.cleaningTypesDto
@@ -399,7 +399,8 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
-                    <input type="text" className="form-control" id="profileFormDescription" placeholder="Description"
+                    <input type="text" className="form-control input-left-space col-sm-6" id="profileFormDescription"
+                           placeholder="Description"
                            name="description"
                            value={props.service.description}
                            onChange={props.onChangeHandler}
@@ -409,7 +410,8 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
                 <div className="col-sm-8 dropdown">
-                    <input type="text" className="form-control dropdown-toggle" id="profileFormAddress"
+                    <input type="text" className="form-control dropdown-toggle input-left-space col-sm-6"
+                           id="profileFormAddress"
                            data-toggle="dropdown" placeholder="Address"
                            name="address"
                            value={props.service.address}
@@ -418,6 +420,7 @@ const MainPanel = (props) => {
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
                 </div>
             </div>
+
         </React.Fragment>
     )
 };

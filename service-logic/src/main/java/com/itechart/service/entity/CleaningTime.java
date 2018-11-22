@@ -17,28 +17,28 @@ public class CleaningTime {
     private Long id;
 
     @Column(name = "standard_room_cleaning_time")
-    private int standardRoomCleaningTime;
+    private Double standardRoomCleaningTime;
 
     @Column(name = "spring_cleaning_time")
-    private int springCleaningTime;
+    private Double springCleaningTime;
 
     @Column(name = "repair_and_construction_cleaning_time")
-    private int repairAndConstructionCleaningTime;
+    private Double repairAndConstructionCleaningTime;
 
     @Column(name = "dry_carpet_cleaning_time")
-    private int dryCarpetCleaningTime;
+    private Double dryCarpetCleaningTime;
 
     @Column(name = "office_cleaning_time")
-    private int officeCleaningTime;
+    private Double officeCleaningTime;
 
     @Column(name = "furniture_and_coatings_cleaning_time")
-    private int furnitureAndCoatingsCleaningTime;
+    private Double furnitureAndCoatingsCleaningTime;
 
     @Column(name = "industrial_cleaning_time")
-    private int industrialCleaningTime;
+    private Double industrialCleaningTime;
 
     @Column(name = "pool_cleaning_time")
-    private int poolCleaningTime;
+    private Double poolCleaningTime;
 
     @Column(name = "small_room_cleaning_time")
     private int smallRoomCleaningTime;
