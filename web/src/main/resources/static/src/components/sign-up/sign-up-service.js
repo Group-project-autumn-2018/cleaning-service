@@ -174,20 +174,12 @@ class SignUpService extends Component {
                 }
             ;
 
-            //let obj = new FormData();
-            //obj.append("objDto", JSON.stringify(objDto));
-            //if (this.logotype !== '') obj.append("logotype", this.state.logotype);
-            let obj = JSON.stringify(objDto);
-            console.log(obj);
-            this.serviceApi.preRegisterService(obj).then(resp => {
-                if (resp === 202) {
-                    const key = (this.state.service.email !== '') ? this.state.service.email : this.state.service.phone;
-                    const credentials = {
-                        username: this.state.service.username,
-                        base64Token: this.base64EncodeUnicode(key + this.state.service.password)
-                    };
-                    //this.props.setCredentials(credentials);
-                } else {
+            let formData = new FormData();
+            formData.append("objDto", JSON.stringify(objDto));
+            if (this.state.logo !== '') formData.append("logotype", this.state.logo);
+            console.log(formData);
+            this.serviceApi.registerServiceMultipart(formData).then(resp => {
+                if (resp !== 202) {
                     this.setState({disabled: false});
                 }
             });
