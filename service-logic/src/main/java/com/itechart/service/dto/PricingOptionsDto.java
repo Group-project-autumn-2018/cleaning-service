@@ -14,6 +14,4 @@ public class PricingOptionsDto {
     private BigDecimal costOfCleaningBigRooms;
     private BigDecimal costOfCleaningBathrooms;
     private double coefficient;
-
-
 }

@@ -21,15 +21,12 @@ import javax.persistence.Table;
 @Table(name = "services")
 @PrimaryKeyJoinColumn(name = "id")
 public class CleaningCompany extends User {
-    @Column(name = "logotype")
-    private String logotype;
     @Column(name = "description")
     private String description;
+
     @Column(name = "confirmed")
     private Boolean confirmed;
+
     @Column(name = "cleaning_notifications")
     private Boolean cleaningNotifications;
-//    private Adress adress;
-
-
 }

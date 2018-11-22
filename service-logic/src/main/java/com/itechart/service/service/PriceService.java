@@ -4,5 +4,5 @@ import com.itechart.service.dto.PriceDto;
 
 public interface PriceService {
 
-    void savePrice(PriceDto priceDto);
+
 }

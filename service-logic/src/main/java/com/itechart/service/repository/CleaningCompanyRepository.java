@@ -12,6 +12,7 @@ import java.util.List;
 @Repository
 public interface CleaningCompanyRepository extends JpaRepository<CleaningCompany, Long> {
     List<CleaningCompany> findAll();
+
     @Modifying
     @Query("update Customer set confirmed = :confirmed where id = :serviceId")
     void changeConfirmStatus(@Param("confirmed") boolean confirmed, @Param("serviceId") Long serviceId);

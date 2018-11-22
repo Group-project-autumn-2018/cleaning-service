@@ -11,6 +11,7 @@ import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.CleaningTimeService;
 import com.itechart.service.service.PriceService;
+import com.itechart.service.service.TypesOfProvidedServiceService;
 import com.itechart.service.util.ServiceVerification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,8 +50,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     private final EmailService emailService;
     private final RoleService roleService;
     private final SMSService smsService;
-    private final PriceService priceService;
-    private final CleaningTimeService cleaningTimeService;
+    private final TypesOfProvidedServiceService typesOfProvidedServiceService;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
@@ -58,15 +58,13 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
                                       BCryptPasswordEncoder bCryptPasswordEncoder,
                                       EmailService emailService, RoleService roleService,
                                       SMSService smsService,
-                                      PriceService priceService,
-                                      CleaningTimeService cleaningTimeService) {
+                                      TypesOfProvidedServiceService typesOfProvidedServiceService) {
         this.cleaningCompanyRepository = cleaningCompanyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.emailService = emailService;
         this.roleService = roleService;
         this.smsService = smsService;
-        this.priceService = priceService;
-        this.cleaningTimeService = cleaningTimeService;
+        this.typesOfProvidedServiceService = typesOfProvidedServiceService;
     }
 
     @Override
@@ -95,11 +93,8 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         company.setAddingDate(LocalDate.now());
 
         cleaningCompanyRepository.saveAndFlush(company);
-
-        registrationDto.getPriceDto().setCompany(company);
-        registrationDto.getCleaningTimeDto().setCompany(company);
-        priceService.savePrice(registrationDto.getPriceDto());
-        cleaningTimeService.saveCleaningTime(registrationDto.getCleaningTimeDto());
+        registrationDto.getTypesOfProvidedServiceDto().setCompany(company);
+        typesOfProvidedServiceService.saveTypesOfProvidedService(registrationDto.getTypesOfProvidedServiceDto());
         return company.getId();
     }
 

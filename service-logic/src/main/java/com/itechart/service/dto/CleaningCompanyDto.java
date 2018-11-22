@@ -9,6 +9,5 @@ public class CleaningCompanyDto {
     private String email;
     private String password;
     private String description;
-    private PriceDto priceDto;
-    private CleaningTimeDto cleaningTimeDto;
+    private TypesOfProvidedServiceDto typesOfProvidedServiceDto;
 }
