@@ -37,9 +37,9 @@ class CustomerConfirmModalForm extends Component {
                                 <div className="col-4">Rooms</div>
                                 <div className="col-8">
                                     <ul>
-                                        <li>{`Small rooms ${this.props.order.smallRooms}`}</li>
-                                        <li>{`Big rooms ${this.props.order.bigRooms}`}</li>
-                                        <li>{`Bathrooms ${this.props.order.bathrooms}`}</li>
+                                        <li>{`Small rooms ${this.props.order.smallRoomsCount}`}</li>
+                                        <li>{`Big rooms ${this.props.order.bigRoomsCount}`}</li>
+                                        <li>{`Bathrooms ${this.props.order.bathroomsCount}`}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -77,7 +77,7 @@ class CustomerConfirmModalForm extends Component {
                             <button type="button" className="btn btn-secondary btn-danger" data-dismiss="modal">
                                 Close
                             </button>
-                            <button type="submit" className="btn btn-secondary btn btn-success"
+                            <button type="submit" className="btn btn-secondary btn btn-success" data-dismiss="modal"
                                     onClick={this.onConfirm}>Confirm
                             </button>
                         </div>

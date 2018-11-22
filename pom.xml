@@ -103,13 +103,13 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>org.mapstruct</groupId>
-                            <artifactId>mapstruct-processor</artifactId>
-                            <version>1.1.0.Final</version>
-                        </path>
-                    </annotationProcessorPaths>
+                    <!--<annotationProcessorPaths>-->
+                    <!--<path>-->
+                    <!--<groupId>org.mapstruct</groupId>-->
+                    <!--<artifactId>mapstruct-processor</artifactId>-->
+                    <!--<version>1.1.0.Final</version>-->
+                    <!--</path>-->
+                    <!--</annotationProcessorPaths>-->
                     <compilerArgs>
                         <arg>-Amapstruct.suppressGeneratorTimestamp=true</arg>
                         <arg>-Amapstruct.defaultComponentModel=spring</arg>

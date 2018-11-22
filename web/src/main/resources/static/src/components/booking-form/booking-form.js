@@ -13,9 +13,9 @@ class BookingForm extends Component {
             customer: '',
             address: '',
             cleaningType: '',
-            smallRooms: '',
-            bigRooms: '',
-            bathrooms: '',
+            smallRoomsCount: '',
+            bigRoomsCount: '',
+            bathroomsCount: '',
             cleaningDay: '',
             cleaningTime: '',
             frequency: '',
@@ -35,15 +35,15 @@ class BookingForm extends Component {
     };
 
     changeSmallRooms = (event) => {
-        this.setState({smallRooms: event.target.value});
+        this.setState({smallRoomsCount: event.target.value});
     };
 
     changeBigRooms = (event) => {
-        this.setState({bigRooms: event.target.value});
+        this.setState({bigRoomsCount: event.target.value});
     };
 
     changeBathrooms = (event) => {
-        this.setState({bathrooms: event.target.value});
+        this.setState({bathroomsCount: event.target.value});
     };
 
     changeCleaningDay = (event) => {
