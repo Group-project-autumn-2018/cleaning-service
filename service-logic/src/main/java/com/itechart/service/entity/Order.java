@@ -29,6 +29,9 @@ public class Order {
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = true)
     private Customer customer;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Embedded
     private Address address;
 
