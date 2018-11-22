@@ -7,9 +7,10 @@ const SelectItemsList = (props) => {
     const className = props.className ? props.className : "";
 
     return (
-        <div className="form-group">
+        <div className={props.id}>
             <label htmlFor="cleaningType" className="col-form-label">{props.label}</label>
-            <select className={"form-control" + " " + className} id="cleaningType" placeholder="Cleaning type">
+            <select className={"form-control" + " " + className} id={props.id} onChange={props.onChange}
+                    placeholder={props.placeholder}>
                 {listItems}
             </select>
         </div>

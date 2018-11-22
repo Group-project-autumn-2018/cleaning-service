@@ -55,9 +55,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Qualifier("userDetailsServiceImpl")
     UserDetailsService userDetailsService;
 
-    @Autowired
-    CustomAuthenticationFailureHandler authenticationFailureHandler;
-
 
     @Autowired
     private Environment env;

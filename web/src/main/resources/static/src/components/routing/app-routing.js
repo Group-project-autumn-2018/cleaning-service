@@ -36,6 +36,9 @@ class AppRouting extends Component {
                         <Route path="/logout" component={Logout}/>
                         <Route path="/admin" component={AdminMain}/>
                         <Route path="/login" component={SignIn}/>
+                        <Route path="/feedback" component={Feedback}/>
+                        <Route path="/booking" component={BookingForm}/>
+                        <Route path="/companies" component={Companies}/>
                         <Redirect to="/"/>
                     </Switch>
                 ) :
