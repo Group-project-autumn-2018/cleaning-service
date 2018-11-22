@@ -10,6 +10,16 @@ const LoginForm = (props) => {
                         <div className="card-body">
                             <h2 className="card-title">How to contact you ?</h2>
                             <div className="form-group">
+                                <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
+
+                                <input type="text" className="form-control" id="profileFormName" placeholder="Name"
+                                       name="username"
+                                       value={props.username}
+                                       onChange={props.onChangeHandler}
+                                />
+
+                            </div>
+                            <div className="form-group">
                                 <label htmlFor="email" className="col-form-label">Email</label>
                                 <input type="email" className="form-control" id="email"
                                        placeholder="example@gmail.com" value={props.email}

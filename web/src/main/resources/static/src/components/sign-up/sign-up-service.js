@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 import './sign-up.css';
 import '../service-profile/service-profile.css';
-import ServiceApi from '../services/Service-api';
+import ServiceApi from '../services/service-api';
 import VerificationForm from './verification-form';
 import CleaningTypesForm from '../service-profile/cleaning-types-form';
 import LoginForm from "./login-form";
-import MaskedInput, {conformToMask} from "react-text-mask";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
 import {updateService} from "../actions/service-actions";
 
@@ -71,7 +70,7 @@ class SignUpService extends Component {
         modeToggle: 'security',
         addresses: []
 
-    }
+    };
 
     changeCode = (event) => {
         this.setState({code: event.target.value});
@@ -107,9 +106,9 @@ class SignUpService extends Component {
     changePhone = (event) => {
         const updatedService = {
             ...this.state.service,
-            username: event.target.value
+            phone: event.target.value
         };
-        this.setState({phone: updatedService});
+        this.setState({service: updatedService});
         if (event.target.value.length < 18) {
             event.target.classList.add('is-invalid');
         } else {
@@ -139,7 +138,8 @@ class SignUpService extends Component {
     };
 
     validate = () => {
-        if (this.state.service.password !== this.state.service.confirmPassword) {
+        if (this.state.service.password !== this.state.service.confirmPassword
+            || this.state.service.password.length < 3) {
             return false;
         }
         if (this.state.service.username.length < 3) {
@@ -191,6 +191,8 @@ class SignUpService extends Component {
                     this.setState({disabled: false});
                 }
             });
+        } else {
+            console.log("false pre reg");
         }
     };
 
@@ -356,7 +358,8 @@ class SignUpService extends Component {
                                    changeEmail={this.changeEmail}
                                    changePhone={this.changePhone}
                                    changePassword={this.changePassword}
-                                   changePasswordConfirm={this.changePasswordConfirm}/>
+                                   changePasswordConfirm={this.changePasswordConfirm}
+                                   onChangeHandler={this.onChangeHandler}/>
                         : null}
                     {this.state.modeToggle === 'main' ?
                         <MainPanel {...this.state} onChangeHandler={this.onChangeHandler}
@@ -400,16 +403,7 @@ const MainPanel = (props) => {
                         {props.logo !== '' ? props.logo.name : "Choose file"}</label>
                 </div>
             </div>
-            <div className="form-group row">
-                <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
-                <div className="col-sm-8">
-                    <input type="text" className="form-control" id="profileFormName" placeholder="Name"
-                           name="username"
-                           value={props.service.username}
-                           onChange={props.onChangeHandler}
-                    />
-                </div>
-            </div>
+
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">

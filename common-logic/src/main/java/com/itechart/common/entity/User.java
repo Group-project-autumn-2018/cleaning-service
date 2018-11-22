@@ -39,6 +39,7 @@ public class User implements Serializable {
 
     @Column(name = "banned", nullable = false)
     private Boolean banned = Boolean.FALSE;
+
     @Column(name = "banReason")
     private String banReason;
 

@@ -97,6 +97,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         cleaningCompanyRepository.saveAndFlush(company);
         cleaningTypesService.
                 saveTypes(registrationDto.getCleaningTypesDto(), company);
+
         return company.getId();
     }
 

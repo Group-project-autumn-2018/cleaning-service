@@ -65,7 +65,7 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
         price.setSmallRoom(priceDto.getSmallRoom());
         price.setBigRoom(priceDto.getBigRoom());
         price.setBathroom(priceDto.getBathroom());
-        priceRepository.saveAndFlush(price);
+        priceRepository.save(price);
         return price;
     }
 
@@ -82,7 +82,7 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
         cleaningTime.setSmallRoomCleaningTime(cleaningTimeDto.getSmallRoomCleaningTime());
         cleaningTime.setBigRoomCleaningTime(cleaningTimeDto.getBigRoomCleaningTime());
         cleaningTime.setBathroomCleaningTime(cleaningTimeDto.getBathroomCleaningTime());
-        cleaningTimeRepository.saveAndFlush(cleaningTime);
+        cleaningTimeRepository.save(cleaningTime);
         return cleaningTime;
     }
 }
