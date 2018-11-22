@@ -44,13 +44,13 @@ public class Price {
     private double poolCleaning;
 
     @Column(name = "small_room")
-    private BigDecimal smallRoom;
+    private double smallRoom;
 
     @Column(name = "big_room")
-    private BigDecimal bigRoom;
+    private double bigRoom;
 
     @Column(name = "bathroom")
-    private BigDecimal bathroom;
+    private double bathroom;
 
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @PrimaryKeyJoinColumn

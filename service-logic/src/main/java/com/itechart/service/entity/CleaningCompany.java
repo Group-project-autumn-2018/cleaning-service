@@ -24,8 +24,6 @@ public class CleaningCompany extends User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
-    @Column(name = "cleaning_notifications")
-    private Boolean cleaningNotifications;
 
     @OneToOne
     @PrimaryKeyJoinColumn

@@ -15,7 +15,7 @@ public class PriceDto {
     private double furnitureAndCoatingsCleaning;
     private double industrialCleaning;
     private double poolCleaning;
-    private BigDecimal smallRoom;
-    private BigDecimal bigRoom;
-    private BigDecimal bathroom;
+    private double smallRoom;
+    private double bigRoom;
+    private double bathroom;
 }

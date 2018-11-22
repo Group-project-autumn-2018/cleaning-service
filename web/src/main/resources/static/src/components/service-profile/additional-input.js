@@ -2,7 +2,7 @@ import React from "react";
 import './additional-input.css';
 
 const AdditionalInput = (props) => {
-    const placeholders = ['Price', 'Time'];
+    const placeholders = ['Price coefficient', 'Time'];
     return (
         <div className="col-sm-4 d-flex flex-row">
             <input type="number" className="form-control col-sm-6" placeholder={placeholders[0]}

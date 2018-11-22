@@ -5,9 +5,16 @@ const CleaningTypesForm = (props) => {
     return (
         <React.Fragment>
             <div className="form-group row">
+                <label className="col-sm-5">Base price</label>
+                <input type="number" name="basePrice" className="form-control col-sm-4" placeholder="Base price"
+                       onChange={props.onChangePriceHandler}
+                />
+            </div>
+            <div className="form-group row">
                 <label className="col-sm-5">Standard room cleaning coefficient</label>
-                <input name="standardRoomCleaning" type="text" className="form-control col-sm-4" defaultValue={1}
-                       disabled={true}/>
+                <AdditionalInput names={['standardRoomCleaning', 'standardRoomCleaningTime']}
+                                 onChangePriceHandler={props.onChangePriceHandler}
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/> :
             </div>
 
             <div className="form-group row">
@@ -86,15 +93,21 @@ const CleaningTypesForm = (props) => {
 
             <div className="form-group row">
                 <label className="col-sm-5">Small room </label>
-                <input type="number" name="smallRoom" className="form-control col-sm-4"/>
+                <AdditionalInput names={['smallRoom', 'smallRoomCleaningTime']}
+                                 onChangePriceHandler={props.onChangePriceHandler}
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Big room </label>
-                <input type="number" name="bigRoom" className="form-control col-sm-4"/>
+                <AdditionalInput names={['bigRoom', 'bigRoomCleaningTime']}
+                                 onChangePriceHandler={props.onChangePriceHandler}
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Bathroom</label>
-                <input type="number" name="bathroom" className="form-control col-sm-4"/>
+                <AdditionalInput names={['bathroom', 'bathroomCleaningTime']}
+                                 onChangePriceHandler={props.onChangePriceHandler}
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
             </div>
         </React.Fragment>
     )

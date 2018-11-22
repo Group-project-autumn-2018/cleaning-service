@@ -155,7 +155,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         }
     }
 
-    @Scheduled(fixedDelay = 1_800_000)
+    @Scheduled(fixedDelay = 28_800_000)
     public void clearOldVerifications() {
         for (Map.Entry<String, ServiceVerification> entry : verifications.entrySet()) {
             long difference = LocalTime.now().toSecondOfDay() - entry.getValue().getAddingTime().toSecondOfDay();

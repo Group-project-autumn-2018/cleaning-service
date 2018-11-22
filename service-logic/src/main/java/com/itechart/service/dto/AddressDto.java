@@ -9,5 +9,5 @@ public class AddressDto {
 
     private Double lat;
 
-    private Double lng;
+    private Double lon;
 }

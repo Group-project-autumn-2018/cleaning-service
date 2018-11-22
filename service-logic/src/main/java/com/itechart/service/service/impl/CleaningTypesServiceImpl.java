@@ -62,7 +62,6 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
         price.setFurnitureAndCoatingsCleaning(priceDto.getFurnitureAndCoatingsCleaning());
         price.setIndustrialCleaning(priceDto.getIndustrialCleaning());
         price.setPoolCleaning(priceDto.getPoolCleaning());
-        //price.setTypesOfProvidedService(priceDto.getTypesOfProvidedService());
         price.setSmallRoom(priceDto.getSmallRoom());
         price.setBigRoom(priceDto.getBigRoom());
         price.setBathroom(priceDto.getBathroom());
@@ -72,7 +71,6 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
 
     private CleaningTime saveCleaningTime(CleaningTimeDto cleaningTimeDto) {
         CleaningTime cleaningTime = new CleaningTime();
-        //cleaningTime.setTypesOfProvidedService(cleaningTimeDto.getTypesOfProvidedService());
         cleaningTime.setStandardRoomCleaningTime(cleaningTimeDto.getStandardRoomCleaningTime());
         cleaningTime.setSpringCleaningTime(cleaningTimeDto.getSpringCleaningTime());
         cleaningTime.setRepairAndConstructionCleaningTime(cleaningTimeDto.getRepairAndConstructionCleaningTime());

@@ -6,6 +6,7 @@ import SignIn from '../sign-in';
 import AdminMain from "../admin/admin-main";
 import {Redirect, Route, Switch} from "react-router-dom";
 import SignUpMainSection from '../sign-up/sign-up-main-section';
+import ServiceRegistration from '../sign-up/sign-up-service'
 import CustomerRegistration from '../sign-up/sign-up-customer';
 import Feedback from '../feedback';
 import BookingForm from '../booking-form/booking-form'
@@ -22,6 +23,7 @@ class AppRouting extends Component {
                 <Route path="/login" component={SignIn}/>
                 <Route exact path="/registration" component={SignUpMainSection}/>
                 <Route path="/registration/customer" component={CustomerRegistration}/>
+                <Route path="/registration/service" component={ServiceRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies}/>
                 <Route exact path="/profile/service" component={ProfileService}/>
