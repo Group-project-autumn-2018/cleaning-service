@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -33,7 +34,7 @@ public class CleaningServiceController {
 
     @PostMapping("/registration/service")
     public ResponseEntity saveService(@RequestParam(value = "objDto") String companyDto,
-                            @RequestParam(value = "logotype") MultipartFile logo) {
+                                      @RequestParam(value = "logotype", required = false) MultipartFile logo) {
         ObjectMapper mapper = new ObjectMapper();
         CleaningCompanyDto cleaningCompanyDto = null;
         try {
