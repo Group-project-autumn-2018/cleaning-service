@@ -37,7 +37,7 @@ public class OrderDto {
 
     private LocalDate cleaningDay;
 
-    private String cleaningTime;
+    private LocalTime cleaningTime;
 
     private Frequency frequency;
 

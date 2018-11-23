@@ -50,11 +50,11 @@ public class Order {
     @Column(name = "bathrooms_count")
     private Integer bathroomsCount;
 
-    @Column(name = "cleaning_day")
+    @Column(name = "cleaning_day", columnDefinition = "DATE")
     private LocalDate cleaningDay;
 
-    @Column(name = "cleaning_time")
-    private String cleaningTime;
+    @Column(name = "cleaning_time", columnDefinition = "TIME")
+    private LocalTime cleaningTime;
 
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
