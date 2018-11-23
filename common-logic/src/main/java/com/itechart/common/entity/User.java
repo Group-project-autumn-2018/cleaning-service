@@ -1,5 +1,6 @@
 package com.itechart.common.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,10 @@ public class User implements Serializable {
     private Long id;
 
     @Size(min = 2, max = 50)
-    @Column(name = "username", unique = true)
+    @Column(name = "username")
     private String username;
 
+    @JsonIgnore
     @Column(name = "password")
     private String password;
 
@@ -37,10 +39,13 @@ public class User implements Serializable {
 
     @Column(name = "banned", nullable = false)
     private Boolean banned = Boolean.FALSE;
+
     @Column(name = "banReason")
     private String banReason;
-    @Column(name = "address")
-    private String address;
+
+    @Embedded
+    private Address address;
+
     @Column(name = "adding_date")
     private LocalDate addingDate;
     @ManyToMany(fetch = FetchType.EAGER)

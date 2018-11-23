@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class CalculationRulesTest {
 
@@ -27,8 +27,8 @@ public class CalculationRulesTest {
     }
 
     @Test
-    public void PriceCalculation() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         pricingOptionsDto.setCoefficient(1);
         pricingOptionsDto.setNumberOfSmallRooms(2);
         pricingOptionsDto.setCostOfCleaningSmallRooms(new BigDecimal(15));
@@ -40,8 +40,8 @@ public class CalculationRulesTest {
     }
 
     @Test
-    public void PriceCalculation1() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation1() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         pricingOptionsDto.setCoefficient(1);
         pricingOptionsDto.setNumberOfSmallRooms(2);
         pricingOptionsDto.setCostOfCleaningSmallRooms(new BigDecimal(23.25));
@@ -53,8 +53,8 @@ public class CalculationRulesTest {
     }
 
     @Test
-    public void PriceCalculation3() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation3() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         pricingOptionsDto.setCoefficient(1);
         pricingOptionsDto.setNumberOfSmallRooms(2);
         pricingOptionsDto.setCostOfCleaningSmallRooms(new BigDecimal(25));
@@ -66,35 +66,35 @@ public class CalculationRulesTest {
     }
 
     @Test
-    public void PriceCalculation_OBJECT_NO_NULL() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation_OBJECT_NO_NULL() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         Assert.assertNotNull(pricingOptionsDto);
     }
 
     @Test
-    public void PriceCalculation_COST_OF_SMALL_ROOMS_NO_NULL() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation_COST_OF_SMALL_ROOMS_NO_NULL() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         pricingOptionsDto.setCostOfCleaningSmallRooms(new BigDecimal(20));
         Assert.assertNotNull(pricingOptionsDto.getCostOfCleaningSmallRooms());
     }
 
     @Test
-    public void PriceCalculation_COST_OF_BIG_ROOMS_NO_NULL() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation_COST_OF_BIG_ROOMS_NO_NULL() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         pricingOptionsDto.setCostOfCleaningBigRooms(new BigDecimal(20));
         Assert.assertNotNull(pricingOptionsDto.getCostOfCleaningBigRooms());
     }
 
     @Test
-    public void PriceCalculation_COST_OF_BATHROOM_NO_NULL() throws Exception {
-        PricingOptionsDto pricingOptionsDto=new PricingOptionsDto();
+    public void PriceCalculation_COST_OF_BATHROOM_NO_NULL() {
+        PricingOptionsDto pricingOptionsDto = new PricingOptionsDto();
         pricingOptionsDto.setCostOfCleaningBathrooms(new BigDecimal(20));
         Assert.assertNotNull(pricingOptionsDto.getCostOfCleaningBathrooms());
     }
 
     @Test
-    public void CountingTime() throws Exception {
-        TimingOptionsDto timingOptionsDto=new TimingOptionsDto();
+    public void CountingTime() {
+        TimingOptionsDto timingOptionsDto = new TimingOptionsDto();
         timingOptionsDto.setCoefficient(1);
         timingOptionsDto.setNumberOfBathrooms(2);
         timingOptionsDto.setTimeOfCleaningBathrooms(20);
@@ -102,12 +102,12 @@ public class CalculationRulesTest {
         timingOptionsDto.setTimeOfCleaningBigRooms(30);
         timingOptionsDto.setNumberOfSmallRooms(3);
         timingOptionsDto.setTimeOfCleaningSmallRooms(10);
-        assertEquals(160, CalculationRules.CountingTime(timingOptionsDto),DELTA);
+        assertEquals(160, CalculationRules.CountingTime(timingOptionsDto), DELTA);
     }
 
     @Test
-    public void CountingTime1() throws Exception {
-        TimingOptionsDto timingOptionsDto=new TimingOptionsDto();
+    public void CountingTime1() {
+        TimingOptionsDto timingOptionsDto = new TimingOptionsDto();
         timingOptionsDto.setCoefficient(1.5);
         timingOptionsDto.setNumberOfBathrooms(2);
         timingOptionsDto.setTimeOfCleaningBathrooms(20);
@@ -115,12 +115,12 @@ public class CalculationRulesTest {
         timingOptionsDto.setTimeOfCleaningBigRooms(30);
         timingOptionsDto.setNumberOfSmallRooms(3);
         timingOptionsDto.setTimeOfCleaningSmallRooms(10);
-        assertEquals(240, CalculationRules.CountingTime(timingOptionsDto),DELTA);
+        assertEquals(240, CalculationRules.CountingTime(timingOptionsDto), DELTA);
     }
 
     @Test
-    public void CountingTime1_OBJECT_NO_NULL() throws Exception {
-        TimingOptionsDto timingOptionsDto=new TimingOptionsDto();
+    public void CountingTime1_OBJECT_NO_NULL() {
+        TimingOptionsDto timingOptionsDto = new TimingOptionsDto();
         Assert.assertNotNull(timingOptionsDto);
     }
 

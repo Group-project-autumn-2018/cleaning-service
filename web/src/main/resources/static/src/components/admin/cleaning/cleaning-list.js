@@ -8,13 +8,13 @@ const CleaningList = ({cleanings}) => {
     );
     return (
         <div className="container">
-            <table className="table .table-hover">
+            <table className="table table-hover">
                 <tbody>
                 <tr className="row">
-                    <th scope="col" className="col">Название</th>
+                    <th scope="col" className="col">Name</th>
                     <th scope="col" className="col">Email</th>
-                    <th scope="col" className="col">Блокировка</th>
-                    <th scope="col" className="col">Причина блокировки</th>
+                    <th scope="col" className="col">Ban</th>
+                    <th scope="col" className="col">Ban reason</th>
                 </tr>
                 {cleaningList}
                 </tbody>

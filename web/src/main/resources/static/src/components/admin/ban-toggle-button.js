@@ -8,7 +8,7 @@ const BanToggleButton = ({isBanned, onClick}) => {
             <button className={isBanned ? "btn btn-danger" : "btn btn-success"}
                     onClick={onClick}
                     data-dismiss="modal">
-                {isBanned ? "Разблокировать" : "Заблокировать"}</button>
+                {isBanned ? "Unblock" : "Block"}</button>
         </div>
     )
 };

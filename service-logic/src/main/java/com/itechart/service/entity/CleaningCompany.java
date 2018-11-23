@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -20,5 +18,14 @@ import javax.persistence.Table;
 @Table(name = "services")
 @PrimaryKeyJoinColumn(name = "id")
 public class CleaningCompany extends User {
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "confirmed")
+    private Boolean confirmed;
+
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private CleaningTypes cleaningTypes;
 }

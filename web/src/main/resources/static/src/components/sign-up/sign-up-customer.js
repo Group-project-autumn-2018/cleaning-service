@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import * as credentialActions from '../actions/credential-actions';
 import './sign-up.css';
 import MaskedInput from 'react-text-mask';
 import CustomerApi from '../services/customer-api';
 import VerificationForm from './verification-form';
+import * as actions from '../actions/auth-actions';
 
 class SignUpCustomer extends Component {
     customerApiService = new CustomerApi();
@@ -88,14 +88,7 @@ class SignUpCustomer extends Component {
                 phone: this.state.phone
             };
             this.customerApiService.preRegister(obj).then(resp => {
-                if (resp === 202) {
-                    const key = (this.state.email !== '') ? this.state.email : this.state.phone;
-                    const credentials = {
-                        username: this.state.username,
-                        base64Token: this.base64EncodeUnicode(key + this.state.password)
-                    };
-                    this.props.setCredentials(credentials);
-                } else {
+                if (resp !== 202) {
                     this.setState({disabled: false});
                 }
             });
@@ -112,6 +105,14 @@ class SignUpCustomer extends Component {
             switch (status) {
                 case 201:
                     this.setState({verificationStatus: true});
+                    let login;
+                    if (this.state.email === '') {
+                        login = this.state.phone;
+                    } else {
+                        login = this.state.email;
+                    }
+                    let password = this.state.password;
+                    this.props.fetchAccessToken(login, password);
                     break;
                 case 423:
                     this.setState({
@@ -132,6 +133,12 @@ class SignUpCustomer extends Component {
             function toSolidBytes(match, p1) {
                 return String.fromCharCode('0x' + p1);
             }));
+    };
+
+    componentDidUpdate = () => {
+        if (this.props.isAuthenticated) {
+            this.props.history.push("/profile");
+        }
     };
 
     render() {
@@ -167,8 +174,7 @@ class SignUpCustomer extends Component {
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">Phone number</label>
                                         <MaskedInput
-                                            mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-',
-                                                /\d/, /\d/, '-', /\d/, /\d/]}
+                                            mask={['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
                                             className="form-control"
                                             placeholder="+375(__)___-__-__"
                                             guide={false}
@@ -223,14 +229,14 @@ class SignUpCustomer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.credentials
+        ...state.user
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        setCredentials: (credentials) => {
-            dispatch(credentialActions.setCredentials(credentials));
+        fetchAccessToken: (login, password) => {
+            dispatch(actions.fetchAccessToken(login, password));
         }
     }
 };

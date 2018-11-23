@@ -48,7 +48,7 @@ public class FeedbackServiceImpl implements FeedbackService {
             emailService.sendSimpleMessage(company.getEmail(), SUBJECT + LocalDate.now(), text);
         } else return 0L;
         Feedback feedback = new Feedback();
-        feedback.setCustomer(customerService.getOne(currentUser.getId()));
+        feedback.setCustomer(customerService.getCustomerById(currentUser.getId()));
         feedback.setCompany(company);
         feedback.setRate(feedbackDto.getRate());
         feedback.setText(feedbackDto.getText());
