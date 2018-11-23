@@ -2,14 +2,12 @@ package com.itechart.service.entity;
 
 import com.itechart.common.entity.Address;
 import com.itechart.customer.entity.Customer;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -31,6 +29,9 @@ public class Order {
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = true)
     private Customer customer;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Embedded
     private Address address;
 
@@ -49,11 +50,11 @@ public class Order {
     @Column(name = "bathrooms_count")
     private Integer bathroomsCount;
 
-    @Column(name = "cleaning_day")
+    @Column(name = "cleaning_day", columnDefinition = "DATE")
     private LocalDate cleaningDay;
 
-    @Column(name = "cleaning_time")
-    private String cleaningTime;
+    @Column(name = "cleaning_time", columnDefinition = "TIME")
+    private LocalTime cleaningTime;
 
     @Enumerated(EnumType.STRING)
     private Frequency frequency;

@@ -1,7 +1,6 @@
 package com.itechart.service.service;
 
 import com.itechart.service.dto.OrderDto;
-import com.itechart.service.entity.Order;
 import org.springframework.data.domain.Page;
 
 public interface OrderService {

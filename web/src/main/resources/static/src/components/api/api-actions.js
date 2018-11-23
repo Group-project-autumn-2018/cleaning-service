@@ -19,7 +19,7 @@ export const fetchEntity = async (entityId, entityURN, token) => {
         headers: {
             'Authorization': `Bearer ${token}`,
         },
-        method: 'Get',
+        method: 'GET',
     };
     const response = await fetch(`/api${entityURN}/${entityId}`, options);
 

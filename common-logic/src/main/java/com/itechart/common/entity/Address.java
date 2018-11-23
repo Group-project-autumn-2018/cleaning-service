@@ -11,5 +11,5 @@ public class Address {
 
     private Double lat;
 
-    private Double lng;
+    private Double lon;
 }

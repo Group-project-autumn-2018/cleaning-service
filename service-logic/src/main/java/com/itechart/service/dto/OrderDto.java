@@ -1,8 +1,11 @@
 package com.itechart.service.dto;
+
 import com.itechart.service.entity.Duration;
 import com.itechart.service.entity.Frequency;
+import com.itechart.service.entity.Status;
 import lombok.Getter;
 import lombok.Setter;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,9 +17,11 @@ public class OrderDto {
 
     private Long id;
 
-    private Long companyId;
+    private Long company;
 
-    private Long customerId;
+    private Long customer;
+
+    private Status status;
 
     private String address;
 
@@ -32,7 +37,7 @@ public class OrderDto {
 
     private LocalDate cleaningDay;
 
-    private String cleaningTime;
+    private LocalTime cleaningTime;
 
     private Frequency frequency;
 

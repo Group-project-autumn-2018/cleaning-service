@@ -24,9 +24,6 @@ export const updateEntity = (entity, entityURN, token) => {
 };
 
 
-
-
-
 export const fetchEntitiesSuccess = (entity) => {
     return {
         type: 'FETCH_ENTITIES_SUCCESS',

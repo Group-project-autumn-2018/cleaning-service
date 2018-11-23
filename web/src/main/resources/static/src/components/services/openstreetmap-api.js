@@ -14,6 +14,6 @@ export default class OpenStreetMapApi {
     async getAddress(query) {
         const url = `https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=5`;
         const res = await this.sendGetRequest(url);
-        return res.status;
+        return res.json();
     }
 }
