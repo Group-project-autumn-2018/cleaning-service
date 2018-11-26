@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class CleaningTimeDto {
+    private Long id;
     private Double standardRoomCleaningTime;
     private Double springCleaningTime;
     private Double repairAndConstructionCleaningTime;

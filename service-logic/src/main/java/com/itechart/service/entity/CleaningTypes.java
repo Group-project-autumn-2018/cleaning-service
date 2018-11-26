@@ -1,5 +1,6 @@
 package com.itechart.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -25,6 +26,7 @@ public class CleaningTypes {
     @JoinColumn(name = "cleaning_time_id", referencedColumnName = "id")
     private CleaningTime cleaningTime;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
     private CleaningCompany company;

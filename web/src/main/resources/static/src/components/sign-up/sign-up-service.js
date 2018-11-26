@@ -27,7 +27,7 @@ class SignUpService extends Component {
             disabled: false,
 
 
-            cleaningTypesDto: {
+            cleaningTypes: {
                 standardRoomCleaning: true,
                 springCleaning: false,
                 repairAndConstructionCleaning: false,
@@ -36,32 +36,32 @@ class SignUpService extends Component {
                 furnitureAndCoatingsCleaning: false,
                 industrialCleaning: false,
                 poolCleaning: false,
-                priceDto: {
-                    basePrice: 0,
-                    standardRoomCleaning: 1,
-                    springCleaning: 0,
-                    repairAndConstructionCleaning: 0,
-                    dryCarpetCleaning: 0,
-                    officeCleaning: 0,
-                    furnitureAndCoatingsCleaning: 0,
-                    industrialCleaning: 0,
-                    poolCleaning: 0,
-                    smallRoom: 0,
-                    bigRoom: 0,
-                    bathroom: 0
+                price: {
+                    basePrice: null,
+                    standardRoomCleaning: null,
+                    springCleaning: null,
+                    repairAndConstructionCleaning: null,
+                    dryCarpetCleaning: null,
+                    officeCleaning: null,
+                    furnitureAndCoatingsCleaning: null,
+                    industrialCleaning: null,
+                    poolCleaning: null,
+                    smallRoom: null,
+                    bigRoom: null,
+                    bathroom: null
                 },
-                cleaningTimeDto: {
-                    standardRoomCleaningTime: 0,
-                    springCleaningTime: 0,
-                    repairAndConstructionCleaningTime: 0,
-                    dryCarpetCleaningTime: 0,
-                    officeCleaningTime: 0,
-                    furnitureAndCoatingsCleaningTime: 0,
-                    industrialCleaningTime: 0,
-                    poolCleaningTime: 0,
-                    smallRoomCleaningTime: 0,
-                    bigRoomCleaningTime: 0,
-                    bathroomCleaningTime: 0
+                cleaningTime: {
+                    standardRoomCleaningTime: null,
+                    springCleaningTime: null,
+                    repairAndConstructionCleaningTime: null,
+                    dryCarpetCleaningTime: null,
+                    officeCleaningTime: null,
+                    furnitureAndCoatingsCleaningTime: null,
+                    industrialCleaningTime: null,
+                    poolCleaningTime: null,
+                    smallRoomCleaningTime: null,
+                    bigRoomCleaningTime: null,
+                    bathroomCleaningTime: null
                 }
             },
 
@@ -168,8 +168,8 @@ class SignUpService extends Component {
                         lat: this.state.service.lat,
                         lon: this.state.service.lon
                     },
-                    cleaningTypesDto: {
-                        ...this.state.service.cleaningTypesDto
+                    cleaningTypes: {
+                        ...this.state.service.cleaningTypes
                     }
                 }
             ;
@@ -268,12 +268,12 @@ class SignUpService extends Component {
     onChangeTypeHandler = (event) => {
         const name = event.target.name;
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
+            ...this.state.service.cleaningTypes,
             [name]: event.target.checked
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -281,16 +281,16 @@ class SignUpService extends Component {
     onChangeTimeHandler = (event) => {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
-            ...this.state.service.cleaningTypesDto.cleaningTimeDto,
+            ...this.state.service.cleaningTypes.cleaningTime,
             [name]: event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
-            cleaningTimeDto: updatedCleaningTimeDto
+            ...this.state.service.cleaningTypes,
+            cleaningTime: updatedCleaningTimeDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -298,16 +298,16 @@ class SignUpService extends Component {
     onChangePriceHandler = (event) => {
         const name = event.target.name;
         const updatedPriceDto = {
-            ...this.state.service.cleaningTypesDto.priceDto,
+            ...this.state.service.cleaningTypes.price,
             [name]: event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
-            priceDto: updatedPriceDto
+            ...this.state.service.cleaningTypes,
+            price: updatedPriceDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };

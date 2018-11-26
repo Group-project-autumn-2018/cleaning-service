@@ -7,6 +7,7 @@ import com.itechart.common.service.SMSService;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.mapper.CleaningCompanyMapper;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.CleaningTypesService;
@@ -42,6 +43,8 @@ import java.util.concurrent.ConcurrentMap;
 @Service
 public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
+    @Autowired
+    private CleaningCompanyMapper mapper;
     @Value("${logo.path}")
     private String FILE_PATH;
     private final ModelMapper modelMapper;
@@ -74,10 +77,21 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
     }
 
+    @Transactional
     @Override
-    public void update(CleaningCompanyDto cleaningCompanyDto) {
-        CleaningCompany company = modelMapper.map(cleaningCompanyDto, CleaningCompany.class);
+    public CleaningCompany update(CleaningCompanyDto cleaningCompanyDto) {
+        CleaningCompany company = mapper.mapCompanyDtoToCompany(cleaningCompanyDto);
+        Optional<CleaningCompany> currentCompany = cleaningCompanyRepository.findById(company.getId());
+        if (currentCompany.isPresent()) {
+            if (cleaningCompanyDto.getPassword() == null || cleaningCompanyDto.getPassword().length() == 0) {
+                company.setPassword(currentCompany.get().getPassword());
+            }
+            company.setRoles(currentCompany.get().getRoles());
+            company.setAddingDate(currentCompany.get().getAddingDate());
+        }
         cleaningCompanyRepository.save(company);
+        cleaningTypesService.saveTypes(cleaningCompanyDto.getCleaningTypes(), company);
+        return company;
     }
 
 
@@ -97,17 +111,18 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
         cleaningCompanyRepository.saveAndFlush(company);
         cleaningTypesService.
-                saveTypes(registrationDto.getCleaningTypesDto(), company);
+                saveTypes(registrationDto.getCleaningTypes(), company);
 
         return company.getId();
     }
 
-    private void saveLogotype(MultipartFile logotype, Long id) {
+    @Override
+    public void saveLogotype(MultipartFile logotype, Long id) {
          try {
             if (logotype != null && logotype.getBytes().length > 0) {
                 File file = new File(FILE_PATH);
                 if (!file.exists()) {
-                    file.mkdir();
+                    file.mkdirs();
                 }
                 Files.write(Paths.get(FILE_PATH, id.toString()), logotype.getBytes());
             }

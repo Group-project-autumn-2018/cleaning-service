@@ -7,6 +7,8 @@ import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @RequestMapping("/api/cleaning")
 public class CleaningServiceController {
 
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CleaningCompanyService cleaningCompanyService;
 
@@ -40,7 +43,7 @@ public class CleaningServiceController {
         try {
             cleaningCompanyDto = mapper.readValue(companyDto, CleaningCompanyDto.class);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
         cleaningCompanyService.registerCompany(cleaningCompanyDto, logo);
         return ResponseEntity.status(HttpStatus.ACCEPTED).build();
@@ -52,13 +55,23 @@ public class CleaningServiceController {
         return cleaningCompanyService.findPaginated(page, size);
     }
 
-    @PutMapping("/{cleaningId}")
-    public void update(@RequestBody CleaningCompanyDto cleaningCompany) {
-        cleaningCompanyService.update(cleaningCompany);
+    @PostMapping(value = "/{cleaningId}")
+    public ResponseEntity update(@RequestParam(name = "logo", required = false) MultipartFile logo,
+                                 @RequestParam(name = "company") String companyDto) {
+        ObjectMapper mapper = new ObjectMapper();
+        CleaningCompanyDto cleaningCompanyDto = null;
+        try {
+            cleaningCompanyDto = mapper.readValue(companyDto, CleaningCompanyDto.class);
+        } catch (IOException e) {
+            logger.warn(e.getMessage());
+        }
+        cleaningCompanyService.update(cleaningCompanyDto);
+        cleaningCompanyService.saveLogotype(logo, cleaningCompanyDto.getId());
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/{cleaningId}")
-    public ResponseEntity update(@PathVariable Long cleaningId) {
+    public ResponseEntity getOne(@PathVariable Long cleaningId) {
         return ResponseEntity.ok(cleaningCompanyService.getOne(cleaningId));
     }
 

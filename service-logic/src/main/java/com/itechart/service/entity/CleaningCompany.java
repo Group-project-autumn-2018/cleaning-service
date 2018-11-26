@@ -24,7 +24,6 @@ public class CleaningCompany extends User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
-
     @OneToOne
     @PrimaryKeyJoinColumn
     private CleaningTypes cleaningTypes;

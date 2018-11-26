@@ -33,8 +33,11 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
 
     @Transactional
     @Override
-    public void saveTypes(CleaningTypesDto cleaningTypesDto, CleaningCompany company) {
+    public CleaningTypes saveTypes(CleaningTypesDto cleaningTypesDto, CleaningCompany company) {
         CleaningTypes cleaningTypes = new CleaningTypes();
+        if (cleaningTypesDto.getId() != null && cleaningTypesDto.getId() > 0) {
+            cleaningTypes.setId(cleaningTypesDto.getId());
+        }
         cleaningTypes.setCompany(company);
 
         cleaningTypes.setDryCarpetCleaning(cleaningTypesDto.getDryCarpetCleaning());
@@ -46,14 +49,19 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
         cleaningTypes.setStandardRoomCleaning(cleaningTypesDto.getStandardRoomCleaning());
         cleaningTypes.setSpringCleaning(cleaningTypesDto.getSpringCleaning());
 
-        cleaningTypes.setCleaningTime(saveCleaningTime(cleaningTypesDto.getCleaningTimeDto()));
-        cleaningTypes.setPrice(savePrice(cleaningTypesDto.getPriceDto()));
+        cleaningTypes.setCleaningTime(saveCleaningTime(cleaningTypesDto.getCleaningTime()));
+        cleaningTypes.setPrice(savePrice(cleaningTypesDto.getPrice()));
 
         cleaningTypesRepository.save(cleaningTypes);
+        return cleaningTypes;
     }
 
     private Price savePrice(PriceDto priceDto) {
         Price price = new Price();
+        if (priceDto.getId() != null && priceDto.getId() > 0) {
+            price.setId(priceDto.getId());
+        }
+        price.setBasePrice(priceDto.getBasePrice());
         price.setStandardRoomCleaning(priceDto.getStandardRoomCleaning());
         price.setSpringCleaning(priceDto.getSpringCleaning());
         price.setRepairAndConstructionCleaning(priceDto.getRepairAndConstructionCleaning());
@@ -71,6 +79,9 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
 
     private CleaningTime saveCleaningTime(CleaningTimeDto cleaningTimeDto) {
         CleaningTime cleaningTime = new CleaningTime();
+        if (cleaningTimeDto.getId() != null && cleaningTimeDto.getId() > 0) {
+            cleaningTime.setId(cleaningTimeDto.getId());
+        }
         cleaningTime.setStandardRoomCleaningTime(cleaningTimeDto.getStandardRoomCleaningTime());
         cleaningTime.setSpringCleaningTime(cleaningTimeDto.getSpringCleaningTime());
         cleaningTime.setRepairAndConstructionCleaningTime(cleaningTimeDto.getRepairAndConstructionCleaningTime());

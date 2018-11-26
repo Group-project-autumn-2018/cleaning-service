@@ -12,10 +12,13 @@ public interface CleaningCompanyService {
 
     Page<CleaningCompany> findPaginated(int page, int size);
 
-    void update(CleaningCompanyDto company);
+    CleaningCompany update(CleaningCompanyDto company);
 
     void registerCompany(CleaningCompanyDto cleaningCompanyDto, MultipartFile logotype);
 
     Optional<Boolean> verify(VerifyDto verifyDto);
+
     CleaningCompany getOne(Long id);
+
+    void saveLogotype(MultipartFile logotype, Long id);
 }

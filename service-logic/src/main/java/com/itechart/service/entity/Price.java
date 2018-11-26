@@ -1,4 +1,5 @@
 package com.itechart.service.entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -52,6 +53,7 @@ public class Price {
     @Column(name = "bathroom")
     private double bathroom;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @PrimaryKeyJoinColumn
     private CleaningTypes cleaningTypes;
