@@ -12,7 +12,7 @@ public interface CleaningCompanyService {
 
     Page<CleaningCompany> findPaginated(int page, int size);
 
-    void update(CleaningCompany company);
+    void update(CleaningCompanyDto company);
 
     void registerCompany(CleaningCompanyDto cleaningCompanyDto, MultipartFile logotype);
 

@@ -19,9 +19,25 @@ export const fetchEntity = async (entityId, entityURN, token) => {
         headers: {
             'Authorization': `Bearer ${token}`,
         },
-        method: 'Get',
+        method: 'GET',
     };
     const response = await fetch(`/api${entityURN}/${entityId}`, options);
 
     return await response.json();
+};
+
+
+export const fetchSaveEntity = async (entity, entityURN, token) => {
+
+    let options = {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(entity)
+    };
+
+    return await fetch(`/api${entityURN}`, options);
 };

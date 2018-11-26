@@ -1,20 +1,18 @@
 package com.itechart.service.dto;
 
-import com.itechart.service.entity.TypesOfProvidedService;
 import lombok.Data;
 
 @Data
 public class CleaningTimeDto {
-    private int standardRoomCleaningTime;
-    private int springCleaningTime;
-    private int repairAndConstructionCleaningTime;
-    private int dryCarpetCleaningTime;
-    private int officeCleaningTime;
-    private int furnitureAndCoatingsCleaningTime;
-    private int industrialCleaningTime;
-    private int poolCleaningTime;
+    private Double standardRoomCleaningTime;
+    private Double springCleaningTime;
+    private Double repairAndConstructionCleaningTime;
+    private Double dryCarpetCleaningTime;
+    private Double officeCleaningTime;
+    private Double furnitureAndCoatingsCleaningTime;
+    private Double industrialCleaningTime;
+    private Double poolCleaningTime;
     private int smallRoomCleaningTime;
     private int bigRoomCleaningTime;
     private int bathroomCleaningTime;
-    private TypesOfProvidedService typesOfProvidedService;
 }

@@ -1,9 +1,9 @@
 package com.itechart.service.repository;
 
-import com.itechart.service.entity.TypesOfProvidedService;
+import com.itechart.service.entity.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TypesOfProvidedServiceRepository extends JpaRepository<TypesOfProvidedService, Long> {
+public interface OrderRepository extends JpaRepository<Order, Long> {
 }

@@ -1,73 +1,75 @@
 import React, {Component} from 'react';
 import './sign-up.css';
-import MaskedInput from 'react-text-mask';
-import ServiceApi from '../services/Service-api';
+
+import ServiceApi from '../services/service-api';
 import VerificationForm from './verification-form';
+import CleaningTypesForm from '../service-profile/cleaning-types-form';
+import LoginForm from "./login-form";
+import DropdownAddressList from "../service-profile/dropdown-address-list";
+import {updateService} from "../actions/service-actions";
 
 class SignUpService extends Component {
     serviceApi = new ServiceApi();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            avatar: '',
-            logotype: '',
+    state = {
+        avatar: '',
+        logo: '',
+        code: '',
+        verificationStatus: false,
+        service: {
             description: '',
-            priceDto: {
-                basePrice: 0,
-                standardRoomCleaning: 1,
-                springCleaning: 0,
-                repairAndConstructionCleaning: 0,
-                dryCarpetCleaning: 0,
-                officeCleaning: 0,
-                furnitureAndCoatingsCleaning: 0,
-                industrialCleaning: 0,
-                poolCleaning: 0,
-                smallRoom: 0,
-                bigRoom: 0,
-                bathroom: 0
-            },
-            cleaningTimeDto: {
-                standardRoomCleaningTime: 0,
-                springCleaningTime: 0,
-                repairAndConstructionCleaningTime: 0,
-                dryCarpetCleaningTime: 0,
-                officeCleaningTime: 0,
-                furnitureAndCoatingsCleaningTime: 0,
-                industrialCleaningTime: 0,
-                poolCleaningTime: 0,
-                smallRoomCleaningTime: 0,
-                bigRoomCleaningTime: 0,
-                bathroomCleaningTime: 0
-            },
             username: '',
+            address: '',
             email: '',
             phone: '',
             password: '',
             confirmPassword: '',
             disabled: false,
-            code: '',
-            verificationStatus: false,
-            message: '',
 
-            checkStandardRoomCleaning: false,
-            checkSpringCleaning: false,
-            checkRepairAndConstructionCleaning: false,
-            checkDryCarpetCleaning: false,
-            checkOfficeCleaning: false,
-            checkFurnitureAndCoatingsCleaning: false,
-            checkIndustrialCleaning: false,
-            checkPoolCleaning: false
-        }
-    }
 
-    changeUsername = (event) => {
-        this.setState({username: event.target.value});
-        if (event.target.value.length < 3) {
-            event.target.classList.add('is-invalid');
-        } else {
-            event.target.classList.remove('is-invalid');
-        }
+            cleaningTypesDto: {
+                standardRoomCleaning: true,
+                springCleaning: false,
+                repairAndConstructionCleaning: false,
+                dryCarpetCleaning: false,
+                officeCleaning: false,
+                furnitureAndCoatingsCleaning: false,
+                industrialCleaning: false,
+                poolCleaning: false,
+                priceDto: {
+                    basePrice: 0,
+                    standardRoomCleaning: 1,
+                    springCleaning: 0,
+                    repairAndConstructionCleaning: 0,
+                    dryCarpetCleaning: 0,
+                    officeCleaning: 0,
+                    furnitureAndCoatingsCleaning: 0,
+                    industrialCleaning: 0,
+                    poolCleaning: 0,
+                    smallRoom: 0,
+                    bigRoom: 0,
+                    bathroom: 0
+                },
+                cleaningTimeDto: {
+                    standardRoomCleaningTime: 0,
+                    springCleaningTime: 0,
+                    repairAndConstructionCleaningTime: 0,
+                    dryCarpetCleaningTime: 0,
+                    officeCleaningTime: 0,
+                    furnitureAndCoatingsCleaningTime: 0,
+                    industrialCleaningTime: 0,
+                    poolCleaningTime: 0,
+                    smallRoomCleaningTime: 0,
+                    bigRoomCleaningTime: 0,
+                    bathroomCleaningTime: 0
+                }
+            },
+
+        },
+        message: '',
+        modeToggle: 'security',
+        addresses: []
+
     };
 
     changeCode = (event) => {
@@ -79,12 +81,34 @@ class SignUpService extends Component {
         }
     };
 
+    changeUsername = (event) => {
+        const updatedService = {
+            ...this.state.service,
+            username: event.target.value
+        };
+        this.setState({service: updatedService});
+        if (event.target.value.length < 3) {
+            event.target.classList.add('is-invalid');
+        } else {
+            event.target.classList.remove('is-invalid');
+        }
+    };
+
     changeEmail = (event) => {
-        this.setState({email: event.target.value});
+
+        const updatedService = {
+            ...this.state.service,
+            email: event.target.value
+        };
+        this.setState({service: updatedService});
     };
 
     changePhone = (event) => {
-        this.setState({phone: event.target.value});
+        const updatedService = {
+            ...this.state.service,
+            phone: event.target.value
+        };
+        this.setState({service: updatedService});
         if (event.target.value.length < 18) {
             event.target.classList.add('is-invalid');
         } else {
@@ -93,12 +117,20 @@ class SignUpService extends Component {
     };
 
     changePassword = (event) => {
-        this.setState({password: event.target.value});
+        const updatedService = {
+            ...this.state.service,
+            password: event.target.value
+        };
+        this.setState({service: updatedService});
     };
 
     changePasswordConfirm = (event) => {
-        this.setState({confirmPassword: event.target.value});
-        if (event.target.value !== this.state.password) {
+        const updatedService = {
+            ...this.state.service,
+            confirmPassword: event.target.value
+        };
+        this.setState({service: updatedService});
+        if (event.target.value !== this.state.service.password) {
             event.target.classList.add('is-invalid');
         } else {
             event.target.classList.remove('is-invalid');
@@ -106,75 +138,59 @@ class SignUpService extends Component {
     };
 
     validate = () => {
-        if (this.state.password !== this.state.confirmPassword) {
+        if (this.state.service.password !== this.state.service.confirmPassword
+            || this.state.service.password.length < 3) {
             return false;
         }
-        if (this.state.username.length < 3) {
+        if (this.state.service.username.length < 3) {
             return false;
         }
-        return !(this.state.email === '' && this.state.phone === '+375');
+        return !(this.state.service.email === '' && this.state.service.phone === '+375');
     };
 
 
     preRegister = () => {
         if (this.validate()) {
-            this.setState({disabled: true});
-            const objDto = {
-                description: this.state.description,
-                username: this.state.username,
-                email: this.state.email,
-                phone: this.state.phone,
-                password: this.state.password,
-                priceDto: {
-                    basePrice: this.state.priceDto.basePrice,
-                    standardRoomCleaning: this.state.priceDto.standardRoomCleaning,
-                    springCleaning: this.state.priceDto.springCleaning,
-                    repairAndConstructionCleaning: this.state.priceDto.repairAndConstructionCleaning,
-                    dryCarpetCleaning: this.state.priceDto.dryCarpetCleaning,
-                    officeCleaning: this.state.priceDto.officeCleaning,
-                    furnitureAndCoatingsCleaning: this.state.priceDto.furnitureAndCoatingsCleaning,
-                    industrialCleaning: this.state.priceDto.industrialCleaning,
-                    poolCleaning: this.state.priceDto.poolCleaning,
-                    smallRoom: this.state.priceDto.smallRoom,
-                    bigRoom: this.state.priceDto.bigRoom,
-                    bathroom: this.state.priceDto.bathroom
-                },
-                cleaningTimeDto: {
-                    standardRoomCleaningTime: this.state.cleaningTimeDto.standardRoomCleaningTime,
-                    springCleaningTime: this.state.cleaningTimeDto.springCleaningTime,
-                    repairAndConstructionCleaningTime: this.state.cleaningTimeDto.repairAndConstructionCleaningTime,
-                    dryCarpetCleaningTime: this.state.cleaningTimeDto.dryCarpetCleaningTime,
-                    officeCleaningTime: this.state.cleaningTimeDto.officeCleaningTime,
-                    furnitureAndCoatingsCleaningTime: this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime,
-                    industrialCleaningTime: this.state.cleaningTimeDto.industrialCleaningTime,
-                    poolCleaningTime: this.state.cleaningTimeDto.poolCleaningTime,
-                    smallRoomCleaningTime: this.state.cleaningTimeDto.smallRoomCleaningTime,
-                    bigRoomCleaningTime: this.state.cleaningTimeDto.bigRoomCleaningTime,
-                    bathroomCleaningTime: this.state.cleaningTimeDto.bathroomCleaningTime
-                }
+            const updatedService = {
+                ...this.state.service,
+                disabled: true
             };
+            this.setState({service: updatedService});
 
-            //let obj = new FormData();
-            //obj.append("objDto", JSON.stringify(objDto));
-            //if (this.logotype !== '') obj.append("logotype", this.state.logotype);
-            let obj = JSON.stringify(objDto);
-            this.serviceApi.preRegisterService(obj).then(resp => {
-                if (resp === 202) {
-                    const key = (this.state.email !== '') ? this.state.email : this.state.phone;
-                    const credentials = {
-                        username: this.state.username,
-                        base64Token: this.base64EncodeUnicode(key + this.state.password)
-                    };
-                    //this.props.setCredentials(credentials);
-                } else {
+            const objDto = {
+                    username: this.state.service.username,
+                    phone: this.state.service.phone,
+                    email: this.state.service.email,
+                    password: this.state.service.password,
+                    description: this.state.service.description,
+                    address: {
+                        address: this.state.service.address,
+                        lat: this.state.service.lat,
+                        lon: this.state.service.lon
+                    },
+                    cleaningTypesDto: {
+                        ...this.state.service.cleaningTypesDto
+                    }
+                }
+            ;
+
+            let formData = new FormData();
+            formData.append("objDto", JSON.stringify(objDto));
+            if (this.state.logo !== '') formData.append("logotype", this.state.logo);
+            console.log(formData);
+            this.serviceApi.registerServiceMultipart(formData).then(resp => {
+                if (resp !== 202) {
                     this.setState({disabled: false});
                 }
             });
+        } else {
+            console.log("false pre reg");
         }
     };
 
     verify = () => {
-        const token = this.state.username + this.state.password;
+        const token = this.state.service.username + this.state.service.password;
+
         const obj = {
             code: this.state.code,
             encodedString: this.base64EncodeUnicode(token)
@@ -206,372 +222,222 @@ class SignUpService extends Component {
     };
 
 
-    InputSpringCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for spring cleaning price"}
-                       id="springCleaningPriceCoeff"
-                       onChange={this.state.priceDto.springCleaning}
+    // openAvatar = (event) => {
+    //     let input = event.target;
+    //     this.setState({logotype: input.files[0]});
+    //     let fileReader = new FileReader();
+    //     fileReader.readAsDataURL(input.files[0]);
+    //     fileReader.onload = () => {
+    //         this.setState({avatar: fileReader.result});
+    //     }
+    // };
 
-                />
-                <input type="text"
-                       placeholder={"Time for spring cleaning"}
-                       id="springCleaningCleaningTime"
-                       onChange={this.state.cleaningTimeDto.springCleaningTime}
+    submitHandler = (e) => {
+        e.preventDefault();
+        this.props.updateService(this.state.service, this.props.token);
 
-                />
-            </div>
-        )
     };
 
-    InputRepairAndConstructionCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for repair and construction cleaning price"}
-                       id="repairAndConstructionCleaningPriceCoeff"
-                       onChange={this.state.priceDto.repairAndConstructionCleaning}
-
-                />
-                <input type="text"
-                       placeholder={"Time for repair and construction cleaning"}
-                       id="repairAndConstructionCleaningTime"
-                       onChange={this.state.cleaningTimeDto.repairAndConstructionCleaningTime}
-
-                />
-            </div>
-        )
-    };
-
-    InputDryCarpetCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for dry carpet cleaning price"}
-                       id="dryCarpetCleaningPriceCoeff"
-                       onChange={this.state.priceDto.dryCarpetCleaning}
-
-                />
-                <input type="text"
-                       placeholder={"Time for dry carpet cleaning"}
-                       id="dryCarpetCleaningTime"
-                       onChange={this.state.cleaningTimeDto.dryCarpetCleaningTime}
-
-                />
-            </div>
-        )
-    };
-
-    InputOfficeCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for office cleaning price"}
-                       id="officeCleaningPriceCoeff"
-                       onChange={this.state.priceDto.officeCleaning}
-
-                />
-                <input type="text"
-                       placeholder={"Time for office cleaning"}
-                       id="officeCleaningTime"
-                       onChange={this.state.cleaningTimeDto.officeCleaningTime}
-
-                />
-            </div>
-        )
-    };
-
-    InputFurnitureAndCoatingsCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for furniture and coatings cleaning price"}
-                       id="furnitureAndCoatingsCleaningPriceCoeff"
-                       onChange={this.state.priceDto.furnitureAndCoatingsCleaning}
-
-                />
-                <input type="text"
-                       placeholder={"Time for furniture and coatings cleaning"}
-                       id="furnitureAndCoatingsCleaningTime"
-                       onChange={this.state.cleaningTimeDto.furnitureAndCoatingsCleaningTime}
-
-                />
-            </div>
-        )
-    };
-
-    InputIndustrialCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for industrial cleaning price"}
-                       id="industrialCleaningPriceCoeff"
-                       onChange={this.state.priceDto.industrialCleaning}
-
-                />
-                <input type="text"
-                       placeholder={"Time for industrial cleaning"}
-                       id="industrialCleaningTime"
-                       onChange={this.state.cleaningTimeDto.industrialCleaningTime}
-
-                />
-            </div>
-        )
-    };
-
-
-    InputPoolCleaning = () => {
-        return (
-            <div>
-                <input type="text"
-                       placeholder={"coefficient for pool cleaning price"}
-                       id="poolCleaningPriceCoeff"
-                       onChange={this.state.priceDto.poolCleaning}
-                />
-                <input type="text"
-                       placeholder={"Time for pool cleaning "}
-                       id="poolCleaningPriceCleaningTime"
-                       onChange={this.state.cleaningTimeDto.poolCleaningTime}
-                />
-            </div>
-        )
-    };
-
-    openAvatar = (event) => {
-        let input = event.target;
-        this.setState({logotype: input.files[0]});
-        let fileReader = new FileReader();
-        fileReader.readAsDataURL(input.files[0]);
-        fileReader.onload = () => {
-            this.setState({avatar: fileReader.result});
+    onChangeHandler = (e) => {
+        const name = e.target.name;
+        const updatedService = {
+            ...this.state.service,
+            [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
+        };
+        this.setState({service: updatedService});
+        if (name === 'address' && e.target.value.length > 5) {
+            this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
         }
     };
 
-    handleInputChange(event) {
-        const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
-        const name = target.name;
-        this.state.checkFurnitureAndCoatingsCleaning = value;
-        this.setState({
-            [name]: value
-        });
-    }
+    onChangeLogoHandler = (event) => {
+        this.setState({logo: event.target.files[0]});
+    };
+
+    onClickAddressHandler = (event) => {
+        const address = this.state.addresses.find(address => address.place_id === event.target.id);
+        const updatedService = {
+            ...this.state.service,
+            lat: address.lat,
+            lon: address.lon
+        };
+        console.log(address.lat + ' ' + address.lon);
+        this.setState({service: updatedService, addresses: []});
+    };
+
+    onChangeTypeHandler = (event) => {
+        const name = event.target.name;
+        const updatedTypes = {
+            ...this.state.service.cleaningTypesDto,
+            [name]: event.target.checked
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypesDto: updatedTypes
+        };
+        this.setState({service: updatedService});
+    };
+
+    onChangeTimeHandler = (event) => {
+        const name = event.target.name;
+        const updatedCleaningTimeDto = {
+            ...this.state.service.cleaningTypesDto.cleaningTimeDto,
+            [name]: event.target.value
+        };
+        const updatedTypes = {
+            ...this.state.service.cleaningTypesDto,
+            cleaningTimeDto: updatedCleaningTimeDto
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypesDto: updatedTypes
+        };
+        this.setState({service: updatedService});
+    };
+
+    onChangePriceHandler = (event) => {
+        const name = event.target.name;
+        const updatedPriceDto = {
+            ...this.state.service.cleaningTypesDto.priceDto,
+            [name]: event.target.value
+        };
+        const updatedTypes = {
+            ...this.state.service.cleaningTypesDto,
+            priceDto: updatedPriceDto
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypesDto: updatedTypes
+        };
+        this.setState({service: updatedService});
+    };
+
+    changeModeToggle = (event) => {
+        event.preventDefault();
+        this.setState({modeToggle: event.target.name});
+        console.log(event.target.name);
+    };
+
 
     render() {
         return (
             <div className="container signup-component">
                 <div className="overlay"/>
                 <form>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h2 id="Logotype" className="card-title">
-                                        Logotype
-                                    </h2>
-                                    <div className="form-group col-md-5">
-                                        <img src={this.state.avatar}/>
-                                        <input
-                                            id="logotype"
-                                            type="file"
-                                            className="form-control"
-                                            accept="image/*"
-                                            onChange={this.openAvatar}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                    <nav>
+                        <div className="nav nav-tabs service-tabs" role="tablist">
+                            <button
+                                className={`nav-item nav-link ${this.state.modeToggle === 'security' ? 'active' : ''}`}
+                                data-toggle="tab" role="tab" aria-selected="false"
+                                name="security" onClick={this.changeModeToggle}>
+                                Security
+                            </button>
+                            <button className={`nav-item nav-link ${this.state.modeToggle === 'main' ? 'active' : ''}`}
+                                    data-toggle="tab" role="tab" aria-selected="true"
+                                    name="main" onClick={this.changeModeToggle}>
+                                Main info
+                            </button>
+                            <button className={`nav-item nav-link ${this.state.modeToggle === 'other' ? 'active' : ''}`}
+                                    data-toggle="tab" role="tab" aria-selected="false"
+                                    name="other" onClick={this.changeModeToggle}>
+                                Other settings
+                            </button>
                         </div>
-                        <div className="col-md-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h2 id="company_description" className="card-title">
-                                        What is the your company?
-                                    </h2>
-                                    <div className="form-group">
-                                        <label htmlFor="description" className="col-form-label">
-                                            Description
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="description"
-                                            placeholder="Smb about company"
-                                            required
-                                        />
-                                        <label htmlFor="address" className="col-form-label">
-                                            Address
-                                        </label>
-                                        <input
-                                            type="text"
-                                            className="form-control"
-                                            id="address"
-                                            placeholder="country, city, street, home, flat"
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="col-md-6">
-                        <div className="card">
-                            <div className="card-body">
-                                <div className="form-group">
-                                    <h2 htmlFor="Types" className="card-title">
-                                        Types of services provided and their cost
-                                    </h2>
-                                    <div id="standardRoomCleaning">
-                                        <label>Standard room cleaning coefficient</label>
-                                        <input type="text" defaultValue={1} disabled={true}/>
-                                        <input type="text"/>
-                                    </div>
+                    </nav>
 
-                                    <div id="springCleaningDiv">
-                                        <label>Spring cleaning</label>
-                                        <input type="checkBox" name={"checkSpringCleaning"}
-                                               onChange={this.handleInputChange}/>
-                                        {this.state.checkSpringCleaning ? <InputSpringCleaning /> : ''}
-                                    </div>
+                    {this.state.modeToggle === 'security' ?
+                        <LoginForm {...this.state.service}
+                                   changeEmail={this.changeEmail}
+                                   changePhone={this.changePhone}
+                                   changePassword={this.changePassword}
+                                   changePasswordConfirm={this.changePasswordConfirm}
+                                   onChangeHandler={this.onChangeHandler}/>
+                        : null}
+                    {this.state.modeToggle === 'main' ?
+                        <MainPanel {...this.state} onChangeHandler={this.onChangeHandler}
+                                   onChangeLogoHandler={this.onChangeLogoHandler}
+                                   onClickAddressHandler={this.onClickAddressHandler}/> : null}
 
-                                    <div id="repairAndConstructionCleaningDiv">
-                                        <label>Repair and construction cleaning</label>
-                                        <input type="checkBox" name={"checkRepairAndConstructionCleaning"}
-                                               onChange={this.handleInputChange}/>
+                    {this.state.modeToggle === 'other' ?
+                        <CleaningTypesForm {...this.state.service}
+                                           onChangeTypeHandler={this.onChangeTypeHandler}
+                                           onChangePriceHandler={this.onChangePriceHandler}
+                                           onChangeTimeHandler={this.onChangeTimeHandler}
+                        />
+                        : null}
 
-                                        {this.state.checkRepairAndConstructionCleaning ?
-                                            <InputRepairAndConstructionCleaning /> : ''}
-                                    </div>
 
-                                    <div id="dryCarpetCleaningDiv">
-                                        <label>Dry carpet cleaning</label>
-                                        <input type="checkBox" name={"checkDryCarpetCleaning"}
-                                               onChange={this.handleInputChange}/>
-                                        {this.state.checkDryCarpetCleaning ? <InputDryCarpetCleaning /> : ''}
-                                    </div>
-
-                                    <div id="officeCleaningDiv">
-                                        <label>Office cleaning</label>
-                                        <input type="checkBox" name={"checkOfficeCleaning"}
-                                               onChange={this.handleInputChange}/>
-                                        {this.state.checkOfficeCleaning ? <InputOfficeCleaning /> : ''}
-                                    </div>
-
-                                    <div id="furnitureAndCoatingsCleaningDiv">
-                                        <label>Furniture and coatings cleaning</label>
-                                        <input type="checkBox" name={"checkFurnitureAndCoatingsCleaning"}
-                                               onChange={this.handleInputChange}/>
-                                        {this.state.checkFurnitureAndCoatingsCleaning ?
-                                            <InputFurnitureAndCoatingsCleaning /> : ''}
-                                    </div>
-
-                                    <div id="industrialCleaningDiv">
-                                        <label>Industrial cleaning</label>
-                                        <input type="checkBox" name={"checkIndustrialCleaning"}
-                                               onChange={this.handleInputChange}/>
-                                        {this.state.checkIndustrialCleaning ? <InputIndustrialCleaning /> : ''}
-                                    </div>
-                                    <div id="poolCleaningDiv">
-                                        <label>Pool cleaning</label>
-                                        <input type="checkBox" name={"checkPoolCleaning"}
-                                               onChange={this.handleInputChange}/>
-                                        {this.state.checkPoolCleaning ? <InputPoolCleaning /> : ''}
-                                    </div>
-
-                                    <div id="RoomsDiv">
-                                        <label>Small room </label>
-                                        <input type="text"/>
-                                        <label>Big room </label>
-                                        <input type="text"/>
-                                        <label>Bathroom</label>
-                                        <input type="text"/>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="card person-card">
-                        <div className="card-body">
-                            <h2 id="who_message" className="card-title">Who are you ?</h2>
-                            <div className="row">
-                                <div className="form-group col-md-6">
-                                    <input id="first_name" type="text" className="form-control" placeholder="Username"
-                                           value={this.state.username} onChange={this.changeUsername}
-                                           disabled={this.state.disabled}/>
-                                    <div id="first_name_feedback" className="invalid-feedback"/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h2 className="card-title">How to contact you ?</h2>
-                                    <div className="form-group">
-                                        <label htmlFor="email" className="col-form-label">Email</label>
-                                        <input type="email" className="form-control" id="email"
-                                               placeholder="example@gmail.com" value={this.state.email}
-                                               onChange={this.changeEmail} disabled={this.state.disabled}/>
-                                        <div className="email-feedback"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="tel" className="col-form-label">Phone number</label>
-                                        <MaskedInput
-                                            mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-',
-                                                /\d/, /\d/, '-', /\d/, /\d/]}
-                                            className="form-control"
-                                            placeholder="+375(__)___-__-__"
-                                            guide={false}
-                                            id="customer-phone"
-                                            value={this.state.phone}
-                                            onChange={this.changePhone}
-                                            disabled={this.state.disabled}
-                                        />
-                                        <div className="phone-feedback"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <div className="card">
-                                <div className="card-body">
-                                    <h2 className="card-title">Securize your account !</h2>
-                                    <div className="form-group">
-                                        <label htmlFor="password" className="col-form-label">Pasword</label>
-                                        <input type="password" className="form-control" id="password"
-                                               placeholder="Type your password" value={this.state.password}
-                                               onChange={this.changePassword} disabled={this.state.disabled}/>
-                                        <div className="password-feedback"/>
-                                    </div>
-                                    <div className="form-group">
-                                        <label htmlFor="password_conf" className="col-form-label">Pasword
-                                            (confirm)</label>
-                                        <input type="password" className="form-control" id="password_conf"
-                                               placeholder="Type your password again" value={this.state.confirmPassword}
-                                               onChange={this.changePasswordConfirm} disabled={this.state.disabled}/>
-                                        <div className="password_conf-feedback"/>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                     <div>
                         <button type="button" className="btn btn-primary btn-lg float-right"
-                                onClick={this.preRegister} disabled={this.state.disabled}>
+                                onClick={this.preRegister} disabled={this.state.service.disabled}>
                             Sign up !
                         </button>
                     </div>
                     <span>{this.state.message}</span>
-                    {this.state.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
-                                                             verify={this.verify}
-                                                             verificationStatus={this.state.verificationStatus} /> : ''}
+                    {this.state.service.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
+                                                                     verify={this.verify}
+                                                                     verificationStatus={this.state.verificationStatus}/> : ''}
                 </form>
             </div>
         );
     };
 }
+
+const MainPanel = (props) => {
+    return (
+        <React.Fragment>
+            <div className="form-group row">
+                <label htmlFor="profileFormLogo" className="col-sm-4 col-form-label">Logo</label>
+                <div className="custom-file col-sm-5 profile-service-input">
+                    <input type="file" className="custom-file-input" id="inputGroupFile01"
+                           onChange={props.onChangeLogoHandler} aria-describedby="inputGroupFileAddon01"/>
+                    <label className="custom-file-label" htmlFor="inputGroupFile01">
+                        {props.logo !== '' ? props.logo.name : "Choose file"}</label>
+                </div>
+            </div>
+
+            <div className="form-group row">
+                <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
+                <div className="col-sm-8">
+                    <input type="text" className="form-control input-left-space col-sm-6" id="profileFormDescription"
+                           placeholder="Description"
+                           name="description"
+                           value={props.service.description}
+                           onChange={props.onChangeHandler}
+                    />
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
+                <div className="col-sm-8 dropdown">
+                    <input type="text" className="form-control dropdown-toggle input-left-space col-sm-6"
+                           id="profileFormAddress"
+                           data-toggle="dropdown" placeholder="Address"
+                           name="address"
+                           value={props.service.address}
+                           onChange={props.onChangeHandler}
+                    />
+                    <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
+                </div>
+            </div>
+
+        </React.Fragment>
+    )
+};
+
+const mapStateToProps = (state) => {
+    return {
+        token: state.user.token,
+        serviceId: state.user.id
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateService: (serviceId, token) => {
+            dispatch(updateService(serviceId, token))
+        }
+    }
+};
 
 export default SignUpService;

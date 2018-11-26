@@ -1,7 +1,13 @@
 import React, {Component} from 'react';
-import OrderServiceButton from '../companies/order-service-button';
+import {connect} from 'react-redux';
+import ConfirmModalToggleButton from './confirm-modal-toggle-button';
+import * as orderActions from "../actions/order-actions";
 
 class Company extends Component {
+
+    onClick = () => {
+        this.props.updateOrder({...this.props.order, company: this.props.company.id})
+    };
 
     render() {
         return (
@@ -12,11 +18,24 @@ class Company extends Component {
                 <td className="col">{this.props.company.ranking}</td>
                 <td className="col">{this.props.company.price}</td>
                 <td className="col">
-                    <OrderServiceButton/>
+                    <ConfirmModalToggleButton onClick={this.onClick}/>
                 </td>
             </tr>
         )
     }
 }
 
-export default Company;
+const mapStateToProps = ({orderUpdate}) => {
+    return {
+        order: orderUpdate
+    }
+};
+const mapDispatchToProps = (dispatch) => {
+    return {
+        updateOrder: (order) => {
+            dispatch(orderActions.prepareOrderForUpdate(order))
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Company);
