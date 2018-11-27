@@ -1,0 +1,14 @@
+.form {
+    width: 500px;
+    padding: 15px;
+    margin: auto;
+    z-index: 3;
+}
+
+.confirmationButtons {
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+    width: 450px;
+    height: 50px;
+}

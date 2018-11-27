@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import * as orderActions from "../actions/order-actions";
 import {fetchSaveEntity} from '../api/api-actions';
+import './companies.css';
 
 class CustomerConfirmModalForm extends Component {
 
@@ -16,10 +17,10 @@ class CustomerConfirmModalForm extends Component {
         return (
             <div className="modal fade" id="confirm-modal" tabIndex="-1" role="dialog"
                  aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div className="modal-dialog modal-dialog-centered" role="document">
-                    <div className="modal-content">
+                <form className="modal-dialog  modal-dialog-centered"   role="document">
+                    <div className="modal-content" >
                         <div className="modal-header">
-                            <h5 className="modal-title" id="confirmOrderModalTitle">Please confirm your order</h5>
+                            <h5 className="modal-title" align="center" id="confirmOrderModalTitle"><b>Please confirm your order</b></h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -74,16 +75,17 @@ class CustomerConfirmModalForm extends Component {
 
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary btn-danger" data-dismiss="modal">
-                                Close
-                            </button>
-                            <button type="submit" className="btn btn-secondary btn btn-success" data-dismiss="modal"
+                            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"
+                                    data-dismiss="modal"
                                     onClick={this.onConfirm}>Confirm
                             </button>
                         </div>
                     </div>
-                </div>
+                </form>
+
             </div>
+
         )
     }
 
