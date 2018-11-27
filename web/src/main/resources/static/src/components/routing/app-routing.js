@@ -12,6 +12,7 @@ import Feedback from '../feedback';
 import BookingForm from '../booking-form/booking-form'
 import Companies from '../companies/companies'
 import ProfileService from '../service-profile/profile-form';
+import CustomerOrdersList from '../customer-orders/customer-orders-list';
 
 class AppRouting extends Component {
 
@@ -40,6 +41,7 @@ class AppRouting extends Component {
                         <Route path="/login" component={SignIn}/>
                         <Route path="/feedback" component={Feedback}/>
                         <Route path="/booking" component={BookingForm}/>
+                        <Route path="/customer/orders" component={CustomerOrdersList}/>
                         <Route path="/companies" component={Companies}/>
                         <Redirect to="/"/>
                     </Switch>
@@ -51,6 +53,7 @@ class AppRouting extends Component {
                         <Route path="/login" component={SignIn}/>
                         <Route path="/feedback" component={Feedback}/>
                         <Route path="/booking" component={BookingForm}/>
+                        <Route path="/customer/orders" component={CustomerOrdersList}/>
                         <Route path="/companies" component={Companies}/>
                         <Redirect to="/"/>
                     </Switch>

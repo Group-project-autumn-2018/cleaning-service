@@ -20,7 +20,7 @@ class BookingForm extends Component {
             cleaningTime: '',
             frequency: '',
             duration: '',
-            email: '',
+            email: this.props.email,
             estimatedPrice: 120,
             estimatedTime: ''
         }

@@ -63,7 +63,7 @@ class CustomerConfirmModalForm extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-6">Cleaning Company</div>
-                                <div className="col-6">{this.props.order.company}</div>
+                                <div className="col-6">{this.props.order.companyName}</div>
                             </div>
                             <div className="row">
                                 <div className="col-6">Estimated Price</div>
@@ -88,8 +88,6 @@ class CustomerConfirmModalForm extends Component {
             </div>
         )
     }
-
-
 }
 
 

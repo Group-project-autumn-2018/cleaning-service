@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import ChangePassword from '../customers-profile-form/change-password'
 import MaskedInput, {conformToMask} from 'react-text-mask';
 import '../customers-profile-form/profile-form.css';
-import {updateService} from '../actions/service-actions';
+import {updateEntity} from '../actions/admin-actions';
 import './service-profile.css';
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import DropdownAddressList from './dropdown-address-list';
@@ -11,6 +11,8 @@ import CleaningTypesForm from './cleaning-types-form';
 
 class ProfileForm extends Component {
     openStreetMapApi = new OpenStreetMapApi();
+
+    serviceURN = '/cleaning';
 
     state = {
         logo: '',
@@ -40,7 +42,7 @@ class ProfileForm extends Component {
     };
 
     componentDidMount() {
-        /*fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
+        /*fetchEntity(this.props.serviceId, this.serviceURN, this.props.token)
             .then((service) => {
                 this.setState({service: service})
             });*/
@@ -49,7 +51,7 @@ class ProfileForm extends Component {
     submitHandler = (e) => {
         e.preventDefault();
         console.log("submit");
-        this.props.updateService(this.state.service, this.props.token);
+        this.props.updateEntity(this.state.service, this.serviceURN, this.props.token);
 
     };
 
@@ -274,8 +276,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateService: (serviceId, token) => {
-            dispatch(updateService(serviceId, token))
+        updateEntity: (serviceId, serviceURN, token) => {
+            dispatch(updateEntity(serviceId, serviceURN, token))
         }
     }
 };

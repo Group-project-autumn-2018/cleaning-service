@@ -21,6 +21,8 @@ public class OrderDto {
 
     private Long customer;
 
+    private String companyName;
+
     private Status status;
 
     private String address;

@@ -6,7 +6,11 @@ import * as orderActions from "../actions/order-actions";
 class Company extends Component {
 
     onClick = () => {
-        this.props.updateOrder({...this.props.order, company: this.props.company.id})
+        this.props.updateOrder({
+            ...this.props.order,
+            company: this.props.company.id,
+            companyName: this.props.company.name
+        })
     };
 
     render() {

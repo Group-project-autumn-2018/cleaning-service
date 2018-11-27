@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import './sign-up.css';
 import '../service-profile/service-profile.css';
 import ServiceApi from '../services/service-api';
@@ -6,10 +7,11 @@ import VerificationForm from './verification-form';
 import CleaningTypesForm from '../service-profile/cleaning-types-form';
 import LoginForm from "./login-form";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
-import {updateService} from "../actions/service-actions";
+import {updateEntity} from '../actions/admin-actions';
 
 class SignUpService extends Component {
     serviceApi = new ServiceApi();
+    serviceURN = '/cleaning';
 
     state = {
         avatar: '',
@@ -234,7 +236,7 @@ class SignUpService extends Component {
 
     submitHandler = (e) => {
         e.preventDefault();
-        this.props.updateService(this.state.service, this.props.token);
+        this.props.updateEntity(this.state.service, this.serviceURN, this.props.token);
 
     };
 
@@ -431,10 +433,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateService: (serviceId, token) => {
-            dispatch(updateService(serviceId, token))
+        updateEntity: (serviceId, serviceURN, token) => {
+            dispatch(updateEntity(serviceId, serviceURN, token))
         }
     }
 };
 
-export default SignUpService;
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpService);
