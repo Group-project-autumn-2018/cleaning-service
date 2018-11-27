@@ -2,6 +2,7 @@ package com.itechart.service.dto;
 
 import com.itechart.service.entity.Duration;
 import com.itechart.service.entity.Frequency;
+import com.itechart.service.entity.Status;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,10 @@ public class OrderDto {
 
     private Long customer;
 
+    private String companyName;
+
+    private Status status;
+
     private String address;
 
     private String email;
@@ -34,7 +39,7 @@ public class OrderDto {
 
     private LocalDate cleaningDay;
 
-    private String cleaningTime;
+    private LocalTime cleaningTime;
 
     private Frequency frequency;
 

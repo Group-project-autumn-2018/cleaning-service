@@ -1,8 +1,11 @@
 import * as api from '../api/api-actions';
 
-export const fetchEntities = (page, size, entityURN, token) => {
+export const fetchEntities = (page, size, entityURN, token, userID) => {
+
+    const userIDParam = userID ? `&userID=${userID}` : '';
     return dispatch => {
-        fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}`).then(resolve => resolve.json()).then(response => {
+        fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}${userIDParam}`)
+            .then(resolve => resolve.json()).then(response => {
             const pagination = {
                 totalItemsCount: response.totalElements,
                 activePage: response.number,
@@ -22,9 +25,6 @@ export const updateEntity = (entity, entityURN, token) => {
         dispatch(updateEntitySuccess(entity));
     }
 };
-
-
-
 
 
 export const fetchEntitiesSuccess = (entity) => {
@@ -48,7 +48,7 @@ export const prepareEntityForUpdate = (entity) => {
     }
 };
 
-export const updateEntitySuccess = (entity) => {
+const updateEntitySuccess = (entity) => {
     return {
         type: 'UPDATE_ENTITY_SUCCESS',
         payload: entity

@@ -7,10 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -27,6 +24,8 @@ public class CleaningCompany extends User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
-    @Column(name = "cleaning_notifications")
-    private Boolean cleaningNotifications;
+
+    @OneToOne
+    @PrimaryKeyJoinColumn
+    private CleaningTypes cleaningTypes;
 }

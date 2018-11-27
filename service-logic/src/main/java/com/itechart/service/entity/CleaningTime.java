@@ -51,5 +51,5 @@ public class CleaningTime {
 
     @OneToOne(fetch = FetchType.LAZY, cascade =  CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private TypesOfProvidedService typesOfProvidedService;
+    private CleaningTypes cleaningTypes;
 }

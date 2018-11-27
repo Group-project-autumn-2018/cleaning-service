@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Component
 @Table(name = "types_of_provided_service")
-public class TypesOfProvidedService {
+public class CleaningTypes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,7 +25,7 @@ public class TypesOfProvidedService {
     @JoinColumn(name = "cleaning_time_id", referencedColumnName = "id")
     private CleaningTime cleaningTime;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "service_id", referencedColumnName = "id", nullable = false)
     private CleaningCompany company;
 
