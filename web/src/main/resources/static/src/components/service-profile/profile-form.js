@@ -16,6 +16,7 @@ class ProfileForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            tempAddress: '',
             logo: '',
             modeToggle: 'main',
             service: {
@@ -41,7 +42,7 @@ class ProfileForm extends Component {
     componentDidMount() {
         fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
             .then((service) => {
-                this.setState({service: service})
+                this.setState({service: service, tempAddress: service.address.address})
             });
     };
 
@@ -52,16 +53,8 @@ class ProfileForm extends Component {
             [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
         };
         this.setState({service: updatedService});
-        if (name === 'address' && e.target.value.length > 5) {
-            const updatedAddress = {
-                ...this.state.service.address,
-                address: e.target.value
-            };
-            const updatedService = {
-                ...this.state.service,
-                address: updatedAddress
-            };
-            this.setState({service: updatedService});
+        if (name === 'address') {
+            this.setState({tempAddress: e.target.value});
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
         }
     };
@@ -71,9 +64,10 @@ class ProfileForm extends Component {
     };
 
     onClickAddressHandler = (event) => {
+        // && e.target.value.length > 5
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
         const updatedAddress = {
-            ...this.state.service.address,
+            address: this.state.tempAddress,
             lat: address.lat,
             lon: address.lon
         };

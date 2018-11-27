@@ -7,9 +7,11 @@ import CleaningTypesForm from '../service-profile/cleaning-types-form';
 import LoginForm from "./login-form";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
 import {updateService} from "../actions/service-actions";
+import OpenStreetMapApi from "../services/openstreetmap-api";
 
 class SignUpService extends Component {
     serviceApi = new ServiceApi();
+    openStreetMapApi = new OpenStreetMapApi();
 
     state = {
         avatar: '',
@@ -19,7 +21,11 @@ class SignUpService extends Component {
         service: {
             description: '',
             username: '',
-            address: '',
+            address: {
+                address: '',
+                lat: 0,
+                lon: 0
+            },
             email: '',
             phone: '',
             password: '',
@@ -414,7 +420,7 @@ const MainPanel = (props) => {
                            id="profileFormAddress"
                            data-toggle="dropdown" placeholder="Address"
                            name="address"
-                           value={props.service.address}
+                           value={props.service.address.address}
                            onChange={props.onChangeHandler}
                     />
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>

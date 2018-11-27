@@ -1,16 +1,5 @@
 package com.itechart.service.util;
 
-import com.itechart.service.dto.OrderDto;
-import com.itechart.service.dto.TimingOptionsDto;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import java.math.BigDecimal;
-
-import static org.junit.Assert.assertEquals;
-
 public class CalculationRulesTest {
 //
 //    private CalculationRules calculationRules;

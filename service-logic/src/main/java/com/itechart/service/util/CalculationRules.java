@@ -1,16 +1,11 @@
 package com.itechart.service.util;
 
 import com.itechart.service.dto.OrderDto;
-import com.itechart.service.dto.TimingOptionsDto;
-import com.itechart.service.entity.CleaningCompany;
-import com.itechart.service.entity.CleaningTime;
 import com.itechart.service.entity.CleaningTypes;
-import com.itechart.service.entity.Price;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 
 public class CalculationRules {
 

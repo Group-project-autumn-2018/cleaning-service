@@ -54,7 +54,7 @@ const MainPanel = (props) => {
                     <input type="text" className="form-control dropdown-toggle" id="profileFormAddress"
                            data-toggle="dropdown" placeholder="Address"
                            name="address"
-                           value={props.service.address.address}
+                           value={props.tempAddress}
                            onChange={props.onChangeHandler}
                     />
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
