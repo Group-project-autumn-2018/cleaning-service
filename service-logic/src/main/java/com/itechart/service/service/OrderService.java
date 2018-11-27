@@ -1,7 +1,7 @@
 package com.itechart.service.service;
 import com.itechart.service.dto.OrderDto;
 import org.springframework.data.domain.Page;
-import com.querydsl.core.types.Predicate;
+
 
 public interface OrderService {
 

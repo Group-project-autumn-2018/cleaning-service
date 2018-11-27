@@ -3,7 +3,7 @@ import React from 'react';
 const Order = ({order}) => {
 
     return (
-        <tr className="row">
+        <tr className="row bg-light">
             <td className="col">{order.cleaningType}</td>
             <td className="col">{order.address.address}</td>
             <td className="col-2">

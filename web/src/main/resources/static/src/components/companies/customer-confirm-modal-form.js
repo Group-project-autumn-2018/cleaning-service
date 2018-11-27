@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import * as orderActions from "../actions/order-actions";
 import {fetchSaveEntity} from '../api/api-actions';
 import './confirm-modal-css.css';
+import {withRouter} from "react-router-dom";
 
 class CustomerConfirmModalForm extends Component {
 
@@ -10,7 +11,7 @@ class CustomerConfirmModalForm extends Component {
 
     onConfirm = async () => {
         await fetchSaveEntity({...this.props.order}, this.URN, this.props.user.token);
-        this.props.history.push("")
+        this.props.history.push("/customer/orders")
     };
 
 
@@ -107,4 +108,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CustomerConfirmModalForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(CustomerConfirmModalForm));

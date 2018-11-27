@@ -1,13 +1,10 @@
 package com.itechart.web.controller;
-
 import com.itechart.service.dto.OrderDto;
-import com.itechart.service.entity.Order;
 import com.itechart.service.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.web.bind.annotation.*;
-import com.querydsl.core.types.Predicate;
+
 
 @RestController
 @RequestMapping("api/order")

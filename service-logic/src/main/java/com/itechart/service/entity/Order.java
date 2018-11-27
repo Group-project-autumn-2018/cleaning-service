@@ -2,7 +2,6 @@ package com.itechart.service.entity;
 
 import com.itechart.common.entity.Address;
 import com.itechart.customer.entity.Customer;
-import com.querydsl.core.annotations.QueryEntity;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -16,7 +15,6 @@ import java.time.LocalTime;
 @Setter
 @Entity
 @Component
-@QueryEntity
 @Table(name = "orders")
 public class Order {
     @Id
