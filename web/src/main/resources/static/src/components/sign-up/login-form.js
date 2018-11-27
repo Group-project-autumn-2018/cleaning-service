@@ -14,7 +14,7 @@ const LoginForm = (props) => {
 
                                 <input type="text" className="form-control" id="profileFormName" placeholder="Name"
                                        name="username"
-                                       value={props.username}
+                                       value={props.service.username}
                                        onChange={props.onChangeHandler}
                                 />
 
@@ -22,7 +22,7 @@ const LoginForm = (props) => {
                             <div className="form-group">
                                 <label htmlFor="email" className="col-form-label">Email</label>
                                 <input type="email" className="form-control" id="email"
-                                       placeholder="example@gmail.com" value={props.email}
+                                       placeholder="example@gmail.com" value={props.service.email}
                                        onChange={props.changeEmail} disabled={props.disabled}/>
                                 <div className="email-feedback"/>
                             </div>
@@ -35,7 +35,7 @@ const LoginForm = (props) => {
                                     placeholder="+375(__)___-__-__"
                                     guide={false}
                                     id="customer-phone"
-                                    value={props.phone}
+                                    value={props.service.phone}
                                     onChange={props.changePhone}
                                     disabled={props.disabled}
                                 />
@@ -51,7 +51,7 @@ const LoginForm = (props) => {
                             <div className="form-group">
                                 <label htmlFor="password" className="col-form-label">Password</label>
                                 <input type="password" className="form-control" id="password"
-                                       placeholder="Type your password" value={props.password}
+                                       placeholder="Type your password" value={props.service.password}
                                        onChange={props.changePassword} disabled={props.disabled}/>
                                 <div className="password-feedback"/>
                             </div>

@@ -26,7 +26,7 @@ const CleaningTypesForm = (props) => {
                 <input type="checkBox" name="springCleaning"
                        onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.springCleaning}/>
                 {props.cleaningTypes.springCleaning ?
-                    <AdditionalInput names={['springCleaningPrice', 'springCleaningTime']}
+                    <AdditionalInput names={['springCleaning', 'springCleaningTime']}
                                      values={[
                                          props.cleaningTypes.price.springCleaning,
                                          props.cleaningTypes.cleaningTime.springCleaningTime
@@ -43,7 +43,7 @@ const CleaningTypesForm = (props) => {
 
                 {props.cleaningTypes.repairAndConstructionCleaning ?
                     <AdditionalInput
-                        names={['repairAndConstructionCleaningPrice', 'repairAndConstructionCleaningTime']}
+                        names={['repairAndConstructionCleaning', 'repairAndConstructionCleaningTime']}
                         values={[
                             props.cleaningTypes.price.repairAndConstructionCleaning,
                             props.cleaningTypes.cleaningTime.repairAndConstructionCleaningTime
@@ -57,7 +57,7 @@ const CleaningTypesForm = (props) => {
                 <input type="checkBox" name="dryCarpetCleaning"
                        onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.dryCarpetCleaning}/>
                 {props.cleaningTypes.dryCarpetCleaning ?
-                    <AdditionalInput names={['dryCarpetCleaningPrice', 'dryCarpetCleaningTime']}
+                    <AdditionalInput names={['dryCarpetCleaning', 'dryCarpetCleaningTime']}
                                      values={[
                                          props.cleaningTypes.price.dryCarpetCleaning,
                                          props.cleaningTypes.cleaningTime.dryCarpetCleaningTime
@@ -71,7 +71,7 @@ const CleaningTypesForm = (props) => {
                 <input type="checkBox" name="officeCleaning"
                        onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.officeCleaning}/>
                 {props.cleaningTypes.officeCleaning ?
-                    <AdditionalInput names={['officeCleaningPrice', 'officeCleaningTime']}
+                    <AdditionalInput names={['officeCleaning', 'officeCleaningTime']}
                                      values={[
                                          props.cleaningTypes.price.officeCleaning,
                                          props.cleaningTypes.cleaningTime.officeCleaningTime
@@ -87,7 +87,7 @@ const CleaningTypesForm = (props) => {
                        checked={props.cleaningTypes.furnitureAndCoatingsCleaning}/>
                 {props.cleaningTypes.furnitureAndCoatingsCleaning ?
                     <AdditionalInput
-                        names={['furnitureAndCoatingsCleaningPrice', 'furnitureAndCoatingsCleaningTime']}
+                        names={['furnitureAndCoatingsCleaning', 'furnitureAndCoatingsCleaningTime']}
                         values={[
                             props.cleaningTypes.price.furnitureAndCoatingsCleaning,
                             props.cleaningTypes.cleaningTime.furnitureAndCoatingsCleaningTime
@@ -101,7 +101,7 @@ const CleaningTypesForm = (props) => {
                 <input type="checkBox" name="industrialCleaning"
                        onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.industrialCleaning}/>
                 {props.cleaningTypes.industrialCleaning ?
-                    <AdditionalInput names={['industrialCleaningPrice', 'industrialCleaningTime']}
+                    <AdditionalInput names={['industrialCleaning', 'industrialCleaningTime']}
                                      values={[
                                          props.cleaningTypes.price.industrialCleaning,
                                          props.cleaningTypes.cleaningTime.industrialCleaningTime
@@ -114,7 +114,7 @@ const CleaningTypesForm = (props) => {
                 <input type="checkBox" name="poolCleaning"
                        onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.poolCleaning}/>
                 {props.cleaningTypes.poolCleaning ?
-                    <AdditionalInput names={['poolCleaningPrice', 'poolCleaningTime']}
+                    <AdditionalInput names={['poolCleaning', 'poolCleaningTime']}
                                      values={[
                                          props.cleaningTypes.price.poolCleaning,
                                          props.cleaningTypes.cleaningTime.poolCleaningTime

@@ -44,7 +44,7 @@ public class CleaningTypesServiceImpl implements CleaningTypesService {
         cleaningTypes.setFurnitureAndCoatingsCleaning(cleaningTypesDto.getFurnitureAndCoatingsCleaning());
         cleaningTypes.setIndustrialCleaning(cleaningTypesDto.getIndustrialCleaning());
         cleaningTypes.setOfficeCleaning(cleaningTypesDto.getOfficeCleaning());
-        cleaningTypes.setPoolCleaning(cleaningTypes.getPoolCleaning());
+        cleaningTypes.setPoolCleaning(cleaningTypesDto.getPoolCleaning());
         cleaningTypes.setRepairAndConstructionCleaning(cleaningTypesDto.getRepairAndConstructionCleaning());
         cleaningTypes.setStandardRoomCleaning(cleaningTypesDto.getStandardRoomCleaning());
         cleaningTypes.setSpringCleaning(cleaningTypesDto.getSpringCleaning());

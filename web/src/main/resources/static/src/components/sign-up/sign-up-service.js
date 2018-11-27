@@ -14,6 +14,9 @@ class SignUpService extends Component {
     openStreetMapApi = new OpenStreetMapApi();
 
     state = {
+        disabled: false,
+        confirmPassword: '',
+        tempAddress: '',
         avatar: '',
         logo: '',
         code: '',
@@ -29,10 +32,6 @@ class SignUpService extends Component {
             email: '',
             phone: '',
             password: '',
-            confirmPassword: '',
-            disabled: false,
-
-
             cleaningTypes: {
                 standardRoomCleaning: true,
                 springCleaning: false,
@@ -131,11 +130,7 @@ class SignUpService extends Component {
     };
 
     changePasswordConfirm = (event) => {
-        const updatedService = {
-            ...this.state.service,
-            confirmPassword: event.target.value
-        };
-        this.setState({service: updatedService});
+        this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.service.password) {
             event.target.classList.add('is-invalid');
         } else {
@@ -144,7 +139,7 @@ class SignUpService extends Component {
     };
 
     validate = () => {
-        if (this.state.service.password !== this.state.service.confirmPassword
+        if (this.state.service.password !== this.state.confirmPassword
             || this.state.service.password.length < 3) {
             return false;
         }
@@ -157,28 +152,9 @@ class SignUpService extends Component {
 
     preRegister = () => {
         if (this.validate()) {
-            const updatedService = {
-                ...this.state.service,
-                disabled: true
-            };
-            this.setState({service: updatedService});
+            this.setState({disabled: true});
 
-            const objDto = {
-                    username: this.state.service.username,
-                    phone: this.state.service.phone,
-                    email: this.state.service.email,
-                    password: this.state.service.password,
-                    description: this.state.service.description,
-                    address: {
-                        address: this.state.service.address,
-                        lat: this.state.service.lat,
-                        lon: this.state.service.lon
-                    },
-                    cleaningTypes: {
-                        ...this.state.service.cleaningTypes
-                    }
-                }
-            ;
+            const objDto = {...this.state.service};
 
             let formData = new FormData();
             formData.append("objDto", JSON.stringify(objDto));
@@ -251,7 +227,8 @@ class SignUpService extends Component {
             [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
         };
         this.setState({service: updatedService});
-        if (name === 'address' && e.target.value.length > 5) {
+        if (name === 'address') {
+            this.setState({tempAddress: e.target.value});
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
         }
     };
@@ -262,10 +239,14 @@ class SignUpService extends Component {
 
     onClickAddressHandler = (event) => {
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
-        const updatedService = {
-            ...this.state.service,
+        const updatedAddress = {
+            address: this.state.tempAddress,
             lat: address.lat,
             lon: address.lon
+        };
+        const updatedService = {
+            ...this.state.service,
+            address: updatedAddress
         };
         console.log(address.lat + ' ' + address.lon);
         this.setState({service: updatedService, addresses: []});
@@ -352,7 +333,7 @@ class SignUpService extends Component {
                     </nav>
 
                     {this.state.modeToggle === 'security' ?
-                        <LoginForm {...this.state.service}
+                        <LoginForm {...this.state}
                                    changeEmail={this.changeEmail}
                                    changePhone={this.changePhone}
                                    changePassword={this.changePassword}
@@ -420,7 +401,7 @@ const MainPanel = (props) => {
                            id="profileFormAddress"
                            data-toggle="dropdown" placeholder="Address"
                            name="address"
-                           value={props.service.address.address}
+                           value={props.tempAddress}
                            onChange={props.onChangeHandler}
                     />
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>

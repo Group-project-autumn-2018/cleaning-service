@@ -1,5 +1,6 @@
 package com.itechart.service.service.impl;
 
+import com.itechart.common.entity.Address;
 import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
@@ -95,7 +96,11 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     private Long saveCompany(CleaningCompanyDto registrationDto) {
         CleaningCompany company = new CleaningCompany();
         //logotype
-
+        Address address = new Address();
+        address.setAddress(registrationDto.getAddress().getAddress());
+        address.setLat(registrationDto.getAddress().getLat());
+        address.setLon(registrationDto.getAddress().getLon());
+        company.setAddress(address);
         company.setDescription(registrationDto.getDescription());
         company.setUsername(registrationDto.getUsername());
         company.setConfirmed(false);
