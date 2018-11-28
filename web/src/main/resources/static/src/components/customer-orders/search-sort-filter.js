@@ -22,6 +22,8 @@ const SearchSortFilter = (props) => {
 
             <button className="btn btn-primary search-item" onClick={props.onClick}>Search</button>
 
+            <button className="btn btn-secondary " onClick={props.showAll}>All</button>
+
             <select className="custom-select search-item" name="sort" onChange={props.onChange}>
                 <option value="" hidden selected disabled>Sort by</option>
                 <option value="">Price</option>

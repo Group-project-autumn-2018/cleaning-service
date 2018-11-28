@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {fetchEntities} from '../actions/admin-actions';
+import {fetchEntities} from '../api/api-actions';
 import Pagination from "react-js-pagination";
 import OrdersList from './orders-list';
 import {Link} from "react-router-dom";
@@ -44,8 +44,28 @@ class CustomerOrdersList extends Component {
     };
 
     handleSearch = () => {
-        this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
+        let search = "&search=";
+        if (this.state.address) search += `address:${this.state.address},`;
+        if (this.state.company) search += `company:${this.state.company},`;
+        if (this.state.cleaningType) search += `cleaningType:${this.state.cleaningType},`;
+
+        search = search.substring(0, search.length - 1);
+
+        if (this.props.role === 'admin') {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, null, search);
+        } else {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, this.props.userID, search);
+        }
+
+        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
             this.props.token, this.props.userID, search);
+    };
+
+    showAll = () => {
+        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
+            this.props.token, this.props.userID);
     };
 
     render() {
@@ -69,7 +89,7 @@ class CustomerOrdersList extends Component {
                             />
                         </nav>
                     </div>
-                    <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}/>
+                    <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch} showAll={this.showAll}/>
                     <OrdersList orders={this.props.orders}/>
                 </div>)
 
@@ -88,8 +108,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchOrders: (page, size, entityURN, token, userID) => {
-            dispatch(fetchEntities(page, size, entityURN, token, userID))
+        fetchOrders: (page, size, entityURN, token, userID, search) => {
+            dispatch(fetchEntities(page, size, entityURN, token, userID, search))
         }
     }
 };
