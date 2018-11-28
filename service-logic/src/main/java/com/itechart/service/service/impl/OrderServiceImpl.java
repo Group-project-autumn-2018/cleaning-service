@@ -9,16 +9,21 @@ import com.itechart.service.mapper.OrderMapper;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.repository.OrderRepository;
 import com.itechart.service.service.OrderService;
+import com.itechart.service.specification.OrderSpecificationsBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -48,12 +53,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDto> findPaginated(int page, int size, Long id) {
+    public Page<OrderDto> findPaginated(Pageable pageable) {
 
-        Page<Order> orders = orderRepository.findAllByCustomer_Id(PageRequest.of(page, size), id);
-
+        Page<Order> orders = orderRepository.findAll(pageable);
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
+
 
     @Override
     public OrderDto getOne(Long id) {
@@ -88,5 +93,46 @@ public class OrderServiceImpl implements OrderService {
     @Bean
     TaskScheduler taskScheduler() {
         return new ConcurrentTaskScheduler();
+    }
+
+
+    @Override
+    public Page<OrderDto> findPaginatedWithSearchAndId(Long id, String search, Pageable pageable) {
+
+        OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
+        builder.with("customer", id);
+        Specification<Order> spec = builder.build();
+        Page<Order> orders = orderRepository.findAll(spec, pageable);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllByCustomer_Id(pageable, id);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable) {
+
+        OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
+        Specification<Order> spec = builder.build();
+        Page<Order> orders = orderRepository.findAll(spec, pageable);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    private OrderSpecificationsBuilder getSpecificationBuilder(String search) {
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        OrderSpecificationsBuilder builder = new OrderSpecificationsBuilder();
+
+        while (matcher.find()) {
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+        return builder;
     }
 }

@@ -10,7 +10,7 @@ const OrdersList = ({orders}) => {
         <div className="container-fluid bg-light w-100 h-100">
             <table className="table table-hover">
                 <tbody>
-                <tr className="row">
+                <tr className="row px-5">
                     <th scope="col" className="col">Service Type</th>
                     <th scope="col" className="col">Address</th>
                     <th scope="col" className="col-2">Room Description</th>

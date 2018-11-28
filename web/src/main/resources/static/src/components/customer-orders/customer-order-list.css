@@ -3,6 +3,10 @@
     left: 15px;
 }
 
-.orderList {
+.order-list {
     padding: 0;
+}
+
+.search-item {
+    width: 15%;
 }
