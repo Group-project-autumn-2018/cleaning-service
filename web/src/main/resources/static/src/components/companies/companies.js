@@ -38,7 +38,6 @@ export default class Companies extends Component {
                 <h3 className="text-center pt-4"><b>Available services</b></h3>
                 <SortList sort={this.sorting}/>
                 <CompaniesList companies={this.companies}/>
-
             </div>
         );
     }
