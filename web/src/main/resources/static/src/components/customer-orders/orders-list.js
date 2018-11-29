@@ -8,7 +8,7 @@ const OrdersList = ({orders}) => {
     );
     return (
         <div className="container-fluid bg-light w-100 h-100">
-            <table className="table table-hover">
+            <table className="table table-hover mt-2">
                 <tbody>
                 <tr className="row px-5">
                     <th scope="col" className="col">Service Type</th>

@@ -6,7 +6,7 @@ import SortList from '../companies/sort-list';
 export default class Companies extends Component {
 
     companies = [{
-        id: "1",
+        id: "2",
         logotype: "logo",
         name: "GoldService",
         address: "Kirova",
@@ -14,7 +14,7 @@ export default class Companies extends Component {
         price: "100$"
     },
         {
-            id: "2",
+            id: "4",
             logotype: "logo",
             name: "SilverService",
             address: "Sovetskaya",
@@ -22,7 +22,7 @@ export default class Companies extends Component {
             price: "300$"
         },
         {
-            id: "3",
+            id: "4",
             logotype: "logo",
             name: "BronzeService",
             address: "Lenina",

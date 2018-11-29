@@ -18,7 +18,6 @@ class CustomerOrdersList extends Component {
         sort: null
     };
 
-
     entityURN = '/order';
 
     componentDidMount() {
@@ -50,6 +49,8 @@ class CustomerOrdersList extends Component {
 
         search = search.substring(0, search.length - 1);
 
+        this.setState({search: search});
+
         if (this.props.role === 'admin') {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
                 this.props.token, null, search);
@@ -58,17 +59,30 @@ class CustomerOrdersList extends Component {
                 this.props.token, this.props.userID, search);
         }
 
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID, search);
+    };
+
+    handleSort = (option) => {
+        const sort = option ? option.value : "";
+        const search = this.state.search ? this.state.search : '';
+        this.setState({sort: sort});
+        const sortParam = search + sort;
+        if (this.props.role === 'admin') {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, null, sortParam);
+        } else {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, this.props.userID, sortParam);
+        }
+
     };
 
     showAll = () => {
+        this.setState({search: null});
         this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
             this.props.token, this.props.userID);
     };
 
     render() {
-
             return (
                 <div className="bg-light container-fluid w-100 h-100 order-list">
                     <h1 className="text-center">{this.props.role === 'admin' ? "All Orders" : "Your Orders"}
@@ -88,10 +102,12 @@ class CustomerOrdersList extends Component {
                             />
                         </nav>
                     </div>
-                    <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch} showAll={this.showAll}/>
+                    <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}
+                                      onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
+                                      selectedSortOption={this.state.selectedSortOption}
+                                      showAll={this.showAll}/>
                     <OrdersList orders={this.props.orders}/>
                 </div>)
-
     }
 }
 

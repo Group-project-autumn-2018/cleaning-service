@@ -20,7 +20,7 @@
     "redux-persist": "^5.10.0",
     "redux-thunk": "^2.3.0",
     "rest": "^2.0.0",
-    "react-rating": "1.4.1"
+    "react-select": "2.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
