@@ -356,14 +356,14 @@ class SignUpService extends Component {
 
                     <div>
                         <button type="button" className="btn btn-primary btn-lg float-right"
-                                onClick={this.preRegister} disabled={this.state.service.disabled}>
+                                onClick={this.preRegister} disabled={this.state.disabled}>
                             Sign up !
                         </button>
                     </div>
                     <span>{this.state.message}</span>
-                    {this.state.service.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
-                                                                     verify={this.verify}
-                                                                     verificationStatus={this.state.verificationStatus}/> : ''}
+                    {this.state.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
+                                                             verify={this.verify}
+                                                             verificationStatus={this.state.verificationStatus}/> : ''}
                 </form>
             </div>
         );

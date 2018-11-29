@@ -101,6 +101,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         address.setLat(registrationDto.getAddress().getLat());
         address.setLon(registrationDto.getAddress().getLon());
         company.setAddress(address);
+        company.setBanned(false);
         company.setDescription(registrationDto.getDescription());
         company.setUsername(registrationDto.getUsername());
         company.setConfirmed(false);
@@ -133,6 +134,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         }
     }
 
+    @Transactional
     @Override
     public void registerCompany(CleaningCompanyDto registrationDto, MultipartFile logotype) {
         Long serviceId = saveCompany(registrationDto);
@@ -144,7 +146,9 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         byte[] token = (registrationDto.getUsername() + registrationDto.getPassword())
                 .getBytes(Charset.forName("UTF-8"));
         String encodedToken = Base64.getEncoder().encodeToString(token);
-        int randomCode = (int) (Math.random() * 1_000_000);
+        double randomNum = Math.random();
+        randomNum = (randomNum < 0.1) ? randomNum + 0.1 : randomNum;
+        int randomCode = (int) (randomNum * 1_000_000);
         verification.setCode(randomCode);
         verifications.put(encodedToken, verification);
         String text = "Your verification code: " + randomCode;
