@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="Artsiom Lysianok" id="1543412736052-15">
+        <addForeignKeyConstraint baseColumnNames="cleaning_time_id" baseTableName="types_of_provided_service"
+                                 constraintName="fkfykfcsw0yhsj1w0vx4dkoeng2" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="cleaning_time"/>
+    </changeSet>
+</databaseChangeLog>

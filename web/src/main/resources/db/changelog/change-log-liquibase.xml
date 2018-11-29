@@ -1,0 +1,28 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <include file="classpath:db/changelog/v-0.1/01-29.11.2018-create-cleaning-time-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/02-29.11.2018-create-customers-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/03-29.11.2018-create-feedback-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/04-29.11.2018-create-orders-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/05-29.11.2018-create-prices-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/06-29.11.2018-create-roles-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/07-29.11.2018-create-services-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/08-29.11.2018-create-types-of-provided-service-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/09-29.11.2018-create-users-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/10-29.11.2018-create-users-roles-table.xml"/>
+    <include file="classpath:db/changelog/v-0.1/11-29.11.2018-create-fk-service-types-service-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/12-29.11.2018-create-fk-user-roles-user-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/13-29.11.2018-create-fk-service-types-price-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/14-29.11.2018-create-fk-users-roles-role-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/15-29.11.2018-create-fk-service-type-time-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/16-29.11.2018-create-fk-feedback-service-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/17-29.11.2018-create-fk-feedback-customer-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/18-29.11.2018-create-fk-orders-service-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/19-29.11.2018-create-fk-customers-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/20-29.11.2018-create-fk-orders-customer-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/21-29.11.2018-create-fk-services-id.xml"/>
+    <include file="classpath:db/changelog/v-0.1/22-29.11.2018-set-init-data-roles.xml"/>
+</databaseChangeLog>
