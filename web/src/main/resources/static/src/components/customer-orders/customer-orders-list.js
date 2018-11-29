@@ -19,7 +19,6 @@ class CustomerOrdersList extends Component {
     };
 
 
-
     entityURN = '/order';
 
     componentDidMount() {

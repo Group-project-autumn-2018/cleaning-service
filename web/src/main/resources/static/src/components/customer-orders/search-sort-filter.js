@@ -2,7 +2,7 @@ import React from 'react';
 
 const SearchSortFilter = (props) => {
 
-    const types = ["Not chosen...", "Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
+    const types = ["Not chosen...", "Standard room cleaning", "Spring cleaning", "Cleaning after repair and construction",
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
