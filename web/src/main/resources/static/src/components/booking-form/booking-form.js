@@ -2,10 +2,14 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './booking-form.css';
 import SelectItemsList from "./select-items-list";
+import DropdownAddressList from "../service-profile/dropdown-address-list";
 import {Link} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
+import OpenStreetMapApi from "../services/openstreetmap-api";
 
 class BookingForm extends Component {
+
+    openStreetMapApi = new OpenStreetMapApi();
 
     constructor(props) {
         super(props);
@@ -20,9 +24,10 @@ class BookingForm extends Component {
             cleaningTime: '',
             frequency: '',
             duration: '',
-            email: '',
+            email: this.props.email,
             estimatedPrice: 120,
-            estimatedTime: ''
+            estimatedTime: '',
+            addresses: []
         }
     }
 
@@ -76,16 +81,38 @@ class BookingForm extends Component {
         }
     };
 
-    frequency = ["ONLY_ONCE", "EVERY_WEEK", "EVERY_TWO_WEEKS", "EVERY_MONTH"];
-    duration = ["ONE_MONTH", "TWO_MONTH", "THREE_MONTH", "FOUR_MONTH", "FIVE_MONTH", "SIX_MONTH"];
-    time = ["Not chosen...", "9-00 AM", "9-30 AM", "10-00 AM", "10-30 AM", "11-00 AM", "11-30 AM", "12-00 AM", "12-30 AM",
-        "13-00 AM", "13-30 AM", "14-00 AM", "14-30 AM", "15-00 AM", "15-30 AM", "16-00 AM", "16-30 AM", "17-00 AM",
-        "17-30 AM", "18-00 AM"];
+    onChangeHandler = (e) => {
+        const name = e.target.name;
+        if (name === 'address' && e.target.value.length > 5) {
+            this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+        }
+    };
+
+    onClickAddressHandler = (event) => {
+        const address = this.state.addresses.find(address => address.place_id === event.target.id);
+        const updatedOrder = {
+            ...this.state,
+            lat: address.lat,
+            lon: address.lon
+        };
+        console.log(address.lat + ' ' + address.lon);
+        this.setState({updatedOrder, addresses: []});
+    };
+
+
+    frequency = ["once", "weekly", "fortnightly", "monthly"];
+    duration = ["one month", "two month", "three month", "four month", "five month", "six month"];
+
+    time = ["Not chosen...", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+        "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
+        "17:30", "18:00"];
+
     types = ["Not chosen...", "Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
+        console.log(this.state);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -95,8 +122,15 @@ class BookingForm extends Component {
                     <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            <input type="text" id="address" className="form-control long" placeholder="Your address..."
-                                   required autoFocus onChange={this.changeAddress}/>
+                            <div className="col-sm-8 dropdown">
+                                <input type="text" className="form-control dropdown-toggle long" id="profileFormAddress"
+                                       data-toggle="dropdown" placeholder="Your address..."
+                                       name="address"
+                                    // value={}`
+                                       onChange={this.onChangeHandler}/>
+                                <DropdownAddressList array={this.state.addresses}
+                                                     onClickHandler={this.onClickAddressHandler}/>
+                            </div>
                         </div>
                         <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
                                          id={"cleaningType"} onChange={this.changeCleaningType}/>
