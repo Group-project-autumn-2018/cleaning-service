@@ -23,7 +23,7 @@ class Companies extends Component {
         cleaningTypesDto: {
             standardRoomCleaning: false,
             springCleaning: false,
-            repairAndConstructionCleaning: true,
+            repairAndConstructionCleaning: false,
             dryCarpetCleaning: false,
             officeCleaning: false,
             furnitureAndCoatingsCleaning: false,

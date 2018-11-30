@@ -11,12 +11,35 @@ class BookingForm extends Component {
 
     openStreetMapApi = new OpenStreetMapApi();
 
+    onChangeTypeHandler = (event) => {
+        const name = event.target.name;
+        const updatedTypes = {
+            ...this.state.service.cleaningTypes,
+            [name]: event.target.checked
+        };
+        const updatedService = {
+            ...this.state.service,
+            cleaningTypes: updatedTypes
+        };
+        this.setState({service: updatedService});
+    };
+
     constructor(props) {
         super(props);
         this.state = {
             customer: '',
             address: '',
-            cleaningType: '',
+            // cleaningType: '',
+            cleaningTypesDto: {
+                standardRoomCleaning: false,
+                springCleaning: false,
+                repairAndConstructionCleaning: false,
+                dryCarpetCleaning: false,
+                officeCleaning: false,
+                furnitureAndCoatingsCleaning: false,
+                industrialCleaning: false,
+                poolCleaning: false
+            },
             smallRoomsCount: '',
             bigRoomsCount: '',
             bathroomsCount: '',
@@ -31,12 +54,35 @@ class BookingForm extends Component {
         }
     }
 
-    // changeAddress = (event) => {
-    //     this.setState({address: event.target.value});
-    // };
-
     changeCleaningType = (event) => {
-        this.setState({cleaningType: event.target.value});
+        switch (event.target.value) {
+            case "Standard room cleaning":
+                this.setState({standardRoomCleaning: true});
+                break;
+            case "Spring-cleaning":
+                this.setState({springCleaning: true});
+                break;
+            case "Cleaning after repair and construction":
+                this.setState({repairAndConstructionCleaning: true});
+                break;
+            case "Dry carpet cleaning":
+                this.setState({dryCarpetCleaning: true});
+                break;
+            case "Office cleaning":
+                this.setState({officeCleaning: true});
+                break;
+            case "Dry cleaning of furniture and coatings":
+                this.setState({furnitureAndCoatingsCleaning: true});
+                break;
+            case "Industrial cleaning":
+                this.setState({industrialCleaning: true});
+                break;
+            case "Pool cleaning":
+                this.setState({poolCleaning: true});
+                break;
+        }
+
+        // this.setState({cleaningType: event.target.value});
     };
 
     changeSmallRooms = (event) => {
@@ -52,8 +98,6 @@ class BookingForm extends Component {
     };
 
     changeCleaningDay = (event) => {
-        console.log(event.target);
-        console.log(event.target.value);
         this.setState({cleaningDay: event.target.value});
     };
 
@@ -69,7 +113,7 @@ class BookingForm extends Component {
         this.setState({cleaningTime: event.target.value});
     };
 
-    changEmail = (event) => {
+    changeEmail = (event) => {
         this.setState({email: event.target.value});
     };
 
@@ -186,7 +230,7 @@ class BookingForm extends Component {
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
                                     <input type="email" className="form-control short" id="email"
-                                           placeholder="example@gmail.com" required onChange={this.changEmail}/>
+                                           placeholder="example@gmail.com" required onChange={this.changeEmail}/>
                                     <div className="email-feedback"/>
                                 </div>
                             </div>
