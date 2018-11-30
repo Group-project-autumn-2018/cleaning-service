@@ -31,9 +31,9 @@ class BookingForm extends Component {
         }
     }
 
-    changeAddress = (event) => {
-        this.setState({address: event.target.value});
-    };
+    // changeAddress = (event) => {
+    //     this.setState({address: event.target.value});
+    // };
 
     changeCleaningType = (event) => {
         this.setState({cleaningType: event.target.value});
@@ -82,6 +82,7 @@ class BookingForm extends Component {
     };
 
     onChangeHandler = (e) => {
+        this.setState({address: e.target.value});
         const name = e.target.name;
         if (name === 'address' && e.target.value.length > 5) {
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
