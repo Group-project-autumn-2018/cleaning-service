@@ -3,9 +3,11 @@ package com.itechart.web.controller;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.FeedbackDto;
+import com.itechart.service.dto.SearchCompanyDTO;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
+import com.itechart.service.service.SearchCompanyService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,12 +29,22 @@ public class CleaningServiceController {
 
     private final CleaningCompanyService cleaningCompanyService;
 
+    private final SearchCompanyService searchCompanyService;
+
     private final FeedbackService feedbackService;
 
     @Autowired
-    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, FeedbackService feedbackService) {
+    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, SearchCompanyService searchCompanyService, FeedbackService feedbackService) {
         this.cleaningCompanyService = cleaningCompanyService;
+        this.searchCompanyService = searchCompanyService;
         this.feedbackService = feedbackService;
+    }
+
+    @PostMapping("/search/companies")
+    public ResponseEntity searchCompanies(@RequestBody SearchCompanyDTO searchCompanyDTO) {
+        System.out.println(searchCompanyDTO);
+//        return ResponseEntity.ok(searchCompanyService.search(orderDTO));
+        return null;
     }
 
     @PostMapping("/registration/service")

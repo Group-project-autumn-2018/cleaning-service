@@ -13,6 +13,21 @@ export const fetchUpdateEntity = async (entity, entityURN, token) => {
     return await fetch(`/api${entityURN}/${entity.id}`, options);
 };
 
+export const fetchCompaniesPOST = async (entity, entityURN, token) => {
+
+    let options = {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(entity)
+    };
+
+    return await fetch(`/api${entityURN}`, options);
+};
+
 
 export const fetchUpdateMultipartEntity = async (entity, entityURN, token, id) => {
 
