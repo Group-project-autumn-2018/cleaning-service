@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
@@ -34,6 +34,8 @@ public class OrderServiceImpl implements OrderService {
 
     private final CleaningCompanyRepository cleaningCompanyRepository;
 
+    private SimpMessagingTemplate simpMessagingTemplate;
+
     @Value("${order.check.delay}")
     private Long orderStatusCheckDelay;
 
@@ -45,11 +47,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EmailService emailService,
-                            CleaningCompanyRepository cleaningCompanyRepository) {
+                            CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate) {
         this.orderRepository = orderRepository;
         this.emailService = emailService;
         this.cleaningCompanyRepository = cleaningCompanyRepository;
 
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @Override
@@ -80,14 +83,32 @@ public class OrderServiceImpl implements OrderService {
     public void saveOrder(OrderDto orderDto) {
         Order order = mapper.mapOrderDtoToOrder(orderDto);
         Order savedOrder = orderRepository.saveAndFlush(order);
+        Long savedOrderId = savedOrder.getId();
         Long companyId = savedOrder.getCompany().getId();
         CleaningCompany company = cleaningCompanyRepository.findById(companyId).get();
-        String subject = "New order №" + savedOrder.getId();
-        String text = " You have new order №" + savedOrder.getId();
-        emailService.sendSimpleMessage(company.getEmail(), subject, text);
+        String companyEmail = company.getEmail();
+        String subject = "New order №" + savedOrderId;
+        String text = " You have new order №" + savedOrderId + System.lineSeparator()
+                + " http://localhost:8080/service/orders/" + savedOrderId;
+        emailService.sendSimpleMessage(companyEmail, subject, text);
+        setCheckOrderStatusDelay(savedOrderId);
+        //todo remove delay
+        Date sendMessageTime = new Date(new Date().getTime() + 30000);
+        taskScheduler.schedule(
+                () -> sendMessageToClient(companyEmail, savedOrderId),
+                sendMessageTime);
 
-        Date date = new Date(new Date().getTime() + orderStatusCheckDelay);
-        taskScheduler.schedule(() -> checkOrderStatus(savedOrder.getId()), date);
+    }
+
+    private void setCheckOrderStatusDelay(Long savedOrderId) {
+        Date checkOrderStatusTime = new Date(new Date().getTime() + orderStatusCheckDelay);
+        taskScheduler.schedule(() -> checkOrderStatus(savedOrderId), checkOrderStatusTime);
+    }
+
+
+    private void sendMessageToClient(String serviceName, Long orderId) {
+        simpMessagingTemplate.convertAndSendToUser(serviceName, "/queue/reply", orderId);
+        System.out.println("message sent");
     }
 
     @Bean
@@ -98,20 +119,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDto> findPaginatedWithSearchAndId(Long id, String search, Pageable pageable) {
-
         OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
         builder.with("customer", id);
         Specification<Order> spec = builder.build();
         Page<Order> orders = orderRepository.findAll(spec, pageable);
-
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
 
     @Override
     public Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable) {
-
         Page<Order> orders = orderRepository.findAllByCustomer_Id(pageable, id);
-
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
 

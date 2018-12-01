@@ -27,7 +27,6 @@ class AppRouting extends Component {
                 <Route path="/registration/service" component={ServiceRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies}/>
-                <Route exact path="/profile/service" component={ProfileService}/>
                 <Redirect to="/"/>
             </Switch>
         );
@@ -55,6 +54,7 @@ class AppRouting extends Component {
                         <Route path="/booking" component={BookingForm}/>
                         <Route path="/customer/orders" component={CustomerOrdersList}/>
                         <Route path="/companies" component={Companies}/>
+                        <Route exact path="/service/profile" component={ProfileService}/>
                         <Redirect to="/"/>
                     </Switch>
             )

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import ChangePassword from '../customers-profile-form/change-password'
 import MaskedInput, {conformToMask} from 'react-text-mask';
 import '../customers-profile-form/profile-form.css';
@@ -7,6 +8,7 @@ import './service-profile.css';
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import DropdownAddressList from './dropdown-address-list';
 import CleaningTypesForm from './cleaning-types-form';
+import {connectWs} from '../websocket/ws-config';
 
 
 class ProfileForm extends Component {
@@ -43,9 +45,11 @@ class ProfileForm extends Component {
 
     componentDidMount() {
         /*fetchEntity(this.props.serviceId, this.serviceURN, this.props.token)
-            .then((service) => {
-                this.setState({service: service})
-            });*/
+         .then((service) => {
+         this.setState({service: service})
+         });*/
+        connectWs(this.props.token);
+
     };
 
     submitHandler = (e) => {
@@ -282,8 +286,8 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default ProfileForm;
-//export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
+// export default ProfileForm;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
 
 
 

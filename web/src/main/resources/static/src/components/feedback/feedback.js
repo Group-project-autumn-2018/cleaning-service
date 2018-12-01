@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import Rating from 'react-rating';
+// import Rating from 'react-rating';
 import './feedback.css';
 import ServiceApi from "../services/service-api";
 

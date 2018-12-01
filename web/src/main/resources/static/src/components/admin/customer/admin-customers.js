@@ -6,13 +6,15 @@ import Pagination from "react-js-pagination";
 import * as actions from '../../api/api-actions';
 
 
+
 class AdminCustomers extends Component {
 
     entityURN = '/customer';
 
-    componentWillMount() {
+    componentDidMount() {
         const {fetchData} = this.props;
         fetchData(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
+
     }
 
     handlePageChange = (page) => {
