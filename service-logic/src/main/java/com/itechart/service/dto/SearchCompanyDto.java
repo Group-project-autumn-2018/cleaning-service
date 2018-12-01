@@ -1,9 +1,11 @@
 package com.itechart.service.dto;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-public class SearchCompanyDTO {
+@Getter
+@Setter
+public class SearchCompanyDto {
 
     private String email;
     private String address;

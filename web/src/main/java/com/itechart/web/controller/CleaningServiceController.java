@@ -3,7 +3,7 @@ package com.itechart.web.controller;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.FeedbackDto;
-import com.itechart.service.dto.SearchCompanyDTO;
+import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -41,10 +42,8 @@ public class CleaningServiceController {
     }
 
     @PostMapping("/search/companies")
-    public ResponseEntity searchCompanies(@RequestBody SearchCompanyDTO searchCompanyDTO) {
-        System.out.println(searchCompanyDTO);
-//        return ResponseEntity.ok(searchCompanyService.search(orderDTO));
-        return null;
+    public List<CleaningCompany> searchCompanies(@RequestBody SearchCompanyDto searchCompanyDto) {
+        return searchCompanyService.search(searchCompanyDto);
     }
 
     @PostMapping("/registration/service")

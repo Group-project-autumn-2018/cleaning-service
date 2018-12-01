@@ -17,19 +17,8 @@ class Companies extends Component {
         }
     }
 
-    searchCompanyDTO = {
-        // cleaningType: this.props.orderUpdate.cleaningType,
-
-        cleaningTypesDto: {
-            standardRoomCleaning: false,
-            springCleaning: false,
-            repairAndConstructionCleaning: false,
-            dryCarpetCleaning: false,
-            officeCleaning: false,
-            furnitureAndCoatingsCleaning: false,
-            industrialCleaning: false,
-            poolCleaning: false
-        },
+    searchCompanyDto = {
+        cleaningTypesDto: this.props.orderUpdate.cleaningTypesDto,
         smallRoomsCount: this.props.orderUpdate.smallRoomsCount,
         bigRoomsCount: this.props.orderUpdate.bigRoomsCount,
         bathroomsCount: this.props.orderUpdate.bathroomsCount,
@@ -40,14 +29,14 @@ class Companies extends Component {
     };
 
     componentDidMount() {
-        fetchCompaniesPOST(this.searchCompanyDTO, this.entityURN, this.props.user.token)
+        fetchCompaniesPOST(this.searchCompanyDto, this.entityURN, this.props.user.token)
             .then((companies) => {
                 this.setState({companies: companies})
             });
     };
 
     render() {
-        // console.log(this.props.user.token);
+        console.log(this.props.companies);
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
                 <h3 className="text-center pt-4"><b>Available services</b></h3>

@@ -2,9 +2,10 @@ package com.itechart.service.service.impl;
 
 import com.itechart.common.service.UserService;
 import com.itechart.service.dto.CleaningTypesDto;
-import com.itechart.service.dto.SearchCompanyDTO;
+import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.entity.CleaningTypes;
+import com.itechart.service.mapper.CleaningCompanyMapper;
 import com.itechart.service.repository.CleaningTypesRepository;
 import com.itechart.service.service.SearchCompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,27 +26,32 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CleaningCompanyMapper mapper;
+
     private final int COUNT = 20;
 
     @Override
-    public List<CleaningCompany> search(SearchCompanyDTO searchCompanyDTO) {
-        CleaningTypesDto cleaningTypeDto = searchCompanyDTO.getCleaningTypesDto();
+    public List<CleaningCompany> search(SearchCompanyDto searchCompanyDto) {
+
+        CleaningTypesDto cleaningTypes = searchCompanyDto.getCleaningTypesDto();
         List<CleaningTypes> cleaningTypeList = cleaningTypesRepository.findAll(
-                cleaningTypeDto.getStandardRoomCleaning(),
-                cleaningTypeDto.getSpringCleaning(),
-                cleaningTypeDto.getRepairAndConstructionCleaning(),
-                cleaningTypeDto.getDryCarpetCleaning(),
-                cleaningTypeDto.getOfficeCleaning(),
-                cleaningTypeDto.getFurnitureAndCoatingsCleaning(),
-                cleaningTypeDto.getIndustrialCleaning(),
-                cleaningTypeDto.getPoolCleaning()
+                cleaningTypes.getStandardRoomCleaning(),
+                cleaningTypes.getSpringCleaning(),
+                cleaningTypes.getRepairAndConstructionCleaning(),
+                cleaningTypes.getDryCarpetCleaning(),
+                cleaningTypes.getOfficeCleaning(),
+                cleaningTypes.getFurnitureAndCoatingsCleaning(),
+                cleaningTypes.getIndustrialCleaning(),
+                cleaningTypes.getPoolCleaning()
         );
+
         List<CleaningCompany> cleaningCompanyList = new ArrayList<>();
         for (CleaningTypes cleaningType : cleaningTypeList) {
             List<CleaningCompany> cleaningCompanies = Collections.singletonList(cleaningType.getCompany());
             cleaningCompanyList.addAll(cleaningCompanies);
         }
-        System.out.println(cleaningCompanyList);
+//        System.out.println(cleaningCompanyList.toString() + "lalala");
 //        if (!searchCompanyDTO.getEmail().isEmpty() & searchCompanyDTO.getAddress().isEmpty()) {
 //            User user = userService.findByEmail(searchCompanyDTO.getEmail());
 //            Double latitude = user.getAddress().getLat();
@@ -78,7 +84,8 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
 //        if (!searchCompanyDTO.getEmail().isEmpty() & !searchCompanyDTO.getAddress().isEmpty()) {
 //            return cleaningCompanyList.size() > COUNT ? cleaningCompanyList.subList(0, COUNT) : cleaningCompanyList;
 //        }
-        return new ArrayList<>();
+//        return new ArrayList<>();
+        return cleaningCompanyList;
     }
 
 //    @Override

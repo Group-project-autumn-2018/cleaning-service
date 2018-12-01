@@ -3,7 +3,7 @@
 //import com.itechart.service.dto.CleaningTimeDto;
 //import com.itechart.service.dto.CleaningTypesDto;
 //import com.itechart.service.dto.PriceDto;
-//import com.itechart.service.dto.SearchCompanyDTO;
+//import com.itechart.service.dto.SearchCompanyDto;
 //import com.itechart.service.entity.CleaningCompany;
 //import com.itechart.service.entity.CleaningTypes;
 //import com.itechart.service.service.SearchCompanyService;
@@ -39,7 +39,7 @@
 //                new CleaningTimeDto()
 //        );
 //
-//        SearchCompanyDTO searchCompanyDTO = new SearchCompanyDTO();
+//        SearchCompanyDto searchCompanyDTO = new SearchCompanyDto();
 //        searchCompanyDTO.setAddress("");
 //        searchCompanyDTO.setEmail("kleshchenok90@gmail.com");
 //        searchCompanyDTO.setCleaningTypesDto(cleaningTypesDto);
