@@ -2,9 +2,6 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
 
     const userIDParam = userID ? `&userID=${userID}` : '';
     const searchParam = search ? search : '';
-    console.log(userID);
-    console.log(search);
-    console.log(searchParam);
     return dispatch => {
         fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}${userIDParam}${searchParam}`)
             .then(resolve => resolve.json()).then(response => {

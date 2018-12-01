@@ -63,7 +63,7 @@ public class Order {
     private Duration duration;
 
     @Column(name = "estimated_time")
-    private LocalTime estimatedTime;
+    private Integer estimatedTime;
 
     private BigDecimal price;
 

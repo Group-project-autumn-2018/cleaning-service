@@ -45,7 +45,7 @@ public class OrderDto {
 
     private Duration duration;
 
-    private LocalTime estimatedTime;
+    private Integer estimatedTime;
 
     private BigDecimal price;
 }
