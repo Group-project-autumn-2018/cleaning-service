@@ -11,25 +11,11 @@ class BookingForm extends Component {
 
     openStreetMapApi = new OpenStreetMapApi();
 
-    onChangeTypeHandler = (event) => {
-        const name = event.target.name;
-        const updatedTypes = {
-            ...this.state.service.cleaningTypes,
-            [name]: event.target.checked
-        };
-        const updatedService = {
-            ...this.state.service,
-            cleaningTypes: updatedTypes
-        };
-        this.setState({service: updatedService});
-    };
-
     constructor(props) {
         super(props);
         this.state = {
             customer: '',
             address: '',
-            // cleaningType: '',
             cleaningTypesDto: {
                 standardRoomCleaning: false,
                 springCleaning: false,
@@ -55,34 +41,45 @@ class BookingForm extends Component {
     }
 
     changeCleaningType = (event) => {
-        switch (event.target.value) {
+        const name = event.target.value;
+
+        this.setState({
+            ...this.state.cleaningTypesDto.standardRoomCleaning = false,
+            ...this.state.cleaningTypesDto.springCleaning = false,
+            ...this.state.cleaningTypesDto.repairAndConstructionCleaning = false,
+            ...this.state.cleaningTypesDto.dryCarpetCleaning = false,
+            ...this.state.cleaningTypesDto.officeCleaning = false,
+            ...this.state.cleaningTypesDto.furnitureAndCoatingsCleaning = false,
+            ...this.state.cleaningTypesDto.industrialCleaning = false,
+            ...this.state.cleaningTypesDto.poolCleaning = false
+        });
+
+        switch (name) {
             case "Standard room cleaning":
-                this.setState({standardRoomCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.standardRoomCleaning = true});
                 break;
             case "Spring-cleaning":
-                this.setState({springCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.springCleaning = true});
                 break;
             case "Cleaning after repair and construction":
-                this.setState({repairAndConstructionCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.repairAndConstructionCleaning = true});
                 break;
             case "Dry carpet cleaning":
-                this.setState({dryCarpetCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.dryCarpetCleaning = true});
                 break;
             case "Office cleaning":
-                this.setState({officeCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.officeCleaning = true});
                 break;
             case "Dry cleaning of furniture and coatings":
-                this.setState({furnitureAndCoatingsCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.furnitureAndCoatingsCleaning = true});
                 break;
             case "Industrial cleaning":
-                this.setState({industrialCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.industrialCleaning = true});
                 break;
             case "Pool cleaning":
-                this.setState({poolCleaning: true});
+                this.setState({...this.state.cleaningTypesDto.poolCleaning = true});
                 break;
         }
-
-        // this.setState({cleaningType: event.target.value});
     };
 
     changeSmallRooms = (event) => {
