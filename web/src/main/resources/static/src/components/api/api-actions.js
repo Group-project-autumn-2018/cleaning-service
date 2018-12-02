@@ -25,7 +25,9 @@ export const fetchCompaniesPOST = async (entity, entityURN, token) => {
         body: JSON.stringify(entity)
     };
 
-    return await fetch(`/api${entityURN}`, options);
+    const response = await fetch(`/api${entityURN}`, options);
+
+    return await response.json();
 };
 
 

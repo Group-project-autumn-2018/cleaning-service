@@ -1,6 +1,7 @@
 package com.itechart.service.service.impl;
 
 import com.itechart.common.service.UserService;
+import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.CleaningTypesDto;
 import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
@@ -32,7 +33,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
     private final int COUNT = 20;
 
     @Override
-    public List<CleaningCompany> search(SearchCompanyDto searchCompanyDto) {
+    public List<CleaningCompanyDto> search(SearchCompanyDto searchCompanyDto) {
 
         CleaningTypesDto cleaningTypes = searchCompanyDto.getCleaningTypesDto();
         List<CleaningTypes> cleaningTypeList = cleaningTypesRepository.findAll(
@@ -51,7 +52,13 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
             List<CleaningCompany> cleaningCompanies = Collections.singletonList(cleaningType.getCompany());
             cleaningCompanyList.addAll(cleaningCompanies);
         }
-//        System.out.println(cleaningCompanyList.toString() + "lalala");
+        List<CleaningCompanyDto> companies = new ArrayList<>();
+        for (CleaningCompany cleaningCompany : cleaningCompanyList) {
+            CleaningCompanyDto companyDto = mapper.mapCompanyToCompanyDto(cleaningCompany);
+            companies.add(companyDto);
+        }
+
+//        System.out.println(companies + "lalala");
 //        if (!searchCompanyDTO.getEmail().isEmpty() & searchCompanyDTO.getAddress().isEmpty()) {
 //            User user = userService.findByEmail(searchCompanyDTO.getEmail());
 //            Double latitude = user.getAddress().getLat();
@@ -85,11 +92,6 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
 //            return cleaningCompanyList.size() > COUNT ? cleaningCompanyList.subList(0, COUNT) : cleaningCompanyList;
 //        }
 //        return new ArrayList<>();
-        return cleaningCompanyList;
+        return companies;
     }
-
-//    @Override
-//    public List<CleaningTypes> search() {
-//        return cleaningTypesRepository.findAll();
-//    }
 }
