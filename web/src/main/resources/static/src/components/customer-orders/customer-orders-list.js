@@ -30,12 +30,19 @@ class CustomerOrdersList extends Component {
 
 
     handlePageChange = (page) => {
-        this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID);
+        const sort = this.state.sort ? this.state.sort : '';
+        const search = this.state.search ? this.state.search : '';
+        const sortParam = search + sort;
+        if (this.props.role === 'admin') {
+            this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, null, sortParam);
+        } else {
+            this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, this.props.userID, sortParam);
+        }
     };
 
     handleChange = (e) => {
-        console.log(e);
         let value;
         let name;
         if (e.value) {
