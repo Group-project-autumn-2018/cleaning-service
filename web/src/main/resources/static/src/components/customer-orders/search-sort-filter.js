@@ -30,7 +30,7 @@ class SearchSortFilter extends Component {
 
     selectTypeHandler = (selectedTypeOption) => {
         this.setState({selectedTypeOption});
-
+        this.props.onChange(selectedTypeOption);
     };
 
     selectSortHandler = (selectedSortOption) => {
@@ -56,7 +56,7 @@ class SearchSortFilter extends Component {
 
                 <button className="btn btn-primary search-item" onClick={this.props.onClick}>Search</button>
 
-                <button className="btn btn-secondary " onClick={this.props.showAll}>All</button>
+                <button className="btn btn-secondary " onClick={this.props.showAll}>Clear</button>
 
                 <Select options={this.sortOptions} onChange={this.selectSortHandler} name="sort"
                         className="search-item" isClearable={true} placeholder="Sort by"

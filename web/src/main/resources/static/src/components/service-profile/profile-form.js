@@ -8,7 +8,9 @@ import './service-profile.css';
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import DropdownAddressList from './dropdown-address-list';
 import CleaningTypesForm from './cleaning-types-form';
-import {connectWs} from '../websocket/ws-config';
+import {connectWs} from '../actions/notification-actions';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 class ProfileForm extends Component {
@@ -48,8 +50,13 @@ class ProfileForm extends Component {
          .then((service) => {
          this.setState({service: service})
          });*/
-        connectWs(this.props.token);
 
+        this.props.connectWs(this.props.token);
+
+    };
+
+    testNo = () => {
+        fetch("/api/order/test?access_token=" + this.props.token);
     };
 
     submitHandler = (e) => {
@@ -192,6 +199,8 @@ class ProfileForm extends Component {
                         <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
                     </div>
                 </form>
+                <button className="btn btn-primary" onClick={this.testNo}>Test</button>
+                <ToastContainer autoClose={false} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )
     }
@@ -282,6 +291,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateEntity: (serviceId, serviceURN, token) => {
             dispatch(updateEntity(serviceId, serviceURN, token))
+        },
+        connectWs: (token) => {
+            dispatch(connectWs(token))
         }
     }
 };

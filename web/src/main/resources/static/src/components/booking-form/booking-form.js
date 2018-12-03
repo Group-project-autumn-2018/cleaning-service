@@ -4,7 +4,6 @@ import './booking-form.css';
 import SelectItemsList from "./select-items-list";
 import {Link} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
-import {connectWs} from '../websocket/ws-config';
 
 class BookingForm extends Component {
 
@@ -25,10 +24,6 @@ class BookingForm extends Component {
             estimatedPrice: 120,
             estimatedTime: ''
         }
-    }
-
-    componentDidMount() {
-        connectWs(this.props.token);
     }
 
     changeAddress = (event) => {

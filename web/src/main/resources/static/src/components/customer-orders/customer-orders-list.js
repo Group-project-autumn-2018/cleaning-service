@@ -35,10 +35,17 @@ class CustomerOrdersList extends Component {
     };
 
     handleChange = (e) => {
-        const value = e.target.value.replace(/ /g, "_");
-        const name = e.target.name;
-        this.setState({[name]: value})
-
+        console.log(e);
+        let value;
+        let name;
+        if (e.value) {
+            value = e.value;
+            name = "cleaningType";
+        } else {
+            value = e.target.value;
+            name = e.target.name;
+        }
+        this.setState({[name]: value.replace(/ /g, "_")})
     };
 
     handleSearch = () => {

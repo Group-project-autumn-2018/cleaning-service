@@ -1,5 +1,4 @@
 package com.itechart.service.service.impl;
-
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
@@ -20,7 +19,6 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -88,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
         CleaningCompany company = cleaningCompanyRepository.findById(companyId).get();
         String companyEmail = company.getEmail();
         String subject = "New order №" + savedOrderId;
-        String text = " You have new order №" + savedOrderId + System.lineSeparator()
+        String text = " You have a new order №" + savedOrderId + System.lineSeparator()
                 + " http://localhost:8080/service/orders/" + savedOrderId;
         emailService.sendSimpleMessage(companyEmail, subject, text);
         setCheckOrderStatusDelay(savedOrderId);
@@ -106,9 +104,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private void sendMessageToClient(String serviceName, Long orderId) {
+    public void sendMessageToClient(String serviceName, Long orderId) {
         simpMessagingTemplate.convertAndSendToUser(serviceName, "/queue/reply", orderId);
         System.out.println("message sent");
+        System.out.println(serviceName);
     }
 
     @Bean

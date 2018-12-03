@@ -8,3 +8,20 @@
 .profile-service-input {
     margin-left: 2%;
 }
+
+div.toast-container {
+    background: #57ab8f;
+    border-radius: 5px;
+    color: white;
+}
+
+.toast-container .btn {
+    display: block;
+}
+
+.toast-container i {
+    font-size: 2rem;
+    color: white;
+    margin: 0 10px;
+}
+

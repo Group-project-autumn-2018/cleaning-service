@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("api/order")
 public class OrderController {
@@ -43,5 +45,10 @@ public class OrderController {
     @PostMapping
     public void saveOrder(@RequestBody OrderDto orderDto) {
         orderService.saveOrder(orderDto);
+    }
+
+    @GetMapping("/test")
+    public void testNo(Principal principal) {
+        orderService.sendMessageToClient(principal.getName(), 5L);
     }
 }
