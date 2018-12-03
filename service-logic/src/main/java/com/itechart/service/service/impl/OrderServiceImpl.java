@@ -9,6 +9,8 @@ import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.repository.OrderRepository;
 import com.itechart.service.service.OrderService;
 import com.itechart.service.specification.OrderSpecificationsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -43,6 +45,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderMapper mapper;
 
+    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EmailService emailService,
                             CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate) {
@@ -72,8 +76,9 @@ public class OrderServiceImpl implements OrderService {
         if (order.getStatus() != Status.CONFIRMED) {
             order.setStatus(Status.REJECTED);
             orderRepository.saveAndFlush(order);
+            logger.info("Order #" + id + " rejected by timeout");
         }
-        System.out.println("task");
+
     }
 
 
@@ -106,8 +111,7 @@ public class OrderServiceImpl implements OrderService {
 
     public void sendMessageToClient(String serviceName, Long orderId) {
         simpMessagingTemplate.convertAndSendToUser(serviceName, "/queue/reply", orderId);
-        System.out.println("message sent");
-        System.out.println(serviceName);
+        logger.info("Notification sent to " + serviceName);
     }
 
     @Bean
