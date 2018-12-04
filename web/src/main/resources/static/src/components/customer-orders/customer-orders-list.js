@@ -93,8 +93,11 @@ class CustomerOrdersList extends Component {
 
     showAll = () => {
         this.setState({search: null});
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID);
+        if (this.props.role === 'admin') {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
+        } else {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
+        }
     };
 
     render() {
