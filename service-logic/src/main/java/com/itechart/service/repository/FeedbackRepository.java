@@ -19,4 +19,7 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     @Query(value = "select * from feedback where service_id = :companyId order by adding_date desc limit :elemCount",
             nativeQuery = true)
     List<Feedback> findTop(@Param("companyId") Long companyId, @Param("elemCount") Integer count);
+
+    @Query("select avg(rate) from Feedback where company = :company")
+    Integer findAverageRating(@Param("company") CleaningCompany company);
 }
