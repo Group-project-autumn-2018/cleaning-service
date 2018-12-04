@@ -39,10 +39,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -228,5 +225,10 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     public CleaningCompany getOne(Long id) {
         Optional<CleaningCompany> companyOptional = cleaningCompanyRepository.findById(id);
         return companyOptional.orElse(null);
+    }
+
+    @Override
+    public List<CleaningCompany> getAll() {
+        return cleaningCompanyRepository.findAll();
     }
 }
