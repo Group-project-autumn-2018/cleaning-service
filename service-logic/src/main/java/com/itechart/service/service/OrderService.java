@@ -14,7 +14,11 @@ public interface OrderService {
 
     Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable);
 
+    Page<OrderDto> findPaginatedWithIdFromTableOfServices(Long id, Pageable pageable);
+
     Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable);
 
     Page<OrderDto> findPaginatedWithSearchAndId(Long id, String search, Pageable pageable);
+
+    Page<OrderDto> findPaginatedWithSearchAndIdFromTableOFServices(Long id, String search, Pageable pageable);
 }

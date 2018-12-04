@@ -39,6 +39,20 @@ public class OrderController {
         return orderService.findPaginated(pageable);
     }
 
+    @GetMapping("/fromService")
+    public Page<OrderDto> getOrdersFromTableOfOrders(@RequestParam(value = "search", required = false) String search,
+                                    @RequestParam(value = "userID", required = false) Long id,
+                                    Pageable pageable) {
+        if (search != null && id != null) {
+            return orderService.findPaginatedWithSearchAndIdFromTableOFServices(id, search, pageable);
+        } else if (id != null) {
+            return orderService.findPaginatedWithIdFromTableOfServices(id, pageable);
+        } else if (search != null) {
+            return orderService.findPaginatedWithSearch(search, pageable);
+        }
+        return orderService.findPaginated(pageable);
+    }
+
 
     @PostMapping
     public void saveOrder(@RequestBody OrderDto orderDto) {

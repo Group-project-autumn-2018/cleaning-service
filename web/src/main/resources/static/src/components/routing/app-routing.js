@@ -13,6 +13,7 @@ import BookingForm from '../booking-form/booking-form'
 import Companies from '../companies/companies'
 import ProfileService from '../service-profile/profile-form';
 import CustomerOrdersList from '../customer-orders/customer-orders-list';
+import ListOfCompanyOrders from "../list-of-company-orders/list-of-company-orders";
 
 class AppRouting extends Component {
 
@@ -55,6 +56,7 @@ class AppRouting extends Component {
                         <Route path="/booking" component={BookingForm}/>
                         <Route path="/customer/orders" component={CustomerOrdersList}/>
                         <Route path="/companies" component={Companies}/>
+                        <Route path="/company-orders" component={ListOfCompanyOrders}/>
                         <Redirect to="/"/>
                     </Switch>
             )

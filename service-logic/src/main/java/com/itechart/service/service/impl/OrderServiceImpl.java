@@ -108,9 +108,28 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Page<OrderDto> findPaginatedWithSearchAndIdFromTableOFServices(Long id, String search, Pageable pageable) {
+
+        OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
+        builder.with("services", id);
+        Specification<Order> spec = builder.build();
+        Page<Order> orders = orderRepository.findAll(spec, pageable);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
     public Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable) {
 
         Page<Order> orders = orderRepository.findAllByCustomer_Id(pageable, id);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithIdFromTableOfServices(Long id, Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllByService_Id(pageable, id);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
