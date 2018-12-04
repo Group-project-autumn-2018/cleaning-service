@@ -4,6 +4,7 @@ import * as orderReducers from '../reducers/order-reducers';
 import authReducer from '../reducers/auth-reducers';
 import customerReducer from './customer-reducer';
 import serviceReducer from './service-reducer';
+import notificationReducer from './notification-reducer';
 
 const rootReducer = combineReducers(
     {
@@ -13,7 +14,8 @@ const rootReducer = combineReducers(
         entityToUpdate: adminReducers.entityUpdateReducer,
         orderUpdate: orderReducers.updateOrder,
         customer: customerReducer,
-        service: serviceReducer
+        service: serviceReducer,
+        notification: notificationReducer
     }
 );
 

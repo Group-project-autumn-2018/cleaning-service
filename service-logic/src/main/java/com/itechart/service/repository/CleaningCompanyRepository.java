@@ -14,6 +14,6 @@ public interface CleaningCompanyRepository extends JpaRepository<CleaningCompany
     List<CleaningCompany> findAll();
 
     @Modifying
-    @Query("update Customer set confirmed = :confirmed where id = :serviceId")
+    @Query("update CleaningCompany set confirmed = :confirmed where id = :serviceId")
     void changeConfirmStatus(@Param("confirmed") boolean confirmed, @Param("serviceId") Long serviceId);
 }

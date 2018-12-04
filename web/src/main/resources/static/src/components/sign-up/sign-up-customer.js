@@ -5,6 +5,7 @@ import MaskedInput from 'react-text-mask';
 import CustomerApi from '../services/customer-api';
 import VerificationForm from './verification-form';
 import * as actions from '../actions/auth-actions';
+import {withRouter} from 'react-router-dom';
 
 class SignUpCustomer extends Component {
     customerApiService = new CustomerApi();
@@ -241,4 +242,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpCustomer);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUpCustomer));

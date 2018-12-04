@@ -1,3 +1,5 @@
+import {disconnect} from '../actions/notification-actions';
+
 const initialAuthState = {
     isAuthenticated: false,
     name: null,
@@ -21,6 +23,7 @@ const authReducer = (state = initialAuthState, action) => {
             }
             return {...state, error: action.payload};
         case 'LOGOUT':
+            disconnect();
             return {
                 ...initialAuthState
             };

@@ -1,17 +1,15 @@
 package com.itechart.service.util;
 
 import com.itechart.service.dto.OrderDto;
-import com.itechart.service.dto.TimingOptionsDto;
-import com.itechart.service.entity.CleaningCompany;
-import com.itechart.service.entity.CleaningTime;
+import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningTypes;
-import com.itechart.service.entity.Price;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.time.LocalTime;
 
+@Component
 public class CalculationRules {
 
     private Double priceCoefficient = new Double(0);
@@ -23,25 +21,25 @@ public class CalculationRules {
         this.cleaningCompanyRepository = cleaningCompanyRepository;
     }
 
-    public BigDecimal calculateAvaregePrice(OrderDto orderDto) {
+    public BigDecimal calculateAvaregePrice(SearchCompanyDto searchCompanyDto, Long companyId) {
         BigDecimal averagePrice = BigDecimal.ZERO;
         CleaningTypes cleaningTypes = null;
-        if (orderDto.getCompany() == null) {
+        if (companyId == null) {
             return BigDecimal.ZERO;
         }
-        cleaningTypes = cleaningCompanyRepository.getOne(orderDto.getCompany()).getCleaningTypes();
+        cleaningTypes = cleaningCompanyRepository.getOne(companyId).getCleaningTypes();
 
         if (cleaningTypes == null) {
             return BigDecimal.ZERO;
         }
 
-        getValueFromCleaningTypes(orderDto.getCleaningType(), cleaningTypes);
+        getValueFromCleaningTypes(searchCompanyDto.getCleaningType(), cleaningTypes);
 
-        averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), orderDto.getSmallRoomsCount(),
+        averagePrice = averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), searchCompanyDto.getSmallRoomsCount(),
                 cleaningTypes.getPrice().getSmallRoom()));
-        averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), orderDto.getBigRoomsCount(),
+        averagePrice = averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), searchCompanyDto.getBigRoomsCount(),
                 cleaningTypes.getPrice().getBigRoom()));
-        averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), orderDto.getBathroomsCount(),
+        averagePrice = averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), searchCompanyDto.getBathroomsCount(),
                 cleaningTypes.getPrice().getBathroom()));
         averagePrice = averagePrice.multiply(BigDecimal.valueOf(priceCoefficient));
 
