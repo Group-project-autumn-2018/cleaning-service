@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchEntity, fetchUpdateMultipartEntity} from "../api/api-actions";
+import {withRouter} from "react-router-dom";
 import './company-confirm.css';
 
 class CompanyConfirmModalForm extends Component {
@@ -40,10 +41,23 @@ class CompanyConfirmModalForm extends Component {
 
     onConfirm = () => {
         fetchUpdateMultipartEntity("CONFIRMED", this.URN, this.props.user.token, this.props.orderId)
+            .then(status => {
+                if (status === 201) {
+                    this.props.history.push("/company");
+                }
+            });
     };
 
     onClose = () => {
         fetchUpdateMultipartEntity("REJECTED", this.URN, this.props.user.token, this.props.orderId)
+            .then(status => {
+
+                if (status === 201) {
+                    this.props.history.push("/company");
+                }
+
+            });
+
     };
 
 
@@ -138,4 +152,4 @@ const mapStateToProps = (state) => {
 };
 
 
-export default connect(mapStateToProps)(CompanyConfirmModalForm);
+export default withRouter(connect(mapStateToProps)(CompanyConfirmModalForm));
