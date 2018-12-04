@@ -14,7 +14,7 @@ const OrdersList = ({orders}) => {
                 <tbody>
                 <tr className="row px-5">
                     <th scope="col" className="col">Service Type</th>
-                    <th scope="col" className="col-2" onClick={onClick}>Address</th>
+                    <th scope="col" className="col-2">Address</th>
                     <th scope="col" className="col-2">Room Description</th>
                     <th scope="col" className="col">Cleaning Day</th>
                     <th scope="col" className="col">Cleaning Time</th>
