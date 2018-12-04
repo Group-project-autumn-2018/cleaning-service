@@ -22,7 +22,7 @@ export default class Companies extends Component {
             price: "300$"
         },
         {
-            id: "3",
+            id: "4",
             logotype: "logo",
             name: "BronzeService",
             address: "Lenina",

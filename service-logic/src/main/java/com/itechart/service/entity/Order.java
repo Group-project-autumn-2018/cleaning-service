@@ -35,7 +35,7 @@ public class Order {
     @Embedded
     private Address address;
 
-    @Column(name = "unregistered_customer_email", nullable = true)
+    @Column(name = "customer_email")
     private String email;
 
     @Column(name = "cleaning_type")
@@ -50,11 +50,11 @@ public class Order {
     @Column(name = "bathrooms_count")
     private Integer bathroomsCount;
 
-    @Column(name = "cleaning_day")
+    @Column(name = "cleaning_day", columnDefinition = "DATE")
     private LocalDate cleaningDay;
 
-    @Column(name = "cleaning_time")
-    private String cleaningTime;
+    @Column(name = "cleaning_time", columnDefinition = "TIME")
+    private LocalTime cleaningTime;
 
     @Enumerated(EnumType.STRING)
     private Frequency frequency;
@@ -63,7 +63,7 @@ public class Order {
     private Duration duration;
 
     @Column(name = "estimated_time")
-    private LocalTime estimatedTime;
+    private Integer estimatedTime;
 
     private BigDecimal price;
 

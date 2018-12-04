@@ -1,5 +1,4 @@
 package com.itechart.customer.util;
-
 import com.itechart.common.entity.Address;
 import com.itechart.customer.dto.CustomerProfileDto;
 import com.itechart.customer.dto.CustomerProfileUpdateDto;
@@ -26,6 +25,9 @@ public abstract class CustomerMapper {
         customer.setEmail(customerProfileUpdateDto.getEmail());
         customer.setPhone(customerProfileUpdateDto.getPhone());
         Address address = customer.getAddress();
+        if (address == null) {
+            address = new Address();
+        }
         address.setAddress(customerProfileUpdateDto.getAddress());
         customer.setAddress(address);
         customer.setCleaningNotifications(customerProfileUpdateDto.getCleaningNotifications());

@@ -19,10 +19,10 @@ class SignIn extends Component {
             }
                 break;
             case "customer":
-                this.props.history.push("/profile");
+                this.props.history.push("/customer/orders");
                 break;
             case "service":
-                this.props.history.push("/service");
+                this.props.history.push("/service/profile");
                 break;
         }
     }
