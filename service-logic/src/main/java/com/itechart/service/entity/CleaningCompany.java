@@ -24,7 +24,9 @@ public class CleaningCompany extends User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @Column(name = "average_rating")
+    private Integer averageRating;
+
+    @OneToOne(targetEntity = CleaningTypes.class, mappedBy = "company")
     private CleaningTypes cleaningTypes;
 }

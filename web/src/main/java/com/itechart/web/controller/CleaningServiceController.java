@@ -82,6 +82,16 @@ public class CleaningServiceController {
         else return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    @GetMapping("/feedback")
+    public ResponseEntity getFeedback(@RequestParam(value = "count", required = false) Integer count,
+                                      @RequestParam(value = "service-id") Long serviceId) {
+        if (count != null) {
+            return ResponseEntity.ok(feedbackService.getTop(serviceId, count));
+        } else {
+            return ResponseEntity.ok(feedbackService.getAll(serviceId));
+        }
+    }
+
     @PostMapping("/registration")
     public ResponseEntity register(@RequestBody CleaningCompanyDto objDto
                                    //, @RequestParam(name = "logotype", required = false) MultipartFile logotype
@@ -103,5 +113,17 @@ public class CleaningServiceController {
         } else {
             return ResponseEntity.status(HttpStatus.LOCKED).build();
         }
+    }
+
+
+    @GetMapping("/{id}/image")
+    public ResponseEntity getLogo(@PathVariable Long id) throws IOException {
+        return ResponseEntity.ok(cleaningCompanyService.getLogotype(id));
+    }
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity handleIOException(Exception ex) {
+        logger.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
     }
 }

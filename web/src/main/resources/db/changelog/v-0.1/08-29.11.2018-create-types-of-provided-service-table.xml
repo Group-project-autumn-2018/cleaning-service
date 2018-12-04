@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="Artsiom Lysianok" id="1543412736052-8">
+        <createTable tableName="types_of_provided_service">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="types_of_provided_service_pkey"/>
+            </column>
+            <column name="dry_carpet_cleaning" type="BOOLEAN"/>
+            <column name="furniture_and_coatings_cleaning" type="BOOLEAN"/>
+            <column name="industrial_cleaning" type="BOOLEAN"/>
+            <column name="office_cleaning" type="BOOLEAN"/>
+            <column name="pool_cleaning" type="BOOLEAN"/>
+            <column name="repair_and_construction_cleaning" type="BOOLEAN"/>
+            <column name="spring_cleaning" type="BOOLEAN"/>
+            <column name="standard_room_cleaning" type="BOOLEAN"/>
+            <column name="cleaning_time_id" type="BIGINT"/>
+            <column name="service_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="price_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

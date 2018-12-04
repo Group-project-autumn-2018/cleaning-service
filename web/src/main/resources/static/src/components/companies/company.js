@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import ConfirmModalToggleButton from './confirm-modal-toggle-button';
 import * as orderActions from "../actions/order-actions";
+import {Link} from "react-router-dom";
 
 class Company extends Component {
 
@@ -17,7 +18,7 @@ class Company extends Component {
         return (
             <tr className="row">
                 <td className="col">{this.props.company.logotype}</td>
-                <td className="col">{this.props.company.companyname}</td>
+                <td className="col"><Link to={`/company/${this.props.company.id}`}>{this.props.company.companyname}</Link></td>
                 <td className="col">{this.props.company.address}</td>
                 <td className="col">{this.props.company.ranking}</td>
                 <td className="col">{this.props.company.price}</td>

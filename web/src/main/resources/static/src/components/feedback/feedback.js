@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import Rating from 'react-rating';
+import {withRouter} from 'react-router-dom';
 import './feedback.css';
 import ServiceApi from "../services/service-api";
 
-export default class Feedback extends Component {
+class Feedback extends Component {
     serviceApi = new ServiceApi();
 
     constructor(props) {
@@ -39,6 +40,7 @@ export default class Feedback extends Component {
             this.serviceApi.sendFeedback(obj).then((status) => {
                     if (status === 202) {
                         console.log("successful");
+                        this.props.history.push(`/company/${this.props.serviceId}`);
                     }
                 }
             )
@@ -105,3 +107,5 @@ export default class Feedback extends Component {
         );
     }
 }
+
+export default withRouter(Feedback);
