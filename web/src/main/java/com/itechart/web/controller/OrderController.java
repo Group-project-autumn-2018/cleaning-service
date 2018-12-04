@@ -15,7 +15,6 @@ public class OrderController {
 
     private final OrderServiceImpl orderService;
 
-
     @Autowired
     public OrderController(OrderServiceImpl orderService) {
         this.orderService = orderService;
@@ -41,10 +40,15 @@ public class OrderController {
         return orderService.findPaginated(pageable);
     }
 
-
     @PostMapping
     public void saveOrder(@RequestBody OrderDto orderDto) {
         orderService.saveOrder(orderDto);
+    }
+
+    @PostMapping(value = "/{id}")
+    public void update(@PathVariable Long id,
+                       @RequestBody String status) {
+        orderService.changeStatus(status, id);
     }
 
     @GetMapping("/test")

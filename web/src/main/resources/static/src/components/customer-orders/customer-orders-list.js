@@ -25,6 +25,7 @@ class CustomerOrdersList extends Component {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
         } else {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
+
         }
     }
 
@@ -97,31 +98,31 @@ class CustomerOrdersList extends Component {
     };
 
     render() {
-            return (
-                <div className="bg-light container-fluid w-100 h-100 order-list">
-                    <h1 className="text-center">{this.props.role === 'admin' ? "All Orders" : "Your Orders"}
-                    </h1>
-                    <div className="position-relative nav-container">
-                        <Link to="/booking" type="button" className="btn btn-primary new-order-btn">New Order</Link>
+        return (
+            <div className="bg-light container-fluid w-100 h-100 order-list">
+                <h1 className="text-center">{this.props.role === 'admin' ? "All Orders" : "Your Orders"}
+                </h1>
+                <div className="position-relative nav-container">
+                    <Link to="/booking" type="button" className="btn btn-primary new-order-btn">New Order</Link>
 
-                        <nav aria-label="Page navigation" className="mx-auto">
-                            <Pagination activePage={this.props.activePage + 1}
-                                        itemsCountPerPage={this.props.itemsCountPerPage}
-                                        totalItemsCount={this.props.totalItemsCount}
-                                        pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages : 5}
-                                        onChange={this.handlePageChange}
-                                        itemClass="page-item"
-                                        linkClass="page-link"
-                                        innerClass="pagination justify-content-center"
-                            />
-                        </nav>
-                    </div>
-                    <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}
-                                      onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
-                                      selectedSortOption={this.state.selectedSortOption}
-                                      showAll={this.showAll}/>
-                    <OrdersList orders={this.props.orders}/>
-                </div>)
+                    <nav aria-label="Page navigation" className="mx-auto">
+                        <Pagination activePage={this.props.activePage + 1}
+                                    itemsCountPerPage={this.props.itemsCountPerPage}
+                                    totalItemsCount={this.props.totalItemsCount}
+                                    pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages : 5}
+                                    onChange={this.handlePageChange}
+                                    itemClass="page-item"
+                                    linkClass="page-link"
+                                    innerClass="pagination justify-content-center"
+                        />
+                    </nav>
+                </div>
+                <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}
+                                  onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
+                                  selectedSortOption={this.state.selectedSortOption}
+                                  showAll={this.showAll}/>
+                <OrdersList orders={this.props.orders}/>
+            </div>)
     }
 }
 

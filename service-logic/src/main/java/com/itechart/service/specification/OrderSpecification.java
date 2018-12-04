@@ -1,7 +1,12 @@
 package com.itechart.service.specification;
+
 import com.itechart.service.entity.Order;
 import org.springframework.data.jpa.domain.Specification;
-import javax.persistence.criteria.*;
+
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 
 public class OrderSpecification implements Specification<Order> {

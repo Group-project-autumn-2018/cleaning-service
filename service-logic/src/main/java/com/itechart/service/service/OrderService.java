@@ -10,6 +10,8 @@ public interface OrderService {
 
     void saveOrder(OrderDto orderDto);
 
+    void changeStatus(String status, Long id);
+
     Page<OrderDto> findPaginated(Pageable pageable);
 
     Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable);

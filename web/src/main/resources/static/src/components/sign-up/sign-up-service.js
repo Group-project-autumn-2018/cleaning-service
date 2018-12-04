@@ -1,19 +1,22 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import './sign-up.css';
-import '../service-profile/service-profile.css';
+
 import ServiceApi from '../services/service-api';
 import VerificationForm from './verification-form';
 import CleaningTypesForm from '../service-profile/cleaning-types-form';
 import LoginForm from "./login-form";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
-import {updateEntity} from '../actions/admin-actions';
+import {updateService} from "../actions/service-actions";
+import OpenStreetMapApi from "../services/openstreetmap-api";
 
 class SignUpService extends Component {
     serviceApi = new ServiceApi();
-    serviceURN = '/cleaning';
+    openStreetMapApi = new OpenStreetMapApi();
 
     state = {
+        disabled: false,
+        confirmPassword: '',
+        tempAddress: '',
         avatar: '',
         logo: '',
         code: '',
@@ -21,15 +24,15 @@ class SignUpService extends Component {
         service: {
             description: '',
             username: '',
-            address: '',
+            address: {
+                address: '',
+                lat: 0,
+                lon: 0
+            },
             email: '',
             phone: '',
             password: '',
-            confirmPassword: '',
-            disabled: false,
-
-
-            cleaningTypesDto: {
+            cleaningTypes: {
                 standardRoomCleaning: true,
                 springCleaning: false,
                 repairAndConstructionCleaning: false,
@@ -38,32 +41,32 @@ class SignUpService extends Component {
                 furnitureAndCoatingsCleaning: false,
                 industrialCleaning: false,
                 poolCleaning: false,
-                priceDto: {
-                    basePrice: 0,
-                    standardRoomCleaning: 1,
-                    springCleaning: 0,
-                    repairAndConstructionCleaning: 0,
-                    dryCarpetCleaning: 0,
-                    officeCleaning: 0,
-                    furnitureAndCoatingsCleaning: 0,
-                    industrialCleaning: 0,
-                    poolCleaning: 0,
-                    smallRoom: 0,
-                    bigRoom: 0,
-                    bathroom: 0
+                price: {
+                    basePrice: null,
+                    standardRoomCleaning: null,
+                    springCleaning: null,
+                    repairAndConstructionCleaning: null,
+                    dryCarpetCleaning: null,
+                    officeCleaning: null,
+                    furnitureAndCoatingsCleaning: null,
+                    industrialCleaning: null,
+                    poolCleaning: null,
+                    smallRoom: null,
+                    bigRoom: null,
+                    bathroom: null
                 },
-                cleaningTimeDto: {
-                    standardRoomCleaningTime: 0,
-                    springCleaningTime: 0,
-                    repairAndConstructionCleaningTime: 0,
-                    dryCarpetCleaningTime: 0,
-                    officeCleaningTime: 0,
-                    furnitureAndCoatingsCleaningTime: 0,
-                    industrialCleaningTime: 0,
-                    poolCleaningTime: 0,
-                    smallRoomCleaningTime: 0,
-                    bigRoomCleaningTime: 0,
-                    bathroomCleaningTime: 0
+                cleaningTime: {
+                    standardRoomCleaningTime: null,
+                    springCleaningTime: null,
+                    repairAndConstructionCleaningTime: null,
+                    dryCarpetCleaningTime: null,
+                    officeCleaningTime: null,
+                    furnitureAndCoatingsCleaningTime: null,
+                    industrialCleaningTime: null,
+                    poolCleaningTime: null,
+                    smallRoomCleaningTime: null,
+                    bigRoomCleaningTime: null,
+                    bathroomCleaningTime: null
                 }
             },
 
@@ -127,11 +130,7 @@ class SignUpService extends Component {
     };
 
     changePasswordConfirm = (event) => {
-        const updatedService = {
-            ...this.state.service,
-            confirmPassword: event.target.value
-        };
-        this.setState({service: updatedService});
+        this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.service.password) {
             event.target.classList.add('is-invalid');
         } else {
@@ -140,7 +139,7 @@ class SignUpService extends Component {
     };
 
     validate = () => {
-        if (this.state.service.password !== this.state.service.confirmPassword
+        if (this.state.service.password !== this.state.confirmPassword
             || this.state.service.password.length < 3) {
             return false;
         }
@@ -153,28 +152,9 @@ class SignUpService extends Component {
 
     preRegister = () => {
         if (this.validate()) {
-            const updatedService = {
-                ...this.state.service,
-                disabled: true
-            };
-            this.setState({service: updatedService});
+            this.setState({disabled: true});
 
-            const objDto = {
-                    username: this.state.service.username,
-                    phone: this.state.service.phone,
-                    email: this.state.service.email,
-                    password: this.state.service.password,
-                    description: this.state.service.description,
-                    address: {
-                        address: '',  //this.state.service.address,
-                        lat: '',      //this.state.service.lat,
-                        lon: ''       //this.state.service.lon
-                    },
-                    cleaningTypesDto: {
-                        ...this.state.service.cleaningTypesDto
-                    }
-                }
-            ;
+            const objDto = {...this.state.service};
 
             let formData = new FormData();
             formData.append("objDto", JSON.stringify(objDto));
@@ -236,7 +216,7 @@ class SignUpService extends Component {
 
     submitHandler = (e) => {
         e.preventDefault();
-        this.props.updateEntity(this.state.service, this.serviceURN, this.props.token);
+        this.props.updateService(this.state.service, this.props.token);
 
     };
 
@@ -247,7 +227,8 @@ class SignUpService extends Component {
             [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
         };
         this.setState({service: updatedService});
-        if (name === 'address' && e.target.value.length > 5) {
+        if (name === 'address') {
+            this.setState({tempAddress: e.target.value});
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
         }
     };
@@ -258,10 +239,14 @@ class SignUpService extends Component {
 
     onClickAddressHandler = (event) => {
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
-        const updatedService = {
-            ...this.state.service,
+        const updatedAddress = {
+            address: this.state.tempAddress,
             lat: address.lat,
             lon: address.lon
+        };
+        const updatedService = {
+            ...this.state.service,
+            address: updatedAddress
         };
         console.log(address.lat + ' ' + address.lon);
         this.setState({service: updatedService, addresses: []});
@@ -270,12 +255,12 @@ class SignUpService extends Component {
     onChangeTypeHandler = (event) => {
         const name = event.target.name;
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
+            ...this.state.service.cleaningTypes,
             [name]: event.target.checked
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -283,16 +268,16 @@ class SignUpService extends Component {
     onChangeTimeHandler = (event) => {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
-            ...this.state.service.cleaningTypesDto.cleaningTimeDto,
+            ...this.state.service.cleaningTypes.cleaningTime,
             [name]: event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
-            cleaningTimeDto: updatedCleaningTimeDto
+            ...this.state.service.cleaningTypes,
+            cleaningTime: updatedCleaningTimeDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -300,16 +285,16 @@ class SignUpService extends Component {
     onChangePriceHandler = (event) => {
         const name = event.target.name;
         const updatedPriceDto = {
-            ...this.state.service.cleaningTypesDto.priceDto,
+            ...this.state.service.cleaningTypes.price,
             [name]: event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
-            priceDto: updatedPriceDto
+            ...this.state.service.cleaningTypes,
+            price: updatedPriceDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -348,7 +333,7 @@ class SignUpService extends Component {
                     </nav>
 
                     {this.state.modeToggle === 'security' ?
-                        <LoginForm {...this.state.service}
+                        <LoginForm {...this.state}
                                    changeEmail={this.changeEmail}
                                    changePhone={this.changePhone}
                                    changePassword={this.changePassword}
@@ -371,14 +356,14 @@ class SignUpService extends Component {
 
                     <div>
                         <button type="button" className="btn btn-primary btn-lg float-right"
-                                onClick={this.preRegister} disabled={this.state.service.disabled}>
+                                onClick={this.preRegister} disabled={this.state.disabled}>
                             Sign up !
                         </button>
                     </div>
                     <span>{this.state.message}</span>
-                    {this.state.service.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
-                                                                     verify={this.verify}
-                                                                     verificationStatus={this.state.verificationStatus}/> : ''}
+                    {this.state.disabled ? <VerificationForm code={this.state.code} changeCode={this.changeCode}
+                                                             verify={this.verify}
+                                                             verificationStatus={this.state.verificationStatus}/> : ''}
                 </form>
             </div>
         );
@@ -401,7 +386,8 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
-                    <input type="text" className="form-control" id="profileFormDescription" placeholder="Description"
+                    <input type="text" className="form-control input-left-space col-sm-6" id="profileFormDescription"
+                           placeholder="Description"
                            name="description"
                            value={props.service.description}
                            onChange={props.onChangeHandler}
@@ -411,15 +397,17 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
                 <div className="col-sm-8 dropdown">
-                    <input type="text" className="form-control dropdown-toggle" id="profileFormAddress"
+                    <input type="text" className="form-control dropdown-toggle input-left-space col-sm-6"
+                           id="profileFormAddress"
                            data-toggle="dropdown" placeholder="Address"
                            name="address"
-                           value={props.service.address}
+                           value={props.tempAddress}
                            onChange={props.onChangeHandler}
                     />
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
                 </div>
             </div>
+
         </React.Fragment>
     )
 };
@@ -433,10 +421,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateEntity: (serviceId, serviceURN, token) => {
-            dispatch(updateEntity(serviceId, serviceURN, token))
+        updateService: (serviceId, token) => {
+            dispatch(updateService(serviceId, token))
         }
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SignUpService);
+export default SignUpService;

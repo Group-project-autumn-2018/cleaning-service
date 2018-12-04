@@ -16,10 +16,10 @@ export const fetchServiceSuccess = (service) => {
     }
 };
 
-export const updateService = (entity, token) => {
+export const updateService = (entity, token, id) => {
 
     return async dispatch => {
-        const res = await api.fetchUpdateEntity(entity, serviceURN, token);
+        const res = await api.fetchUpdateMultipartEntity(entity, serviceURN, token, id);
         console.log('[Entity update status] ' + res.status);
         dispatch(updateServiceSuccess(entity));
     }

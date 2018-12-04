@@ -2,17 +2,21 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import './booking-form.css';
 import SelectItemsList from "./select-items-list";
+import DropdownAddressList from "../service-profile/dropdown-address-list";
 import {Link} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
+import OpenStreetMapApi from "../services/openstreetmap-api";
 
 class BookingForm extends Component {
+
+    openStreetMapApi = new OpenStreetMapApi();
 
     constructor(props) {
         super(props);
         this.state = {
             customer: '',
             address: '',
-            cleaningType: '',
+            cleaningType: "",
             smallRoomsCount: '',
             bigRoomsCount: '',
             bathroomsCount: '',
@@ -22,15 +26,12 @@ class BookingForm extends Component {
             duration: '',
             email: this.props.email,
             estimatedPrice: 120,
-            estimatedTime: ''
+            estimatedTime: '',
+            addresses: []
         }
     }
 
-    changeAddress = (event) => {
-        this.setState({address: event.target.value});
-    };
-
-    changeCleaningType = (event) => {
+    changeType = (event) => {
         this.setState({cleaningType: event.target.value});
     };
 
@@ -47,8 +48,6 @@ class BookingForm extends Component {
     };
 
     changeCleaningDay = (event) => {
-        console.log(event.target);
-        console.log(event.target.value);
         this.setState({cleaningDay: event.target.value});
     };
 
@@ -64,7 +63,7 @@ class BookingForm extends Component {
         this.setState({cleaningTime: event.target.value});
     };
 
-    changEmail = (event) => {
+    changeEmail = (event) => {
         this.setState({email: event.target.value});
     };
 
@@ -76,6 +75,25 @@ class BookingForm extends Component {
         }
     };
 
+    onChangeHandler = (e) => {
+        this.setState({address: e.target.value});
+        const name = e.target.name;
+        if (name === 'address' && e.target.value.length > 5) {
+            this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+        }
+    };
+
+    onClickAddressHandler = (event) => {
+        const address = this.state.addresses.find(address => address.place_id === event.target.id);
+        const updatedOrder = {
+            ...this.state,
+            lat: address.lat,
+            lon: address.lon
+        };
+        console.log(address.lat + ' ' + address.lon);
+        this.setState({updatedOrder, addresses: []});
+    };
+
 
     frequency = ["once", "weekly", "fortnightly", "monthly"];
     duration = ["one month", "two month", "three month", "four month", "five month", "six month"];
@@ -84,11 +102,12 @@ class BookingForm extends Component {
         "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
         "17:30", "18:00"];
 
-    types = ["Not chosen...", "Standard room cleaning", "Spring cleaning", "Cleaning after repair and construction",
+    types = ["Not chosen...", "Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
+        console.log(this.state);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -98,11 +117,18 @@ class BookingForm extends Component {
                     <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            <input type="text" id="address" className="form-control long" placeholder="Your address..."
-                                   required autoFocus onChange={this.changeAddress}/>
+                            <div className="col-sm-8 dropdown">
+                                <input type="text" className="form-control dropdown-toggle long" id="profileFormAddress"
+                                       data-toggle="dropdown" placeholder="Your address..."
+                                       name="address"
+                                    // value={}`
+                                       onChange={this.onChangeHandler}/>
+                                <DropdownAddressList array={this.state.addresses}
+                                                     onClickHandler={this.onClickAddressHandler}/>
+                            </div>
                         </div>
                         <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
-                                         id={"cleaningType"} onChange={this.changeCleaningType}/>
+                                         id={"cleaningType"} onChange={this.changeType}/>
                     </div>
 
                     <div className="bookingRow">
@@ -154,7 +180,7 @@ class BookingForm extends Component {
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
                                     <input type="email" className="form-control short" id="email"
-                                           placeholder="example@gmail.com" required onChange={this.changEmail}/>
+                                           placeholder="example@gmail.com" required onChange={this.changeEmail}/>
                                     <div className="email-feedback"/>
                                 </div>
                             </div>

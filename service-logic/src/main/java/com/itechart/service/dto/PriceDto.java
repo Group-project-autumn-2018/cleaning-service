@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 
 @Data
 public class PriceDto {
+    private Long id;
     private BigDecimal basePrice;
     private double standardRoomCleaning;
     private double springCleaning;

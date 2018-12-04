@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -24,8 +25,12 @@ public class CleaningCompany extends User {
     @Column(name = "confirmed")
     private Boolean confirmed;
 
+    @Column(name = "average_rating")
+    private Integer averageRating;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @Transient
+    private BigDecimal averagePrice;
+
+    @OneToOne(targetEntity = CleaningTypes.class, mappedBy = "company")
     private CleaningTypes cleaningTypes;
 }

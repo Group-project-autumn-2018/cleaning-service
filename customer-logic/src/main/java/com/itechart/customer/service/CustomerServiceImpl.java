@@ -124,7 +124,9 @@ public class CustomerServiceImpl implements CustomerService {
         byte[] token = (registrationDto.getUsername() + registrationDto.getPassword())
                 .getBytes(Charset.forName("UTF-8"));
         String encodedToken = Base64.getEncoder().encodeToString(token);
-        int randomCode = (int) (Math.random() * 1_000_000);
+        double randomNum = Math.random();
+        randomNum = (randomNum < 0.1) ? randomNum + 0.1 : randomNum;
+        int randomCode = (int) (randomNum * 1_000_000);
         verification.setCode(randomCode);
         verifications.put(encodedToken, verification);
         String text = "Your verification code: " + randomCode;

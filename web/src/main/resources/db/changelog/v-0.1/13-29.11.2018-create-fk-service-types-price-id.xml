@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="Artsiom Lysianok" id="1543412736052-13">
+        <addForeignKeyConstraint baseColumnNames="price_id" baseTableName="types_of_provided_service"
+                                 constraintName="fk7ajx6ih8oo5s9jpg0magjk8i0" deferrable="false"
+                                 initiallyDeferred="false" onDelete="CASCADE" onUpdate="NO ACTION"
+                                 referencedColumnNames="id" referencedTableName="prices"/>
+    </changeSet>
+</databaseChangeLog>

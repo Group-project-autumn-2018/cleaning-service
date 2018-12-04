@@ -1,4 +1,5 @@
 package com.itechart.service.service.impl;
+
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
@@ -21,6 +22,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,6 +35,7 @@ public class OrderServiceImpl implements OrderService {
     private final EmailService emailService;
 
     private final OrderRepository orderRepository;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final CleaningCompanyRepository cleaningCompanyRepository;
 
@@ -44,8 +49,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderMapper mapper;
-
-    Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EmailService emailService,
@@ -67,7 +70,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto getOne(Long id) {
-        return mapper.mapOrderToOrderDto(orderRepository.getOne(id));
+        Order order;
+        try {
+            order = orderRepository.getOne(id);
+            return mapper.mapOrderToOrderDto(order);
+        } catch (EntityNotFoundException ex) {
+            logger.warn("Entity order not found");
+            return null;
+        }
     }
 
 
@@ -100,6 +110,7 @@ public class OrderServiceImpl implements OrderService {
         taskScheduler.schedule(
                 () -> sendMessageToClient(companyEmail, savedOrderId),
                 sendMessageTime);
+        logger.info(companyEmail, savedOrderId);
 
     }
 
@@ -154,5 +165,12 @@ public class OrderServiceImpl implements OrderService {
             builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
         }
         return builder;
+    }
+
+    @Transactional
+    @Override
+    public void changeStatus(String status, Long id) {
+        Status currentStatus = Status.valueOf(status);
+        orderRepository.changeStatus(currentStatus, id);
     }
 }

@@ -48,6 +48,7 @@ public class User implements Serializable {
 
     @Column(name = "adding_date")
     private LocalDate addingDate;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private List<Role> roles;
 }

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="Artsiom Lysianok" id="1543412736052-1">
+        <createTable tableName="cleaning_time">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="cleaning_time_pkey"/>
+            </column>
+            <column name="bathroom_cleaning_time" type="INTEGER"/>
+            <column name="big_room_cleaning_time" type="INTEGER"/>
+            <column name="dry_carpet_cleaning_time" type="FLOAT8"/>
+            <column name="furniture_and_coatings_cleaning_time" type="FLOAT8"/>
+            <column name="industrial_cleaning_time" type="FLOAT8"/>
+            <column name="office_cleaning_time" type="FLOAT8"/>
+            <column name="pool_cleaning_time" type="FLOAT8"/>
+            <column name="repair_and_construction_cleaning_time" type="FLOAT8"/>
+            <column name="small_room_cleaning_time" type="INTEGER"/>
+            <column name="spring_cleaning_time" type="FLOAT8"/>
+            <column name="standard_room_cleaning_time" type="FLOAT8"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>
