@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
          http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
     <changeSet author="Artsiom Lysianok" id="1543412736052-14">
-        <addForeignKeyConstraint baseColumnNames="role_id" baseTableName="users_roles"
+        <addForeignKeyConstraint baseColumnNames="roles_id" baseTableName="users_roles"
                                  constraintName="fka62j07k5mhgifpp955h37ponj" deferrable="false"
                                  initiallyDeferred="false" onDelete="NO ACTION" onUpdate="NO ACTION"
                                  referencedColumnNames="id" referencedTableName="roles"/>

@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
@@ -50,9 +52,30 @@ public class FeedbackServiceImpl implements FeedbackService {
         Feedback feedback = new Feedback();
         feedback.setCustomer(customerService.getCustomerById(currentUser.getId()));
         feedback.setCompany(company);
+        feedback.setAddingDate(LocalDate.now());
         feedback.setRate(feedbackDto.getRate());
         feedback.setText(feedbackDto.getText());
         feedbackRepository.saveAndFlush(feedback);
         return feedback.getId();
+    }
+
+    @Override
+    public List<Feedback> getAll(Long serviceId) {
+        CleaningCompany company = companyService.getOne(serviceId);
+        if (company != null) {
+            return feedbackRepository.findAllByCompanyOrderByAddingDateDesc(company);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    @Override
+    public List<Feedback> getTop(Long serviceId, Integer count) {
+        CleaningCompany company = companyService.getOne(serviceId);
+        if (company != null) {
+            return feedbackRepository.findTop(company.getId(), count);
+        } else {
+            return Collections.emptyList();
+        }
     }
 }
