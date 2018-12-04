@@ -2,6 +2,7 @@ package com.itechart.service.service.impl;
 
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.Order;
+import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
 import com.itechart.service.repository.OrderRepository;
 import com.itechart.service.service.OrderService;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -53,8 +55,10 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(mapper.mapOrderDtoToOrder(orderDto));
     }
 
+    @Transactional
     @Override
     public void changeStatus(String status, Long id) {
-        orderRepository.changeStatus(status,id);
+        Status currentStatus = Status.valueOf(status);
+        orderRepository.changeStatus(currentStatus, id);
     }
 }

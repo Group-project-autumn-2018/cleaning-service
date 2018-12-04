@@ -26,7 +26,6 @@ class AppRouting extends Component {
                 <Route path="/registration/service" component={ServiceRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies} />
-
                 <Redirect to="/"/>
             </Switch>
         );
@@ -51,11 +50,11 @@ class AppRouting extends Component {
                     <Route path="/login" component={SignIn}/>
                     <Route path="/feedback" component={Feedback}/>
                     <Route path="/booking" component={BookingForm}/>
-                    <Route path="/companies" component={Companies}/>
-                    <Route exact path="/companies/confirm/:id"
+                    <Route exact path="/companies" component={Companies}/>
+                    <Route path="/companies/confirm/:id"
                            render={({match}) => {
                                const {id} = match.params;
-                               return <CompanyConfirmModalForm companyId={id}/>
+                               return <CompanyConfirmModalForm orderId={id}/>
                            }}
                     />
                     <Redirect to="/"/>

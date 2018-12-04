@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import {fetchEntity, fetchUpdateMultipartEntity} from "../api/api-actions";
+import './company-confirm.css';
 
 class CompanyConfirmModalForm extends Component {
 
@@ -30,7 +31,7 @@ class CompanyConfirmModalForm extends Component {
     }
 
     componentDidMount() {
-        fetchEntity(this.props.companyId, this.URN, this.props.user.token)
+        fetchEntity(this.props.orderId, this.URN, this.props.user.token)
             .then((order) => {
                 this.setState({order: order})
             });
@@ -38,26 +39,27 @@ class CompanyConfirmModalForm extends Component {
 
 
     onConfirm = () => {
-        fetchUpdateMultipartEntity("CONFIRMED", this.URN, this.props.user.token, this.state.id)
+        fetchUpdateMultipartEntity("CONFIRMED", this.URN, this.props.user.token, this.props.orderId)
     };
 
     onClose = () => {
-        fetchUpdateMultipartEntity("REJECTED", this.URN, this.props.user.token, this.state.id)
+        fetchUpdateMultipartEntity("REJECTED", this.URN, this.props.user.token, this.props.orderId)
     };
 
 
     render() {
         return (
-            <React.Fragment>
+            <div className="container confirm-form">
                 <div className="form-group row">
-                    <div className="col-sm-8">
+                    <div className="overlay"/>
+                    <div className="col-sm-8 z-index-class">
                         <div className="modal-header">
                             <h5 className="modal-title" id="confirmOrderModalTitle">Please confirm your order</h5>
                             <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <div className="col-sm-8 ">
+                        <div className="col-sm-8 z-index-class ">
                             <div className="row">
                                 <div className="col-4">Address</div>
                                 <div className="col-8">{this.state.order.address}</div>
@@ -120,7 +122,7 @@ class CompanyConfirmModalForm extends Component {
                         </div>
                     </div>
                 </div>
-            </React.Fragment>
+            </div>
 
         )
     }
