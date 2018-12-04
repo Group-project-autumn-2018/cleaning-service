@@ -25,6 +25,7 @@ class CustomerOrdersList extends Component {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
         } else {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
+
         }
     }
 

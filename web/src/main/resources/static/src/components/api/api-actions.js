@@ -16,6 +16,26 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
     }
 };
 
+export const fetchCompaniesPOST = (entity, entityURN, token) => {
+
+    let options = {
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        },
+        method: 'POST',
+        body: JSON.stringify(entity)
+
+    };
+    return dispatch => {
+        fetch(`/api${entityURN}`, options).then(resolve => resolve.json()).then(response => {
+            console.log(response);
+            dispatch(fetchEntitiesSuccess(response));
+        })
+    }
+};
+
 
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
 
