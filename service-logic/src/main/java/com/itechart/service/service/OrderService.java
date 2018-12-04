@@ -10,4 +10,6 @@ public interface OrderService {
     OrderDto getOne(Long id);
 
     void saveOrder(OrderDto orderDto);
+
+    void changeStatus(String status, Long id);
 }
