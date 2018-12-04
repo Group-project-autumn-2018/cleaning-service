@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class FeedbackServiceImpl implements FeedbackService {
@@ -92,11 +93,15 @@ public class FeedbackServiceImpl implements FeedbackService {
     private void countingAverageRating() {
         logger.info("Counting average rating...");
         int averageRating;
+        Optional<Double> optionalRating;
         List<CleaningCompany> companies = companyService.getAll();
         for (CleaningCompany company : companies) {
-            averageRating = feedbackRepository.findAverageRating(company);
-            company.setAverageRating(averageRating);
-            companyRepository.save(company);
+            optionalRating = feedbackRepository.findAverageRating(company);
+            if (optionalRating.isPresent()) {
+                averageRating = optionalRating.get().intValue();
+                company.setAverageRating(averageRating);
+                companyRepository.save(company);
+            }
         }
     }
 }

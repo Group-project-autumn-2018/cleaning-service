@@ -8,7 +8,7 @@ export default class Companies extends Component {
     companies = [{
         id: "1",
         logotype: "logo",
-        companyname: "GoldService",
+        name: "GoldService",
         address: "Kirova",
         ranking: "4 stars",
         price: "100$"
@@ -16,15 +16,15 @@ export default class Companies extends Component {
         {
             id: "2",
             logotype: "logo",
-            companyname: "SilverService",
+            name: "SilverService",
             address: "Sovetskaya",
             ranking: "5 stars",
             price: "300$"
         },
         {
-            id: "3",
+            id: "4",
             logotype: "logo",
-            companyname: "BronzeService",
+            name: "BronzeService",
             address: "Lenina",
             ranking: "3 stars",
             price: "200$"

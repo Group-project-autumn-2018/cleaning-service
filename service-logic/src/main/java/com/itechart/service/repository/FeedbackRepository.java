@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
@@ -21,5 +22,5 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findTop(@Param("companyId") Long companyId, @Param("elemCount") Integer count);
 
     @Query("select avg(rate) from Feedback where company = :company")
-    Integer findAverageRating(@Param("company") CleaningCompany company);
+    Optional<Double> findAverageRating(@Param("company") CleaningCompany company);
 }

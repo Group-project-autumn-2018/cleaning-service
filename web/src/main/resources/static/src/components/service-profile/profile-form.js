@@ -8,6 +8,9 @@ import CleaningTypesForm from './cleaning-types-form';
 import {connect} from "react-redux";
 import {fetchEntity} from "../api/api-actions";
 import MainPanel from './main-panel';
+import {connectWs} from '../actions/notification-actions';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 class ProfileForm extends Component {
@@ -40,10 +43,15 @@ class ProfileForm extends Component {
     }
 
     componentDidMount() {
+        this.props.connectWs(this.props.token);
         fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
             .then((service) => {
                 this.setState({service: service, tempAddress: service.address.address})
             });
+    };
+
+    testNo = () => {
+        fetch("/api/order/test?access_token=" + this.props.token);
     };
 
     onChangeHandler = (e) => {
@@ -198,6 +206,8 @@ class ProfileForm extends Component {
                         </button>
                     </div>
                 </form>
+                <button className="btn btn-primary" onClick={this.testNo}>Test</button>
+                <ToastContainer autoClose={false} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )
     }
@@ -214,6 +224,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateService: (service, token, id) => {
             dispatch(updateService(service, token, id))
+        },
+        connectWs: (token) => {
+            dispatch(connectWs(token))
         }
     }
 };

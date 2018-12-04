@@ -11,7 +11,10 @@ class ProfileForm extends Component {
     state = {
         URN: "/customer/profile",
         changePassword: false,
-        customer: {},
+        customer: {
+            address: "",
+            phone: "",
+        },
         phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/],
         passwordMatch: true,
         error: false,

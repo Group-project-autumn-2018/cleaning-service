@@ -13,6 +13,7 @@ import BookingForm from '../booking-form/booking-form'
 import Companies from '../companies/companies'
 import MainProfile from '../main-profile';
 import ServiceInfo from "../service-info/service-info";
+import CustomerOrdersList from '../customer-orders/customer-orders-list';
 
 class AppRouting extends Component {
 
@@ -44,6 +45,7 @@ class AppRouting extends Component {
                     }}/>
                     <Route path="/booking" component={BookingForm}/>
                     <Route path="/companies" component={Companies}/>
+                    <Route path="/customer/orders" component={CustomerOrdersList}/>
                     <Redirect to="/"/>
                 </Switch>
             ) : (
@@ -68,6 +70,7 @@ class AppRouting extends Component {
                                return <CompanyConfirmModalForm orderId={id}/>
                            }}
                     />
+                    <Route path="/customer/orders" component={CustomerOrdersList}/>
                     <Redirect to="/"/>
                 </Switch>
             )
@@ -79,6 +82,7 @@ class AppRouting extends Component {
             </Fragment>
         );
     }
+
 }
 
 export default AppRouting;

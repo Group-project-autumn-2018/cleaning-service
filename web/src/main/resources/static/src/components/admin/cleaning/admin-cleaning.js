@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import CleaningList from './cleaning-list';
 import './admin-cleaning.css';
 import Pagination from "react-js-pagination";
-import * as actions from '../../actions/admin-actions';
+import * as actions from '../../api/api-actions';
 
 
 class AdminCleaning extends Component {
@@ -18,6 +18,7 @@ class AdminCleaning extends Component {
     handlePageChange = (page) => {
         this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     };
+
 
     render() {
         return (
