@@ -42,7 +42,7 @@ public class CleaningServiceController {
     }
 
     @PostMapping("/search/companies")
-    public List<CleaningCompanyDto> searchCompanies(@RequestBody SearchCompanyDto searchCompanyDto) {
+    public List<CleaningCompany> searchCompanies(@RequestBody SearchCompanyDto searchCompanyDto) {
         return searchCompanyService.search(searchCompanyDto);
 
     }

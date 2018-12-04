@@ -1,7 +1,6 @@
 package com.itechart.service.service.impl;
 
 import com.itechart.common.service.UserService;
-import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.CleaningTypesDto;
 import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
@@ -74,7 +73,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
     }
 
     @Override
-    public List<CleaningCompanyDto> search(SearchCompanyDto searchCompanyDto) {
+    public List<CleaningCompany> search(SearchCompanyDto searchCompanyDto) {
 
         CleaningTypesDto cleaningTypes = getCleaningTypesDto(searchCompanyDto.getCleaningType());
         List<CleaningTypes> cleaningTypeList = cleaningTypesRepository.findAll(
@@ -93,13 +92,13 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
             List<CleaningCompany> cleaningCompanies = Collections.singletonList(cleaningType.getCompany());
             cleaningCompanyList.addAll(cleaningCompanies);
         }
-        List<CleaningCompanyDto> companies = new ArrayList<>();
+        List<CleaningCompany> companies = new ArrayList<>();
         for (CleaningCompany cleaningCompany : cleaningCompanyList) {
 
-            CleaningCompanyDto companyDto = mapper.mapCompanyToCompanyDto(cleaningCompany);
+//            CleaningCompanyDto companyDto = mapper.mapCompanyToCompanyDto(cleaningCompany);
             BigDecimal price = calculationRules.calculateAvaregePrice(searchCompanyDto, cleaningCompany.getId());
-            companyDto.setPrice(price);
-            companies.add(companyDto);
+            cleaningCompany.setAveragePrice(price);
+            companies.add(cleaningCompany);
         }
 
 

@@ -8,6 +8,7 @@ import java.util.List;
 @Data
 public class CleaningCompanyDto {
     private Long id;
+    private Integer averageRating;
     private String username;
     private String phone;
     private String email;
