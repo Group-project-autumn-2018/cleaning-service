@@ -10,7 +10,7 @@ class CompanyConfirmModalForm extends Component {
         super(props);
         this.state = {
             order: {
-                orderId: 1,
+                id: 1,
                 customer: '',
                 address: '',
                 cleaningType: '',
@@ -22,8 +22,9 @@ class CompanyConfirmModalForm extends Component {
                 frequency: '',
                 duration: '',
                 email: '',
-                estimatedPrice: 120,
-                estimatedTime: ''
+                price: 120,
+                estimatedTime: '',
+                status: ''
             }
         }
     }
@@ -37,11 +38,11 @@ class CompanyConfirmModalForm extends Component {
 
 
     onConfirm = () => {
-        fetchUpdateMultipartEntity("CONFIRMED", this.URN, this.props.user.token, this.state.orderId)
+        fetchUpdateMultipartEntity("CONFIRMED", this.URN, this.props.user.token, this.state.id)
     };
 
     onClose = () => {
-        fetchUpdateMultipartEntity("REJECTED", this.URN, this.props.user.token, this.state.orderId)
+        fetchUpdateMultipartEntity("REJECTED", this.URN, this.props.user.token, this.state.id)
     };
 
 
@@ -97,16 +98,18 @@ class CompanyConfirmModalForm extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-4">Estimated Price</div>
-                                <div className="col-8">{this.state.order.estimatedPrice}</div>
+                                <div className="col-8">{this.state.order.price}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Estimated Time</div>
                                 <div className="col-8">{this.state.order.estimatedTime}</div>
                             </div>
-
+                            <div className="row">
+                                <div className="col-4">Order status</div>
+                                <div className="col-8">{this.state.order.status}</div>
+                            </div>
                         </div>
                         <div className="modal-footer">
-
 
                             <button type="submit" className="btn btn-secondary btn btn-danger" data-dismiss="modal"
                                     onClick={this.onClose}>Refuse order
