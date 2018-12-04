@@ -3,6 +3,7 @@ import './companies.css';
 import SortList from '../companies/sort-list';
 import {fetchCompaniesPOST} from '../api/api-actions';
 import connect from "react-redux/es/connect/connect";
+import CompaniesList from "../companies/companies-list"
 
 class Companies extends Component {
 
@@ -18,21 +19,19 @@ class Companies extends Component {
     }
 
     searchCompanyDto = {
-        cleaningTypesDto: this.props.orderUpdate.cleaningTypesDto,
+        cleaningType: this.props.orderUpdate.cleaningType,
         smallRoomsCount: this.props.orderUpdate.smallRoomsCount,
         bigRoomsCount: this.props.orderUpdate.bigRoomsCount,
         bathroomsCount: this.props.orderUpdate.bathroomsCount,
         address: this.props.orderUpdate.address,
         latitude: this.props.orderUpdate.updatedOrder.lat,
         longitude: this.props.orderUpdate.updatedOrder.lon,
-        email: this.props.orderUpdate.email
+        email: this.props.orderUpdate.email,
+        price: ""
     };
 
     componentDidMount() {
-        fetchCompaniesPOST(this.searchCompanyDto, this.entityURN, this.props.user.token)
-            .then((companies) => {
-                this.setState({companies: companies})
-            });
+        this.props.fetchCompaniesPOST(this.searchCompanyDto, this.entityURN, this.props.token);
     };
 
     render() {
@@ -41,7 +40,7 @@ class Companies extends Component {
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
                 <h3 className="text-center pt-4"><b>Available services</b></h3>
                 <SortList sort={this.sorting}/>
-                {/*<CompaniesList companies={this.props.companies}/>*/}
+                <CompaniesList companies={this.props.companies}/>
             </div>
         );
     }
@@ -49,8 +48,18 @@ class Companies extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        ...state
+        companies: state.entities,
+        orderUpdate: state.orderUpdate,
+        token: state.user.token
     }
 };
 
-export default connect(mapStateToProps)(Companies);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchCompaniesPOST: (entity, entityURN, token) => {
+            dispatch(fetchCompaniesPOST(entity, entityURN, token));
+        }
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Companies);

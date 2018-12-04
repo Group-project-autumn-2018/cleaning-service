@@ -17,8 +17,8 @@ class Company extends Component {
         return (
             <tr className="row">
                 <td className="col">{this.props.company.logotype}</td>
-                <td className="col">{this.props.company.companyName}</td>
-                <td className="col">{this.props.company.address}</td>
+                <td className="col">{this.props.company.username}</td>
+                <td className="col">{this.props.company.address.address}</td>
                 <td className="col">{this.props.company.ranking}</td>
                 <td className="col">{this.props.company.price}</td>
                 <td className="col">

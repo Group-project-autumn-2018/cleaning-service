@@ -16,16 +16,7 @@ class BookingForm extends Component {
         this.state = {
             customer: '',
             address: '',
-            cleaningTypesDto: {
-                standardRoomCleaning: false,
-                springCleaning: false,
-                repairAndConstructionCleaning: false,
-                dryCarpetCleaning: false,
-                officeCleaning: false,
-                furnitureAndCoatingsCleaning: false,
-                industrialCleaning: false,
-                poolCleaning: false
-            },
+            cleaningType: "",
             smallRoomsCount: '',
             bigRoomsCount: '',
             bathroomsCount: '',
@@ -40,46 +31,8 @@ class BookingForm extends Component {
         }
     }
 
-    changeCleaningType = (event) => {
-        const name = event.target.value;
-
-        this.setState({
-            ...this.state.cleaningTypesDto.standardRoomCleaning = false,
-            ...this.state.cleaningTypesDto.springCleaning = false,
-            ...this.state.cleaningTypesDto.repairAndConstructionCleaning = false,
-            ...this.state.cleaningTypesDto.dryCarpetCleaning = false,
-            ...this.state.cleaningTypesDto.officeCleaning = false,
-            ...this.state.cleaningTypesDto.furnitureAndCoatingsCleaning = false,
-            ...this.state.cleaningTypesDto.industrialCleaning = false,
-            ...this.state.cleaningTypesDto.poolCleaning = false
-        });
-
-        switch (name) {
-            case "Standard room cleaning":
-                this.setState({...this.state.cleaningTypesDto.standardRoomCleaning = true});
-                break;
-            case "Spring-cleaning":
-                this.setState({...this.state.cleaningTypesDto.springCleaning = true});
-                break;
-            case "Cleaning after repair and construction":
-                this.setState({...this.state.cleaningTypesDto.repairAndConstructionCleaning = true});
-                break;
-            case "Dry carpet cleaning":
-                this.setState({...this.state.cleaningTypesDto.dryCarpetCleaning = true});
-                break;
-            case "Office cleaning":
-                this.setState({...this.state.cleaningTypesDto.officeCleaning = true});
-                break;
-            case "Dry cleaning of furniture and coatings":
-                this.setState({...this.state.cleaningTypesDto.furnitureAndCoatingsCleaning = true});
-                break;
-            case "Industrial cleaning":
-                this.setState({...this.state.cleaningTypesDto.industrialCleaning = true});
-                break;
-            case "Pool cleaning":
-                this.setState({...this.state.cleaningTypesDto.poolCleaning = true});
-                break;
-        }
+    changeType = (event) => {
+        this.setState({cleaningType: event.target.value});
     };
 
     changeSmallRooms = (event) => {
@@ -175,7 +128,7 @@ class BookingForm extends Component {
                             </div>
                         </div>
                         <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
-                                         id={"cleaningType"} onChange={this.changeCleaningType}/>
+                                         id={"cleaningType"} onChange={this.changeType}/>
                     </div>
 
                     <div className="bookingRow">

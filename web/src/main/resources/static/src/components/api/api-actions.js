@@ -1,3 +1,27 @@
+export const fetchEntities = (page, size, entityURN, token) => {
+    return dispatch => {
+        fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}`).then(resolve => resolve.json()).then(response => {
+            const pagination = {
+                totalItemsCount: response.totalElements,
+                activePage: response.number,
+                totalPages: response.totalPages
+            };
+            dispatch(fetchEntitiesSuccess(response.content));
+            dispatch(setPagination(pagination));
+        });
+    }
+};
+
+
+export const updateEntity = (entity, entityURN, token) => {
+    return async dispatch => {
+        const res = await fetchUpdateEntity(entity, entityURN, token);
+        console.log('[Entity update status] ' + res.status);
+        dispatch(updateEntitySuccess(entity));
+    }
+};
+
+
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
 
     let options = {
@@ -13,7 +37,7 @@ export const fetchUpdateEntity = async (entity, entityURN, token) => {
     return await fetch(`/api${entityURN}/${entity.id}`, options);
 };
 
-export const fetchCompaniesPOST = async (entity, entityURN, token) => {
+export const fetchCompaniesPOST = (entity, entityURN, token) => {
 
     let options = {
         headers: {
@@ -23,11 +47,14 @@ export const fetchCompaniesPOST = async (entity, entityURN, token) => {
         },
         method: 'POST',
         body: JSON.stringify(entity)
+
     };
-
-    const response = await fetch(`/api${entityURN}`, options);
-
-    return await response.json();
+    return dispatch => {
+        fetch(`/api${entityURN}`, options).then(resolve => resolve.json()).then(response => {
+            console.log(response);
+            dispatch(fetchEntitiesSuccess(response));
+        })
+    }
 };
 
 
@@ -73,4 +100,31 @@ export const fetchSaveEntity = async (entity, entityURN, token) => {
     };
 
     return await fetch(`/api${entityURN}`, options);
+};
+
+export const fetchEntitiesSuccess = (entity) => {
+    return {
+        type: 'FETCH_ENTITIES_SUCCESS',
+        payload: entity
+    };
+};
+
+export const setPagination = (pagination) => {
+    return {
+        type: 'SET_PAGINATION',
+        payload: pagination
+    };
+};
+export const prepareEntityForUpdate = (entity) => {
+    return {
+        type: 'PREPARE_ENTITY_FOR_UPDATE',
+        payload: entity
+    }
+};
+
+export const updateEntitySuccess = (entity) => {
+    return {
+        type: 'UPDATE_ENTITY_SUCCESS',
+        payload: entity
+    }
 };
