@@ -3,14 +3,14 @@ import {connect} from 'react-redux';
 import CustomersList from './customers-list';
 import './admin-customers.css';
 import Pagination from "react-js-pagination";
-import * as actions from '../../actions/admin-actions';
+import * as actions from '../../api/api-actions';
 
 
 class AdminCustomers extends Component {
 
     entityURN = '/customer';
 
-    componentDidMount() {
+    componentWillMount() {
         const {fetchData} = this.props;
         fetchData(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     }
@@ -18,6 +18,7 @@ class AdminCustomers extends Component {
     handlePageChange = (page) => {
         this.props.fetchData(page - 1, this.props.itemsCountPerPage, this.entityURN, this.props.token);
     };
+
 
     render() {
         return (

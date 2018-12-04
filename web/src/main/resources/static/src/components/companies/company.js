@@ -6,14 +6,18 @@ import * as orderActions from "../actions/order-actions";
 class Company extends Component {
 
     onClick = () => {
-        this.props.updateOrder({...this.props.order, company: this.props.company.id})
+        this.props.updateOrder({
+            ...this.props.order,
+            company: this.props.company.id,
+            companyName: this.props.company.name
+        })
     };
 
     render() {
         return (
             <tr className="row">
                 <td className="col">{this.props.company.logotype}</td>
-                <td className="col">{this.props.company.companyname}</td>
+                <td className="col">{this.props.company.companyName}</td>
                 <td className="col">{this.props.company.address}</td>
                 <td className="col">{this.props.company.ranking}</td>
                 <td className="col">{this.props.company.price}</td>

@@ -1,0 +1,12 @@
+.new-order-btn {
+    position: absolute;
+    left: 15px;
+}
+
+.order-list {
+    padding: 0;
+}
+
+.search-item {
+    width: 15%;
+}

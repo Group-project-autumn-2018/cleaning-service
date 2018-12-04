@@ -26,6 +26,16 @@ export default class ListOfCompanyOrders extends Component {
             startTime: "8:00",
             status: "new",
         }];
+
+
+    exportList(){
+        fetch('/', {
+            method: 'get',
+            headers: {'Content-Type':'application/json'},
+            body:body
+        });
+    };
+
     sorting = ["status", "type"];
 
     render() {

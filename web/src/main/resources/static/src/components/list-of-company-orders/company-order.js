@@ -7,9 +7,9 @@ class CompanyOrder extends Component {
         return (
             <tr className="row">
                 <td className="col">{this.props.order.cleaningType}</td>
-                <td className="col">{this.props.company.date}</td>
-                <td className="col">{this.props.company.startTime}</td>
-                <td className="col">{this.props.company.status}</td>
+                <td className="col">{this.props.order.date}</td>
+                <td className="col">{this.props.order.startTime}</td>
+                <td className="col">{this.props.order.status}</td>
             </tr>
         )
     }

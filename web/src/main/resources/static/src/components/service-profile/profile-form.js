@@ -1,60 +1,69 @@
 import React, {Component} from 'react';
 import ChangePassword from '../customers-profile-form/change-password'
+import MaskedInput, {conformToMask} from 'react-text-mask';
 import '../customers-profile-form/profile-form.css';
-import {updateService} from '../actions/service-actions';
+import {updateEntity} from '../actions/admin-actions';
 import './service-profile.css';
 import OpenStreetMapApi from "../services/openstreetmap-api";
+import DropdownAddressList from './dropdown-address-list';
 import CleaningTypesForm from './cleaning-types-form';
-import {connect} from "react-redux";
-import {fetchEntity} from "../api/api-actions";
-import MainPanel from './main-panel';
 
 
 class ProfileForm extends Component {
     openStreetMapApi = new OpenStreetMapApi();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            tempAddress: '',
-            logo: '',
-            modeToggle: 'main',
-            service: {
-                id: '',
-                username: '',
-                email: '',
-                address: {
-                    address: '',
-                    lat: 0,
-                    lon: 0
-                },
-                phone: '',
-                cleaningTypes: {}
-            },
-            phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
-                '-', /\d/, /\d/],
-            passwordMatch: true,
-            newPassword: '',
-            addresses: []
-        };
-    }
+    serviceURN = '/cleaning';
+
+    state = {
+        logo: '',
+        modeToggle: 'main',
+        service: {
+            username: '',
+            address: '',
+            phone: '',
+            cleaningTypesDto: {
+                standardRoomCleaning: false,
+                springCleaning: false,
+                repairAndConstructionCleaning: false,
+                dryCarpetCleaning: false,
+                officeCleaning: false,
+                furnitureAndCoatingsCleaning: false,
+                industrialCleaning: false,
+                poolCleaning: false,
+                priceDto: {},
+                cleaningTimeDto: {}
+            }
+        },
+        phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
+            '-', /\d/, /\d/],
+        passwordMatch: true,
+        newPassword: '',
+        addresses: []
+    };
 
     componentDidMount() {
-        fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
+        /*fetchEntity(this.props.serviceId, this.serviceURN, this.props.token)
             .then((service) => {
-                this.setState({service: service, tempAddress: service.address.address})
-            });
+                this.setState({service: service})
+            });*/
+    };
+
+    submitHandler = (e) => {
+        e.preventDefault();
+        console.log("submit");
+        this.props.updateEntity(this.state.service, this.serviceURN, this.props.token);
+
     };
 
     onChangeHandler = (e) => {
         const name = e.target.name;
+        //console.log(e.target.value);
         const updatedService = {
             ...this.state.service,
             [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
         };
         this.setState({service: updatedService});
-        if (name === 'address') {
-            this.setState({tempAddress: e.target.value});
+        if (name === 'address' && e.target.value.length > 5) {
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
         }
     };
@@ -64,16 +73,11 @@ class ProfileForm extends Component {
     };
 
     onClickAddressHandler = (event) => {
-        // && e.target.value.length > 5
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
-        const updatedAddress = {
-            address: this.state.tempAddress,
-            lat: address.lat,
-            lon: address.lon
-        };
         const updatedService = {
             ...this.state.service,
-            address: updatedAddress
+            lat: address.lat,
+            lon: address.lon
         };
         console.log(address.lat + ' ' + address.lon);
         this.setState({service: updatedService, addresses: []});
@@ -82,12 +86,12 @@ class ProfileForm extends Component {
     onChangeTypeHandler = (event) => {
         const name = event.target.name;
         const updatedTypes = {
-            ...this.state.service.cleaningTypes,
+            ...this.state.service.cleaningTypesDto,
             [name]: event.target.checked
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypes: updatedTypes
+            cleaningTypesDto: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -95,16 +99,16 @@ class ProfileForm extends Component {
     onChangeTimeHandler = (event) => {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
-            ...this.state.service.cleaningTypes.cleaningTime,
+            ...this.state.service.cleaningTypesDto.cleaningTimeDto,
             [name]: event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypes,
-            cleaningTime: updatedCleaningTimeDto
+            ...this.state.service.cleaningTypesDto,
+            cleaningTimeDto: updatedCleaningTimeDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypes: updatedTypes
+            cleaningTypesDto: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -112,16 +116,16 @@ class ProfileForm extends Component {
     onChangePriceHandler = (event) => {
         const name = event.target.name;
         const updatedPriceDto = {
-            ...this.state.service.cleaningTypes.price,
+            ...this.state.service.cleaningTypesDto.priceDto,
             [name]: event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypes,
-            price: updatedPriceDto
+            ...this.state.service.cleaningTypesDto,
+            priceDto: updatedPriceDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypes: updatedTypes
+            cleaningTypesDto: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -143,23 +147,11 @@ class ProfileForm extends Component {
         console.log(event.target.name);
     };
 
-    saveService = (event) => {
-        event.preventDefault();
-        console.log(this.state);
-        const entity = new FormData();
-        if (this.state.logo !== '') {
-            entity.append('logo', this.state.logo, this.state.logo.name);
-        }
-        const serviceJson = JSON.stringify(this.state.service);
-        entity.append('company', serviceJson);
-        this.props.updateService(entity, this.props.token, this.state.service.id);
-    };
-
     render() {
         return (
             <div className="profile-form-container">
                 <form className="container profile-form" onSubmit={this.submitHandler}>
-                    <h4 className="text-center"> My profile</h4>
+                    <h3 className="text-center"> My profile</h3>
                     <nav>
                         <div className="nav nav-tabs service-tabs" role="tablist">
                             <button className={`nav-item nav-link ${this.state.modeToggle === 'main' ? 'active' : ''}`}
@@ -193,15 +185,87 @@ class ProfileForm extends Component {
                                            onChangeTimeHandler={this.onChangeTimeHandler}
                         /> : null}
                     <div className="text-center">
-                        <button type="submit" className="btn btn-lg btn-primary col-sm-4" onClick={this.saveService}>
-                            Save
-                        </button>
+                        <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
                     </div>
                 </form>
             </div>
         )
     }
 }
+
+const MainPanel = (props) => {
+    return (
+        <React.Fragment>
+            <div className="form-group row">
+                <label htmlFor="profileFormLogo" className="col-sm-4 col-form-label">Logo</label>
+                <div className="custom-file col-sm-5 profile-service-input">
+                    <input type="file" className="custom-file-input" id="inputGroupFile01"
+                           onChange={props.onChangeLogoHandler} aria-describedby="inputGroupFileAddon01"/>
+                    <label className="custom-file-label" htmlFor="inputGroupFile01">
+                        {props.logo !== '' ? props.logo.name : "Choose file"}</label>
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
+                <div className="col-sm-8">
+                    <input type="text" className="form-control" id="profileFormName" placeholder="Name"
+                           name="username"
+                           value={props.service.username}
+                           onChange={props.onChangeHandler}
+                    />
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormEmail" className="col-sm-4 col-form-label">Email</label>
+                <div className="col-sm-8">
+                    <input type="email" className="form-control" id="profileFormEmail" placeholder="Email"
+                           name="email"
+                           value={props.service.email}
+                           onChange={props.onChangeHandler}
+                    />
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormPhone" className="col-sm-4 col-form-label">Phone</label>
+                <div className="col-sm-8">
+                    <MaskedInput
+                        mask={props.phoneNumberMask}
+                        className="form-control"
+                        placeholder="375(__)___-____"
+                        guide={false}
+                        id="profileFormPhone"
+                        name="phone"
+                        value={conformToMask(props.service.phone ? props.service.phone : "",
+                            props.phoneNumberMask, {guide: false}).conformedValue}
+                        onChange={props.onChangeHandler}
+                    />
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
+                <div className="col-sm-8 dropdown">
+                    <input type="text" className="form-control dropdown-toggle" id="profileFormAddress"
+                           data-toggle="dropdown" placeholder="Address"
+                           name="address"
+                           value={props.service.address}
+                           onChange={props.onChangeHandler}
+                    />
+                    <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
+                </div>
+            </div>
+
+            <div className="form-check text-center">
+                <input className="form-check-input" type="checkbox" id="gridCheck1"
+                       name="cleaningNotifications"
+                       checked={props.service.cleaningNotifications}
+                       onChange={props.onChangeHandler}/>
+                <label className="form-check-label" htmlFor="gridCheck1">
+                    Remind me about cleaning
+                </label>
+            </div>
+        </React.Fragment>
+    )
+};
 
 const mapStateToProps = (state) => {
     return {
@@ -212,14 +276,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateService: (service, token, id) => {
-            dispatch(updateService(service, token, id))
+        updateEntity: (serviceId, serviceURN, token) => {
+            dispatch(updateEntity(serviceId, serviceURN, token))
         }
     }
 };
 
-//export default ProfileForm;
-export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
+export default ProfileForm;
+//export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
 
 
 

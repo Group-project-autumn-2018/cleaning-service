@@ -1,5 +1,4 @@
 package com.itechart.customer.service;
-
 import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
@@ -21,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import java.nio.charset.Charset;
 import java.time.LocalDate;

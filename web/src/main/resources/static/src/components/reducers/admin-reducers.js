@@ -20,6 +20,8 @@ export const entityReducer = (state = [], action) =>{
                 }
                 return entity
             });
+        case 'CLEAR_ENTITIES':
+            return state;
         default:
             return state;
     }

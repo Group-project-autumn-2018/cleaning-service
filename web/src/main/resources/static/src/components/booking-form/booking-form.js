@@ -20,7 +20,7 @@ class BookingForm extends Component {
             cleaningTime: '',
             frequency: '',
             duration: '',
-            email: '',
+            email: this.props.email,
             estimatedPrice: 120,
             estimatedTime: ''
         }
@@ -76,12 +76,15 @@ class BookingForm extends Component {
         }
     };
 
-    frequency = ["ONLY_ONCE", "EVERY_WEEK", "EVERY_TWO_WEEKS", "EVERY_MONTH"];
-    duration = ["ONE_MONTH", "TWO_MONTH", "THREE_MONTH", "FOUR_MONTH", "FIVE_MONTH", "SIX_MONTH"];
-    time = ["Not chosen...", "9-00 AM", "9-30 AM", "10-00 AM", "10-30 AM", "11-00 AM", "11-30 AM", "12-00 AM", "12-30 AM",
-        "13-00 AM", "13-30 AM", "14-00 AM", "14-30 AM", "15-00 AM", "15-30 AM", "16-00 AM", "16-30 AM", "17-00 AM",
-        "17-30 AM", "18-00 AM"];
-    types = ["Not chosen...", "Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
+
+    frequency = ["once", "weekly", "fortnightly", "monthly"];
+    duration = ["one month", "two month", "three month", "four month", "five month", "six month"];
+
+    time = ["Not chosen...", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+        "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
+        "17:30", "18:00"];
+
+    types = ["Not chosen...", "Standard room cleaning", "Spring cleaning", "Cleaning after repair and construction",
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 

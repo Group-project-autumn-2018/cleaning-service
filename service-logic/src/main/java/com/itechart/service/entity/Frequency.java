@@ -1,5 +1,19 @@
 package com.itechart.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Frequency {
-    ONLY_ONCE, EVERY_WEEK, EVERY_TWO_WEEKS, EVERY_MONTH
+    @JsonProperty("once")
+    ONLY_ONCE,
+
+    @JsonProperty("weekly")
+    EVERY_WEEK,
+
+    @JsonProperty("fortnightly")
+    EVERY_TWO_WEEKS,
+
+    @JsonProperty("monthly")
+    EVERY_MONTH
+
+
 }
