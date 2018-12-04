@@ -1,0 +1,33 @@
+7,minsk,,,1,1,2018-11-30,17:00:00,Standard room cleaning,TWO_MONTH,"",160,EVERY_WEEK,,1,NEW,1,
+6,minsk,,,1,1,2018-11-30,17:00:00,Standard room cleaning,TWO_MONTH,"",130,EVERY_WEEK,,1,NEW,2,
+13,gomel,,,1,1,2018-11-28,16:30:00,Standard room cleaning,TWO_MONTH,dmitriylipgart@tut.by,160,EVERY_WEEK,,2,NEW,1,
+14,gomel,,,1,1,2018-11-27,16:00:00,Standard room cleaning,TWO_MONTH,dmitriylipgart@tut.by,120,EVERY_WEEK,,2,NEW,1,
+15,gomel,,,1,1,2018-11-27,16:00:00,Standard room cleaning,TWO_MONTH,dmitriylipgart@tut.by,120,EVERY_WEEK,,2,NEW,1,
+19,minsk,,,1,1,2018-11-28,17:30:00,Spring cleaning,THREE_MONTH,dmitriylipgart@tut.by,150,EVERY_WEEK,,1,NEW,1,
+16,gomel,,,1,1,2018-11-27,16:00:00,Spring cleaning,TWO_MONTH,dmitriylipgart@tut.by,140,EVERY_WEEK,,2,NEW,2,
+17,gomel,,,1,1,2018-11-27,16:00:00,Spring cleaning,TWO_MONTH,dmitriylipgart@tut.by,140,EVERY_WEEK,,2,NEW,2,
+20,Minsk,,,1,1,2018-11-28,17:30:00,Spring cleaning,THREE_MONTH,dmitriylipgart@tut.by,130,EVERY_WEEK,,1,NEW,1,
+18,Minsk,,,1,1,2018-11-28,17:30:00,Spring cleaning,THREE_MONTH,dmitriylipgart@tut.by,180,EVERY_WEEK,,1,NEW,2,5
+28,проспект Речицкий,,,1,1,2018-12-12,16:30:00,Spring cleaning,THREE_MONTH,john5@mail.com,120,EVERY_MONTH,,1,REJECTED,1,5
+29,проспект Речицкий,,,1,1,2018-12-11,10:30:00,Spring cleaning,THREE_MONTH,john5@mail.com,150,EVERY_TWO_WEEKS,,1,REJECTED,1,5
+8,Gomel,,,2,1,2018-11-28,16:30:00,Standard room cleaning,TWO_MONTH,"",120,EVERY_WEEK,,2,NEW,1,5
+9,gomel,,,1,1,2018-11-28,16:30:00,Standard room cleaning,TWO_MONTH,john5@mail.com,160,EVERY_WEEK,,2,NEW,1,5
+10,gomel,,,1,1,2018-11-28,16:30:00,Standard room cleaning,TWO_MONTH,john5@mail.com,150,EVERY_WEEK,,2,NEW,1,5
+24,minsk,,,1,1,2018-11-28,17:00:00,Spring cleaning,TWO_MONTH,john5@mail.com,150,EVERY_WEEK,,1,NEW,1,5
+21,Gomel,,,1,1,2018-11-28,17:00:00,Spring cleaning,TWO_MONTH,john5@mail.com,150,EVERY_WEEK,,1,NEW,1,5
+22,Gomel,,,1,1,2018-11-28,17:00:00,Spring cleaning,TWO_MONTH,john5@mail.com,150,EVERY_WEEK,,1,NEW,1,5
+25,Gomel,,,1,1,2018-11-28,17:00:00,Spring cleaning,TWO_MONTH,john5@mail.com,140,EVERY_WEEK,,1,REJECTED,1,5
+30,проспект Речицкий,,,1,1,2018-12-05,17:00:00,Standard room cleaning,TWO_MONTH,dmitriylipgart@tut.by,160,EVERY_WEEK,,1,REJECTED,2,
+31,gomel,,,1,1,2018-12-14,15:00:00,Standard room cleaning,TWO_MONTH,john5@mail.com,160,EVERY_MONTH,,1,REJECTED,2,5
+32,проспект Речицкий,,,1,1,2018-12-12,10:00:00,Office cleaning,TWO_MONTH,john5@mail.com,120,EVERY_WEEK,,1,REJECTED,2,5
+33,проспект Речицкий,,,1,1,2018-12-06,17:00:00,Standard room cleaning,TWO_MONTH,john5@mail.com,120,EVERY_TWO_WEEKS,,1,REJECTED,2,5
+34,проспект Речицкий,,,1,1,2018-12-15,11:30:00,Standard room cleaning,TWO_MONTH,john5@mail.com,120,EVERY_WEEK,,1,REJECTED,2,5
+23,Minsk,,,1,1,2018-11-28,17:00:00,Spring cleaning,TWO_MONTH,john5@mail.com,140,EVERY_WEEK,,1,NEW,1,5
+26,проспект Речицкий,,,1,1,2018-12-04,16:00:00,Standard room cleaning,TWO_MONTH,john5@mail.com,170,EVERY_WEEK,,1,REJECTED,1,5
+27,проспект Речицкий,,,1,1,2018-12-05,10:00:00,Standard room cleaning,THREE_MONTH,john5@mail.com,170,EVERY_WEEK,,1,REJECTED,1,5
+35,проспект Речицкий,,,1,1,2018-12-14,10:00:00,Standard room cleaning,TWO_MONTH,john5@mail.com,140,EVERY_WEEK,,1,REJECTED,2,5
+36,проспект Речицкий,,,1,1,2018-12-14,11:00:00,Dry carpet cleaning,TWO_MONTH,john5@mail.com,140,EVERY_WEEK,,1,REJECTED,1,5
+37,проспект Речицкий,,,1,1,2018-12-15,11:00:00,Cleaning after repair and construction,THREE_MONTH,john5@mail.com,140,EVERY_WEEK,,1,REJECTED,1,5
+38,проспект Речицкий,,,1,1,2018-12-12,17:00:00,Dry carpet cleaning,TWO_MONTH,john5@mail.com,170,EVERY_WEEK,,1,REJECTED,1,5
+39,проспект Речицкий,,,1,1,2018-12-14,12:00:00,Spring cleaning,THREE_MONTH,john5@mail.com,170,EVERY_WEEK,,1,REJECTED,1,5
+40,проспект Речицкий,,,1,1,2018-12-14,17:00:00,Spring cleaning,TWO_MONTH,john5@mail.com,170,EVERY_WEEK,,1,REJECTED,1,5
