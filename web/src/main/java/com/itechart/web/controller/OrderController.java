@@ -4,7 +4,9 @@ import com.itechart.service.dto.OrderDto;
 import com.itechart.service.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/order")
@@ -32,5 +34,11 @@ public class OrderController {
     @PostMapping
     public void saveOrder(@RequestBody OrderDto orderDto) {
         orderService.saveOrder(orderDto);
+    }
+
+    @PostMapping(value = "/{id}")
+    public void update(@PathVariable Long id,
+                       @RequestParam String status) {
+        orderService.changeStatus(status, id);
     }
 }

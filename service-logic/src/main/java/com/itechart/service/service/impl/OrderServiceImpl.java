@@ -40,4 +40,9 @@ public class OrderServiceImpl implements OrderService {
     public void saveOrder(OrderDto orderDto) {
         orderRepository.save(mapper.mapOrderDtoToOrder(orderDto));
     }
+
+    @Override
+    public void changeStatus(String status, Long id) {
+        orderRepository.changeStatus(status,id);
+    }
 }
