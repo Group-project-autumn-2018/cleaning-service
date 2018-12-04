@@ -3,9 +3,11 @@ package com.itechart.web.controller;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.FeedbackDto;
+import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
+import com.itechart.service.service.SearchCompanyService;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,12 +30,21 @@ public class CleaningServiceController {
 
     private final CleaningCompanyService cleaningCompanyService;
 
+    private final SearchCompanyService searchCompanyService;
+
     private final FeedbackService feedbackService;
 
     @Autowired
-    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, FeedbackService feedbackService) {
+    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, SearchCompanyService searchCompanyService, FeedbackService feedbackService) {
         this.cleaningCompanyService = cleaningCompanyService;
+        this.searchCompanyService = searchCompanyService;
         this.feedbackService = feedbackService;
+    }
+
+    @PostMapping("/search/companies")
+    public List<CleaningCompany> searchCompanies(@RequestBody SearchCompanyDto searchCompanyDto) {
+        return searchCompanyService.search(searchCompanyDto);
+
     }
 
     @PostMapping("/registration/service")

@@ -16,7 +16,7 @@ class BookingForm extends Component {
         this.state = {
             customer: '',
             address: '',
-            cleaningType: '',
+            cleaningType: "",
             smallRoomsCount: '',
             bigRoomsCount: '',
             bathroomsCount: '',
@@ -31,11 +31,7 @@ class BookingForm extends Component {
         }
     }
 
-    changeAddress = (event) => {
-        this.setState({address: event.target.value});
-    };
-
-    changeCleaningType = (event) => {
+    changeType = (event) => {
         this.setState({cleaningType: event.target.value});
     };
 
@@ -52,8 +48,6 @@ class BookingForm extends Component {
     };
 
     changeCleaningDay = (event) => {
-        console.log(event.target);
-        console.log(event.target.value);
         this.setState({cleaningDay: event.target.value});
     };
 
@@ -69,7 +63,7 @@ class BookingForm extends Component {
         this.setState({cleaningTime: event.target.value});
     };
 
-    changEmail = (event) => {
+    changeEmail = (event) => {
         this.setState({email: event.target.value});
     };
 
@@ -82,6 +76,7 @@ class BookingForm extends Component {
     };
 
     onChangeHandler = (e) => {
+        this.setState({address: e.target.value});
         const name = e.target.name;
         if (name === 'address' && e.target.value.length > 5) {
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
@@ -133,7 +128,7 @@ class BookingForm extends Component {
                             </div>
                         </div>
                         <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
-                                         id={"cleaningType"} onChange={this.changeCleaningType}/>
+                                         id={"cleaningType"} onChange={this.changeType}/>
                     </div>
 
                     <div className="bookingRow">
@@ -185,7 +180,7 @@ class BookingForm extends Component {
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
                                     <input type="email" className="form-control short" id="email"
-                                           placeholder="example@gmail.com" required onChange={this.changEmail}/>
+                                           placeholder="example@gmail.com" required onChange={this.changeEmail}/>
                                     <div className="email-feedback"/>
                                 </div>
                             </div>
