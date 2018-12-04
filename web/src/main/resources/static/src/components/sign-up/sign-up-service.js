@@ -6,76 +6,83 @@ import VerificationForm from './verification-form';
 import CleaningTypesForm from '../service-profile/cleaning-types-form';
 import LoginForm from "./login-form";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
-import {updateService} from "../actions/service-actions";
 import OpenStreetMapApi from "../services/openstreetmap-api";
+import * as actions from "../actions/auth-actions";
+import {withRouter} from "react-router-dom";
+import connect from "react-redux/es/connect/connect";
 
 class SignUpService extends Component {
     serviceApi = new ServiceApi();
     openStreetMapApi = new OpenStreetMapApi();
 
-    state = {
-        disabled: false,
-        confirmPassword: '',
-        tempAddress: '',
-        avatar: '',
-        logo: '',
-        code: '',
-        verificationStatus: false,
-        service: {
-            description: '',
-            username: '',
-            address: {
-                address: '',
-                lat: 0,
-                lon: 0
-            },
-            email: '',
-            phone: '',
-            password: '',
-            cleaningTypes: {
-                standardRoomCleaning: true,
-                springCleaning: false,
-                repairAndConstructionCleaning: false,
-                dryCarpetCleaning: false,
-                officeCleaning: false,
-                furnitureAndCoatingsCleaning: false,
-                industrialCleaning: false,
-                poolCleaning: false,
-                price: {
-                    basePrice: null,
-                    standardRoomCleaning: null,
-                    springCleaning: null,
-                    repairAndConstructionCleaning: null,
-                    dryCarpetCleaning: null,
-                    officeCleaning: null,
-                    furnitureAndCoatingsCleaning: null,
-                    industrialCleaning: null,
-                    poolCleaning: null,
-                    smallRoom: null,
-                    bigRoom: null,
-                    bathroom: null
+    constructor(props){
+        super(props);
+        this.state = {
+            disabled: false,
+            confirmPassword: '',
+            tempAddress: '',
+            avatar: '',
+            logo: '',
+            code: '',
+            verificationStatus: false,
+            service: {
+                description: '',
+                username: '',
+                address: {
+                    address: '',
+                    lat: 0,
+                    lon: 0
                 },
-                cleaningTime: {
-                    standardRoomCleaningTime: null,
-                    springCleaningTime: null,
-                    repairAndConstructionCleaningTime: null,
-                    dryCarpetCleaningTime: null,
-                    officeCleaningTime: null,
-                    furnitureAndCoatingsCleaningTime: null,
-                    industrialCleaningTime: null,
-                    poolCleaningTime: null,
-                    smallRoomCleaningTime: null,
-                    bigRoomCleaningTime: null,
-                    bathroomCleaningTime: null
-                }
+                email: '',
+                phone: '',
+                password: '',
+                cleaningTypes: {
+                    standardRoomCleaning: true,
+                    springCleaning: false,
+                    repairAndConstructionCleaning: false,
+                    dryCarpetCleaning: false,
+                    officeCleaning: false,
+                    furnitureAndCoatingsCleaning: false,
+                    industrialCleaning: false,
+                    poolCleaning: false,
+                    price: {
+                        basePrice: null,
+                        standardRoomCleaning: null,
+                        springCleaning: null,
+                        repairAndConstructionCleaning: null,
+                        dryCarpetCleaning: null,
+                        officeCleaning: null,
+                        furnitureAndCoatingsCleaning: null,
+                        industrialCleaning: null,
+                        poolCleaning: null,
+                        smallRoom: null,
+                        bigRoom: null,
+                        bathroom: null
+                    },
+                    cleaningTime: {
+                        standardRoomCleaningTime: null,
+                        springCleaningTime: null,
+                        repairAndConstructionCleaningTime: null,
+                        dryCarpetCleaningTime: null,
+                        officeCleaningTime: null,
+                        furnitureAndCoatingsCleaningTime: null,
+                        industrialCleaningTime: null,
+                        poolCleaningTime: null,
+                        smallRoomCleaningTime: null,
+                        bigRoomCleaningTime: null,
+                        bathroomCleaningTime: null
+                    }
+                },
+
             },
+            message: '',
+            modeToggle: 'security',
+            addresses: []
 
-        },
-        message: '',
-        modeToggle: 'security',
-        addresses: []
+        };
+    }
 
-    };
+
 
     changeCode = (event) => {
         this.setState({code: event.target.value});
@@ -181,6 +188,14 @@ class SignUpService extends Component {
             switch (status) {
                 case 201:
                     this.setState({verificationStatus: true});
+                    let login;
+                    if (this.state.service.email === '') {
+                        login = this.state.service.phone;
+                    } else {
+                        login = this.state.service.email;
+                    }
+                    let password = this.state.service.password;
+                    this.props.fetchAccessToken(login, password);
                     break;
                 case 423:
                     this.setState({
@@ -217,7 +232,6 @@ class SignUpService extends Component {
     submitHandler = (e) => {
         e.preventDefault();
         this.props.updateService(this.state.service, this.props.token);
-
     };
 
     onChangeHandler = (e) => {
@@ -305,6 +319,11 @@ class SignUpService extends Component {
         console.log(event.target.name);
     };
 
+    componentDidUpdate = () => {
+        if (this.props.isAuthenticated) {
+            this.props.history.push("/profile");
+        }
+    };
 
     render() {
         return (
@@ -414,17 +433,16 @@ const MainPanel = (props) => {
 
 const mapStateToProps = (state) => {
     return {
-        token: state.user.token,
-        serviceId: state.user.id
+        ...state.user
     }
 };
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateService: (serviceId, token) => {
-            dispatch(updateService(serviceId, token))
+        fetchAccessToken: (login, password) => {
+            dispatch(actions.fetchAccessToken(login, password));
         }
     }
 };
 
-export default SignUpService;
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(SignUpService));
