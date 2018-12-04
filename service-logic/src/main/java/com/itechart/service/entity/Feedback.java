@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -30,4 +31,7 @@ public class Feedback {
 
     @Column(name = "rate")
     private Integer rate;
+
+    @Column(name = "adding_date")
+    private LocalDate addingDate;
 }

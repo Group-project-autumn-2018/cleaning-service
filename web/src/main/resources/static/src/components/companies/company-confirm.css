@@ -1,0 +1,19 @@
+.confirm-form {
+    padding-top: 2%;
+    padding-bottom: 2%;
+    z-index: 3;
+}
+
+.confirm-form form {
+    opacity: 0.9;
+    z-index: 5;
+    position: relative;
+}
+
+.overlay {
+    position: fixed;
+}
+
+.z-index-class{
+    z-index: 100;
+}

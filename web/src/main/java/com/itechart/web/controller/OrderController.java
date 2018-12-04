@@ -33,4 +33,10 @@ public class OrderController {
     public void saveOrder(@RequestBody OrderDto orderDto) {
         orderService.saveOrder(orderDto);
     }
+
+    @PostMapping(value = "/{id}")
+    public void update(@PathVariable Long id,
+                       @RequestBody String status) {
+        orderService.changeStatus(status, id);
+    }
 }
