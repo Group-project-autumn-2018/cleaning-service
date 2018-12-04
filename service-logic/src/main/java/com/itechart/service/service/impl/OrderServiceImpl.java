@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.scheduling.TaskScheduler;
@@ -129,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDto> findPaginatedWithIdFromTableOfServices(Long id, Pageable pageable) {
 
-        Page<Order> orders = orderRepository.findAllByService_Id(pageable, id);
+        Page<Order> orders = orderRepository.findAllByCompany_Id(pageable, id);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }

@@ -15,4 +15,5 @@ class CompanyOrder extends Component {
     }
 }
 
+export default CompanyOrder;
 

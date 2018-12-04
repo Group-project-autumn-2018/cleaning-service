@@ -43,6 +43,7 @@ class AppRouting extends Component {
                         <Route path="/feedback" component={Feedback}/>
                         <Route path="/booking" component={BookingForm}/>
                         <Route path="/customer/orders" component={CustomerOrdersList}/>
+                        <Route path="/service/orders" component={ListOfCompanyOrders}/>
                         <Route path="/companies" component={Companies}/>
                         <Redirect to="/"/>
                     </Switch>
@@ -55,8 +56,8 @@ class AppRouting extends Component {
                         <Route path="/feedback" component={Feedback}/>
                         <Route path="/booking" component={BookingForm}/>
                         <Route path="/customer/orders" component={CustomerOrdersList}/>
+                        <Route path="/service/orders" component={ListOfCompanyOrders}/>
                         <Route path="/companies" component={Companies}/>
-                        <Route path="/company-orders" component={ListOfCompanyOrders}/>
                         <Redirect to="/"/>
                     </Switch>
             )

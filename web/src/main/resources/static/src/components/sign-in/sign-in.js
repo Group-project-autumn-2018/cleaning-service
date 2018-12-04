@@ -22,7 +22,7 @@ class SignIn extends Component {
                 this.props.history.push("/customer/orders");
                 break;
             case "service":
-                this.props.history.push("/service");
+                this.props.history.push("/service/orders");
                 break;
         }
     }
@@ -50,7 +50,6 @@ class SignIn extends Component {
                     </div>
                     <button className="btn btn-lg btn-primary btn-block">Sign in</button>
                     <p className="mt-5 mb-3">&copy; 2018</p>
-                    <Link to="/company-orders"  className="btn btn-lg btn-primary btn-block btnProposals" >Проверочка </Link>
                 </form>
             </div>
         );

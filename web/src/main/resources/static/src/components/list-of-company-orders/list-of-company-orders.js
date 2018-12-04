@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
-import './companies.css';
+import './list-of-company-orders.css';
 import ListOrders from '../list-of-company-orders/company-orders';
 import SortList from '../list-of-company-orders/sort-list';
 import {connect} from 'react-redux';
 import {fetchEntities} from '../api/api-actions';
 import Pagination from "react-js-pagination";
 
-export default class ListOfCompanyOrders extends Component {
+class ListOfCompanyOrders extends Component {
 
     state = {
         cleaningType: null,
@@ -16,7 +16,7 @@ export default class ListOfCompanyOrders extends Component {
         status: null
     };
 
-    entityURN = '/order/fromService';
+    entityURN = '/order/service';
 
    /* orders = [{
         id: "1",
@@ -69,7 +69,7 @@ export default class ListOfCompanyOrders extends Component {
                     />
                 </nav>
             </div>
-        );
+        )
     }
 }
 

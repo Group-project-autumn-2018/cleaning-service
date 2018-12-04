@@ -39,7 +39,7 @@ public class OrderController {
         return orderService.findPaginated(pageable);
     }
 
-    @GetMapping("/fromService")
+    @GetMapping("/service")
     public Page<OrderDto> getOrdersFromTableOfOrders(@RequestParam(value = "search", required = false) String search,
                                     @RequestParam(value = "userID", required = false) Long id,
                                     Pageable pageable) {
