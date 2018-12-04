@@ -8,6 +8,7 @@ import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
 import com.itechart.service.service.SearchCompanyService;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +72,7 @@ public class CleaningServiceController {
     public ResponseEntity update(@RequestParam(name = "logo", required = false) MultipartFile logo,
                                  @RequestParam(name = "company") String companyDto) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CleaningCompanyDto cleaningCompanyDto = null;
         try {
             cleaningCompanyDto = mapper.readValue(companyDto, CleaningCompanyDto.class);

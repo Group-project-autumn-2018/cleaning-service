@@ -24,6 +24,7 @@ class ProfileForm extends Component {
             modeToggle: 'main',
             service: {
                 id: '',
+                newPassword: '',
                 username: '',
                 email: '',
                 address: {
@@ -37,8 +38,11 @@ class ProfileForm extends Component {
             phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
                 '-', /\d/, /\d/],
             passwordMatch: true,
-            newPassword: '',
-            addresses: []
+            confPassword: '',
+            addresses: [],
+            passwordError: false,
+            newPasswordError: false,
+            confirmPasswordDelete: false
         };
     }
 
@@ -56,14 +60,24 @@ class ProfileForm extends Component {
 
     onChangeHandler = (e) => {
         const name = e.target.name;
+        const value = e.target.value;
+        if (name === 'password') {
+            if (value.length < 6 || value.length > 30) {
+                e.target.classList.add('invalid');
+                this.setState({passwordError: true})
+            } else {
+                e.target.classList.remove('invalid');
+                this.setState({passwordError: false})
+            }
+        }
         const updatedService = {
             ...this.state.service,
-            [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
+            [name]: name === "cleaningNotifications" ? e.target.checked : value
         };
         this.setState({service: updatedService});
         if (name === 'address') {
-            this.setState({tempAddress: e.target.value});
-            this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+            this.setState({tempAddress: value});
+            this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
         }
     };
 
@@ -137,12 +151,30 @@ class ProfileForm extends Component {
 
     checkPasswordMatch = (e) => {
         const name = e.target.name;
-        console.log(e.target.value);
-        console.log(e.target.name);
-        this.setState({[name]: e.target.value});
+        const password = e.target.value;
         if (name === 'confPassword') {
-            this.setState({passwordMatch: e.target.value === this.state.newPassword});
+            this.setState({
+                passwordMatch: password === this.state.service.newPassword,
+                passwordError: !(password === this.state.service.newPassword),
+                confPassword: password
+            });
+        } else {
+            this.setState({service: {...this.state.service, [name]: password}});
+            if (this.state.confPassword) {
+                this.setState({
+                    passwordMatch: password === this.state.confPassword,
+                    passwordError: !(password === this.state.confPassword)
+                });
+            }
+            if (password.length < 6 || password.length > 30) {
+                e.target.classList.add('invalid');
+                this.setState({passwordError: true, newPasswordError: true})
+            } else {
+                e.target.classList.remove('invalid');
+                this.setState({passwordError: false, newPasswordError: false})
+            }
         }
+
     };
 
     changeModeToggle = (event) => {
@@ -154,11 +186,15 @@ class ProfileForm extends Component {
     saveService = (event) => {
         event.preventDefault();
         console.log(this.state);
+        const service = {
+            ...this.state.service,
+            password: this.state.service.newPassword
+        };
         const entity = new FormData();
         if (this.state.logo !== '') {
             entity.append('logo', this.state.logo, this.state.logo.name);
         }
-        const serviceJson = JSON.stringify(this.state.service);
+        const serviceJson = JSON.stringify(service);
         entity.append('company', serviceJson);
         this.props.updateService(entity, this.props.token, this.state.service.id);
     };
@@ -193,7 +229,9 @@ class ProfileForm extends Component {
                                    onChangeLogoHandler={this.onChangeLogoHandler}
                                    onClickAddressHandler={this.onClickAddressHandler}/> : null}
                     {this.state.modeToggle === 'security' ? <ChangePassword passwordMatch={this.state.passwordMatch}
-                                                                            checkPasswordMatch={this.checkPasswordMatch}/> : null}
+                                                                            updatePassword={this.onChangeHandler}
+                                                                            checkPasswordMatch={this.checkPasswordMatch}
+                                                                            newPasswordError={this.state.newPasswordError}/> : null}
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
                                            onChangeTypeHandler={this.onChangeTypeHandler}

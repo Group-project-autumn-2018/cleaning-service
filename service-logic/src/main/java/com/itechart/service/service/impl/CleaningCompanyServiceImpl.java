@@ -92,11 +92,16 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         if (currentCompany.isPresent()) {
             if (cleaningCompanyDto.getPassword() == null || cleaningCompanyDto.getPassword().length() == 0) {
                 company.setPassword(currentCompany.get().getPassword());
+            } else {
+                company.setPassword(bCryptPasswordEncoder.encode(cleaningCompanyDto.getPassword()));
             }
             company.setRoles(currentCompany.get().getRoles());
             company.setAddingDate(currentCompany.get().getAddingDate());
+            company.setCleaningTypes(currentCompany.get().getCleaningTypes());
+        } else {
+            return null;
         }
-        cleaningCompanyRepository.save(company);
+        cleaningCompanyRepository.saveAndFlush(company);
         cleaningTypesService.saveTypes(cleaningCompanyDto.getCleaningTypes(), company);
         return company;
     }
