@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
-    @Query("select count(Feedback) from Feedback where customerId = :customerId and serviceId = :serviceId")
+    @Query("select count(id) from Feedback where customer_id = :customerId and service_id = :serviceId")
     Long countSameRatings(@Param("serviceId") Long serviceId, @Param("customerId") Long customerId);
 
     List<Feedback> findAllByCompanyOrderByAddingDateDesc(CleaningCompany company);

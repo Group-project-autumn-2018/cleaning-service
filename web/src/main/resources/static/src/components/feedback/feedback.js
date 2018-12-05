@@ -3,6 +3,7 @@ import Rating from 'react-rating';
 import {withRouter} from 'react-router-dom';
 import './feedback.css';
 import ServiceApi from "../services/service-api";
+import {connect} from "react-redux";
 
 class Feedback extends Component {
     serviceApi = new ServiceApi();
@@ -30,17 +31,18 @@ class Feedback extends Component {
         }
     };
 
-    sendFeedback = () => {
+    sendFeedback = (e) => {
+        e.preventDefault();
         if (this.validate()) {
             let obj = {
                 rate: this.state.rating,
                 text: this.state.text,
                 serviceId: this.props.serviceId
             };
-            this.serviceApi.sendFeedback(obj).then((status) => {
-                    if (status === 202) {
+            this.serviceApi.sendFeedback(obj, this.props.token).then((status) => {
+                    if (status === 201) {
                         console.log("successful");
-                        this.props.history.push(`/company/${this.props.serviceId}`);
+                        this.props.history.push('/company/' + this.props.serviceId);
                     }
                 }
             )
@@ -108,4 +110,10 @@ class Feedback extends Component {
     }
 }
 
-export default withRouter(Feedback);
+const mapStateToProps = (state) => {
+    return {
+        token: state.user.token
+    }
+};
+
+export default withRouter(connect(mapStateToProps)(Feedback));
