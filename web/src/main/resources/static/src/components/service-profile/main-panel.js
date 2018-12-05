@@ -1,6 +1,7 @@
 import React from "react";
 import MaskedInput, {conformToMask} from "react-text-mask";
 import DropdownAddressList from "./dropdown-address-list";
+import Rating from "react-rating";
 
 const MainPanel = (props) => {
     return (
@@ -46,6 +47,13 @@ const MainPanel = (props) => {
                             props.phoneNumberMask, {guide: false}).conformedValue}
                         onChange={props.onChangeHandler}
                     />
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormRating" className="col-sm-4 col-form-label">Rating</label>
+                <div className="col-sm-8">
+                    <Rating id="profileFormRating" emptySymbol="fa fa-star-o fa-2x" fullSymbol="fa fa-star fa-2x"
+                            readonly={true} initialRating={props.service.averageRating}/>
                 </div>
             </div>
             <div className="form-group row">
