@@ -120,7 +120,7 @@ class BookingForm extends Component {
                                 <input type="text" className="form-control dropdown-toggle long" id="profileFormAddress"
                                        data-toggle="dropdown" placeholder="Your address..."
                                        name="address"
-                                    // value={}`
+                                    // value={}
                                        onChange={this.onChangeHandler}/>
                                 <DropdownAddressList array={this.state.addresses}
                                                      onClickHandler={this.onClickAddressHandler}/>

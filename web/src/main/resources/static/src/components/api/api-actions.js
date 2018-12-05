@@ -17,7 +17,6 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
 };
 
 export const fetchCompaniesPOST = (entity, entityURN, token) => {
-
     let options = {
         headers: {
             'Authorization': `Bearer ${token}`,
