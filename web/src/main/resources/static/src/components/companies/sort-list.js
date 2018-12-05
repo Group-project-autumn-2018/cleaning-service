@@ -1,18 +1,34 @@
-import React from "react";
+import React, {Component} from "react";
+import Select from 'react-select';
 
-const SortList = (props) => {
-    const listItems = props.sort.map((sort) =>
-        <option key={sort.toString()} value={sort}>{sort}</option>
-    );
+class SortList extends Component {
 
-    return (
-        <div className="form-group">
-            <label htmlFor="sortType" className="col-form-label"><b>Sort type</b></label>
-            <select className="form-control" style={{width: 200 + 'px'}} id="sortType" placeholder="Sort type">
-                {listItems}
-            </select>
-        </div>
-    )
-};
+    state = {
+        selectedSortOption: null
+    };
+
+    sortOptions = [
+        {value: 'price', label: 'Price'},
+        {value: 'ranking', label: 'Ranking'},
+        {value: 'remoteness', label: 'Remoteness'}
+    ];
+
+    selectSortHandler = (selectedSortOption) => {
+        this.setState({selectedSortOption});
+        this.props.selectHandler(selectedSortOption);
+    };
+
+    render() {
+
+        const {selectedSortOption} = this.state;
+
+        return (
+            <Select options={this.sortOptions} onChange={this.selectSortHandler} name="sort"
+                    className="search-item" isClearable={true} placeholder="Sort by"
+                    value={selectedSortOption}
+            />
+        )
+    }
+}
 
 export default SortList;
