@@ -15,5 +15,4 @@ public enum Frequency {
     @JsonProperty("monthly")
     EVERY_MONTH
 
-
 }
