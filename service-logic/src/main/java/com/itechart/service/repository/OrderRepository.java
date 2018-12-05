@@ -14,4 +14,10 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     Page<Order> findAllByCompany_Id(Pageable pageable, Long id);
 
+    Page<Order> findAllByCompany_IdAndCleaningType(Pageable pageable, Long id, String cleaningType);
+
+    Page<Order> findAllByCompany_IdAndStatus(Pageable pageable, Long id, String status);
+
+    Page<Order> findAllByCompany_IdAndCleaningTypeAndStatus(Pageable pageable, Long id, String cleaningType, String status);
+
 }

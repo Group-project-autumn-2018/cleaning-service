@@ -40,17 +40,20 @@ public class OrderController {
     }
 
     @GetMapping("/service")
-    public Page<OrderDto> getOrdersFromTableOfOrders(@RequestParam(value = "search", required = false) String search,
+    public Page<OrderDto> getOrdersFromTableOfOrders(@RequestParam(value = "search", required = false) String cleaningType,
+                                                     @RequestParam(value = "search", required = false) String status,
                                     @RequestParam(value = "userID", required = false) Long id,
                                     Pageable pageable) {
-        if (search != null && id != null) {
-            return orderService.findPaginatedWithSearchAndIdFromTableOFServices(id, search, pageable);
-        } else if (id != null) {
-            return orderService.findPaginatedWithIdFromTableOfServices(id, pageable);
-        } else if (search != null) {
-            return orderService.findPaginatedWithSearch(search, pageable);
-        }
-        return orderService.findPaginated(pageable);
+
+        if(cleaningType !=null && status!=null){
+            return  orderService.findPaginatedWithCleaningTypeAndStatus(id,cleaningType,status,pageable);
+        }else if(cleaningType!=null){
+            return  orderService.findPaginatedWithCleaningType(id,cleaningType,pageable);
+        }else if(status!=null){
+            return  orderService.findPaginatedWithStatus(id,status,pageable);
+        }else
+            return orderService.findPaginatedWithId(id,pageable);
+
     }
 
 

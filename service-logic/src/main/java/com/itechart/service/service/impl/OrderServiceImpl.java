@@ -106,13 +106,30 @@ public class OrderServiceImpl implements OrderService {
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
 
-    @Override
-    public Page<OrderDto> findPaginatedWithSearchAndIdFromTableOFServices(Long id, String search, Pageable pageable) {
 
-        OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
-        builder.with("services", id);
-        Specification<Order> spec = builder.build();
-        Page<Order> orders = orderRepository.findAll(spec, pageable);
+   @Override
+   public Page<OrderDto> findPaginatedWithCleaningType(Long id, String cleaningType, Pageable pageable) {
+
+
+       Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType( pageable, id, cleaningType);
+
+       return orders.map(order -> mapper.mapOrderToOrderDto(order));
+   }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithStatus(Long id, String status, Pageable pageable) {
+
+
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndStatus(pageable, id, status);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType,String status ,Pageable pageable) {
+
+
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus( pageable, id, cleaningType,  status);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
@@ -126,12 +143,13 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDto> findPaginatedWithIdFromTableOfServices(Long id, Pageable pageable) {
+    public Page<OrderDto> findPaginatedWithServiceId(Long id, Pageable pageable) {
 
         Page<Order> orders = orderRepository.findAllByCompany_Id(pageable, id);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
+
 
     @Override
     public Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable) {
