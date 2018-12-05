@@ -4,7 +4,7 @@ import Rating from "react-rating";
 const FeedbackList = (props) => {
     const feedbackList = props.array.map((element) => {
         return (
-            <div className="card border-info mb-3">
+            <div className="card border-info mb-3" key={element.id}>
             <div className="card-header">
                 <Rating emptySymbol="fa fa-star-o fa-2x" fullSymbol="fa fa-star fa-2x"
                         initialRating={element.rate} readonly={true} />

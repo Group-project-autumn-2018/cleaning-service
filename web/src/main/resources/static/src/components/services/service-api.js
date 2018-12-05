@@ -1,7 +1,7 @@
 export default class ServiceApi {
     _baseUrl = '/';
 
-    async sendPostRequest(object, tailUrl) {
+    async sendPostRequest(object, tailUrl, token) {
         const url = this._baseUrl + tailUrl;
         const init = {
             method: 'POST',
@@ -11,6 +11,11 @@ export default class ServiceApi {
             },
             body: object
         };
+        if (token) {
+            init.headers = {... init.headers,
+                'Authorization': `Bearer ${token}`
+            };
+        }
         const res = await fetch(url, init);
         return await res;
     }
@@ -39,8 +44,8 @@ export default class ServiceApi {
         return res.status;
     }
 
-    async sendFeedback(object) {
-        const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/feedback');
+    async sendFeedback(object, token) {
+        const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/feedback', token);
         return res.status;
     }
 
