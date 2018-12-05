@@ -40,8 +40,8 @@ public class OrderController {
     }
 
     @GetMapping("/service")
-    public Page<OrderDto> getOrdersFromTableOfOrders(@RequestParam(value = "search", required = false) String cleaningType,
-                                                     @RequestParam(value = "search", required = false) String status,
+    public Page<OrderDto> getOrdersFromTableOfOrders(@RequestParam(value = "cleaningType", required = false) String cleaningType,
+                                                     @RequestParam(value = "status", required = false) String status,
                                     @RequestParam(value = "userID", required = false) Long id,
                                     Pageable pageable) {
 
