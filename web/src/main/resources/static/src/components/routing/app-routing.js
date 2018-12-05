@@ -64,7 +64,7 @@ class AppRouting extends Component {
                         const {id} = match.params;
                         return <ServiceInfo itemId={id} />
                     }}/>
-                    <Route path="/companies/confirm/:id"
+                    <Route path="/service/orders/:id"
                            render={({match}) => {
                                const {id} = match.params;
                                return <CompanyConfirmModalForm orderId={id}/>

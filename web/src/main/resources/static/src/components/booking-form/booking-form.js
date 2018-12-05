@@ -107,7 +107,6 @@ class BookingForm extends Component {
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
-        console.log(this.state);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>

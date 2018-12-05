@@ -4,6 +4,11 @@ import {Link} from "react-router-dom";
 const Order = ({order}) => {
 
     let colorClassName = "col";
+    let address = '';
+    if (order.address) {
+        address = order.address.address ? order.address.address : order.address
+    }
+
 
     switch (order.status) {
         case 'New':
@@ -23,7 +28,8 @@ const Order = ({order}) => {
     return (
         <tr className="row bg-light px-5">
             <td className="col">{order.cleaningType}</td>
-            <td className="col-2">{order.address.address ? order.address.address : order.address}</td>
+
+            <td className="col-2">{address}</td>
             <td className="col-2">
                 <ul>
                     {order.smallRoomsCount ? <li>{`Small rooms ${order.smallRoomsCount}`}</li> : ""}
