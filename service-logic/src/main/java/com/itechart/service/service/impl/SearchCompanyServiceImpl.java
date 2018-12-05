@@ -1,13 +1,12 @@
 package com.itechart.service.service.impl;
 
-import com.itechart.common.service.UserService;
 import com.itechart.service.comparator.SortByAverageRating;
+import com.itechart.service.comparator.SortByDistance;
 import com.itechart.service.comparator.SortCompanyByAveragePrice;
 import com.itechart.service.dto.CleaningTypesDto;
 import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
 import com.itechart.service.entity.CleaningTypes;
-import com.itechart.service.mapper.CleaningCompanyMapper;
 import com.itechart.service.repository.CleaningTypesRepository;
 import com.itechart.service.service.SearchCompanyService;
 import com.itechart.service.util.CalculationRules;
@@ -29,15 +28,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
     private CleaningTypesRepository cleaningTypesRepository;
 
     @Autowired
-    private UserService userService;
-
-    @Autowired
-    private CleaningCompanyMapper mapper;
-
-    @Autowired
     private CalculationRules calculationRules;
-
-    private final int COUNT = 20;
 
     private CleaningTypesDto getCleaningTypesDto(String cleaningType) {
         CleaningTypesDto cleaningTypesDto = new CleaningTypesDto(0L,
@@ -77,6 +68,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
 
     Comparator<CleaningCompany> priceComparator = new SortCompanyByAveragePrice();
     Comparator<CleaningCompany> ratingComparator = new SortByAverageRating();
+    Comparator<CleaningCompany> distanceComparator = new SortByDistance();
 
     @Override
     public List<CleaningCompany> search(SearchCompanyDto searchCompanyDto) {
@@ -127,40 +119,27 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
 
     @Override
     public List<CleaningCompany> sortByRemoteness(SearchCompanyDto searchCompanyDto) {
-        //        if (!searchCompanyDTO.getEmail().isEmpty() & searchCompanyDTO.getAddress().isEmpty()) {
-//            User user = userService.findByEmail(searchCompanyDTO.getEmail());
-//            Double latitude = user.getAddress().getLat();
-//            Double longitude = user.getAddress().getLon();
-//            List<CleaningCompany> cleaningCompanyResultList = new ArrayList<>(cleaningCompanyList.size());
-//
-//            int step = 0;
-//            for (CleaningCompany cleaningCompany : cleaningCompanyList) {
-//                if (cleaningCompany.getAddress().getLat() >= latitude & cleaningCompany.getAddress().getLon() >= longitude) {
-//                    cleaningCompanyResultList.add(cleaningCompany);
-//                }
-//                step++;
-//                if (step >= COUNT / 2) {
-//                    break;
-//                }
-//            }
-//
-//            step = 0;
-//            for (CleaningCompany cleaningCompany : cleaningCompanyList) {
-//                if (cleaningCompany.getAddress().getLat() <= latitude & cleaningCompany.getAddress().getLon() <= longitude) {
-//                    cleaningCompanyResultList.add(cleaningCompany);
-//                }
-//                step++;
-//                if (step >= COUNT / 2) {
-//                    break;
-//                }
-//            }
-//            return cleaningCompanyResultList;
-//        }
-//        if (!searchCompanyDTO.getEmail().isEmpty() & !searchCompanyDTO.getAddress().isEmpty()) {
-//            return cleaningCompanyList.size() > COUNT ? cleaningCompanyList.subList(0, COUNT) : cleaningCompanyList;
-//        }
-//        return new ArrayList<>();
-        return null;
-    }
 
+        List<CleaningCompany> cleaningCompanyList = search(searchCompanyDto);
+
+        Double latitude = searchCompanyDto.getLatitude();
+        Double longitude = searchCompanyDto.getLongitude();
+
+        List<CleaningCompany> cleaningCompanyResultList = new ArrayList<>(cleaningCompanyList.size());
+
+        for (CleaningCompany cleaningCompany : cleaningCompanyList) {
+
+
+            Double x = latitude - cleaningCompany.getAddress().getLon();
+            Double y = cleaningCompany.getAddress().getLon() - longitude;
+            Double yLong = cleaningCompany.getAddress().getLon() - x;
+            Double xLat = latitude - y;
+            Double distance = Math.sqrt(Math.pow(yLong, 2) + Math.pow(xLat, 2));
+
+            cleaningCompany.setDistance(distance);
+            cleaningCompanyResultList.add(cleaningCompany);
+        }
+        cleaningCompanyResultList.sort(distanceComparator);
+        return cleaningCompanyResultList;
+    }
 }
