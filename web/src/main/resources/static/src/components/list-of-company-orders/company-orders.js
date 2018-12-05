@@ -10,11 +10,11 @@ const CompanyOrders = ({orders}) => {
         <div className="container">
             <table className="table table-hover">
                 <tbody>
-                <tr className="row">
-                    <th scope="col" className="col">Сleaning type</th>
-                    <th scope="col" className="col">Date</th>
-                    <th scope="col" className="col">Start Time</th>
-                    <th scope="col" className="col">Status</th>
+                <tr className="row bg-light px-5" className="row">
+                    <th  scope="col" className="col">Сleaning type</th>
+                    <th  scope="col" className="col">Status</th>
+                    <th  scope="col" className="col">Date</th>
+                    <th  scope="col" className="col">Start Time</th>
                 </tr>
                 {ordersList}
                 </tbody>
