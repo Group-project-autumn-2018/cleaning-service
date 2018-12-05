@@ -1,6 +1,8 @@
 package com.itechart.service.service.impl;
 
 import com.itechart.common.service.UserService;
+import com.itechart.service.comparator.SortByAverageRating;
+import com.itechart.service.comparator.SortCompanyByAveragePrice;
 import com.itechart.service.dto.CleaningTypesDto;
 import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
@@ -16,6 +18,7 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -72,6 +75,9 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
         return cleaningTypesDto;
     }
 
+    Comparator<CleaningCompany> priceComparator = new SortCompanyByAveragePrice();
+    Comparator<CleaningCompany> ratingComparator = new SortByAverageRating();
+
     @Override
     public List<CleaningCompany> search(SearchCompanyDto searchCompanyDto) {
 
@@ -94,16 +100,34 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
         }
         List<CleaningCompany> companies = new ArrayList<>();
         for (CleaningCompany cleaningCompany : cleaningCompanyList) {
-
-//            CleaningCompanyDto companyDto = mapper.mapCompanyToCompanyDto(cleaningCompany);
             BigDecimal price = calculationRules.calculateAvaregePrice(searchCompanyDto, cleaningCompany.getId());
             cleaningCompany.setAveragePrice(price);
             companies.add(cleaningCompany);
         }
 
+        return companies;
+    }
 
-//        System.out.println(companies + "lalala");
-//        if (!searchCompanyDTO.getEmail().isEmpty() & searchCompanyDTO.getAddress().isEmpty()) {
+    @Override
+    public List<CleaningCompany> sortByAveragePrice(SearchCompanyDto searchCompanyDto) {
+
+        List<CleaningCompany> companies = search(searchCompanyDto);
+        companies.sort(priceComparator);
+        return companies;
+    }
+
+    @Override
+    public List<CleaningCompany> sortByAverageRating(SearchCompanyDto searchCompanyDto) {
+
+        List<CleaningCompany> companies = search(searchCompanyDto);
+        companies.sort(ratingComparator);
+        Collections.reverse(companies);
+        return companies;
+    }
+
+    @Override
+    public List<CleaningCompany> sortByRemoteness(SearchCompanyDto searchCompanyDto) {
+        //        if (!searchCompanyDTO.getEmail().isEmpty() & searchCompanyDTO.getAddress().isEmpty()) {
 //            User user = userService.findByEmail(searchCompanyDTO.getEmail());
 //            Double latitude = user.getAddress().getLat();
 //            Double longitude = user.getAddress().getLon();
@@ -136,6 +160,7 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
 //            return cleaningCompanyList.size() > COUNT ? cleaningCompanyList.subList(0, COUNT) : cleaningCompanyList;
 //        }
 //        return new ArrayList<>();
-        return companies;
+        return null;
     }
+
 }

@@ -43,8 +43,18 @@ public class CleaningServiceController {
 
     @PostMapping("/search/companies")
     public List<CleaningCompany> searchCompanies(@RequestBody SearchCompanyDto searchCompanyDto) {
-        return searchCompanyService.search(searchCompanyDto);
-
+        String sort = searchCompanyDto.getSort();
+        switch (sort) {
+            case "":
+                return searchCompanyService.search(searchCompanyDto);
+            case "price":
+                return searchCompanyService.sortByAveragePrice(searchCompanyDto);
+            case "ranking":
+                return searchCompanyService.sortByAverageRating(searchCompanyDto);
+            case "remoteness":
+                return searchCompanyService.sortByRemoteness(searchCompanyDto);
+        }
+        return null;
     }
 
     @PostMapping("/registration/service")

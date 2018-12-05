@@ -18,4 +18,5 @@ public class SearchCompanyDto {
     private Double latitude;
     private Double longitude;
     private BigDecimal price;
+    private String sort;
 }
