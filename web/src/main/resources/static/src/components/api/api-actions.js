@@ -17,13 +17,19 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
 };
 
 export const fetchCompaniesPOST = (entity, entityURN, token) => {
+    let header = {
+        'Content-Type': 'application/json'
+    };
 
-    let options = {
-        headers: {
+    if (token) {
+        header = {
             'Authorization': `Bearer ${token}`,
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        },
+        }
+    }
+    let options = {
+        headers: header,
         method: 'POST',
         body: JSON.stringify(entity)
 

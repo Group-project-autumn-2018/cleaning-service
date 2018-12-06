@@ -9,8 +9,6 @@ class Companies extends Component {
 
     entityURN = '/cleaning/search/companies';
 
-    sorting = ["price", "remoteness", "ranking"];
-
     constructor(props) {
         super(props);
         this.state = {
@@ -27,19 +25,27 @@ class Companies extends Component {
         latitude: this.props.orderUpdate.updatedOrder.lat,
         longitude: this.props.orderUpdate.updatedOrder.lon,
         email: this.props.orderUpdate.email,
-        price: ""
+        price: "",
+        sort: ""
+    };
+
+    selectSortHandler = (option) => {
+        console.log(option);
+        const sort = option ? option.value : "";
+
+        this.props.fetchCompaniesPOST({...this.searchCompanyDto, sort: sort}, this.entityURN, this.props.token);
     };
 
     componentDidMount() {
         this.props.fetchCompaniesPOST(this.searchCompanyDto, this.entityURN, this.props.token);
-    };
+    }
+    ;
 
     render() {
-        console.log(this.state.companies);
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
                 <h3 className="text-center pt-4"><b>Available services</b></h3>
-                <SortList sort={this.sorting}/>
+                <SortList selectHandler={this.selectSortHandler}/>
                 <CompaniesList companies={this.props.companies}/>
             </div>
         );
