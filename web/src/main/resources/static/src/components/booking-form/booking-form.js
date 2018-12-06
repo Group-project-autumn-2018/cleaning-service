@@ -123,7 +123,8 @@ class BookingForm extends Component {
                                            id="bookingFormAddress" placeholder="Your address..."
                                            name="address"
                                         // value={}
-                                           disabled={true}/>
+                                        //    disabled={true}
+                                    />
                                 </div>
                                 :
                                 <div className="col-sm-8 dropdown">
