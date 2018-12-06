@@ -25,7 +25,6 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-
     @GetMapping()
     public Page<Customer> findPaginated(
             @RequestParam("page") int page, @RequestParam("size") int size) {

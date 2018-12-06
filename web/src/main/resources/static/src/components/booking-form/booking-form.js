@@ -114,18 +114,31 @@ class BookingForm extends Component {
                     <h3 className=""><b>Booking form</b></h3>
 
                     <div className="bookingRow">
+
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            <div className="col-sm-8 dropdown">
-                                <input type="text" className="form-control dropdown-toggle long" id="profileFormAddress"
-                                       data-toggle="dropdown" placeholder="Your address..."
-                                       name="address"
-                                    // value={}
-                                       onChange={this.onChangeHandler}/>
-                                <DropdownAddressList array={this.state.addresses}
-                                                     onClickHandler={this.onClickAddressHandler}/>
-                            </div>
+                            {this.props.isAuthenticated ?
+                                <div>
+                                    <input type="text" className="form-control long"
+                                           id="bookingFormAddress" placeholder="Your address..."
+                                           name="address"
+                                        // value={}
+                                           disabled={true}/>
+                                </div>
+                                :
+                                <div className="col-sm-8 dropdown">
+                                    <input type="text" className="form-control dropdown-toggle long"
+                                           id="profileFormAddress"
+                                           data-toggle="dropdown" placeholder="Your address..."
+                                           name="address"
+                                        // value={}
+                                           onChange={this.onChangeHandler}/>
+                                    <DropdownAddressList array={this.state.addresses}
+                                                         onClickHandler={this.onClickAddressHandler}/>
+                                </div>
+                            }
                         </div>
+
                         <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
                                          id={"cleaningType"} onChange={this.changeType}/>
                     </div>
