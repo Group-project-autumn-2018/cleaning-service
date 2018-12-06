@@ -1,5 +1,18 @@
 package com.itechart.service.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Status {
-    NEW, CONFIRMED, REJECTED
+
+    @JsonProperty("New")
+    NEW,
+
+    @JsonProperty("Confirmed")
+    CONFIRMED,
+
+    @JsonProperty("Rejected")
+    REJECTED,
+
+    @JsonProperty("Completed")
+    COMPLETED
 }

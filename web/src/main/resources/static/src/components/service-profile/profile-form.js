@@ -11,6 +11,7 @@ import MainPanel from './main-panel';
 import {connectWs} from '../actions/notification-actions';
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import FeedbackList from "../service-info/feedback-list";
 
 
 class ProfileForm extends Component {
@@ -24,6 +25,7 @@ class ProfileForm extends Component {
             modeToggle: 'main',
             service: {
                 id: '',
+                newPassword: '',
                 username: '',
                 email: '',
                 address: {
@@ -37,8 +39,13 @@ class ProfileForm extends Component {
             phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
                 '-', /\d/, /\d/],
             passwordMatch: true,
-            newPassword: '',
-            addresses: []
+            confPassword: '',
+            addresses: [],
+            passwordError: false,
+            newPasswordError: false,
+            confirmPasswordDelete: false,
+            feedbackList: [],
+            isMoreThanFiveFeedback: false
         };
     }
 
@@ -56,14 +63,24 @@ class ProfileForm extends Component {
 
     onChangeHandler = (e) => {
         const name = e.target.name;
+        const value = e.target.value;
+        if (name === 'password') {
+            if (value.length < 6 || value.length > 30) {
+                e.target.classList.add('invalid');
+                this.setState({passwordError: true})
+            } else {
+                e.target.classList.remove('invalid');
+                this.setState({passwordError: false})
+            }
+        }
         const updatedService = {
             ...this.state.service,
-            [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
+            [name]: name === "cleaningNotifications" ? e.target.checked : value
         };
         this.setState({service: updatedService});
         if (name === 'address') {
-            this.setState({tempAddress: e.target.value});
-            this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+            this.setState({tempAddress: value});
+            this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
         }
     };
 
@@ -137,16 +154,45 @@ class ProfileForm extends Component {
 
     checkPasswordMatch = (e) => {
         const name = e.target.name;
-        console.log(e.target.value);
-        console.log(e.target.name);
-        this.setState({[name]: e.target.value});
+        const password = e.target.value;
         if (name === 'confPassword') {
-            this.setState({passwordMatch: e.target.value === this.state.newPassword});
+            this.setState({
+                passwordMatch: password === this.state.service.newPassword,
+                passwordError: !(password === this.state.service.newPassword),
+                confPassword: password
+            });
+        } else {
+            this.setState({service: {...this.state.service, [name]: password}});
+            if (this.state.confPassword) {
+                this.setState({
+                    passwordMatch: password === this.state.confPassword,
+                    passwordError: !(password === this.state.confPassword)
+                });
+            }
+            if (password.length < 6 || password.length > 30) {
+                e.target.classList.add('invalid');
+                this.setState({passwordError: true, newPasswordError: true})
+            } else {
+                e.target.classList.remove('invalid');
+                this.setState({passwordError: false, newPasswordError: false})
+            }
         }
+
     };
 
     changeModeToggle = (event) => {
         event.preventDefault();
+        if (event.target.name === 'feedback') {
+            fetchEntity('feedback?count=6&service-id=' + this.props.serviceId, "/cleaning", this.props.token)
+                .then((list) => {
+                    let trigger = false;
+                    if (list.length > 5) {
+                        list.pop();
+                        trigger = true;
+                    }
+                    this.setState({feedbackList: list, isMoreThanFiveFeedback: trigger})
+                });
+        }
         this.setState({modeToggle: event.target.name});
         console.log(event.target.name);
     };
@@ -154,13 +200,24 @@ class ProfileForm extends Component {
     saveService = (event) => {
         event.preventDefault();
         console.log(this.state);
+        const service = {
+            ...this.state.service,
+            password: this.state.service.newPassword
+        };
         const entity = new FormData();
         if (this.state.logo !== '') {
             entity.append('logo', this.state.logo, this.state.logo.name);
         }
-        const serviceJson = JSON.stringify(this.state.service);
+        const serviceJson = JSON.stringify(service);
         entity.append('company', serviceJson);
         this.props.updateService(entity, this.props.token, this.state.service.id);
+    };
+
+    downloadAllFeedback = () => {
+        fetchEntity('feedback?service-id=' + this.props.serviceId, "/cleaning", this.props.token)
+            .then((list) => {
+                this.setState({feedbackList: list, isMoreThanFiveFeedback: false})
+            });
     };
 
     render() {
@@ -186,6 +243,12 @@ class ProfileForm extends Component {
                                     name="other" onClick={this.changeModeToggle}>
                                 Other settings
                             </button>
+                            <button
+                                className={`nav-item nav-link ${this.state.modeToggle === 'feedback' ? 'active' : ''}`}
+                                data-toggle="tab" role="tab" aria-selected="true"
+                                name="feedback" onClick={this.changeModeToggle}>
+                                Feedback
+                            </button>
                         </div>
                     </nav>
                     {this.state.modeToggle === 'main' ?
@@ -193,13 +256,18 @@ class ProfileForm extends Component {
                                    onChangeLogoHandler={this.onChangeLogoHandler}
                                    onClickAddressHandler={this.onClickAddressHandler}/> : null}
                     {this.state.modeToggle === 'security' ? <ChangePassword passwordMatch={this.state.passwordMatch}
-                                                                            checkPasswordMatch={this.checkPasswordMatch}/> : null}
+                                                                            updatePassword={this.onChangeHandler}
+                                                                            checkPasswordMatch={this.checkPasswordMatch}
+                                                                            newPasswordError={this.state.newPasswordError}/> : null}
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
                                            onChangeTypeHandler={this.onChangeTypeHandler}
                                            onChangePriceHandler={this.onChangePriceHandler}
-                                           onChangeTimeHandler={this.onChangeTimeHandler}
-                        /> : null}
+                                           onChangeTimeHandler={this.onChangeTimeHandler}/> : null}
+                    {this.state.modeToggle === 'feedback' ?
+                        <FeedbackPanel feedbackList={this.state.feedbackList}
+                                       isMoreThanFiveFeedback={this.state.isMoreThanFiveFeedback}
+                                       downloadAllFeedback={this.downloadAllFeedback}/> : null}
                     <div className="text-center">
                         <button type="submit" className="btn btn-lg btn-primary col-sm-4" onClick={this.saveService}>
                             Save
@@ -212,6 +280,18 @@ class ProfileForm extends Component {
         )
     }
 }
+
+const FeedbackPanel = (props) => {
+    return (
+        <React.Fragment>
+            <FeedbackList array={props.feedbackList}/>
+            {props.isMoreThanFiveFeedback ?
+                <button type="button" className="btn btn-lg btn-primary col-sm-4" onClick={props.downloadAllFeedback}>
+                    Download more
+                </button> : null}
+        </React.Fragment>
+    )
+};
 
 const mapStateToProps = (state) => {
     return {

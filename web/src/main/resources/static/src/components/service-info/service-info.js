@@ -72,7 +72,8 @@ class ServiceInfo extends Component {
                                 {this.state.service.cleaningTypes.price.springCleaning} </p> : null}
                         <div>
                             <Link to="/booking" className="btn btn-primary">Book a cleaning</Link>
-                            <Link to={`/company/${this.state.service.id}/feedback`} className="btn btn-primary">
+                            <Link to={`/company/${this.state.service.id}/feedback`}
+                                  className="btn btn-primary float-right">
                                 Left a feedback
                             </Link>
                         </div>

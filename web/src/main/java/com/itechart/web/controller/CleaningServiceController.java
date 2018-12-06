@@ -5,9 +5,11 @@ import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.FeedbackDto;
 import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.entity.Feedback;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.FeedbackService;
 import com.itechart.service.service.SearchCompanyService;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,8 +46,18 @@ public class CleaningServiceController {
 
     @PostMapping("/search/companies")
     public List<CleaningCompany> searchCompanies(@RequestBody SearchCompanyDto searchCompanyDto) {
-        return searchCompanyService.search(searchCompanyDto);
-
+        String sort = searchCompanyDto.getSort();
+        switch (sort) {
+            case "":
+                return searchCompanyService.search(searchCompanyDto);
+            case "price":
+                return searchCompanyService.sortByAveragePrice(searchCompanyDto);
+            case "ranking":
+                return searchCompanyService.sortByAverageRating(searchCompanyDto);
+            case "remoteness":
+                return searchCompanyService.sortByRemoteness(searchCompanyDto);
+        }
+        return null;
     }
 
     @PostMapping("/registration/service")
@@ -71,6 +84,7 @@ public class CleaningServiceController {
     public ResponseEntity update(@RequestParam(name = "logo", required = false) MultipartFile logo,
                                  @RequestParam(name = "company") String companyDto) {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         CleaningCompanyDto cleaningCompanyDto = null;
         try {
             cleaningCompanyDto = mapper.readValue(companyDto, CleaningCompanyDto.class);
@@ -88,7 +102,7 @@ public class CleaningServiceController {
     }
 
     @PostMapping("/feedback")
-    public ResponseEntity addFeedback(@RequestBody FeedbackDto feedbackDto) {
+    public ResponseEntity addFeedback(@RequestBody FeedbackDto feedbackDto, Principal principal) {
         Long ratingId = feedbackService.addFeedback(feedbackDto);
         if (ratingId == 0) return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).build();
         else return ResponseEntity.status(HttpStatus.CREATED).build();
@@ -97,11 +111,13 @@ public class CleaningServiceController {
     @GetMapping("/feedback")
     public ResponseEntity getFeedback(@RequestParam(value = "count", required = false) Integer count,
                                       @RequestParam(value = "service-id") Long serviceId) {
+        List<Feedback> feedback;
         if (count != null) {
-            return ResponseEntity.ok(feedbackService.getTop(serviceId, count));
+            feedback = feedbackService.getTop(serviceId, count);
         } else {
-            return ResponseEntity.ok(feedbackService.getAll(serviceId));
+            feedback = feedbackService.getAll(serviceId);
         }
+        return ResponseEntity.ok(feedback);
     }
 
     @PostMapping("/registration")

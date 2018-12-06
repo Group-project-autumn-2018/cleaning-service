@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -36,7 +37,6 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
-
     private final CleaningCompanyRepository cleaningCompanyRepository;
 
     private SimpMessagingTemplate simpMessagingTemplate;
@@ -52,11 +52,11 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EmailService emailService,
-                            CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate) {
+                            CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate
+    ) {
         this.orderRepository = orderRepository;
         this.emailService = emailService;
         this.cleaningCompanyRepository = cleaningCompanyRepository;
-
         this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
@@ -170,7 +170,11 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     @Override
     public void changeStatus(String status, Long id) {
+        Order order = orderRepository.getOne(id);
+
         Status currentStatus = Status.valueOf(status);
+        emailService.sendSimpleMessage(order.getEmail(), "Order " + status + " " + LocalDate.now(),
+                "You order was " + status);
         orderRepository.changeStatus(currentStatus, id);
     }
 }

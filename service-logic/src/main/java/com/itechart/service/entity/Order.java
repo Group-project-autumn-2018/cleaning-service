@@ -29,9 +29,6 @@ public class Order {
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = true)
     private Customer customer;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
     @Embedded
     private Address address;
 
@@ -62,9 +59,13 @@ public class Order {
     @Enumerated(EnumType.STRING)
     private Duration duration;
 
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
     @Column(name = "estimated_time")
     private Integer estimatedTime;
 
+    @Column(name = "price")
     private BigDecimal price;
 
 }
