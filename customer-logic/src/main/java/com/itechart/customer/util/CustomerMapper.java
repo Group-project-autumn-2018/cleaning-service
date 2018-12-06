@@ -24,16 +24,10 @@ public abstract class CustomerMapper {
         }
         customer.setEmail(customerProfileUpdateDto.getEmail());
         customer.setPhone(customerProfileUpdateDto.getPhone());
-        Address address = customer.getAddress();
-        if (address == null) {
-            address = new Address();
-        }
-        address.setAddress(customerProfileUpdateDto.getAddress());
-        customer.setAddress(address);
+        customer.setAddress(customerProfileUpdateDto.getAddress());
         customer.setCleaningNotifications(customerProfileUpdateDto.getCleaningNotifications());
         return customer;
     }
 
-    @Mapping(target = "address", source = "address.address")
     public abstract CustomerProfileDto mapCustomerToCustomerProfileDto(Customer customer);
 }

@@ -15,7 +15,12 @@ class BookingForm extends Component {
         super(props);
         this.state = {
             customer: '',
-            address: '',
+            address: {
+                address: '',
+                lat: '',
+                lon: ''
+            },
+            companyName: '',
             cleaningType: "",
             smallRoomsCount: '',
             bigRoomsCount: '',
@@ -25,7 +30,7 @@ class BookingForm extends Component {
             frequency: '',
             duration: '',
             email: this.props.email,
-            estimatedPrice: 120,
+            estimatedPrice: '',
             estimatedTime: '',
             addresses: []
         }
@@ -76,7 +81,7 @@ class BookingForm extends Component {
     };
 
     onChangeHandler = (e) => {
-        this.setState({address: e.target.value});
+        this.setState({address: {...this.state.address, address: e.target.value}});
         const name = e.target.name;
         if (name === 'address' && e.target.value.length > 5) {
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
@@ -87,11 +92,10 @@ class BookingForm extends Component {
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
         const updatedOrder = {
             ...this.state,
-            lat: address.lat,
-            lon: address.lon
+            address: {...this.state.address, lat: address.lat, lon: address.lon}
         };
         console.log(address.lat + ' ' + address.lon);
-        this.setState({updatedOrder, addresses: []});
+        this.setState({...updatedOrder, addresses: []});
     };
 
 
