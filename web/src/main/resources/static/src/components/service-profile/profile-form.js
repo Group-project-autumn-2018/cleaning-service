@@ -41,6 +41,7 @@ class ProfileForm extends Component {
             passwordMatch: true,
             confPassword: '',
             addresses: [],
+            success: false,
             passwordError: false,
             newPasswordError: false,
             confirmPasswordDelete: false,
@@ -77,7 +78,7 @@ class ProfileForm extends Component {
             ...this.state.service,
             [name]: name === "cleaningNotifications" ? e.target.checked : value
         };
-        this.setState({service: updatedService});
+        this.setState({service: updatedService, success: false});
         if (name === 'address') {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
@@ -211,6 +212,9 @@ class ProfileForm extends Component {
         const serviceJson = JSON.stringify(service);
         entity.append('company', serviceJson);
         this.props.updateService(entity, this.props.token, this.state.service.id);
+        this.setState({
+            success: true
+        });
     };
 
     downloadAllFeedback = () => {
@@ -269,9 +273,14 @@ class ProfileForm extends Component {
                                        isMoreThanFiveFeedback={this.state.isMoreThanFiveFeedback}
                                        downloadAllFeedback={this.downloadAllFeedback}/> : null}
                     <div className="text-center">
-                        <button type="submit" className="btn btn-lg btn-primary col-sm-4" onClick={this.saveService}>
-                            Save
-                        </button>
+
+                    </div>
+                    <div className="text-center">
+                        {this.state.success ? <p className="success"><i className="fa fa-check"></i>Updated</p> :
+                            <button type="submit" className="btn btn-lg btn-primary col-sm-4"
+                                    onClick={this.saveService}>
+                                Save
+                            </button>}
                     </div>
                 </form>
                 <button className="btn btn-primary" onClick={this.testNo}>Test</button>
