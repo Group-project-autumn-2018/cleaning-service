@@ -21,19 +21,19 @@ class Companies extends Component {
         smallRoomsCount: this.props.orderUpdate.smallRoomsCount,
         bigRoomsCount: this.props.orderUpdate.bigRoomsCount,
         bathroomsCount: this.props.orderUpdate.bathroomsCount,
-        address: this.props.orderUpdate.address.address,
-        latitude: this.props.orderUpdate.address.lat,
-        longitude: this.props.orderUpdate.address.lon,
+        address: this.props.isAuthenticated ? this.props.address.address : this.props.orderUpdate.address.address,
+        latitude: this.props.isAuthenticated ? this.props.address.lat : this.props.orderUpdate.address.lat,
+        longitude: this.props.isAuthenticated ? this.props.address.lon : this.props.orderUpdate.address.lon,
         email: this.props.orderUpdate.email,
         price: "",
         sort: ""
     };
 
     selectSortHandler = (option) => {
-        console.log(option);
         const sort = option ? option.value : "";
-
-        this.props.fetchCompaniesPOST({...this.searchCompanyDto, sort: sort}, this.entityURN, this.props.token);
+        this.props.fetchCompaniesPOST({
+            ...this.searchCompanyDto, sort: sort
+        }, this.entityURN, this.props.token);
     };
 
     componentDidMount() {
@@ -56,7 +56,7 @@ const mapStateToProps = (state) => {
     return {
         companies: state.entities,
         orderUpdate: state.orderUpdate,
-        token: state.user.token
+        ...state.user
     }
 };
 

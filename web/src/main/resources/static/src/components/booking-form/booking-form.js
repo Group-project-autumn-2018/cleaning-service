@@ -21,14 +21,14 @@ class BookingForm extends Component {
                 lon: ''
             },
             companyName: '',
-            cleaningType: "",
+            cleaningType: this.types[0],
             smallRoomsCount: '',
             bigRoomsCount: '',
             bathroomsCount: '',
             cleaningDay: '',
-            cleaningTime: '',
-            frequency: '',
-            duration: '',
+            cleaningTime: this.time[0],
+            frequency: this.frequency[0],
+            duration: this.duration[0],
             email: this.props.email,
             price: '',
             estimatedTime: '',
@@ -61,11 +61,12 @@ class BookingForm extends Component {
     };
 
     changeTransactionDuration = (event) => {
-        this.setState({duration: event.target.value});
+        this.setState({duration: event.value});
     };
 
     changeCleaningTime = (event) => {
-        this.setState({cleaningTime: event.target.value});
+        console.log(event);
+        this.setState({cleaningTime: event.value});
     };
 
     changeEmail = (event) => {
@@ -102,15 +103,16 @@ class BookingForm extends Component {
     frequency = ["once", "weekly", "fortnightly", "monthly"];
     duration = ["one month", "two month", "three month", "four month", "five month", "six month"];
 
-    time = ["Not chosen...", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+    time = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
         "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
         "17:30", "18:00"];
 
-    types = ["Not chosen...", "Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
+    types = ["Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
+        console.log(this.props);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -124,14 +126,14 @@ class BookingForm extends Component {
                             {this.props.isAuthenticated ?
 
                                 <div className="col-sm-8 dropdown">
-                                    <input type="text" className="form-control dropdown-toggle long"
-                                           id="profileFormAddress"
-                                           data-toggle="dropdown" placeholder="Your address..."
-                                           name="address"
-                                        // value={}
-                                           onChange={this.onChangeHandler}/>
-                                    <DropdownAddressList array={this.state.addresses}
-                                                         onClickHandler={this.onClickAddressHandler}/>
+                                    <div>
+                                        <input type="text" className="form-control long"
+                                               id="bookingFormAddress" placeholder="Your address..."
+                                               name="address"
+                                               value={this.props.address.address}
+                                               disabled={true}
+                                        />
+                                    </div>
                                 </div>
                                 :
                                 <div className="col-sm-8 dropdown">
@@ -233,20 +235,3 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookingForm);
-
-{/*<div>*/
-}
-{/*<input type="text" className="form-control long"*/
-}
-{/*id="bookingFormAddress" placeholder="Your address..."*/
-}
-{/*name="address"*/
-}
-{/*// value={}*/
-}
-{/*//    disabled={true}*/
-}
-{/*/>*/
-}
-{/*</div>*/
-}

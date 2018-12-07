@@ -24,7 +24,7 @@ class CompanyConfirmModalForm extends Component {
                 frequency: '',
                 duration: '',
                 email: '',
-                price: 120,
+                price: '',
                 estimatedTime: '',
                 status: ''
             }
