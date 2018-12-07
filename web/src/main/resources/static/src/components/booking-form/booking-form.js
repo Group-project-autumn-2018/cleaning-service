@@ -118,13 +118,16 @@ class BookingForm extends Component {
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
                             {this.props.isAuthenticated ?
-                                <div>
-                                    <input type="text" className="form-control long"
-                                           id="bookingFormAddress" placeholder="Your address..."
+
+                                <div className="col-sm-8 dropdown">
+                                    <input type="text" className="form-control dropdown-toggle long"
+                                           id="profileFormAddress"
+                                           data-toggle="dropdown" placeholder="Your address..."
                                            name="address"
                                         // value={}
-                                        //    disabled={true}
-                                    />
+                                           onChange={this.onChangeHandler}/>
+                                    <DropdownAddressList array={this.state.addresses}
+                                                         onClickHandler={this.onClickAddressHandler}/>
                                 </div>
                                 :
                                 <div className="col-sm-8 dropdown">
@@ -226,3 +229,20 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(BookingForm);
+
+{/*<div>*/
+}
+{/*<input type="text" className="form-control long"*/
+}
+{/*id="bookingFormAddress" placeholder="Your address..."*/
+}
+{/*name="address"*/
+}
+{/*// value={}*/
+}
+{/*//    disabled={true}*/
+}
+{/*/>*/
+}
+{/*</div>*/
+}
