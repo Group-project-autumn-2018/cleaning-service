@@ -405,7 +405,7 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
-                    <input type="text" className="form-control input-left-space col-sm-6" id="profileFormDescription"
+                    <input type="text" className="form-control label-left-space col-sm-6" id="profileFormDescription"
                            placeholder="Description"
                            name="description"
                            value={props.service.description}
@@ -416,7 +416,7 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
                 <div className="col-sm-8 dropdown">
-                    <input type="text" className="form-control dropdown-toggle input-left-space col-sm-6"
+                    <input type="text" className="form-control dropdown-toggle label-left-space col-sm-6"
                            id="profileFormAddress"
                            data-toggle="dropdown" placeholder="Address"
                            name="address"

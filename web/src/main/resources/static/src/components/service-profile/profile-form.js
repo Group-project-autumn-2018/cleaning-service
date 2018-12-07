@@ -46,7 +46,10 @@ class ProfileForm extends Component {
             newPasswordError: false,
             confirmPasswordDelete: false,
             feedbackList: [],
-            isMoreThanFiveFeedback: false
+            isMoreThanFiveFeedback: false,
+            usernameError: false,
+            addressError: false,
+            emailError: false
         };
     }
 
@@ -83,7 +86,41 @@ class ProfileForm extends Component {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
         }
+
+        this.formValidation(e);
     };
+
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name +'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name +'Error']: false});
+        }
+    }
+
+    formValidation(event) {
+        const name = event.target.name;
+        switch(name) {
+            case "username":
+                this.validateLength(2, 50, event.target);
+                /*if (value.length < 2 || value.length > 50) {
+                    event.target.classList.add('invalid');
+                    this.setState({usernameError: true});
+                } else {
+                    event.target.classList.remove('invalid');
+                    this.setState({usernameError: false});
+                }*/
+                break;
+            case "email":
+                this.validateLength(6, 30, event.target);
+                break;
+            case "address":
+                this.validateLength(4, 100, event.target);
+                break;
+        }
+    }
 
     onChangeLogoHandler = (event) => {
         this.setState({logo: event.target.files[0]});
@@ -276,7 +313,7 @@ class ProfileForm extends Component {
 
                     </div>
                     <div className="text-center">
-                        {this.state.success ? <p className="success"><i className="fa fa-check"></i>Updated</p> :
+                        {this.state.success ? <p className="success"><i className="fa fa-check"/>Updated</p> :
                             <button type="submit" className="btn btn-lg btn-primary col-sm-4"
                                     onClick={this.saveService}>
                                 Save
