@@ -37,7 +37,7 @@ class SignUpService extends Component {
                 phone: '',
                 password: '',
                 cleaningTypes: {
-                    standardRoomCleaning: true,
+                    standardRoomCleaning: false,
                     springCleaning: false,
                     repairAndConstructionCleaning: false,
                     dryCarpetCleaning: false,
