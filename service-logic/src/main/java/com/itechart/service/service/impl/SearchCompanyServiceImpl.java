@@ -92,11 +92,12 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
         }
         List<CleaningCompany> companies = new ArrayList<>();
         for (CleaningCompany cleaningCompany : cleaningCompanyList) {
-            BigDecimal price = calculationRules.calculateAvaregePrice(searchCompanyDto, cleaningCompany.getId());
+            BigDecimal price = calculationRules.calculateAveragePrice(searchCompanyDto, cleaningCompany.getId());
+            Integer estimatedTime = calculationRules.getEndCleaningTime(searchCompanyDto, cleaningCompany.getId());
             cleaningCompany.setAveragePrice(price);
+            cleaningCompany.setEstimatedTime(estimatedTime);
             companies.add(cleaningCompany);
         }
-
         return companies;
     }
 

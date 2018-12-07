@@ -13,8 +13,7 @@ class Company extends Component {
             company: this.props.company.id,
             companyName: this.props.company.username,
             price: this.props.company.averagePrice,
-            estimatedTime: ''
-            //todo add estimated time
+            estimatedTime: this.props.company.estimatedTime
         })
     };
 

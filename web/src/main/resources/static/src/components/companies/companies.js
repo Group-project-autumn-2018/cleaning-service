@@ -26,6 +26,7 @@ class Companies extends Component {
         longitude: this.props.isAuthenticated ? this.props.address.lon : this.props.orderUpdate.address.lon,
         email: this.props.orderUpdate.email,
         price: "",
+        estimatedTime: "",
         sort: ""
     };
 
