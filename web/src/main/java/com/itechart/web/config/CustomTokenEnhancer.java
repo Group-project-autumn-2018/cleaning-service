@@ -22,6 +22,7 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         Long id = userDetails.getId();
         additionalInfo.put("name", name);
         additionalInfo.put("id", id);
+        additionalInfo.put("address", userDetails.getAddress());
 
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(
                 additionalInfo);
