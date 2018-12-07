@@ -15,7 +15,12 @@ class BookingForm extends Component {
         super(props);
         this.state = {
             customer: '',
-            address: '',
+            address: {
+                address: '',
+                lat: '',
+                lon: ''
+            },
+            companyName: '',
             cleaningType: "",
             smallRoomsCount: '',
             bigRoomsCount: '',
@@ -25,7 +30,7 @@ class BookingForm extends Component {
             frequency: '',
             duration: '',
             email: this.props.email,
-            estimatedPrice: 120,
+            price: '',
             estimatedTime: '',
             addresses: []
         }
@@ -76,7 +81,7 @@ class BookingForm extends Component {
     };
 
     onChangeHandler = (e) => {
-        this.setState({address: e.target.value});
+        this.setState({address: {...this.state.address, address: e.target.value}});
         const name = e.target.name;
         if (name === 'address' && e.target.value.length > 5) {
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
@@ -87,18 +92,17 @@ class BookingForm extends Component {
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
         const updatedOrder = {
             ...this.state,
-            lat: address.lat,
-            lon: address.lon
+            address: {...this.state.address, lat: address.lat, lon: address.lon}
         };
         console.log(address.lat + ' ' + address.lon);
-        this.setState({updatedOrder, addresses: []});
+        this.setState({...updatedOrder, addresses: []});
     };
 
 
     frequency = ["once", "weekly", "fortnightly", "monthly"];
     duration = ["one month", "two month", "three month", "four month", "five month", "six month"];
 
-    time = ["Not chosen...", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+    time = ["Not chosen...", "09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
         "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
         "17:30", "18:00"];
 

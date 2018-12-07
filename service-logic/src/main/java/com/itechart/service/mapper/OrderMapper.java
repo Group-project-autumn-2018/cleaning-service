@@ -20,10 +20,8 @@ public abstract class OrderMapper {
     @Mapping(target = "company", source = "company.id")
     @Mapping(target = "companyName", source = "company.username")
     @Mapping(target = "customer", source = "customer.id")
-    @Mapping(target = "address", source = "address.address")
     public abstract OrderDto mapOrderToOrderDto(Order order);
 
-    @Mapping(target = "address.address", source = "address")
     @Mapping(target = "company.id", source = "company")
     @Mapping(target = "customer.id", source = "customer")
     @Mapping(target = "status", source = "status", defaultValue = "NEW")

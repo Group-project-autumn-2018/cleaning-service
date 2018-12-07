@@ -21,9 +21,9 @@ class Companies extends Component {
         smallRoomsCount: this.props.orderUpdate.smallRoomsCount,
         bigRoomsCount: this.props.orderUpdate.bigRoomsCount,
         bathroomsCount: this.props.orderUpdate.bathroomsCount,
-        address: this.props.orderUpdate.address,
-        latitude: this.props.orderUpdate.updatedOrder.lat,
-        longitude: this.props.orderUpdate.updatedOrder.lon,
+        address: this.props.orderUpdate.address.address,
+        latitude: this.props.orderUpdate.address.lat,
+        longitude: this.props.orderUpdate.address.lon,
         email: this.props.orderUpdate.email,
         price: "",
         sort: ""

@@ -1,5 +1,6 @@
 package com.itechart.service.dto;
 
+import com.itechart.common.entity.Address;
 import com.itechart.service.entity.Duration;
 import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Status;
@@ -25,7 +26,7 @@ public class OrderDto {
 
     private Status status;
 
-    private String address;
+    private Address address;
 
     private String email;
 
