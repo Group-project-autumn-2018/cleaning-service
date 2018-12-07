@@ -7,10 +7,14 @@ const AdditionalInput = (props) => {
     return (
         <div className="col-sm-6 d-flex flex-row">
             <input type="number" className="form-control col-sm-6" placeholder={placeholders[0]}
-                   value={props.values[0]} name={props.names[0]} onChange={props.onChangePriceHandler}/>
+                   value={props.values[0]} name={props.names[0]} onChange={props.onChangePriceHandler}
+                   data-container="body" data-toggle="popover" data-placement="right" data-content={placeholders[0]}/>
+
             <input type="number" className="form-control input-left-space col-sm-6" value={props.values[1]}
                    placeholder={roomTypes.includes(props.names[1]) ? placeholders[1] : placeholders[1] + " coefficient"}
-                   name={props.names[1]} onChange={props.onChangeTimeHandler}/>
+                   name={props.names[1]} onChange={props.onChangeTimeHandler}
+                   data-container="body" data-toggle="popover" data-placement="right" data-content={placeholders[0]}/>
+
         </div>
     )
 };

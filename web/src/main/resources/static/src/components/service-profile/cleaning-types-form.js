@@ -6,19 +6,22 @@ const CleaningTypesForm = (props) => {
         <React.Fragment>
             <div className="form-group row">
                 <label className="col-sm-5">Base price</label>
-                <input type="number" name="basePrice" className="form-control col-sm-4" placeholder="Base price"
+                <input type="number" name="basePrice" className="form-control col-sm-4" placeholder="Base price, $"
                        value={props.cleaningTypes.price.basePrice} onChange={props.onChangePriceHandler}
                 />
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Standard room cleaning coefficient</label>
-                <AdditionalInput names={['standardRoomCleaning', 'standardRoomCleaningTime']}
-                                 values={[
-                                     props.cleaningTypes.price.standardRoomCleaning,
-                                     props.cleaningTypes.cleaningTime.standardRoomCleaningTime
-                                 ]}
-                                 onChangePriceHandler={props.onChangePriceHandler}
-                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
+                <input type="checkBox" name="springCleaning"
+                       onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.standardRoomCleaning}/>
+                {props.cleaningTypes.standardRoomCleaning ?
+                    <AdditionalInput names={['standardRoomCleaning', 'standardRoomCleaningTime']}
+                                     values={[
+                                         props.cleaningTypes.price.standardRoomCleaning,
+                                         props.cleaningTypes.cleaningTime.standardRoomCleaningTime
+                                     ]}
+                                     onChangePriceHandler={props.onChangePriceHandler}
+                                     onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
             </div>
 
             <div className="form-group row">
@@ -141,7 +144,7 @@ const CleaningTypesForm = (props) => {
                                      props.cleaningTypes.cleaningTime.bigRoomCleaningTime
                                  ]}
                                  onChangePriceHandler={props.onChangePriceHandler}
-                                 onChangeTimeHandler={props.onChangeTimeHandler} />
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Bathroom</label>
@@ -151,7 +154,7 @@ const CleaningTypesForm = (props) => {
                                      props.cleaningTypes.cleaningTime.bathroomCleaningTime
                                  ]}
                                  onChangePriceHandler={props.onChangePriceHandler}
-                                 onChangeTimeHandler={props.onChangeTimeHandler} />
+                                 onChangeTimeHandler={props.onChangeTimeHandler}/>
             </div>
         </React.Fragment>
     )
