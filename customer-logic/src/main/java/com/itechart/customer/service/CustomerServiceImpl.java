@@ -140,6 +140,7 @@ public class CustomerServiceImpl implements CustomerService {
         }
     }
 
+
     @Override
     @Transactional
     public Optional<Boolean> verify(VerifyDto verifyDto) {

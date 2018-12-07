@@ -47,7 +47,6 @@ public class CustomerController {
         return customerService.getCustomerById(id);
     }
 
-
     @PutMapping("/{id}")
     public void updateById(@RequestBody Customer customer) {
         customerService.update(customer);

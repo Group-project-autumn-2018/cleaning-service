@@ -76,7 +76,7 @@ class CompanyConfirmModalForm extends Component {
                         <div className="col-sm-8 z-index-class ">
                             <div className="row">
                                 <div className="col-4">Address</div>
-                                <div className="col-8">{this.state.order.address}</div>
+                                <div className="col-8">{this.state.order.address.address}</div>
                             </div>
                             <div className="row">
                                 <div className="col-4">Cleaning Type</div>

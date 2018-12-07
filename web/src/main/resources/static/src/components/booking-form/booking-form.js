@@ -6,10 +6,12 @@ import DropdownAddressList from "../service-profile/dropdown-address-list";
 import {Link} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
 import OpenStreetMapApi from "../services/openstreetmap-api";
+import CustomerApi from "../services/customer-api";
 
 class BookingForm extends Component {
 
     openStreetMapApi = new OpenStreetMapApi();
+    customerApiService = new CustomerApi();
 
     constructor(props) {
         super(props);
@@ -112,7 +114,6 @@ class BookingForm extends Component {
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
-        console.log(this.props);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
