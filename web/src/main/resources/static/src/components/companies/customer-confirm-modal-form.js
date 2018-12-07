@@ -30,7 +30,7 @@ class CustomerConfirmModalForm extends Component {
                         <div className="modal-body container px-3">
                             <div className="row">
                                 <div className="col-6">Address</div>
-                                <div className="col-6">{this.props.order.address}</div>
+                                <div className="col-6">{this.props.order.address.address}</div>
                             </div>
                             <div className="row">
                                 <div className="col-6">Cleaning Type</div>
@@ -68,7 +68,7 @@ class CustomerConfirmModalForm extends Component {
                             </div>
                             <div className="row">
                                 <div className="col-6">Estimated Price</div>
-                                <div className="col-6">{this.props.order.estimatedPrice}</div>
+                                <div className="col-6">{this.props.order.price}</div>
                             </div>
                             <div className="row">
                                 <div className="col-6">Estimated Time</div>

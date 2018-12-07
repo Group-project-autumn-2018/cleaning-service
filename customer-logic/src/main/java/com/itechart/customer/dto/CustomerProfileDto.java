@@ -1,5 +1,6 @@
 package com.itechart.customer.dto;
 
+import com.itechart.common.entity.Address;
 import lombok.Data;
 
 @Data
@@ -8,6 +9,6 @@ public class CustomerProfileDto {
     private String username;
     private String email;
     private String phone;
-    private String address;
+    private Address address;
     private Boolean cleaningNotifications;
 }
