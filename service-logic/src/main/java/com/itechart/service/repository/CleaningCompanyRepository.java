@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CleaningCompanyRepository extends JpaRepository<CleaningCompany, Long>, JpaSpecificationExecutor<Order> {
+public interface CleaningCompanyRepository extends JpaRepository<CleaningCompany, Long>, JpaSpecificationExecutor<CleaningCompany> {
     List<CleaningCompany> findAll();
 
     @Modifying

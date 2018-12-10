@@ -45,7 +45,7 @@ class CompaniesWithSearch extends Component {
     handleChange = (e) => {
         let value;
         let name;
-        if (e.name === "types") {
+        if (e.value) {
             value = e.value;
             name = "cleaningType";
         } else {
@@ -72,7 +72,9 @@ class CompaniesWithSearch extends Component {
     render() {
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
+
                 <CompanySearchBar onChange={this.handleChange} onClick={this.handleSearch}
+                                  selectedTypeOption={this.state.selectedTypeOption}
                                   showAll={this.showAll}/>
                 <nav aria-label="Page navigation" className="mx-auto">
                     <Pagination activePage={this.props.activePage + 1}
