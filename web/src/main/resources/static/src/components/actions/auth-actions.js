@@ -1,7 +1,21 @@
+const b64DecodeUnicode = str =>
+    decodeURIComponent(
+        Array.prototype.map.call(atob(str), c =>
+            '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join(''));
+
+const parseJwtToken = token =>
+    JSON.parse(
+        b64DecodeUnicode(
+            token.split('.')[1].replace('-', '+').replace('_', '/')
+        )
+    );
+
 const parseJwt = (token) => {
     try {
-        return JSON.parse(atob(token.split('.')[1]));
+        return parseJwtToken(token);
     } catch (e) {
+        console.log(e);
         return null;
     }
 };
