@@ -86,7 +86,6 @@ class ProfileForm extends Component {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
         }
-
         this.formValidation(e);
     };
 
@@ -104,7 +103,7 @@ class ProfileForm extends Component {
         const name = event.target.name;
         switch(name) {
             case "username":
-                this.validateLength(2, 50, event.target);
+                this.validateLength(3, 50, event.target);
                 /*if (value.length < 2 || value.length > 50) {
                     event.target.classList.add('invalid');
                     this.setState({usernameError: true});
