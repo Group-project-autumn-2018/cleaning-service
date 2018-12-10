@@ -5,10 +5,7 @@ import {Link} from "react-router-dom";
 class CompanyForSearching extends Component {
 
     onClick = () => {
-        this.state = {
-            company: this.props.company.id,
-            companyName: this.props.company.username
-        }
+
     };
 
     render() {

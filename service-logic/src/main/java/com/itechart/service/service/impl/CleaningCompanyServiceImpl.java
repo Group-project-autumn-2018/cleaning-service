@@ -12,6 +12,7 @@ import com.itechart.service.mapper.CleaningCompanyMapper;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.CleaningTypesService;
+import com.itechart.service.specification.OrderSpecificationsBuilder;
 import com.itechart.service.util.ServiceVerification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -84,6 +86,11 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
     }
 
+    @Override
+    public Page<CleaningCompany> findPaginated(Pageable pageable) {
+        return cleaningCompanyRepository.findAll(pageable);
+    }
+
     @Transactional
     @Override
     public CleaningCompany update(CleaningCompanyDto cleaningCompanyDto) {
@@ -135,7 +142,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Override
     public void saveLogotype(MultipartFile logotype, Long id) {
-         try {
+        try {
             if (logotype != null && logotype.getBytes().length > 0) {
                 File file = new File(FILE_PATH);
                 if (!file.exists()) {
@@ -166,6 +173,13 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
             }
             return Files.readAllBytes(Paths.get(FILE_PATH, DEFAULT_LOGO_NAME));
         }
+    }
+
+    @Override
+    public Page<CleaningCompany> findPaginatedWithSearch(String search, Pageable pageable) {
+        //OrderSpecificationsBuilder
+
+//        return null;
     }
 
     @Transactional

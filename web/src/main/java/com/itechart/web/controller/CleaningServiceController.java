@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -78,6 +79,17 @@ public class CleaningServiceController {
     @GetMapping()
     public Page<CleaningCompany> findPaginated(@RequestParam("page") int page, @RequestParam("size") int size) {
         return cleaningCompanyService.findPaginated(page, size);
+    }
+
+    @GetMapping("/search")
+    public Page<CleaningCompany> getCompany(@RequestParam(value = "search", required = false) String search,
+                                            Pageable pageable) {
+        if (search != null) {
+            return cleaningCompanyService.findPaginatedWithSearch(search, pageable);
+        } else {
+            return cleaningCompanyService.findPaginated(pageable);
+        }
+
     }
 
     @PostMapping(value = "/{cleaningId}")
