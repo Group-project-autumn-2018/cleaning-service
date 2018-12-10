@@ -8,8 +8,8 @@ class CompanyOrder extends Component {
             <tr className="row bg-light px-5" className="row">
                 <td  className="col">{this.props.order.cleaningType}</td>
                 <td  className="col">{this.props.order.status}</td>
-                <td  className="col">{this.props.order.date}</td>
-                <td  className="col">{this.props.order.startTime}</td>
+                <td  className="col">{this.props.order.cleaningDay}</td>
+                <td  className="col">{this.props.order.cleaningTime}</td>
             </tr>
         )
     }

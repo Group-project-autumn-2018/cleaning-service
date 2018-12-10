@@ -119,8 +119,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDto> findPaginatedWithStatus(Long id, String status, Pageable pageable) {
 
-
-        Page<Order> orders = orderRepository.findAllByCompany_IdAndStatus(pageable, id, status);
+        Status currentStatus =Status.valueOf(status);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndStatus(pageable, id, currentStatus);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
@@ -128,8 +128,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType,String status ,Pageable pageable) {
 
-
-        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus( pageable, id, cleaningType,  status);
+        Status currentStatus = Status.valueOf(status);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus( pageable, id, cleaningType, currentStatus);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }

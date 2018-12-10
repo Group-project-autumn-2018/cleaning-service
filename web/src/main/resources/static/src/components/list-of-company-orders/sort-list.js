@@ -23,9 +23,9 @@ class SortFilter extends Component {
     ];
 
     statusOptions= [
-        {value: 'new ', label: 'new'},
-        {value: 'confirmed', label: 'confirmed'},
-        {value: 'canceled', label: 'canceled'}
+        {value: 'NEW', label: 'New'},
+        {value: 'CONFIRMED', label: 'Confirmed'},
+        {value: 'REJECTED', label: 'Rejected'}
     ];
 
     sortOptions = [
@@ -36,22 +36,20 @@ class SortFilter extends Component {
 
     selectTypeHandler = (selectedTypeOption) => {
         this.setState({selectedTypeOption});
+        this.props.onChange(selectedTypeOption);
 
     };
 
     selectStatusHandler = (selectedStatusOption) => {
         this.setState({selectedStatusOption});
-
+        this.props.onChange(selectedStatusOption);
     };
 
-    selectSortHandler = (selectedSortOption) => {
-        this.setState({selectedSortOption});
-        this.props.onSort(selectedSortOption);
-    };
+
 
     render() {
 
-        const {selectedSortOption, selectedTypeOption, selectedStatusOption} = this.state;
+        const { selectedTypeOption, selectedStatusOption} = this.state;
 
         return (
             <div className="d-flex justify-content-around">
@@ -67,10 +65,6 @@ class SortFilter extends Component {
 
                 <button className="btn btn-secondary " onClick={this.props.showAll}>All</button>
 
-                <Select options={this.sortOptions} onChange={this.selectSortHandler} name="sort"
-                        className="search-item" isClearable={true} placeholder="Sort by"
-                        value={selectedSortOption}
-                />
             </div>
         )
 

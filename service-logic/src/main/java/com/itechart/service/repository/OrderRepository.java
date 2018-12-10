@@ -1,6 +1,7 @@
 package com.itechart.service.repository;
 
 import com.itechart.service.entity.Order;
+import com.itechart.service.entity.Status;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -16,8 +17,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     Page<Order> findAllByCompany_IdAndCleaningType(Pageable pageable, Long id, String cleaningType);
 
-    Page<Order> findAllByCompany_IdAndStatus(Pageable pageable, Long id, String status);
+    Page<Order> findAllByCompany_IdAndStatus(Pageable pageable, Long id, Status status);
 
-    Page<Order> findAllByCompany_IdAndCleaningTypeAndStatus(Pageable pageable, Long id, String cleaningType, String status);
+    Page<Order> findAllByCompany_IdAndCleaningTypeAndStatus(Pageable pageable, Long id, String cleaningType, Status status);
 
 }

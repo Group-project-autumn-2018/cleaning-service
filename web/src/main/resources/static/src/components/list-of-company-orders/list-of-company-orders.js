@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import './list-of-company-orders.css';
 import ListOrders from '../list-of-company-orders/company-orders';
 import {connect} from 'react-redux';
-import {fetchEntities} from '../api/api-actions';
+import {fetchEntitiesByTypeAndStatus} from '../api/api-actions';
 import Pagination from "react-js-pagination";
 import SortFilter from "../list-of-company-orders/sort-list";
 
@@ -17,6 +17,8 @@ class ListOfCompanyOrders extends Component {
 
     entityURN = '/order/service';
 
+
+
     componentDidMount() {
         this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
     }
@@ -27,38 +29,38 @@ class ListOfCompanyOrders extends Component {
     };
 
     handleChange = (e) => {
-        const value = e.target.value.replace(/ /g, "_");
-        const name = e.target.name;
-        this.setState({[name]: value})
 
+        const statuses=['NEW', 'CONFIRMED', 'REJECTED'];
+
+        let value;
+        let name;
+        if (e.value) {
+            value = e.value;
+            if(statuses.includes(e.value)) {
+                name="status";
+            } else {
+                name="cleaningType";
+            }
+        } else {
+            value = e.target.value;
+            name = e.target.name;
+        }
+
+        this.setState({[name]: value})
     };
 
     handleSearch = () => {
-        let search = "&search=";
-        if (this.state.cleaningType) search += `cleaningType:${this.state.cleaningType},`;
-        if (this.state.status) search += `status:${this.state.status},`;
-        search = search.substring(0, search.length - 1);
 
-        this.setState({search: search});
         this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID, search);
+            this.props.token, this.props.userID, this.state.cleaningType, this.state.status);
     };
 
-
-
-    handleSort = (option) => {
-        const sort = option ? option.value : "";
-        const search = this.state.search ? this.state.search : '';
-        this.setState({sort: sort});
-        const sortParam = search + sort;
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID, sortParam);
-    };
 
     showAll = () => {
         this.setState({search: null});
+        const sortParam="&sort=cleaningDay,desc";
         this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID);
+            this.props.token, this.props.userID, sortParam);
     };
 
 
@@ -67,10 +69,13 @@ class ListOfCompanyOrders extends Component {
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
                 <h3 className="text-center pt-4"><b>Active orders</b></h3>
-                <SortFilter onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
+                <SortFilter onChange={this.handleChange}
+                            onClick={this.handleSearch}
+                            onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
                             selectedSortOption={this.state.selectedSortOption}
+                            selectedStatusOption={this.state.selectedStatusOption}
                             showAll={this.showAll}/>
-                <ListOrders orders={this.state.orders} />
+                <ListOrders orders={this.props.orders} />
                 <nav aria-label="Page navigation" className="mx-auto">
                     <Pagination activePage={this.props.activePage + 1}
                                 itemsCountPerPage={this.props.itemsCountPerPage}
@@ -98,8 +103,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchOrders: (page, size, entityURN, token, userID, search) => {
-            dispatch(fetchEntities(page, size, entityURN, token, userID, search))
+        fetchOrders: (page, size, entityURN, token, userID, cleaningType, status) => {
+            dispatch(fetchEntitiesByTypeAndStatus(page, size, entityURN, token, userID, cleaningType, status))
         }
     }
 };
