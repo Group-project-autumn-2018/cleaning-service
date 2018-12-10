@@ -49,7 +49,18 @@ class ProfileForm extends Component {
             isMoreThanFiveFeedback: false,
             usernameError: false,
             addressError: false,
-            emailError: false
+            emailError: false,
+            isEmailCorrect: false,
+            cleaningTypesErrors: {
+                dryCarpetCleaningError: false,
+                furnitureAndCoatingsCleaningError: false,
+                industrialCleaningError: false,
+                officeCleaningError: false,
+                poolCleaningError: false,
+                repairAndConstructionCleaningError: false,
+                springCleaningError: false,
+                standardRoomCleaningError: false
+            }
         };
     }
 
@@ -92,18 +103,29 @@ class ProfileForm extends Component {
     validateLength(firstBoundary, lastBoundary, target) {
         if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
             target.classList.add('invalid');
-            this.setState({[target.name +'Error']: true});
+            this.setState({[target.name + 'Error']: true});
         } else {
             target.classList.remove('invalid');
-            this.setState({[target.name +'Error']: false});
+            this.setState({[target.name + 'Error']: false});
+        }
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({isEmailCorrect: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({isEmailCorrect: true});
         }
     }
 
     formValidation(event) {
         const name = event.target.name;
-        switch(name) {
+        switch (name) {
             case "username":
-                this.validateLength(3, 50, event.target);
+                this.validateLength(2, 50, event.target);
                 /*if (value.length < 2 || value.length > 50) {
                     event.target.classList.add('invalid');
                     this.setState({usernameError: true});
@@ -114,11 +136,54 @@ class ProfileForm extends Component {
                 break;
             case "email":
                 this.validateLength(6, 30, event.target);
+                this.validateEmail(event.target);
                 break;
             case "address":
                 this.validateLength(4, 100, event.target);
                 break;
         }
+    }
+
+    validateCleaningType(cleaningTypes, typeName) {
+        if (cleaningTypes[typeName]) {
+            if (cleaningTypes.cleaningTime[typeName] == null || cleaningTypes.cleaningTime[typeName] < 0 ||
+                cleaningTypes.price[typeName] == null || cleaningTypes.price[typeName] < 0) {
+                const cleaningTypesErrors = {
+                    ...this.state.cleaningTypesErrors,
+                    [typeName + 'Error']: true
+                };
+                this.setState({cleaningTypesErrors: cleaningTypesErrors});
+                return false
+            } else {
+                const cleaningTypesErrors = {
+                    ...this.state.cleaningTypesErrors,
+                    [typeName + 'Error']: false
+                };
+                this.setState({cleaningTypesErrors: cleaningTypesErrors});
+                return true;
+            }
+        } else {
+            const cleaningTypesErrors = {
+                ...this.state.cleaningTypesErrors,
+                [typeName + 'Error']: false
+            };
+            this.setState({cleaningTypesErrors: cleaningTypesErrors});
+            return true;
+        }
+    }
+
+    validateCleaningTypes() {
+        if (this.state.service.cleaningTypes.basePrice === null ||
+            this.state.service.cleaningTypes.basePrice < 0) {
+            return false;
+        } else return this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'poolCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
+            this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
     }
 
     onChangeLogoHandler = (event) => {
@@ -237,20 +302,23 @@ class ProfileForm extends Component {
     saveService = (event) => {
         event.preventDefault();
         console.log(this.state);
-        const service = {
-            ...this.state.service,
-            password: this.state.service.newPassword
-        };
-        const entity = new FormData();
-        if (this.state.logo !== '') {
-            entity.append('logo', this.state.logo, this.state.logo.name);
+        if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
+            !this.state.isEmailCorrect && this.validateCleaningTypes()) {
+            const service = {
+                ...this.state.service,
+                password: this.state.service.newPassword
+            };
+            const entity = new FormData();
+            if (this.state.logo !== '') {
+                entity.append('logo', this.state.logo, this.state.logo.name);
+            }
+            const serviceJson = JSON.stringify(service);
+            entity.append('company', serviceJson);
+            this.props.updateService(entity, this.props.token, this.state.service.id);
+            this.setState({
+                success: true
+            });
         }
-        const serviceJson = JSON.stringify(service);
-        entity.append('company', serviceJson);
-        this.props.updateService(entity, this.props.token, this.state.service.id);
-        this.setState({
-            success: true
-        });
     };
 
     downloadAllFeedback = () => {
@@ -261,6 +329,7 @@ class ProfileForm extends Component {
     };
 
     render() {
+        let cleaningTypesErrors = {...this.state.cleaningTypesErrors};
         return (
             <div className="profile-form-container">
                 <form className="container profile-form" onSubmit={this.submitHandler}>
@@ -301,6 +370,7 @@ class ProfileForm extends Component {
                                                                             newPasswordError={this.state.newPasswordError}/> : null}
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
+                                           errors={cleaningTypesErrors}
                                            onChangeTypeHandler={this.onChangeTypeHandler}
                                            onChangePriceHandler={this.onChangePriceHandler}
                                            onChangeTimeHandler={this.onChangeTimeHandler}/> : null}
@@ -308,9 +378,6 @@ class ProfileForm extends Component {
                         <FeedbackPanel feedbackList={this.state.feedbackList}
                                        isMoreThanFiveFeedback={this.state.isMoreThanFiveFeedback}
                                        downloadAllFeedback={this.downloadAllFeedback}/> : null}
-                    <div className="text-center">
-
-                    </div>
                     <div className="text-center">
                         {this.state.success ? <p className="success"><i className="fa fa-check"/>Updated</p> :
                             <button type="submit" className="btn btn-lg btn-primary col-sm-4"

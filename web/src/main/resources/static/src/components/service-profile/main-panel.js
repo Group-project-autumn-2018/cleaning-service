@@ -30,7 +30,7 @@ const MainPanel = (props) => {
                 <div className="col-sm-8">
                     <input type="email" className="form-control" id="profileFormEmail" placeholder="Email"
                            name="email" value={props.service.email} onChange={props.onChangeHandler}/>
-                    <p className="errorMessage">Email size must be of length 6 to 30</p>
+                    <p className="errorMessage">Email size must be of length 6 to 30 and it must have correct form</p>
                 </div>
             </div>
             <div className="form-group row">
@@ -69,7 +69,6 @@ const MainPanel = (props) => {
                     <p className="errorMessage">Address size must be of 4 to 100</p>
                 </div>
             </div>
-
         </React.Fragment>
     )
 };

@@ -22,6 +22,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.standardRoomCleaningError ? <p className="error">You have to fill all fields or
+                    one of your fields incorrect</p> : null}
             </div>
 
             <div className="form-group row">
@@ -36,6 +38,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.springCleaningError ? <p className="error">You have to fill all fields or
+                    one of your fields incorrect</p> : null}
             </div>
 
             <div className="form-group row">
@@ -53,6 +57,9 @@ const CleaningTypesForm = (props) => {
                         ]}
                         onChangePriceHandler={props.onChangePriceHandler}
                         onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.repairAndConstructionCleaningError ?
+                    <p className="error">You have to fill all fields or
+                        one of your fields incorrect</p> : null}
             </div>
 
             <div className="form-group row">
@@ -67,6 +74,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.dryCarpetCleaningError ? <p className="error">You have to fill all fields or
+                    one of your fields incorrect</p> : null}
             </div>
 
             <div className="form-group row">
@@ -81,6 +90,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.officeCleaningError ? <p className="error">You have to fill all fields or
+                    one of your fields incorrect</p> : null}
             </div>
 
             <div className="form-group row">
@@ -97,6 +108,8 @@ const CleaningTypesForm = (props) => {
                         ]}
                         onChangePriceHandler={props.onChangePriceHandler}
                         onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.furnitureAndCoatingsCleaningError ?
+                    <p className="error">You have to fill all fields</p> : null}
             </div>
 
             <div className="form-group row">
@@ -111,6 +124,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.industrialCleaningError ? <p className="error">You have to fill all fields or
+                    one of your fields incorrect</p> : null}
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Pool cleaning</label>
@@ -124,6 +139,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.poolCleaningError ? <p className="error">You have to fill all fields or
+                    one of your fields incorrect</p> : null}
             </div>
 
             <div className="form-group row">
