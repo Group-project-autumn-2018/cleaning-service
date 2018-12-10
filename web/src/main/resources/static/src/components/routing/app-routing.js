@@ -14,6 +14,7 @@ import Companies from '../companies/companies'
 import MainProfile from '../main-profile';
 import ServiceInfo from "../service-info/service-info";
 import CustomerOrdersList from '../customer-orders/customer-orders-list';
+//import CompaniesList from '../customer-orders/';
 
 class AppRouting extends Component {
 
@@ -28,6 +29,7 @@ class AppRouting extends Component {
                 <Route path="/registration/service" component={ServiceRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies} />
+                {/*<Route exact path="/companies-search" component={CompanyForSearching} />*/}
                 <Redirect to="/"/>
             </Switch>
         );
