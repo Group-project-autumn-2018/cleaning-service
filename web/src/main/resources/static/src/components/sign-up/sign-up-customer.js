@@ -260,7 +260,7 @@ class SignUpCustomer extends Component {
                                                placeholder="Type your password again" value={this.state.confirmPassword}
                                                onChange={this.changePasswordConfirm} disabled={this.state.disabled}/>
                                         {this.state.passwordsMatchError ?
-                                            <p className="text-danger">Passwords didn't match</p> : null}
+                                            <p className="text-danger">Passwords don't match</p> : null}
                                     </div>
                                 </div>
                             </div>

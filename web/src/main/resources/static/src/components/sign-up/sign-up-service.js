@@ -88,7 +88,9 @@ class SignUpService extends Component {
             springCleaningError: false,
             standardRoomCleaningError: false,
             passwordMatchError: false,
-            passwordLengthError: false
+            passwordLengthError: false,
+            usernameError: false,
+            emailError: false
         };
     }
 
@@ -102,26 +104,22 @@ class SignUpService extends Component {
         }
     };
 
-    changeUsername = (event) => {
+    /*changeUsername = (event) => {
         const updatedService = {
             ...this.state.service,
             username: event.target.value
         };
         this.setState({service: updatedService});
-        if (event.target.value.length < 3) {
-            event.target.classList.add('is-invalid');
-        } else {
-            event.target.classList.remove('is-invalid');
-        }
-    };
+
+    };*/
 
     changeEmail = (event) => {
-
         const updatedService = {
             ...this.state.service,
             email: event.target.value
         };
         this.setState({service: updatedService});
+        this.validateEmail(event.target);
     };
 
     changePhone = (event) => {
@@ -163,12 +161,29 @@ class SignUpService extends Component {
         }
     };
 
-    validate = () => {
-        if (this.state.service.password !== this.state.confirmPassword
-            || this.state.service.password.length < 3) {
-            return false;
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name + 'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name + 'Error']: false});
         }
-        if (this.state.service.username.length < 3) {
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({emailError: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({emailError: true});
+        }
+    }
+
+    validate = () => {
+        if (!this.state.passwordLengthError || !this.state.passwordMatchError || !this.state.usernameError) {
             return false;
         }
         return !(this.state.service.email === '' && this.state.service.phone === '+375');
@@ -301,6 +316,8 @@ class SignUpService extends Component {
         if (name === 'address') {
             this.setState({tempAddress: e.target.value});
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+        } else if (name === "username") {
+            this.validateLength(2, 50, event.target);
         }
     };
 

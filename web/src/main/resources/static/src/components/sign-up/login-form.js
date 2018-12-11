@@ -17,14 +17,17 @@ const LoginForm = (props) => {
                                        value={props.service.username}
                                        onChange={props.onChangeHandler}
                                 />
-
+                                {props.usernameError ?
+                                    <p className="errorMessage">Username size must be of length 2 to 50</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className="col-form-label">Email</label>
                                 <input type="email" className="form-control" name="email"
                                        placeholder="example@gmail.com" value={props.service.email}
                                        onChange={props.changeEmail} disabled={props.disabled}/>
-                                <div className="email-feedback"/>
+                                {props.emailError ?
+                                    <p className="errorMessage">Email size must be of length 6 to 30 and it must have
+                                        correct form</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="tel" className="col-form-label">Phone number</label>

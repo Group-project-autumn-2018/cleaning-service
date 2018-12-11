@@ -53,8 +53,8 @@ class ProfileForm extends Component {
 
     submitHandler = (e) => {
         e.preventDefault();
-
-        if (!this.state.usernameError && !this.state.emailError && !this.state.addressError && !this.state.passwordError) {
+        if (!this.state.usernameError && !this.state.emailError &&
+            !this.state.addressError && !this.state.passwordError) {
             fetchUpdateEntity(this.state.customer, this.state.URN, this.props.token).then(response => {
                 if (response.status === 200) {
                     this.setState({
@@ -110,17 +110,16 @@ class ProfileForm extends Component {
                     this.setState({addressError: false});
                     if (value.length > 5) {
                         console.log('opensm');
-                        this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
+                        this.openStreetMapApi.getAddress(value)
+                            .then(response => this.setState({addresses: response}));
                     }
                     value = {
                         ...this.state.customer.address,
                         address: value
                     };
-
                 }
                 break;
         }
-
         const updatedCustomer = {
             ...this.state.customer,
             [name]: name === "cleaningNotifications" ? e.target.checked : value
@@ -163,7 +162,6 @@ class ProfileForm extends Component {
                 this.setState({passwordError: false, newPasswordError: false})
             }
         }
-
     };
 
     render() {
@@ -243,19 +241,15 @@ class ProfileForm extends Component {
                                                                   checkPasswordMatch={this.checkPasswordMatch}
                                                                   error={this.state.error}
                                                                   newPasswordError={this.state.newPasswordError}
-
                     />}
                     <div className="text-center">
                         {this.state.success ? <p className="success"><i className="fa fa-check"></i>Updated</p> :
                             <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>}
                     </div>
                 </form>
-
             </div>
         )
-
     }
-
 }
 
 const mapStateToProps = (state) => {
