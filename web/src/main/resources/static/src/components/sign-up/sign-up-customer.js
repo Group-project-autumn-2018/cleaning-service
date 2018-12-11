@@ -21,7 +21,10 @@ class SignUpCustomer extends Component {
             disabled: false,
             code: '',
             verificationStatus: false,
-            message: ''
+            message: '',
+            passwordsMatchError: false,
+            usernameError: false,
+            emailError: false
         }
     }
 
@@ -32,10 +35,12 @@ class SignUpCustomer extends Component {
         } else {
             event.target.classList.remove('is-invalid');
         }
+        this.formValidation(event);
     };
 
     changeEmail = (event) => {
         this.setState({email: event.target.value});
+        this.formValidation(event);
     };
 
     changePhone = (event) => {
@@ -49,13 +54,22 @@ class SignUpCustomer extends Component {
 
     changePassword = (event) => {
         this.setState({password: event.target.value});
+        if (event.target.value !== this.state.confirmPassword) {
+            this.setState({passwordsMatchError: true});
+            event.target.classList.add('is-invalid');
+        } else {
+            this.setState({passwordsMatchError: false});
+            event.target.classList.remove('is-invalid');
+        }
     };
 
     changePasswordConfirm = (event) => {
         this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.password) {
+            this.setState({passwordsMatchError: true});
             event.target.classList.add('is-invalid');
         } else {
+            this.setState({passwordsMatchError: false});
             event.target.classList.remove('is-invalid');
         }
     };
@@ -69,11 +83,42 @@ class SignUpCustomer extends Component {
         }
     };
 
-    validate = () => {
-        if (this.state.password !== this.state.confirmPassword) {
-            return false;
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name + 'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name + 'Error']: false});
         }
-        if (this.state.username.length < 3) {
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({emailError: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({emailError: true});
+        }
+    }
+
+    formValidation(event) {
+        const name = event.target.name;
+        switch (name) {
+            case "username":
+                this.validateLength(2, 50, event.target);
+                break;
+            case "email":
+                this.validateLength(6, 30, event.target);
+                this.validateEmail(event.target);
+                break;
+        }
+    }
+
+    validate = () => {
+        if (this.state.usernameError && this.state.emailError && this.state.passwordsMatchError) {
             return false;
         }
         return !(this.state.email === '' && this.state.phone === '+375');
@@ -154,8 +199,8 @@ class SignUpCustomer extends Component {
                                 <div className="form-group col-md-6">
                                     <input id="first_name" type="text" className="form-control" placeholder="Username"
                                            value={this.state.username} onChange={this.changeUsername}
-                                           disabled={this.state.disabled}/>
-                                    <div id="first_name_feedback" className="invalid-feedback"/>
+                                           disabled={this.state.disabled} name="username"/>
+                                    <p className="errorMessage">Username size must be of length 2 to 50</p>
                                 </div>
                             </div>
                         </div>
@@ -167,10 +212,11 @@ class SignUpCustomer extends Component {
                                     <h2 className="card-title">How to contact you ?</h2>
                                     <div className="form-group">
                                         <label htmlFor="email" className="col-form-label">Email</label>
-                                        <input type="email" className="form-control" id="email"
+                                        <input type="email" className="form-control" id="email" name="email"
                                                placeholder="example@gmail.com" value={this.state.email}
                                                onChange={this.changeEmail} disabled={this.state.disabled}/>
-                                        <div className="email-feedback"/>
+                                        <p className="errorMessage">Email size must be of length 6 to 30 and it must
+                                            have correct form</p>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">Phone number</label>
@@ -198,7 +244,6 @@ class SignUpCustomer extends Component {
                                         <input type="password" className="form-control" id="password"
                                                placeholder="Type your password" value={this.state.password}
                                                onChange={this.changePassword} disabled={this.state.disabled}/>
-                                        <div className="password-feedback"/>
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="password_conf" className="col-form-label">Pasword
@@ -206,7 +251,8 @@ class SignUpCustomer extends Component {
                                         <input type="password" className="form-control" id="password_conf"
                                                placeholder="Type your password again" value={this.state.confirmPassword}
                                                onChange={this.changePasswordConfirm} disabled={this.state.disabled}/>
-                                        <div className="password_conf-feedback"/>
+                                        {this.state.passwordsMatchError ?
+                                            <p className="text-danger">Passwords didn't match</p> : null}
                                     </div>
                                 </div>
                             </div>

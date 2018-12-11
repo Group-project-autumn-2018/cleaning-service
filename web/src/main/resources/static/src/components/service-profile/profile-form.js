@@ -50,7 +50,7 @@ class ProfileForm extends Component {
             usernameError: false,
             addressError: false,
             emailError: false,
-            isEmailCorrect: false,
+            isEmailIncorrect: false,
             basePriceError: false,
             dryCarpetCleaningError: false,
             furnitureAndCoatingsCleaningError: false,
@@ -113,10 +113,10 @@ class ProfileForm extends Component {
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(target.value)) {
             target.classList.remove('invalid');
-            this.setState({isEmailCorrect: false});
+            this.setState({isEmailIncorrect: false});
         } else {
             target.classList.add('invalid');
-            this.setState({isEmailCorrect: true});
+            this.setState({isEmailIncorrect: true});
         }
     }
 
@@ -291,7 +291,7 @@ class ProfileForm extends Component {
         event.preventDefault();
         console.log(this.state);
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
-            !this.state.isEmailCorrect && this.validateCleaningTypes()) {
+            !this.state.isEmailIncorrect && this.validateCleaningTypes()) {
             const service = {
                 ...this.state.service,
                 password: this.state.service.newPassword
