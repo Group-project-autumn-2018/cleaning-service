@@ -1,5 +1,6 @@
 package com.itechart.customer.service;
 
+import com.itechart.common.entity.Address;
 import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
@@ -112,6 +113,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setRoles(Collections.singletonList(customerRole));
         customer.setPassword(bCryptPasswordEncoder.encode(registrationDto.getPassword()));
         customer.setAddingDate(LocalDate.now());
+        Address address = new Address();
+        address.setAddress(" ");
+        address.setLat(0.0);
+        address.setLon(0.0);
+        customer.setAddress(address);
         customerRepository.saveAndFlush(customer);
         return customer.getId();
     }
