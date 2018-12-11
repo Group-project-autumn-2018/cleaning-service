@@ -46,3 +46,22 @@ p.errorMessage {
 input.invalid ~ p.errorMessage {
     visibility: visible;
 }
+
+.custom-card-group {
+    width: 70%;
+}
+
+.custom-icon {
+    position: relative;
+    left: 35%;
+    margin-top: 5%;
+    width: 40%;
+}
+
+.fa-8x {
+    font-size: 8em;
+}
+
+.space-left {
+    margin-left: 10%;
+}

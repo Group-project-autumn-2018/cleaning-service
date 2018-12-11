@@ -24,16 +24,17 @@ class SignUpCustomer extends Component {
             message: '',
             passwordsMatchError: false,
             usernameError: false,
-            emailError: false
+            emailError: false,
+            passwordLengthError: false
         }
     }
 
     changeUsername = (event) => {
         this.setState({username: event.target.value});
         if (event.target.value.length < 3) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
         this.formValidation(event);
     };
@@ -46,20 +47,24 @@ class SignUpCustomer extends Component {
     changePhone = (event) => {
         this.setState({phone: event.target.value});
         if (event.target.value.length < 18) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
     };
 
     changePassword = (event) => {
+        const value = event.target.value;
         this.setState({password: event.target.value});
-        if (event.target.value !== this.state.confirmPassword) {
+        if (value !== this.state.confirmPassword) {
             this.setState({passwordsMatchError: true});
-            event.target.classList.add('is-invalid');
         } else {
             this.setState({passwordsMatchError: false});
-            event.target.classList.remove('is-invalid');
+        }
+        if (value.length < 6 || value.length > 30) {
+            this.setState({passwordLengthError: true});
+        } else {
+            this.setState({passwordLengthError: false});
         }
     };
 
@@ -67,19 +72,19 @@ class SignUpCustomer extends Component {
         this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.password) {
             this.setState({passwordsMatchError: true});
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
         } else {
             this.setState({passwordsMatchError: false});
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
     };
 
     changeCode = (event) => {
         this.setState({code: event.target.value});
         if (event.target.value.length !== 6) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
     };
 
@@ -244,6 +249,9 @@ class SignUpCustomer extends Component {
                                         <input type="password" className="form-control" id="password"
                                                placeholder="Type your password" value={this.state.password}
                                                onChange={this.changePassword} disabled={this.state.disabled}/>
+                                        {this.state.passwordLengthError ?
+                                            <p className="text-danger">Password needs to be between 6 and 30
+                                                characters long</p> : null}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="password_conf" className="col-form-label">Pasword

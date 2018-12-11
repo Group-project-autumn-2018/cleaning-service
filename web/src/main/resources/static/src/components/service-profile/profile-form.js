@@ -384,7 +384,7 @@ class ProfileForm extends Component {
                     </div>
                 </form>
                 <button className="btn btn-primary" onClick={this.testNo}>Test</button>
-                <ToastContainer autoClose={false} toastClassName='toast-container' position="bottom-right"/>
+                <ToastContainer autoClose={15000} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )
     }
