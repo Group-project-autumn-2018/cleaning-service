@@ -32,6 +32,9 @@ public class CleaningCompany extends User {
     private BigDecimal averagePrice;
 
     @Transient
+    private Integer estimatedTime;
+
+    @Transient
     private Double distance;
 
     @OneToOne(targetEntity = CleaningTypes.class, mappedBy = "company")

@@ -92,11 +92,12 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
         }
         List<CleaningCompany> companies = new ArrayList<>();
         for (CleaningCompany cleaningCompany : cleaningCompanyList) {
-            BigDecimal price = calculationRules.calculateAvaregePrice(searchCompanyDto, cleaningCompany.getId());
+            BigDecimal price = calculationRules.calculateAveragePrice(searchCompanyDto, cleaningCompany.getId());
+            Integer estimatedTime = calculationRules.getEndCleaningTime(searchCompanyDto, cleaningCompany.getId());
             cleaningCompany.setAveragePrice(price);
+            cleaningCompany.setEstimatedTime(estimatedTime);
             companies.add(cleaningCompany);
         }
-
         return companies;
     }
 
@@ -129,17 +130,31 @@ public class SearchCompanyServiceImpl implements SearchCompanyService {
 
         for (CleaningCompany cleaningCompany : cleaningCompanyList) {
 
-
-            Double x = latitude - cleaningCompany.getAddress().getLon();
-            Double y = cleaningCompany.getAddress().getLon() - longitude;
-            Double yLong = cleaningCompany.getAddress().getLon() - x;
-            Double xLat = latitude - y;
-            Double distance = Math.sqrt(Math.pow(yLong, 2) + Math.pow(xLat, 2));
-
+            Double distance = getDistanceFromLatLonInKm(
+                    latitude, longitude,
+                    cleaningCompany.getAddress().getLat(),
+                    cleaningCompany.getAddress().getLon());
             cleaningCompany.setDistance(distance);
             cleaningCompanyResultList.add(cleaningCompany);
         }
+
         cleaningCompanyResultList.sort(distanceComparator);
         return cleaningCompanyResultList;
+    }
+
+    private Double deg2rad(Double deg) {
+        return deg * (Math.PI / 180);
+    }
+
+    private Double getDistanceFromLatLonInKm(Double lat1, Double lon1, Double lat2, Double lon2) {
+        Integer R = 6371;
+        Double dLat = deg2rad(lat2 - lat1);
+        Double dLon = deg2rad(lon2 - lon1);
+        Double a =
+                Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                        Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) *
+                                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c; // Distance in km
     }
 }
