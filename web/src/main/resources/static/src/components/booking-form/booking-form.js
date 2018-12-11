@@ -142,7 +142,6 @@ class BookingForm extends Component {
                                            id="profileFormAddress"
                                            data-toggle="dropdown" placeholder="Your address..."
                                            name="address"
-                                        // value={}
                                            onChange={this.onChangeHandler}/>
                                     <DropdownAddressList array={this.state.addresses}
                                                          onClickHandler={this.onClickAddressHandler}/>
