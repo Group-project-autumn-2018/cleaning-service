@@ -7,11 +7,12 @@ const CleaningTypesForm = (props) => {
             <div className="form-group row">
                 <label className="col-sm-5">Base price</label>
                 <input type="number" name="basePrice" className="form-control col-sm-4" placeholder="Base price, $"
-                       value={props.cleaningTypes.price.basePrice} onChange={props.onChangePriceHandler}
-                />
+                       value={props.cleaningTypes.price.basePrice} onChange={props.onChangePriceHandler}/>
+                {props.errors.basePriceError ? <p className="error">You have to fill base price
+                    fields or write them in correct way</p> : null}
             </div>
             <div className="form-group row">
-                <label className="col-sm-5">Standard room cleaning coefficient</label>
+                <label className="col-sm-5">Standard room cleaning</label>
                 <input type="checkBox" name="standardRoomCleaning"
                        onChange={props.onChangeTypeHandler} checked={props.cleaningTypes.standardRoomCleaning}/>
                 {props.cleaningTypes.standardRoomCleaning ?
@@ -22,6 +23,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.standardRoomCleaningError ? <p className="error">You have to fill standard room cleaning
+                    fields or write them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
@@ -36,6 +39,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.springCleaningError ? <p className="error">You have to fill spring cleaning fields or
+                    write them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
@@ -53,6 +58,9 @@ const CleaningTypesForm = (props) => {
                         ]}
                         onChangePriceHandler={props.onChangePriceHandler}
                         onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.repairAndConstructionCleaningError ?
+                    <p className="error">You have to fill repair and construction cleaning fields or
+                        write them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
@@ -67,6 +75,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.dryCarpetCleaningError ? <p className="error">You have to fill dry carpet cleaning fields
+                    or write them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
@@ -81,6 +91,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.officeCleaningError ? <p className="error">You have to fill office cleaning fields or
+                    write them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
@@ -97,6 +109,9 @@ const CleaningTypesForm = (props) => {
                         ]}
                         onChangePriceHandler={props.onChangePriceHandler}
                         onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.furnitureAndCoatingsCleaningError ?
+                    <p className="error">You have to fill furniture and coatings cleaning fields or write
+                        them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
@@ -111,6 +126,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.industrialCleaningError ? <p className="error">You have to fill industrial cleaning
+                    fields or write them in correct way</p> : null}
             </div>
             <div className="form-group row">
                 <label className="col-sm-5">Pool cleaning</label>
@@ -124,6 +141,8 @@ const CleaningTypesForm = (props) => {
                                      ]}
                                      onChangePriceHandler={props.onChangePriceHandler}
                                      onChangeTimeHandler={props.onChangeTimeHandler}/> : ''}
+                {props.errors.poolCleaningError ? <p className="error">You have to fill pool cleaning fields or
+                    write them in correct way</p> : null}
             </div>
 
             <div className="form-group row">
