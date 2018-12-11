@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import Select from 'react-select';
+import './list-of-company-orders.css';
 
 class SortFilter extends Component {
 
@@ -61,9 +62,9 @@ class SortFilter extends Component {
                 <Select options={this.statusOptions} onChange={this.selectStatusHandler} name="cleaningStatus"
                         placeholder="Choose status" className="search-item" value={selectedStatusOption}/>
 
-                <button className="btn btn-secondary" onClick={this.props.onClick}>Search</button>
+                <button className="btn btn-secondary btnProposals" onClick={this.props.onClick}>Search</button>
 
-                <button className="btn btn-secondary " onClick={this.props.showAll}>All</button>
+                <button className="btn btn-secondary "  onClick={this.props.showAll}>All</button>
 
             </div>
         )

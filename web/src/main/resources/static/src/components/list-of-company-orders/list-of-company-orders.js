@@ -69,7 +69,8 @@ class ListOfCompanyOrders extends Component {
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
                 <h3 className="text-center pt-4"><b>Active orders</b></h3>
-                <SortFilter onChange={this.handleChange}
+                <SortFilter className="width:80%"
+                            onChange={this.handleChange}
                             onClick={this.handleSearch}
                             onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
                             selectedSortOption={this.state.selectedSortOption}
