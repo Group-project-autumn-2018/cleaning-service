@@ -37,7 +37,7 @@ public class CompanySpecification implements Specification<CleaningCompany> {
             }
             case "cleaningType": {
 
-                return builder.like(builder.upper(root.get("cleaningTypes").get(value)), "TRUE");
+                return builder.equal(root.get("cleaningTypes").get(value), true);
             }
             default: {
                 if (criteria.getValue() instanceof String) {

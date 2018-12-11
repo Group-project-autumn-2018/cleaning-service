@@ -72,10 +72,12 @@ class CompaniesWithSearch extends Component {
     render() {
         return (
             <div id="companies-list" className="bg-light container-fluid w-100 h-100">
-
+                <h1 className="text-center">Cleaning company list</h1>
                 <CompanySearchBar onChange={this.handleChange} onClick={this.handleSearch}
                                   selectedTypeOption={this.state.selectedTypeOption}
                                   showAll={this.showAll}/>
+                <h1></h1>
+                <CompaniesList companies={this.props.companies}/>
                 <nav aria-label="Page navigation" className="mx-auto">
                     <Pagination activePage={this.props.activePage + 1}
                                 itemsCountPerPage={this.props.itemsCountPerPage}
@@ -88,7 +90,6 @@ class CompaniesWithSearch extends Component {
                     />
                 </nav>
 
-                <CompaniesList companies={this.props.companies}/>
             </div>
         );
     }

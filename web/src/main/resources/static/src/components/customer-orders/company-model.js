@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
 import Rating from 'react-rating';
 import {Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 
 class CompanyForSearching extends Component {
 
     onClick = () => {
-
+        /////
+        this.props.history.push("/booking");
     };
 
     render() {
@@ -35,4 +37,4 @@ class CompanyForSearching extends Component {
 }
 
 
-export default (CompanyForSearching);
+export default withRouter(CompanyForSearching);
