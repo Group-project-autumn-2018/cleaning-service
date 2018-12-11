@@ -51,16 +51,15 @@ class ProfileForm extends Component {
             addressError: false,
             emailError: false,
             isEmailCorrect: false,
-            cleaningTypesErrors: {
-                dryCarpetCleaningError: false,
-                furnitureAndCoatingsCleaningError: false,
-                industrialCleaningError: false,
-                officeCleaningError: false,
-                poolCleaningError: false,
-                repairAndConstructionCleaningError: false,
-                springCleaningError: false,
-                standardRoomCleaningError: false
-            }
+            basePriceError: false,
+            dryCarpetCleaningError: false,
+            furnitureAndCoatingsCleaningError: false,
+            industrialCleaningError: false,
+            officeCleaningError: false,
+            poolCleaningError: false,
+            repairAndConstructionCleaningError: false,
+            springCleaningError: false,
+            standardRoomCleaningError: false
         };
     }
 
@@ -146,44 +145,42 @@ class ProfileForm extends Component {
 
     validateCleaningType(cleaningTypes, typeName) {
         if (cleaningTypes[typeName]) {
-            if (cleaningTypes.cleaningTime[typeName] == null || cleaningTypes.cleaningTime[typeName] < 0 ||
-                cleaningTypes.price[typeName] == null || cleaningTypes.price[typeName] < 0) {
-                const cleaningTypesErrors = {
-                    ...this.state.cleaningTypesErrors,
-                    [typeName + 'Error']: true
-                };
-                this.setState({cleaningTypesErrors: cleaningTypesErrors});
+            if (cleaningTypes.cleaningTime[typeName + 'Time'] == null ||
+                +cleaningTypes.cleaningTime[typeName + 'Time'] < 0 ||
+                cleaningTypes.price[typeName] == null || +cleaningTypes.price[typeName] < 0) {
+                this.setState({[typeName + 'Error']: true});
                 return false
             } else {
-                const cleaningTypesErrors = {
-                    ...this.state.cleaningTypesErrors,
-                    [typeName + 'Error']: false
-                };
-                this.setState({cleaningTypesErrors: cleaningTypesErrors});
+                if (this.state[typeName + 'Error']) {
+                    this.setState({[typeName + 'Error']: false});
+                    console.log([typeName + 'Error'] + " setting false");
+                } else console.log([typeName + 'Error'] + " dont setting false");
                 return true;
             }
         } else {
-            const cleaningTypesErrors = {
-                ...this.state.cleaningTypesErrors,
-                [typeName + 'Error']: false
-            };
-            this.setState({cleaningTypesErrors: cleaningTypesErrors});
+            if (this.state[typeName + 'Error']) this.setState({[typeName + 'Error']: false});
             return true;
         }
     }
 
     validateCleaningTypes() {
-        if (this.state.service.cleaningTypes.basePrice === null ||
-            this.state.service.cleaningTypes.basePrice < 0) {
+        if (this.state.service.cleaningTypes.price.basePrice == null ||
+            +this.state.service.cleaningTypes.price.basePrice < 0) {
+            this.setState({basePriceError: true});
+            console.log("adding base price error");
             return false;
-        } else return this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'poolCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
-            this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
+        } else {
+            if (this.state.basePriceError) this.setState({basePriceError: false});
+            let result = this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'poolCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
+            return result;
+        }
     }
 
     onChangeLogoHandler = (event) => {
@@ -223,7 +220,7 @@ class ProfileForm extends Component {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
             ...this.state.service.cleaningTypes.cleaningTime,
-            [name]: event.target.value
+            [name]: +event.target.value
         };
         const updatedTypes = {
             ...this.state.service.cleaningTypes,
@@ -240,7 +237,7 @@ class ProfileForm extends Component {
         const name = event.target.name;
         const updatedPriceDto = {
             ...this.state.service.cleaningTypes.price,
-            [name]: event.target.value
+            [name]: +event.target.value
         };
         const updatedTypes = {
             ...this.state.service.cleaningTypes,
@@ -329,7 +326,13 @@ class ProfileForm extends Component {
     };
 
     render() {
-        let cleaningTypesErrors = {...this.state.cleaningTypesErrors};
+        //let cleaningTypesErrors = {...this.state.cleaningTypesErrors};
+        let {basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError} = this.state;
+        let cleaningTypesErrors = {basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError};
         return (
             <div className="profile-form-container">
                 <form className="container profile-form" onSubmit={this.submitHandler}>
