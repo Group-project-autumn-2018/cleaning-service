@@ -1,5 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
+import Moment from 'react-moment';
+import moment from 'moment';
 
 const Order = ({order}) => {
 
@@ -8,7 +10,7 @@ const Order = ({order}) => {
     if (order.address) {
         address = order.address.address ? order.address.address : order.address
     }
-
+    const time = moment(order.cleaningTime, "HH:mm:ss").format("HH:mm");
 
     switch (order.status) {
         case 'New':
@@ -37,8 +39,8 @@ const Order = ({order}) => {
                     {order.bathroomsCount ? <li>{`Bathrooms ${order.bathroomsCount}`}</li> : ""}
                 </ul>
             </td>
-            <td className="col">{order.cleaningDay}</td>
-            <td className="col">{order.cleaningTime}</td>
+            <td className="col"><Moment format='DD-MM-YYYY'>{order.cleaningDay}</Moment></td>
+            <td className="col">{time}</td>
             <td className="col">{`${order.frequency}(${order.duration})`}</td>
             <td className="col"><Link to={`/company/${order.company}`}>{order.companyName}</Link></td>
             <td className="col">{order.price}</td>

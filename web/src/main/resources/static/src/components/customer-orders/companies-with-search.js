@@ -16,17 +16,18 @@ class CompaniesWithSearch extends Component {
             company: null,
             cleaningType: null,
             search: null,
-            companies: {}
+            companies: {},
+            itemsCountPerPage: 5
         }
     }
 
     componentDidMount() {
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, null);
+        this.props.fetchOrders(0, this.state.itemsCountPerPage, this.entityURN, this.props.token, null);
     }
 
     showAll = () => {
         this.setState({search: null});
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, null);
+        this.props.fetchOrders(0, this.state.itemsCountPerPage, this.entityURN, this.props.token, null);
 
     };
 
@@ -36,7 +37,7 @@ class CompaniesWithSearch extends Component {
         if (this.state.cleaningType) search += `cleaningType:${this.state.cleaningType},`;
         search = search.substring(0, search.length - 1);
         this.setState({search: search});
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN + "/search",
+        this.props.fetchOrders(0, this.state.itemsCountPerPage, this.entityURN + "/search",
             this.props.token, null, search);
 
     };
@@ -59,11 +60,11 @@ class CompaniesWithSearch extends Component {
         const search = this.state.search ? this.state.search : '';
 
         if (search === '') {
-            this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
+            this.props.fetchOrders(page - 1, this.state.itemsCountPerPage, this.entityURN,
                 this.props.token, null, search);
         }
         else {
-            this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN + "/search",
+            this.props.fetchOrders(page - 1, this.state.itemsCountPerPage, this.entityURN + "/search",
                 this.props.token, null, search);
         }
 
@@ -80,7 +81,7 @@ class CompaniesWithSearch extends Component {
                 <CompaniesList companies={this.props.companies}/>
                 <nav aria-label="Page navigation" className="mx-auto">
                     <Pagination activePage={this.props.activePage + 1}
-                                itemsCountPerPage={this.props.itemsCountPerPage}
+                                itemsCountPerPage={this.state.itemsCountPerPage}
                                 totalItemsCount={this.props.totalItemsCount}
                                 pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages : 5}
                                 onChange={this.handlePageChange}

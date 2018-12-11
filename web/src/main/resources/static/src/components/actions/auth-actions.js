@@ -64,7 +64,6 @@ const fetchToken = (body, dispatch) => {
                         token: data.access_token,
                         tokenExpirationDate: tokenExpirationDate,
                         refreshToken: data.refresh_token,
-                        address: decodedToken.address
                     };
                     dispatch(authSuccess(payload));
                     dispatch(setAuthTimeout(data.expires_in * 1000))

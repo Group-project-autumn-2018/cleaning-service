@@ -57,6 +57,7 @@ class AppRouting extends Component {
                     <Route path="/profile" component={MainProfile}/>
                     <Route path="/logout" component={Logout}/>
                     <Route path="/login" component={SignIn}/>
+                    <Route path="/company/search" component={CompaniesWithSearch}/>
                     <Route path="/company/:id/feedback" render={({match}) => {
                         const {id} = match.params;
                         return <Feedback serviceId={id} />
@@ -74,7 +75,6 @@ class AppRouting extends Component {
                            }}
                     />
                     <Route path="/customer/orders" component={CustomerOrdersList}/>
-                    <Route exact path="/companies-search" component={CompaniesWithSearch} />
                     <Redirect to="/"/>
                 </Switch>
             )
