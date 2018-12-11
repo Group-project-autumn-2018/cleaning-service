@@ -86,7 +86,9 @@ class SignUpService extends Component {
             poolCleaningError: false,
             repairAndConstructionCleaningError: false,
             springCleaningError: false,
-            standardRoomCleaningError: false
+            standardRoomCleaningError: false,
+            passwordMatchError: false,
+            passwordLengthError: false
         };
     }
 
@@ -141,14 +143,23 @@ class SignUpService extends Component {
             password: event.target.value
         };
         this.setState({service: updatedService});
+        if (event.target.value.length < 6 || event.target.value.length > 30) {
+            this.setState({passwordLengthError: true});
+            event.target.classList.add('invalid');
+        } else {
+            this.setState({passwordLengthError: false});
+            event.target.classList.remove('invalid');
+        }
     };
 
     changePasswordConfirm = (event) => {
         this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.service.password) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
+            this.setState({passwordMatchError: true});
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
+            this.setState({passwordMatchError: false});
         }
     };
 
@@ -463,23 +474,16 @@ const MainPanel = (props) => {
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
                     <input type="text" className="form-control label-left-space col-sm-6" id="profileFormDescription"
-                           placeholder="Description"
-                           name="description"
-                           value={props.service.description}
-                           onChange={props.onChangeHandler}
-                    />
+                           placeholder="Description" name="description" value={props.service.description}
+                           onChange={props.onChangeHandler}/>
                 </div>
             </div>
             <div className="form-group row">
                 <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
                 <div className="col-sm-8 dropdown">
                     <input type="text" className="form-control dropdown-toggle label-left-space col-sm-6"
-                           id="profileFormAddress"
-                           data-toggle="dropdown" placeholder="Address"
-                           name="address"
-                           value={props.tempAddress}
-                           onChange={props.onChangeHandler}
-                    />
+                           id="profileFormAddress" data-toggle="dropdown" placeholder="Address"
+                           name="address" value={props.tempAddress} onChange={props.onChangeHandler}/>
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
                 </div>
             </div>

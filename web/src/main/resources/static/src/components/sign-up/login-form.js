@@ -21,7 +21,7 @@ const LoginForm = (props) => {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className="col-form-label">Email</label>
-                                <input type="email" className="form-control" id="email"
+                                <input type="email" className="form-control" name="email"
                                        placeholder="example@gmail.com" value={props.service.email}
                                        onChange={props.changeEmail} disabled={props.disabled}/>
                                 <div className="email-feedback"/>
@@ -53,7 +53,8 @@ const LoginForm = (props) => {
                                 <input type="password" className="form-control" id="password"
                                        placeholder="Type your password" value={props.service.password}
                                        onChange={props.changePassword} disabled={props.disabled}/>
-                                <div className="password-feedback"/>
+                                {props.passwordLengthError ? <p className="errorMessage">
+                                    Password needs to be between 6 and 30 characters long</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password_conf" className="col-form-label">Password
@@ -61,7 +62,8 @@ const LoginForm = (props) => {
                                 <input type="password" className="form-control" id="password_conf"
                                        placeholder="Type your password again" value={props.confirmPassword}
                                        onChange={props.changePasswordConfirm} disabled={props.disabled}/>
-                                <div className="password_conf-feedback"/>
+                                {props.passwordMatchError ?
+                                    <p className="text-center text-danger">Passwords don't match</p> : null}
                             </div>
                         </div>
                     </div>
