@@ -15,7 +15,7 @@ class SignUpService extends Component {
     serviceApi = new ServiceApi();
     openStreetMapApi = new OpenStreetMapApi();
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             disabled: false,
@@ -46,42 +46,49 @@ class SignUpService extends Component {
                     industrialCleaning: false,
                     poolCleaning: false,
                     price: {
-                        basePrice: null,
-                        standardRoomCleaning: null,
-                        springCleaning: null,
-                        repairAndConstructionCleaning: null,
-                        dryCarpetCleaning: null,
-                        officeCleaning: null,
-                        furnitureAndCoatingsCleaning: null,
-                        industrialCleaning: null,
-                        poolCleaning: null,
-                        smallRoom: null,
-                        bigRoom: null,
-                        bathroom: null
+                        basePrice: 0,
+                        standardRoomCleaning: 0,
+                        springCleaning: 0,
+                        repairAndConstructionCleaning: 0,
+                        dryCarpetCleaning: 0,
+                        officeCleaning: 0,
+                        furnitureAndCoatingsCleaning: 0,
+                        industrialCleaning: 0,
+                        poolCleaning: 0,
+                        smallRoom: 0,
+                        bigRoom: 0,
+                        bathroom: 0
                     },
                     cleaningTime: {
-                        standardRoomCleaningTime: null,
-                        springCleaningTime: null,
-                        repairAndConstructionCleaningTime: null,
-                        dryCarpetCleaningTime: null,
-                        officeCleaningTime: null,
-                        furnitureAndCoatingsCleaningTime: null,
-                        industrialCleaningTime: null,
-                        poolCleaningTime: null,
-                        smallRoomCleaningTime: null,
-                        bigRoomCleaningTime: null,
-                        bathroomCleaningTime: null
+                        standardRoomCleaningTime: 0,
+                        springCleaningTime: 0,
+                        repairAndConstructionCleaningTime: 0,
+                        dryCarpetCleaningTime: 0,
+                        officeCleaningTime: 0,
+                        furnitureAndCoatingsCleaningTime: 0,
+                        industrialCleaningTime: 0,
+                        poolCleaningTime: 0,
+                        smallRoomCleaningTime: 0,
+                        bigRoomCleaningTime: 0,
+                        bathroomCleaningTime: 0
                     }
                 },
 
             },
             message: '',
             modeToggle: 'security',
-            addresses: []
-
+            addresses: [],
+            basePriceError: false,
+            dryCarpetCleaningError: false,
+            furnitureAndCoatingsCleaningError: false,
+            industrialCleaningError: false,
+            officeCleaningError: false,
+            poolCleaningError: false,
+            repairAndConstructionCleaningError: false,
+            springCleaningError: false,
+            standardRoomCleaningError: false
         };
     }
-
 
 
     changeCode = (event) => {
@@ -158,7 +165,7 @@ class SignUpService extends Component {
 
 
     preRegister = () => {
-        if (this.validate()) {
+        if (this.validate() && this.validateCleaningTypes()) {
             this.setState({disabled: true});
 
             const objDto = {...this.state.service};
@@ -229,6 +236,45 @@ class SignUpService extends Component {
     //     }
     // };
 
+    validateCleaningType(cleaningTypes, typeName) {
+        if (cleaningTypes[typeName]) {
+            if (cleaningTypes.cleaningTime[typeName + 'Time'] == null ||
+                +cleaningTypes.cleaningTime[typeName + 'Time'] < 0 ||
+                cleaningTypes.price[typeName] == null || +cleaningTypes.price[typeName] < 0) {
+                this.setState({[typeName + 'Error']: true});
+                return false
+            } else {
+                if (this.state[typeName + 'Error']) {
+                    this.setState({[typeName + 'Error']: false});
+                    console.log([typeName + 'Error'] + " setting false");
+                } else console.log([typeName + 'Error'] + " dont setting false");
+                return true;
+            }
+        } else {
+            if (this.state[typeName + 'Error']) this.setState({[typeName + 'Error']: false});
+            return true;
+        }
+    }
+
+    validateCleaningTypes() {
+        if (this.state.service.cleaningTypes.price.basePrice == null ||
+            +this.state.service.cleaningTypes.price.basePrice < 0) {
+            this.setState({basePriceError: true});
+            console.log("adding base price error");
+            return false;
+        } else {
+            if (this.state.basePriceError) this.setState({basePriceError: false});
+            return this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'poolCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
+        }
+    }
+
     submitHandler = (e) => {
         e.preventDefault();
         this.props.updateService(this.state.service, this.props.token);
@@ -283,7 +329,7 @@ class SignUpService extends Component {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
             ...this.state.service.cleaningTypes.cleaningTime,
-            [name]: event.target.value
+            [name]: +event.target.value
         };
         const updatedTypes = {
             ...this.state.service.cleaningTypes,
@@ -300,7 +346,7 @@ class SignUpService extends Component {
         const name = event.target.name;
         const updatedPriceDto = {
             ...this.state.service.cleaningTypes.price,
-            [name]: event.target.value
+            [name]: +event.target.value
         };
         const updatedTypes = {
             ...this.state.service.cleaningTypes,
@@ -326,6 +372,16 @@ class SignUpService extends Component {
     };
 
     render() {
+        let {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError
+        } = this.state;
+        let cleaningTypesErrors = {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError
+        };
         return (
             <div className="container signup-component">
                 <div className="overlay"/>
@@ -366,6 +422,7 @@ class SignUpService extends Component {
 
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
+                                           errors={cleaningTypesErrors}
                                            onChangeTypeHandler={this.onChangeTypeHandler}
                                            onChangePriceHandler={this.onChangePriceHandler}
                                            onChangeTimeHandler={this.onChangeTimeHandler}

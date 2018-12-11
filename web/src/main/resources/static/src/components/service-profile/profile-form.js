@@ -50,7 +50,7 @@ class ProfileForm extends Component {
             usernameError: false,
             addressError: false,
             emailError: false,
-            isEmailCorrect: false,
+            isEmailIncorrect: false,
             basePriceError: false,
             dryCarpetCleaningError: false,
             furnitureAndCoatingsCleaningError: false,
@@ -113,10 +113,10 @@ class ProfileForm extends Component {
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(target.value)) {
             target.classList.remove('invalid');
-            this.setState({isEmailCorrect: false});
+            this.setState({isEmailIncorrect: false});
         } else {
             target.classList.add('invalid');
-            this.setState({isEmailCorrect: true});
+            this.setState({isEmailIncorrect: true});
         }
     }
 
@@ -125,13 +125,6 @@ class ProfileForm extends Component {
         switch (name) {
             case "username":
                 this.validateLength(2, 50, event.target);
-                /*if (value.length < 2 || value.length > 50) {
-                    event.target.classList.add('invalid');
-                    this.setState({usernameError: true});
-                } else {
-                    event.target.classList.remove('invalid');
-                    this.setState({usernameError: false});
-                }*/
                 break;
             case "email":
                 this.validateLength(6, 30, event.target);
@@ -171,7 +164,7 @@ class ProfileForm extends Component {
             return false;
         } else {
             if (this.state.basePriceError) this.setState({basePriceError: false});
-            let result = this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
+            return this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
                 this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
                 this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
                 this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
@@ -179,7 +172,6 @@ class ProfileForm extends Component {
                 this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
                 this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
                 this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
-            return result;
         }
     }
 
@@ -188,7 +180,6 @@ class ProfileForm extends Component {
     };
 
     onClickAddressHandler = (event) => {
-        // && e.target.value.length > 5
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
         const updatedAddress = {
             address: this.state.tempAddress,
@@ -300,7 +291,7 @@ class ProfileForm extends Component {
         event.preventDefault();
         console.log(this.state);
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
-            !this.state.isEmailCorrect && this.validateCleaningTypes()) {
+            !this.state.isEmailIncorrect && this.validateCleaningTypes()) {
             const service = {
                 ...this.state.service,
                 password: this.state.service.newPassword
@@ -326,13 +317,16 @@ class ProfileForm extends Component {
     };
 
     render() {
-        //let cleaningTypesErrors = {...this.state.cleaningTypesErrors};
-        let {basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+        let {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
             industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
-            springCleaningError, standardRoomCleaningError} = this.state;
-        let cleaningTypesErrors = {basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            springCleaningError, standardRoomCleaningError
+        } = this.state;
+        let cleaningTypesErrors = {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
             industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
-            springCleaningError, standardRoomCleaningError};
+            springCleaningError, standardRoomCleaningError
+        };
         return (
             <div className="profile-form-container">
                 <form className="container profile-form" onSubmit={this.submitHandler}>
