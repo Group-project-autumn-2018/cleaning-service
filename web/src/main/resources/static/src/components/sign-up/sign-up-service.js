@@ -237,17 +237,17 @@ class SignUpService extends Component {
     // };
 
     validateCleaningType(cleaningTypes, typeName) {
+        const cleaningTime = cleaningTypes.cleaningTime[typeName + 'Time'];
+        const cleaningPrice = cleaningTypes.price[typeName];
         if (cleaningTypes[typeName]) {
-            if (cleaningTypes.cleaningTime[typeName + 'Time'] == null ||
-                +cleaningTypes.cleaningTime[typeName + 'Time'] < 0 ||
-                cleaningTypes.price[typeName] == null || +cleaningTypes.price[typeName] < 0) {
+            if (cleaningTime == null || +cleaningTime < 0 || cleaningTime.toString().length > 9 ||
+                cleaningPrice == null || +cleaningPrice < 0 || cleaningPrice.toString().length > 15) {
                 this.setState({[typeName + 'Error']: true});
                 return false
             } else {
                 if (this.state[typeName + 'Error']) {
                     this.setState({[typeName + 'Error']: false});
-                    console.log([typeName + 'Error'] + " setting false");
-                } else console.log([typeName + 'Error'] + " dont setting false");
+                }
                 return true;
             }
         } else {
@@ -257,8 +257,8 @@ class SignUpService extends Component {
     }
 
     validateCleaningTypes() {
-        if (this.state.service.cleaningTypes.price.basePrice == null ||
-            +this.state.service.cleaningTypes.price.basePrice < 0) {
+        const basePrice = this.state.service.cleaningTypes.price.basePrice;
+        if (basePrice == null || +basePrice < 0 || basePrice.toString().length > 20) {
             this.setState({basePriceError: true});
             console.log("adding base price error");
             return false;
