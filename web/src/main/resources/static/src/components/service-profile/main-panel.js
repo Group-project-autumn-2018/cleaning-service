@@ -34,6 +34,14 @@ const MainPanel = (props) => {
                 </div>
             </div>
             <div className="form-group row">
+                <label htmlFor="profileFormDescription" className="col-sm-4 col-form-label">Description</label>
+                <div className="col-sm-8">
+                    <input type="text" className="form-control" id="profileFormDescription" placeholder="Description"
+                           maxLength={255} name="description" value={props.service.description}
+                           onChange={props.onChangeHandler}/>
+                </div>
+            </div>
+            <div className="form-group row">
                 <label htmlFor="profileFormPhone" className="col-sm-4 col-form-label">Phone</label>
                 <div className="col-sm-8">
                     <MaskedInput

@@ -86,7 +86,13 @@ class SignUpService extends Component {
             poolCleaningError: false,
             repairAndConstructionCleaningError: false,
             springCleaningError: false,
-            standardRoomCleaningError: false
+            standardRoomCleaningError: false,
+            passwordMatchError: false,
+            passwordLengthError: false,
+            usernameError: false,
+            emailFormatError: false,
+            emailError: false,
+            addressError: false
         };
     }
 
@@ -100,26 +106,23 @@ class SignUpService extends Component {
         }
     };
 
-    changeUsername = (event) => {
+    /*changeUsername = (event) => {
         const updatedService = {
             ...this.state.service,
             username: event.target.value
         };
         this.setState({service: updatedService});
-        if (event.target.value.length < 3) {
-            event.target.classList.add('is-invalid');
-        } else {
-            event.target.classList.remove('is-invalid');
-        }
-    };
+
+    };*/
 
     changeEmail = (event) => {
-
         const updatedService = {
             ...this.state.service,
             email: event.target.value
         };
         this.setState({service: updatedService});
+        this.validateLength(6, 30, event.target);
+        if (!this.state.emailError) this.validateEmail(event.target);
     };
 
     changePhone = (event) => {
@@ -141,23 +144,50 @@ class SignUpService extends Component {
             password: event.target.value
         };
         this.setState({service: updatedService});
+        if (event.target.value.length < 6 || event.target.value.length > 30) {
+            this.setState({passwordLengthError: true});
+            event.target.classList.add('invalid');
+        } else {
+            this.setState({passwordLengthError: false});
+            event.target.classList.remove('invalid');
+        }
     };
 
     changePasswordConfirm = (event) => {
         this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.service.password) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
+            this.setState({passwordMatchError: true});
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
+            this.setState({passwordMatchError: false});
         }
     };
 
-    validate = () => {
-        if (this.state.service.password !== this.state.confirmPassword
-            || this.state.service.password.length < 3) {
-            return false;
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name + 'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name + 'Error']: false});
         }
-        if (this.state.service.username.length < 3) {
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({emailFormatError: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({emailFormatError: true});
+        }
+    }
+
+    validate = () => {
+        if (!this.state.passwordLengthError || !this.state.passwordMatchError || !this.state.usernameError
+            || !this.state.addressError || !this.state.emailFormatError || !this.emailError) {
             return false;
         }
         return !(this.state.service.email === '' && this.state.service.phone === '+375');
@@ -289,7 +319,10 @@ class SignUpService extends Component {
         this.setState({service: updatedService});
         if (name === 'address') {
             this.setState({tempAddress: e.target.value});
+            this.validateLength(4, 100, event.target);
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+        } else if (name === "username") {
+            this.validateLength(2, 50, event.target);
         }
     };
 
@@ -462,24 +495,18 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
-                    <input type="text" className="form-control label-left-space col-sm-6" id="profileFormDescription"
-                           placeholder="Description"
-                           name="description"
-                           value={props.service.description}
-                           onChange={props.onChangeHandler}
-                    />
+                    <input type="text" className="form-control label-left-space col-sm-6" maxLength={255}
+                           placeholder="Description" name="description" value={props.service.description}
+                           onChange={props.onChangeHandler}/>
                 </div>
             </div>
             <div className="form-group row">
                 <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
                 <div className="col-sm-8 dropdown">
                     <input type="text" className="form-control dropdown-toggle label-left-space col-sm-6"
-                           id="profileFormAddress"
-                           data-toggle="dropdown" placeholder="Address"
-                           name="address"
-                           value={props.tempAddress}
-                           onChange={props.onChangeHandler}
-                    />
+                           id="profileFormAddress" data-toggle="dropdown" placeholder="Address"
+                           name="address" value={props.tempAddress} onChange={props.onChangeHandler}/>
+                    <p className="errorMessage">Address size must be of 4 to 100</p>
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
                 </div>
             </div>
