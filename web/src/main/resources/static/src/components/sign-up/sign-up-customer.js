@@ -6,9 +6,11 @@ import CustomerApi from '../services/customer-api';
 import VerificationForm from './verification-form';
 import * as actions from '../actions/auth-actions';
 import {withRouter} from 'react-router-dom';
+import ServiceApi from "../services/service-api";
 
 class SignUpCustomer extends Component {
     customerApiService = new CustomerApi();
+    serviceApi = new ServiceApi();
 
     constructor(props) {
         super(props);
@@ -26,7 +28,8 @@ class SignUpCustomer extends Component {
             usernameError: false,
             emailFormatError: false,
             emailError: false,
-            passwordLengthError: false
+            passwordLengthError: false,
+            emailDuplicateError: false
         }
     }
 
@@ -42,6 +45,12 @@ class SignUpCustomer extends Component {
 
     changeEmail = (event) => {
         this.setState({email: event.target.value});
+        if (event.target.value.length >= 6) {
+            this.serviceApi.isEmailExists(event.target.value)
+                .then(response => {
+                    this.setState({emailDuplicateError: response});
+                });
+        }
         this.formValidation(event);
     };
 
@@ -117,18 +126,19 @@ class SignUpCustomer extends Component {
                 this.validateLength(2, 50, event.target);
                 break;
             case "email":
-                this.validateLength(6, 30, event.target);
+                this.validateLength(6, 50, event.target);
                 if (!this.state.emailError) this.validateEmail(event.target);
                 break;
         }
     }
 
     validate = () => {
-        if (this.state.usernameError && this.state.emailFormatError && this.state.passwordsMatchError ||
-            !this.state.emailError || !this.emailFormatError) {
+        if (this.state.usernameError || this.state.emailFormatError || this.state.passwordsMatchError ||
+            this.state.emailError || this.state.emailDuplicateError) {
             return false;
         }
-        return !(this.state.email === '' && this.state.phone === '+375');
+        return !(this.state.email === '' && this.state.phone === '' ||
+            this.state.username === '' || this.state.password === '');
     };
 
     preRegister = () => {
@@ -222,8 +232,11 @@ class SignUpCustomer extends Component {
                                         <input type="email" className="form-control" id="email" name="email"
                                                placeholder="example@gmail.com" value={this.state.email}
                                                onChange={this.changeEmail} disabled={this.state.disabled}/>
-                                        <p className="errorMessage">Email size must be of length 6 to 30 and it must
+                                        <p className="errorMessage">Email size must be of length 6 to 50 and it must
                                             have correct form</p>
+                                        {this.state.emailDuplicateError ?
+                                            <p className="errorMessage" style={{visibility: "visible"}}>
+                                                This email already registered, choose another one.</p> : null}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">Phone number</label>

@@ -92,7 +92,8 @@ class SignUpService extends Component {
             usernameError: false,
             emailFormatError: false,
             emailError: false,
-            addressError: false
+            addressError: false,
+            emailDuplicateError: false
         };
     }
 
@@ -120,8 +121,14 @@ class SignUpService extends Component {
             ...this.state.service,
             email: event.target.value
         };
+        if (event.target.value.length >= 6) {
+            this.serviceApi.isEmailExists(event.target.value)
+                .then(response => {
+                    this.setState({emailDuplicateError: response});
+                });
+        }
         this.setState({service: updatedService});
-        this.validateLength(6, 30, event.target);
+        this.validateLength(6, 50, event.target);
         if (!this.state.emailError) this.validateEmail(event.target);
     };
 
@@ -186,11 +193,13 @@ class SignUpService extends Component {
     }
 
     validate = () => {
-        if (!this.state.passwordLengthError || !this.state.passwordMatchError || !this.state.usernameError
-            || !this.state.addressError || !this.state.emailFormatError || !this.emailError) {
+        if (this.state.passwordLengthError || this.state.passwordMatchError || this.state.usernameError ||
+            this.state.addressError || this.state.emailFormatError || this.emailError ||
+            this.state.emailDuplicateError) {
             return false;
         }
-        return !(this.state.service.email === '' && this.state.service.phone === '+375');
+        return !(this.state.service.email === '' && this.state.service.phone === '' ||
+            this.state.service.username === '' || this.state.service.password === '');
     };
 
 

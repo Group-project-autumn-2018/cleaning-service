@@ -128,7 +128,7 @@ class ProfileForm extends Component {
                 this.validateLength(2, 50, event.target);
                 break;
             case "email":
-                this.validateLength(6, 30, event.target);
+                this.validateLength(6, 50, event.target);
                 if (!this.state.emailError) this.validateEmail(event.target);
                 break;
             case "address":

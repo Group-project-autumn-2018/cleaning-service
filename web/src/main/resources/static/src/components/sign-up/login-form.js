@@ -26,8 +26,11 @@ const LoginForm = (props) => {
                                        placeholder="example@gmail.com" value={props.service.email}
                                        onChange={props.changeEmail} disabled={props.disabled}/>
                                 {(props.emailFormatError || props.emailError) ?
-                                    <p className="errorMessage">Email size must be of length 6 to 30 and it must have
+                                    <p className="errorMessage">Email size must be of length 6 to 50 and it must have
                                         correct form</p> : null}
+                                {props.emailDuplicateError ?
+                                    <p className="errorMessage" style={{visibility: "visible"}}>
+                                        This email already registered, choose another one.</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="tel" className="col-form-label">Phone number</label>

@@ -6,5 +6,5 @@ public interface UserService {
 
     User getCurrentUser();
 
-    User findByEmail(String email);
+    boolean isEmailExists(String email);
 }

@@ -1,5 +1,6 @@
 package com.itechart.web.controller;
 
+import com.itechart.common.service.UserService;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.FeedbackDto;
@@ -38,11 +39,16 @@ public class CleaningServiceController {
 
     private final FeedbackService feedbackService;
 
+    private final UserService userService;
+
     @Autowired
-    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, SearchCompanyService searchCompanyService, FeedbackService feedbackService) {
+    public CleaningServiceController(CleaningCompanyService cleaningCompanyService,
+                                     SearchCompanyService searchCompanyService,
+                                     FeedbackService feedbackService, UserService userService) {
         this.cleaningCompanyService = cleaningCompanyService;
         this.searchCompanyService = searchCompanyService;
         this.feedbackService = feedbackService;
+        this.userService = userService;
     }
 
     @PostMapping("/search/companies")
@@ -159,6 +165,11 @@ public class CleaningServiceController {
     @GetMapping("/{id}/image")
     public ResponseEntity getLogo(@PathVariable Long id) throws IOException {
         return ResponseEntity.ok(cleaningCompanyService.getLogotype(id));
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity isEmailExists(@RequestParam(name = "email") String email) {
+        return ResponseEntity.ok(userService.isEmailExists(email));
     }
 
     @ExceptionHandler(IOException.class)
