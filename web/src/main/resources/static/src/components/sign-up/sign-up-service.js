@@ -90,7 +90,9 @@ class SignUpService extends Component {
             passwordMatchError: false,
             passwordLengthError: false,
             usernameError: false,
-            emailError: false
+            emailFormatError: false,
+            emailError: false,
+            addressError: false
         };
     }
 
@@ -119,7 +121,8 @@ class SignUpService extends Component {
             email: event.target.value
         };
         this.setState({service: updatedService});
-        this.validateEmail(event.target);
+        this.validateLength(6, 30, event.target);
+        if (!this.state.emailError) this.validateEmail(event.target);
     };
 
     changePhone = (event) => {
@@ -175,15 +178,16 @@ class SignUpService extends Component {
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(target.value)) {
             target.classList.remove('invalid');
-            this.setState({emailError: false});
+            this.setState({emailFormatError: false});
         } else {
             target.classList.add('invalid');
-            this.setState({emailError: true});
+            this.setState({emailFormatError: true});
         }
     }
 
     validate = () => {
-        if (!this.state.passwordLengthError || !this.state.passwordMatchError || !this.state.usernameError) {
+        if (!this.state.passwordLengthError || !this.state.passwordMatchError || !this.state.usernameError
+            || !this.state.addressError || !this.state.emailFormatError || !this.emailError) {
             return false;
         }
         return !(this.state.service.email === '' && this.state.service.phone === '+375');
@@ -315,6 +319,7 @@ class SignUpService extends Component {
         this.setState({service: updatedService});
         if (name === 'address') {
             this.setState({tempAddress: e.target.value});
+            this.validateLength(4, 100, event.target);
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
         } else if (name === "username") {
             this.validateLength(2, 50, event.target);
@@ -490,7 +495,7 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
-                    <input type="text" className="form-control label-left-space col-sm-6" id="profileFormDescription"
+                    <input type="text" className="form-control label-left-space col-sm-6" maxLength={255}
                            placeholder="Description" name="description" value={props.service.description}
                            onChange={props.onChangeHandler}/>
                 </div>
@@ -501,6 +506,7 @@ const MainPanel = (props) => {
                     <input type="text" className="form-control dropdown-toggle label-left-space col-sm-6"
                            id="profileFormAddress" data-toggle="dropdown" placeholder="Address"
                            name="address" value={props.tempAddress} onChange={props.onChangeHandler}/>
+                    <p className="errorMessage">Address size must be of 4 to 100</p>
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
                 </div>
             </div>

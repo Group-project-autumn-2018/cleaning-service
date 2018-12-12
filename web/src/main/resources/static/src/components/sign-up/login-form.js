@@ -25,7 +25,7 @@ const LoginForm = (props) => {
                                 <input type="email" className="form-control" name="email"
                                        placeholder="example@gmail.com" value={props.service.email}
                                        onChange={props.changeEmail} disabled={props.disabled}/>
-                                {props.emailError ?
+                                {(props.emailFormatError || props.emailError) ?
                                     <p className="errorMessage">Email size must be of length 6 to 30 and it must have
                                         correct form</p> : null}
                             </div>

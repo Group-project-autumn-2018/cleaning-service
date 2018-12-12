@@ -28,6 +28,7 @@ class ProfileForm extends Component {
                 newPassword: '',
                 username: '',
                 email: '',
+                description: '',
                 address: {
                     address: '',
                     lat: 0,
@@ -50,7 +51,7 @@ class ProfileForm extends Component {
             usernameError: false,
             addressError: false,
             emailError: false,
-            isEmailIncorrect: false,
+            emailFormatError: false,
             basePriceError: false,
             dryCarpetCleaningError: false,
             furnitureAndCoatingsCleaningError: false,
@@ -113,10 +114,10 @@ class ProfileForm extends Component {
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(target.value)) {
             target.classList.remove('invalid');
-            this.setState({isEmailIncorrect: false});
+            this.setState({emailFormatError: false});
         } else {
             target.classList.add('invalid');
-            this.setState({isEmailIncorrect: true});
+            this.setState({emailFormatError: true});
         }
     }
 
@@ -128,7 +129,7 @@ class ProfileForm extends Component {
                 break;
             case "email":
                 this.validateLength(6, 30, event.target);
-                this.validateEmail(event.target);
+                if (!this.state.emailError) this.validateEmail(event.target);
                 break;
             case "address":
                 this.validateLength(4, 100, event.target);
@@ -291,7 +292,7 @@ class ProfileForm extends Component {
         event.preventDefault();
         console.log(this.state);
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
-            !this.state.isEmailIncorrect && this.validateCleaningTypes()) {
+            !this.state.emailFormatError && this.validateCleaningTypes()) {
             const service = {
                 ...this.state.service,
                 password: this.state.service.newPassword

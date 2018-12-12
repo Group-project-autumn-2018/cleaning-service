@@ -85,10 +85,10 @@ class ProfileForm extends Component {
             case 'email':
                 if (!/[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)/.test(value)) {
                     e.target.classList.add('invalid');
-                    this.setState({emailError: true})
+                    this.setState({emailFormatError: true})
                 } else {
                     e.target.classList.remove('invalid');
-                    this.setState({emailError: false})
+                    this.setState({emailFormatError: false})
                 }
                 break;
             case 'password':

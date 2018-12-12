@@ -24,6 +24,7 @@ class SignUpCustomer extends Component {
             message: '',
             passwordsMatchError: false,
             usernameError: false,
+            emailFormatError: false,
             emailError: false,
             passwordLengthError: false
         }
@@ -102,10 +103,10 @@ class SignUpCustomer extends Component {
         const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
         if (re.test(target.value)) {
             target.classList.remove('invalid');
-            this.setState({emailError: false});
+            this.setState({emailFormatError: false});
         } else {
             target.classList.add('invalid');
-            this.setState({emailError: true});
+            this.setState({emailFormatError: true});
         }
     }
 
@@ -117,13 +118,14 @@ class SignUpCustomer extends Component {
                 break;
             case "email":
                 this.validateLength(6, 30, event.target);
-                this.validateEmail(event.target);
+                if (!this.state.emailError) this.validateEmail(event.target);
                 break;
         }
     }
 
     validate = () => {
-        if (this.state.usernameError && this.state.emailError && this.state.passwordsMatchError) {
+        if (this.state.usernameError && this.state.emailFormatError && this.state.passwordsMatchError ||
+            !this.state.emailError || !this.emailFormatError) {
             return false;
         }
         return !(this.state.email === '' && this.state.phone === '+375');
