@@ -125,7 +125,7 @@ class SignUpCustomer extends Component {
 
     validate = () => {
         if (this.state.usernameError && this.state.emailFormatError && this.state.passwordsMatchError ||
-            !this.state.emailError || !this.emailFormatError) {
+            this.state.emailError) {
             return false;
         }
         return !(this.state.email === '' && this.state.phone === '+375');

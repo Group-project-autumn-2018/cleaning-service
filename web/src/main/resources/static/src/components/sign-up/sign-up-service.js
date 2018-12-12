@@ -186,8 +186,8 @@ class SignUpService extends Component {
     }
 
     validate = () => {
-        if (!this.state.passwordLengthError || !this.state.passwordMatchError || !this.state.usernameError
-            || !this.state.addressError || !this.state.emailFormatError || !this.emailError) {
+        if (this.state.passwordLengthError || this.state.passwordMatchError || this.state.usernameError
+            || this.state.addressError || this.state.emailFormatError || this.emailError) {
             return false;
         }
         return !(this.state.service.email === '' && this.state.service.phone === '+375');
