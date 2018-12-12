@@ -236,7 +236,7 @@ class SignUpCustomer extends Component {
                                             have correct form</p>
                                         {this.state.emailDuplicateError ?
                                             <p className="errorMessage" style={{visibility: "visible"}}>
-                                                This email already registered, choose another one.</p> : null}
+                                                This email is already registered, choose another one.</p> : null}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">Phone number</label>

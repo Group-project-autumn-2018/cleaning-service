@@ -6,9 +6,11 @@ import './profile-form.css';
 import {fetchEntity, fetchUpdateEntity} from '../api/api-actions';
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
+import ServiceApi from "../services/service-api";
 
 
 class ProfileForm extends Component {
+    serviceApi = new ServiceApi();
 
     state = {
         URN: "/customer/profile",
@@ -53,7 +55,7 @@ class ProfileForm extends Component {
 
     submitHandler = (e) => {
         e.preventDefault();
-        if (!this.state.usernameError && !this.state.emailError &&
+        if (!this.state.usernameError && !this.state.emailError && !this.state.emailDuplicateError &&
             !this.state.addressError && !this.state.passwordError) {
             fetchUpdateEntity(this.state.customer, this.state.URN, this.props.token).then(response => {
                 if (response.status === 200) {
@@ -89,6 +91,12 @@ class ProfileForm extends Component {
                 } else {
                     e.target.classList.remove('invalid');
                     this.setState({emailFormatError: false})
+                }
+                if (value.length >= 6) {
+                    this.serviceApi.isEmailExists(value)
+                        .then(response => {
+                            this.setState({emailDuplicateError: response});
+                        });
                 }
                 break;
             case 'password':
@@ -189,6 +197,9 @@ class ProfileForm extends Component {
                                    value={this.state.customer.email}
                                    onChange={this.onChangeHandler}
                             />
+                            {this.state.emailDuplicateError ?
+                                <p className="errorMessage" style={{visibility: "visible"}}>
+                                    This email is already registered, choose another one.</p> : null}
                             <p className="errorMessage">Invalid email</p>
                         </div>
                     </div>
