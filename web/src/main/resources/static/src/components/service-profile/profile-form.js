@@ -12,10 +12,12 @@ import {connectWs} from '../actions/notification-actions';
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import FeedbackList from "../service-info/feedback-list";
+import ServiceApi from "../services/service-api";
 
 
 class ProfileForm extends Component {
     openStreetMapApi = new OpenStreetMapApi();
+    serviceApi = new ServiceApi();
 
     constructor(props) {
         super(props);
@@ -60,7 +62,8 @@ class ProfileForm extends Component {
             poolCleaningError: false,
             repairAndConstructionCleaningError: false,
             springCleaningError: false,
-            standardRoomCleaningError: false
+            standardRoomCleaningError: false,
+            emailDuplicateError: false
         };
     }
 
@@ -96,6 +99,11 @@ class ProfileForm extends Component {
         if (name === 'address') {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
+        } else if (name === "email" && value.length >= 6) {
+            this.serviceApi.isEmailExists(value)
+                .then(response => {
+                    this.setState({emailDuplicateError: response});
+                });
         }
         this.formValidation(e);
     };
@@ -292,7 +300,7 @@ class ProfileForm extends Component {
         event.preventDefault();
         console.log(this.state);
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
-            !this.state.emailFormatError && this.validateCleaningTypes()) {
+            !this.state.emailFormatError && !this.state.emailDuplicateError && this.validateCleaningTypes()) {
             const service = {
                 ...this.state.service,
                 password: this.state.service.newPassword
