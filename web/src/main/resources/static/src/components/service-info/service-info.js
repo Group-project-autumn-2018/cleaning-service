@@ -5,6 +5,7 @@ import {connect} from "react-redux";
 import Rating from 'react-rating';
 import FeedbackList from './feedback-list';
 import './service-info.css';
+import Pagination from "react-js-pagination";
 
 
 class ServiceInfo extends Component {
@@ -15,7 +16,10 @@ class ServiceInfo extends Component {
                 address: {},
                 cleaningTypes: {}
             },
-            feedbackList: []
+            feedbackList: [],
+            page: 0,
+            totalElements: 0,
+            totalPages: 0
         }
     }
 
@@ -24,11 +28,20 @@ class ServiceInfo extends Component {
             .then((service) => {
                 this.setState({service: service})
             });
-        fetchEntity('feedback?count=5&service-id=' + this.props.itemId, "/cleaning", this.props.token)
-            .then((list) => {
-                this.setState({feedbackList: list})
+        fetchEntity(`feedback?size=5&page=${this.state.page}&service-id=${this.props.itemId}`, "/cleaning", this.props.token)
+            .then((page) => {
+                this.setState({feedbackList: page.content, page: page.number, totalElements: page.totalElements,
+                    totalPages: page.totalPages})
             });
     }
+
+    handlePageChange = (page) => {
+        fetchEntity(`feedback?size=5&page=${page - 1}&service-id=${this.props.itemId}`, "/cleaning", this.props.token)
+            .then((page) => {
+                this.setState({feedbackList: page.content, page: page.number, totalElements: page.totalElements,
+                    totalPages: page.totalPages})
+            });
+    };
 
     render() {
         return (
@@ -80,6 +93,16 @@ class ServiceInfo extends Component {
                     </div>
                 </div>
                 <FeedbackList array={this.state.feedbackList}/>
+                <nav aria-label="Page navigation" className="mx-auto">
+                    {this.state.totalElements > 0 ? <Pagination activePage={this.state.page + 1}
+                                itemsCountPerPage={5}
+                                totalItemsCount={this.state.totalElements}
+                                pageRangeDisplayed={this.state.totalPages < 5 ? this.state.totalPages : 5}
+                                onChange={this.handlePageChange}
+                                itemClass="page-item"
+                                linkClass="page-link"
+                                innerClass="pagination justify-content-center"/> : null}
+                </nav>
             </div>
         )
     }

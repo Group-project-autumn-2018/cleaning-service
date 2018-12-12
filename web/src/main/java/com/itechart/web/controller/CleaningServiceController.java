@@ -95,7 +95,6 @@ public class CleaningServiceController {
         } else {
             return cleaningCompanyService.findPaginated(pageable);
         }
-
     }
 
     @PostMapping(value = "/{cleaningId}")
@@ -127,15 +126,14 @@ public class CleaningServiceController {
     }
 
     @GetMapping("/feedback")
-    public ResponseEntity getFeedback(@RequestParam(value = "count", required = false) Integer count,
-                                      @RequestParam(value = "service-id") Long serviceId) {
-        List<Feedback> feedback;
-        if (count != null) {
-            feedback = feedbackService.getTop(serviceId, count);
+    public ResponseEntity getFeedback(@RequestParam(value = "size", required = false) Long size,
+                                      @RequestParam(value = "page", required = false) Integer page,
+                                      @RequestParam(value = "service-id") Long serviceId, Pageable pageable) {
+        if (page == null) {
+            return ResponseEntity.ok(feedbackService.getTop(serviceId, size));
         } else {
-            feedback = feedbackService.getAll(serviceId);
+            return ResponseEntity.ok(feedbackService.getAllByCompany(serviceId, pageable));
         }
-        return ResponseEntity.ok(feedback);
     }
 
     @PostMapping("/registration")
