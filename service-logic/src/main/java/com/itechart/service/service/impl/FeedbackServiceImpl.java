@@ -84,7 +84,8 @@ public class FeedbackServiceImpl implements FeedbackService {
     public List<Feedback> getTop(Long serviceId, Long count) {
         CleaningCompany company = companyService.getOne(serviceId);
         if (company != null) {
-            return feedbackRepository.findTop(company.getId(), count);
+            if (count != null) return feedbackRepository.findTop(company.getId(), count);
+            else return feedbackRepository.findAllByCompany_IdOrderByAddingDateDesc(serviceId);
         } else {
             return Collections.emptyList();
         }

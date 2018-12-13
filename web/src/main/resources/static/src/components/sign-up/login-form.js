@@ -13,7 +13,7 @@ const LoginForm = (props) => {
                                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
 
                                 <input type="text" className="form-control" id="profileFormName" placeholder="Name"
-                                       name="username"
+                                       name="username" disabled={props.disabled}
                                        value={props.service.username}
                                        onChange={props.onChangeHandler}
                                 />

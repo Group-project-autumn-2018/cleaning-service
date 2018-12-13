@@ -19,6 +19,8 @@ public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
 
     Page<Feedback> findAllByCompanyOrderByAddingDateDesc(Pageable pageable, CleaningCompany company);
 
+    List<Feedback> findAllByCompany_IdOrderByAddingDateDesc(Long serviceId);
+
     @Query(value = "select * from feedback where service_id = :companyId order by adding_date desc limit :elemCount",
             nativeQuery = true)
     List<Feedback> findTop(@Param("companyId") Long companyId, @Param("elemCount") Long count);
