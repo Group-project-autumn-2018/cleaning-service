@@ -13,6 +13,8 @@ import com.itechart.customer.entity.Customer;
 import com.itechart.customer.repository.CustomerRepository;
 import com.itechart.customer.util.CustomerMapper;
 import com.itechart.customer.util.CustomerVerification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final EmailService emailService;
     private final RoleService roleService;
     private final SMSService smsService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Autowired
@@ -137,6 +140,7 @@ public class CustomerServiceImpl implements CustomerService {
         int randomCode = (int) (randomNum * 1_000_000);
         verification.setCode(randomCode);
         verifications.put(encodedToken, verification);
+        logger.info("Registered new customer " + registrationDto.getEmail() + " with code: " + randomCode);
         String text = "Your verification code: " + randomCode;
         if (registrationDto.getEmail() != null && registrationDto.getEmail().length() > 0) {
             String subject = "Account activation " + LocalDate.now().toString();

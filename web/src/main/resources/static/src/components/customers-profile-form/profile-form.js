@@ -92,7 +92,7 @@ class ProfileForm extends Component {
                     e.target.classList.remove('invalid');
                     this.setState({emailFormatError: false})
                 }
-                if (value.length >= 6) {
+                if (value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
                     this.serviceApi.isEmailExists(value)
                         .then(response => {
                             this.setState({emailDuplicateError: response});
