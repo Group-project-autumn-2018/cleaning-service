@@ -27,6 +27,20 @@ class SignIn extends Component {
         }
     }
 
+    onClick() {
+        console.log("google");
+        let header = {
+            'Upgrade-Insecure-Requests': 1,
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+
+        };
+        let options = {
+            headers: header,
+            method: 'GET',
+            mode: "cors"
+        };
+        fetch("/login/facebook");
+    }
 
     render() {
         return (
@@ -49,8 +63,10 @@ class SignIn extends Component {
                         </label>
                     </div>
                     <button className="btn btn-lg btn-primary btn-block">Sign in</button>
+                    <a href="/login/facebook" className="btn btn-lg btn-primary btn-block">Google</a>
                     <p className="mt-5 mb-3">&copy; 2018</p>
                 </form>
+
             </div>
         );
     }
