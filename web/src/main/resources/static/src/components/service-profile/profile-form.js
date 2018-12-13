@@ -99,7 +99,7 @@ class ProfileForm extends Component {
         if (name === 'address') {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
-        } else if (name === "email" && value.length >= 6) {
+        } else if (name === "email" && value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
             this.serviceApi.isEmailExists(value)
                 .then(response => {
                     this.setState({emailDuplicateError: response});

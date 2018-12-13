@@ -14,6 +14,8 @@ import com.itechart.service.service.FeedbackService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -69,17 +71,17 @@ public class FeedbackServiceImpl implements FeedbackService {
     }
 
     @Override
-    public List<Feedback> getAll(Long serviceId) {
+    public Page<Feedback> getAllByCompany(Long serviceId, Pageable pageable) {
         CleaningCompany company = companyService.getOne(serviceId);
         if (company != null) {
-            return feedbackRepository.findAllByCompanyOrderByAddingDateDesc(company);
+            return feedbackRepository.findAllByCompanyOrderByAddingDateDesc(pageable, company);
         } else {
-            return Collections.emptyList();
+            return null;
         }
     }
 
     @Override
-    public List<Feedback> getTop(Long serviceId, Integer count) {
+    public List<Feedback> getTop(Long serviceId, Long count) {
         CleaningCompany company = companyService.getOne(serviceId);
         if (company != null) {
             return feedbackRepository.findTop(company.getId(), count);
