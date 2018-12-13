@@ -66,6 +66,24 @@ class SortFilter extends Component {
 
                 <button className="btn btn-secondary "  onClick={this.props.showAll}>All</button>
 
+                <button type="button" data-toggle="modal" data-target="#confirm-modal"
+                        className="btn btn-secondary btn btn-success"
+                        onClick={this.onClick}>
+                    Chart by types
+                </button>
+
+                <button type="button" data-toggle="modal" data-target="#confirm-modal-status"
+                        className="btn btn-secondary btn btn-success"
+                        onClick={this.onClick}>
+                    Chart by status
+                </button>
+
+                <button type="button" data-toggle="modal" data-target="#confirm-modal-days"
+                        className="btn btn-secondary btn btn-success"
+                        onClick={this.onClick}>
+                    Chart by days
+                </button>
+
             </div>
         )
 

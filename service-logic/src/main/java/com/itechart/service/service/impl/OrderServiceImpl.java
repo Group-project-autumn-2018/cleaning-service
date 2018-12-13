@@ -3,6 +3,7 @@ package com.itechart.service.service.impl;
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
@@ -21,6 +22,7 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -160,6 +162,27 @@ public class OrderServiceImpl implements OrderService {
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
+
+    @Override
+    public int getNumberOfOrdersByType(Long id, String cleaningType){
+        List<Order> orders =orderRepository.findAllByCompany_IdAndCleaningType(id, cleaningType);
+        return orders.size();
+    }
+
+    @Override
+    public int getNumberOfOrdersByStatus(Long id, String status){
+        Status currentStatus =Status.valueOf(status);
+        List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,currentStatus );
+        return  orders.size();
+    }
+
+    @Override
+    public int getNumberOfOrdersByFrequency (Long id, String frequency){
+        Frequency currentFrequency =Frequency.valueOf(frequency);
+        List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id, currentFrequency);
+        return  orders.size();
+    }
+
 
     private OrderSpecificationsBuilder getSpecificationBuilder(String search) {
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");

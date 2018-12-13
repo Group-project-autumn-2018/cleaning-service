@@ -58,6 +58,21 @@ public class OrderController {
         return  orderService.findPaginated(pageable);
     }
 
+    @GetMapping("/getNumber")
+    public  int getNumberOfTypes(@RequestParam(value = "cleaningType", required = false) String cleaningType,
+                                 @RequestParam(value = "status", required = false) String status,
+                                 @RequestParam(value = "frequency", required = false) String frequency,
+                                 @RequestParam(value = "userID", required = false) Long id){
+        if (cleaningType != null && !cleaningType.equals("")) {
+            return orderService.getNumberOfOrdersByType(id, cleaningType);
+        } else if (status != null && !status.equals("")) {
+            return orderService.getNumberOfOrdersByStatus(id, status);
+        } else if (frequency != null && !frequency.equals("")){
+            return orderService.getNumberOfOrdersByFrequency(id, frequency);
+        }
+        return 0;
+    }
+
 
     @PostMapping
     public void saveOrder(@RequestBody OrderDto orderDto) {

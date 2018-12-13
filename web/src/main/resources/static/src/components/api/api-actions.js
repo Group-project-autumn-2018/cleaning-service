@@ -39,6 +39,20 @@ export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userI
     }
 };
 
+export const fetchNumberTypes = ( entityURN, token, userID, cleaningType) => {
+
+    const userIDParam = userID ? `&userID=${userID}` : '';
+    const cleaningTypeParam=cleaningType ? `&cleaningType=${cleaningType}` : '';
+
+
+    return dispatch => {
+        fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}`)
+            .then(resolve => resolve.json()).then(response => {
+            dispatch(fetchEntitiesSuccess(response.content));
+        });
+    }
+};
+
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
 
     let options = {

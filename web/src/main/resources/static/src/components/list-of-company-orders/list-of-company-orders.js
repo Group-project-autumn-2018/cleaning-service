@@ -5,6 +5,9 @@ import {connect} from 'react-redux';
 import {fetchEntitiesByTypeAndStatus} from '../api/api-actions';
 import Pagination from "react-js-pagination";
 import SortFilter from "../list-of-company-orders/sort-list";
+import TypeDiagram from "../order-schedules/type-diagram";
+import DaysDiagram from "../order-schedules/frequency-diagram";
+import StatusDiagram from "../order-schedules/status-diagram";
 
 class ListOfCompanyOrders extends Component {
 
@@ -88,6 +91,9 @@ class ListOfCompanyOrders extends Component {
                                 innerClass="pagination justify-content-center"
                     />
                 </nav>
+                <TypeDiagram/>
+                <StatusDiagram/>
+                <DaysDiagram/>
             </div>
         )
     }
