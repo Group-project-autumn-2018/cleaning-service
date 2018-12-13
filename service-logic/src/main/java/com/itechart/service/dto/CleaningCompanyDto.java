@@ -21,5 +21,6 @@ public class CleaningCompanyDto {
     private Boolean confirmed;
     private AddressDto address;
     private BigDecimal price;
+    private Integer estimatedTime;
     private CleaningTypesDto cleaningTypes;
 }

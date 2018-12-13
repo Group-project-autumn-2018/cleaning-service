@@ -11,11 +11,18 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+/**
+ * Rest client implementation for semysms service
+ * for use this service you need to install SemySMS android app and register on semysms.net
+ * then change properties like gsm.token and gsm.device.code
+ */
 @Service
 public class SMSServiceImpl implements SMSService {
     private final RestTemplate restTemplate;
-    @Value("${sim.slot}")
-    private Integer simSlot;
+    @Value("${gsm.device.code}")
+    private Integer deviceCode;
+    @Value("${gsm.token}")
+    private String token;
     @Value("${gsm.gateway.url}")
     private String gatewayUrl;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -32,12 +39,14 @@ public class SMSServiceImpl implements SMSService {
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
         map.add("phone", phoneNumber);
-        map.add("message", text);
-        map.add("sim_slot", simSlot.toString());
+        map.add("msg", text);
+        map.add("device", deviceCode.toString());
+        map.add("token", token);
+        map.add("priority", "999999");
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
 
         ResponseEntity<String> response =
-                restTemplate.postForEntity(gatewayUrl + "/v1/sms/", request, String.class);
+                restTemplate.postForEntity(gatewayUrl, request, String.class);
         HttpStatus statusCode = response.getStatusCode();
         if (statusCode == HttpStatus.OK) {
             logger.info("SMS to " + phoneNumber + " has been sent.");

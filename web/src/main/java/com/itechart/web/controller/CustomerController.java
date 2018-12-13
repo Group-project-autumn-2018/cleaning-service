@@ -25,7 +25,6 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-
     @GetMapping()
     public Page<Customer> findPaginated(
             @RequestParam("page") int page, @RequestParam("size") int size) {
@@ -47,7 +46,6 @@ public class CustomerController {
     public Customer getOneById(@PathVariable Long id) {
         return customerService.getCustomerById(id);
     }
-
 
     @PutMapping("/{id}")
     public void updateById(@RequestBody Customer customer) {

@@ -1,3 +1,7 @@
-.input-left-space {
+.label-left-space {
     margin-left: 2%;
+}
+
+.error {
+    color: red;
 }

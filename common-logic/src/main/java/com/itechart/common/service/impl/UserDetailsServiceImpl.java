@@ -1,5 +1,6 @@
 package com.itechart.common.service.impl;
 
+import com.itechart.common.entity.Address;
 import com.itechart.common.entity.User;
 import com.itechart.common.repository.UserRepository;
 import com.itechart.common.service.CustomUserDetails;
@@ -46,6 +47,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             public Long getId() {
                 return user.getId();
             }
+
+            @Override
+            public Address getAddress() {
+                return user.getAddress();
+            }
+
             @Override
             public String getPassword() {
                 return user.getPassword();

@@ -6,9 +6,11 @@ import CustomerApi from '../services/customer-api';
 import VerificationForm from './verification-form';
 import * as actions from '../actions/auth-actions';
 import {withRouter} from 'react-router-dom';
+import ServiceApi from "../services/service-api";
 
 class SignUpCustomer extends Component {
     customerApiService = new CustomerApi();
+    serviceApi = new ServiceApi();
 
     constructor(props) {
         super(props);
@@ -21,62 +23,123 @@ class SignUpCustomer extends Component {
             disabled: false,
             code: '',
             verificationStatus: false,
-            message: ''
+            message: '',
+            passwordsMatchError: false,
+            usernameError: false,
+            emailFormatError: false,
+            emailError: false,
+            passwordLengthError: false,
+            emailDuplicateError: false
         }
     }
 
     changeUsername = (event) => {
         this.setState({username: event.target.value});
         if (event.target.value.length < 3) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
+        this.formValidation(event);
     };
 
     changeEmail = (event) => {
         this.setState({email: event.target.value});
+        if (event.target.value.length >= 6 && event.target.value.length <= 50 &&
+            event.target.value.indexOf("@") !== -1) {
+            this.serviceApi.isEmailExists(event.target.value)
+                .then(response => {
+                    this.setState({emailDuplicateError: response});
+                });
+        }
+        this.formValidation(event);
     };
 
     changePhone = (event) => {
         this.setState({phone: event.target.value});
-        if (event.target.value.length < 18) {
-            event.target.classList.add('is-invalid');
+        if (event.target.value.length < 17) {
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
     };
 
     changePassword = (event) => {
+        const value = event.target.value;
         this.setState({password: event.target.value});
+        if (value !== this.state.confirmPassword) {
+            this.setState({passwordsMatchError: true});
+        } else {
+            this.setState({passwordsMatchError: false});
+        }
+        if (value.length < 6 || value.length > 30) {
+            this.setState({passwordLengthError: true});
+        } else {
+            this.setState({passwordLengthError: false});
+        }
     };
 
     changePasswordConfirm = (event) => {
         this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.password) {
-            event.target.classList.add('is-invalid');
+            this.setState({passwordsMatchError: true});
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            this.setState({passwordsMatchError: false});
+            event.target.classList.remove('invalid');
         }
     };
 
     changeCode = (event) => {
         this.setState({code: event.target.value});
         if (event.target.value.length !== 6) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
         }
     };
 
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name + 'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name + 'Error']: false});
+        }
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({emailFormatError: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({emailFormatError: true});
+        }
+    }
+
+    formValidation(event) {
+        const name = event.target.name;
+        switch (name) {
+            case "username":
+                this.validateLength(2, 50, event.target);
+                break;
+            case "email":
+                this.validateLength(6, 50, event.target);
+                if (!this.state.emailError) this.validateEmail(event.target);
+                break;
+        }
+    }
+
     validate = () => {
-        if (this.state.password !== this.state.confirmPassword) {
+        if (this.state.usernameError || this.state.emailFormatError || this.state.passwordsMatchError ||
+            this.state.emailError || this.state.emailDuplicateError) {
             return false;
         }
-        if (this.state.username.length < 3) {
-            return false;
-        }
-        return !(this.state.email === '' && this.state.phone === '+375');
+        return !(this.state.email === '' && this.state.phone === '' ||
+            this.state.username === '' || this.state.password === '');
     };
 
     preRegister = () => {
@@ -86,7 +149,7 @@ class SignUpCustomer extends Component {
                 username: this.state.username,
                 password: this.state.password,
                 email: this.state.email,
-                phone: this.state.phone
+                phone: this.state.phone.replace('+', '')
             };
             this.customerApiService.preRegister(obj).then(resp => {
                 if (resp !== 202) {
@@ -108,7 +171,7 @@ class SignUpCustomer extends Component {
                     this.setState({verificationStatus: true});
                     let login;
                     if (this.state.email === '') {
-                        login = this.state.phone;
+                        login = this.state.phone.replace('+', '');
                     } else {
                         login = this.state.email;
                     }
@@ -154,8 +217,8 @@ class SignUpCustomer extends Component {
                                 <div className="form-group col-md-6">
                                     <input id="first_name" type="text" className="form-control" placeholder="Username"
                                            value={this.state.username} onChange={this.changeUsername}
-                                           disabled={this.state.disabled}/>
-                                    <div id="first_name_feedback" className="invalid-feedback"/>
+                                           disabled={this.state.disabled} name="username"/>
+                                    <p className="errorMessage">Username size must be of length 2 to 50</p>
                                 </div>
                             </div>
                         </div>
@@ -167,15 +230,20 @@ class SignUpCustomer extends Component {
                                     <h2 className="card-title">How to contact you ?</h2>
                                     <div className="form-group">
                                         <label htmlFor="email" className="col-form-label">Email</label>
-                                        <input type="email" className="form-control" id="email"
+                                        <input type="email" className="form-control" id="email" name="email"
                                                placeholder="example@gmail.com" value={this.state.email}
                                                onChange={this.changeEmail} disabled={this.state.disabled}/>
-                                        <div className="email-feedback"/>
+                                        <p className="errorMessage">Email size must be of length 6 to 50 and it must
+                                            have correct form</p>
+                                        {this.state.emailDuplicateError ?
+                                            <p className="errorMessage" style={{visibility: "visible"}}>
+                                                This email is already registered, choose another one.</p> : null}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">Phone number</label>
                                         <MaskedInput
-                                            mask={['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
+                                            mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, '-',
+                                                /\d/, /\d/, '-', /\d/, /\d/]}
                                             className="form-control"
                                             placeholder="+375(__)___-__-__"
                                             guide={false}
@@ -198,7 +266,9 @@ class SignUpCustomer extends Component {
                                         <input type="password" className="form-control" id="password"
                                                placeholder="Type your password" value={this.state.password}
                                                onChange={this.changePassword} disabled={this.state.disabled}/>
-                                        <div className="password-feedback"/>
+                                        {this.state.passwordLengthError ?
+                                            <p className="text-danger">Password needs to be between 6 and 30
+                                                characters long</p> : null}
                                     </div>
                                     <div className="form-group">
                                         <label htmlFor="password_conf" className="col-form-label">Pasword
@@ -206,7 +276,8 @@ class SignUpCustomer extends Component {
                                         <input type="password" className="form-control" id="password_conf"
                                                placeholder="Type your password again" value={this.state.confirmPassword}
                                                onChange={this.changePasswordConfirm} disabled={this.state.disabled}/>
-                                        <div className="password_conf-feedback"/>
+                                        {this.state.passwordsMatchError ?
+                                            <p className="text-danger">Passwords don't match</p> : null}
                                     </div>
                                 </div>
                             </div>

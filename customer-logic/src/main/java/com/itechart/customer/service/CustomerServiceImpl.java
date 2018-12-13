@@ -1,5 +1,6 @@
 package com.itechart.customer.service;
 
+import com.itechart.common.entity.Address;
 import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
@@ -12,6 +13,8 @@ import com.itechart.customer.entity.Customer;
 import com.itechart.customer.repository.CustomerRepository;
 import com.itechart.customer.util.CustomerMapper;
 import com.itechart.customer.util.CustomerVerification;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -39,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
     private final EmailService emailService;
     private final RoleService roleService;
     private final SMSService smsService;
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Autowired
@@ -112,6 +116,11 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setRoles(Collections.singletonList(customerRole));
         customer.setPassword(bCryptPasswordEncoder.encode(registrationDto.getPassword()));
         customer.setAddingDate(LocalDate.now());
+        Address address = new Address();
+        address.setAddress(" ");
+        address.setLat(0.0);
+        address.setLon(0.0);
+        customer.setAddress(address);
         customerRepository.saveAndFlush(customer);
         return customer.getId();
     }
@@ -131,6 +140,7 @@ public class CustomerServiceImpl implements CustomerService {
         int randomCode = (int) (randomNum * 1_000_000);
         verification.setCode(randomCode);
         verifications.put(encodedToken, verification);
+        logger.info("Registered new customer " + registrationDto.getEmail() + " with code: " + randomCode);
         String text = "Your verification code: " + randomCode;
         if (registrationDto.getEmail() != null && registrationDto.getEmail().length() > 0) {
             String subject = "Account activation " + LocalDate.now().toString();
@@ -139,6 +149,7 @@ public class CustomerServiceImpl implements CustomerService {
             smsService.sendSMS(registrationDto.getPhone(), text);
         }
     }
+
 
     @Override
     @Transactional

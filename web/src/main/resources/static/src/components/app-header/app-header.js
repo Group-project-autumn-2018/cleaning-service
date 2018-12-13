@@ -22,6 +22,7 @@ class AppHeader extends Component {
                                     You logged in as <u>{this.props.name}</u>
                                 </NavigationItem>
                                 <NavigationItem link="/customer/orders">Orders</NavigationItem>
+                                <NavigationItem link="/company/search">Companies</NavigationItem>
                                 <NavigationItem link="/logout">Log Out</NavigationItem>
                             </ul> :
                             <ul className="navbar-nav">

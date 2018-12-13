@@ -22,7 +22,9 @@ public class CustomTokenEnhancer implements TokenEnhancer {
         Long id = userDetails.getId();
         additionalInfo.put("name", name);
         additionalInfo.put("id", id);
-
+        additionalInfo.put("address", userDetails.getAddress().getAddress());
+        additionalInfo.put("lat", userDetails.getAddress().getLat());
+        additionalInfo.put("lon", userDetails.getAddress().getLon());
         ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(
                 additionalInfo);
         return accessToken;

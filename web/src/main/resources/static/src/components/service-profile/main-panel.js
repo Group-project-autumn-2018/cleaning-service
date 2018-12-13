@@ -21,16 +21,27 @@ const MainPanel = (props) => {
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
                 <div className="col-sm-8">
                     <input type="text" className="form-control" id="profileFormName" placeholder="Name"
-                           name="username" value={props.service.username} onChange={props.onChangeHandler}
-                    />
+                           name="username" value={props.service.username} onChange={props.onChangeHandler}/>
+                    <p className="errorMessage">Username size must be of length 2 to 50</p>
                 </div>
             </div>
             <div className="form-group row">
                 <label htmlFor="profileFormEmail" className="col-sm-4 col-form-label">Email</label>
                 <div className="col-sm-8">
                     <input type="email" className="form-control" id="profileFormEmail" placeholder="Email"
-                           name="email" value={props.service.email} onChange={props.onChangeHandler}
-                    />
+                           name="email" value={props.service.email} onChange={props.onChangeHandler}/>
+                    <p className="errorMessage">Email size must be of length 6 to 50 and it must have correct form</p>
+                    {props.emailDuplicateError ?
+                        <p className="errorMessage" style={{visibility: "visible"}}>
+                            This email is already registered, choose another one.</p> : null}
+                </div>
+            </div>
+            <div className="form-group row">
+                <label htmlFor="profileFormDescription" className="col-sm-4 col-form-label">Description</label>
+                <div className="col-sm-8">
+                    <input type="text" className="form-control" id="profileFormDescription" placeholder="Description"
+                           maxLength={255} name="description" value={props.service.description}
+                           onChange={props.onChangeHandler}/>
                 </div>
             </div>
             <div className="form-group row">
@@ -66,9 +77,9 @@ const MainPanel = (props) => {
                            onChange={props.onChangeHandler}
                     />
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
+                    <p className="errorMessage">Address size must be of 4 to 100</p>
                 </div>
             </div>
-
         </React.Fragment>
     )
 };

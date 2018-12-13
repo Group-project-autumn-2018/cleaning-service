@@ -6,26 +6,33 @@ import DropdownAddressList from "../service-profile/dropdown-address-list";
 import {Link} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
 import OpenStreetMapApi from "../services/openstreetmap-api";
+import CustomerApi from "../services/customer-api";
 
 class BookingForm extends Component {
 
     openStreetMapApi = new OpenStreetMapApi();
+    customerApiService = new CustomerApi();
 
     constructor(props) {
         super(props);
         this.state = {
             customer: '',
-            address: '',
-            cleaningType: "",
+            address: {
+                address: '',
+                lat: '',
+                lon: ''
+            },
+            companyName: '',
+            cleaningType: this.types[0],
             smallRoomsCount: '',
             bigRoomsCount: '',
             bathroomsCount: '',
             cleaningDay: '',
-            cleaningTime: '',
-            frequency: '',
-            duration: '',
+            cleaningTime: this.time[0],
+            frequency: this.frequency[0],
+            duration: this.duration[0],
             email: this.props.email,
-            estimatedPrice: 120,
+            price: '',
             estimatedTime: '',
             addresses: []
         }
@@ -56,11 +63,12 @@ class BookingForm extends Component {
     };
 
     changeTransactionDuration = (event) => {
-        this.setState({duration: event.target.value});
+        this.setState({duration: event.value});
     };
 
     changeCleaningTime = (event) => {
-        this.setState({cleaningTime: event.target.value});
+        console.log(event);
+        this.setState({cleaningTime: event.value});
     };
 
     changeEmail = (event) => {
@@ -76,7 +84,7 @@ class BookingForm extends Component {
     };
 
     onChangeHandler = (e) => {
-        this.setState({address: e.target.value});
+        this.setState({address: {...this.state.address, address: e.target.value}});
         const name = e.target.name;
         if (name === 'address' && e.target.value.length > 5) {
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
@@ -87,22 +95,21 @@ class BookingForm extends Component {
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
         const updatedOrder = {
             ...this.state,
-            lat: address.lat,
-            lon: address.lon
+            address: {...this.state.address, lat: address.lat, lon: address.lon}
         };
         console.log(address.lat + ' ' + address.lon);
-        this.setState({updatedOrder, addresses: []});
+        this.setState({...updatedOrder, addresses: []});
     };
 
 
     frequency = ["once", "weekly", "fortnightly", "monthly"];
     duration = ["one month", "two month", "three month", "four month", "five month", "six month"];
 
-    time = ["Not chosen...", "9:00", "9:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
+    time = ["09:00", "09:30", "10:00", "10:30", "11:00", "11:30", "12:00", "12:30",
         "13:00", "13:30", "14:00", "14:30", "15:00", "15:30", "16:00", "16:30", "17:00",
         "17:30", "18:00"];
 
-    types = ["Not chosen...", "Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
+    types = ["Standard room cleaning", "Spring-cleaning", "Cleaning after repair and construction",
         "Dry carpet cleaning", "Office cleaning", "Dry cleaning of furniture and coatings",
         "Industrial cleaning", "Pool cleaning"];
 
@@ -114,18 +121,34 @@ class BookingForm extends Component {
                     <h3 className=""><b>Booking form</b></h3>
 
                     <div className="bookingRow">
+
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            <div className="col-sm-8 dropdown">
-                                <input type="text" className="form-control dropdown-toggle long" id="profileFormAddress"
-                                       data-toggle="dropdown" placeholder="Your address..."
-                                       name="address"
-                                    // value={}
-                                       onChange={this.onChangeHandler}/>
-                                <DropdownAddressList array={this.state.addresses}
-                                                     onClickHandler={this.onClickAddressHandler}/>
-                            </div>
+                            {this.props.isAuthenticated ?
+
+                                <div className="col-sm-8 dropdown">
+                                    <div>
+                                        <input type="text" className="form-control long"
+                                               id="bookingFormAddress" placeholder="Your address..."
+                                               name="address"
+                                               value={this.props.address.address}
+                                               disabled={true}
+                                        />
+                                    </div>
+                                </div>
+                                :
+                                <div className="col-sm-8 dropdown">
+                                    <input type="text" className="form-control dropdown-toggle long"
+                                           id="profileFormAddress"
+                                           data-toggle="dropdown" placeholder="Your address..."
+                                           name="address"
+                                           onChange={this.onChangeHandler}/>
+                                    <DropdownAddressList array={this.state.addresses}
+                                                         onClickHandler={this.onClickAddressHandler}/>
+                                </div>
+                            }
                         </div>
+
                         <SelectItemsList array={this.types} label={"Cleaning type"} className={"long"}
                                          id={"cleaningType"} onChange={this.changeType}/>
                     </div>

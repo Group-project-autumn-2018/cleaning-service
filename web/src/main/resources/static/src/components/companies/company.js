@@ -11,7 +11,9 @@ class Company extends Component {
         this.props.updateOrder({
             ...this.props.order,
             company: this.props.company.id,
-            companyName: this.props.company.name
+            companyName: this.props.company.username,
+            price: this.props.company.averagePrice,
+            estimatedTime: this.props.company.estimatedTime
         })
     };
 

@@ -15,7 +15,7 @@ class SignUpService extends Component {
     serviceApi = new ServiceApi();
     openStreetMapApi = new OpenStreetMapApi();
 
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
             disabled: false,
@@ -37,7 +37,7 @@ class SignUpService extends Component {
                 phone: '',
                 password: '',
                 cleaningTypes: {
-                    standardRoomCleaning: true,
+                    standardRoomCleaning: false,
                     springCleaning: false,
                     repairAndConstructionCleaning: false,
                     dryCarpetCleaning: false,
@@ -46,42 +46,56 @@ class SignUpService extends Component {
                     industrialCleaning: false,
                     poolCleaning: false,
                     price: {
-                        basePrice: null,
-                        standardRoomCleaning: null,
-                        springCleaning: null,
-                        repairAndConstructionCleaning: null,
-                        dryCarpetCleaning: null,
-                        officeCleaning: null,
-                        furnitureAndCoatingsCleaning: null,
-                        industrialCleaning: null,
-                        poolCleaning: null,
-                        smallRoom: null,
-                        bigRoom: null,
-                        bathroom: null
+                        basePrice: 0,
+                        standardRoomCleaning: 0,
+                        springCleaning: 0,
+                        repairAndConstructionCleaning: 0,
+                        dryCarpetCleaning: 0,
+                        officeCleaning: 0,
+                        furnitureAndCoatingsCleaning: 0,
+                        industrialCleaning: 0,
+                        poolCleaning: 0,
+                        smallRoom: 0,
+                        bigRoom: 0,
+                        bathroom: 0
                     },
                     cleaningTime: {
-                        standardRoomCleaningTime: null,
-                        springCleaningTime: null,
-                        repairAndConstructionCleaningTime: null,
-                        dryCarpetCleaningTime: null,
-                        officeCleaningTime: null,
-                        furnitureAndCoatingsCleaningTime: null,
-                        industrialCleaningTime: null,
-                        poolCleaningTime: null,
-                        smallRoomCleaningTime: null,
-                        bigRoomCleaningTime: null,
-                        bathroomCleaningTime: null
+                        standardRoomCleaningTime: 0,
+                        springCleaningTime: 0,
+                        repairAndConstructionCleaningTime: 0,
+                        dryCarpetCleaningTime: 0,
+                        officeCleaningTime: 0,
+                        furnitureAndCoatingsCleaningTime: 0,
+                        industrialCleaningTime: 0,
+                        poolCleaningTime: 0,
+                        smallRoomCleaningTime: 0,
+                        bigRoomCleaningTime: 0,
+                        bathroomCleaningTime: 0
                     }
                 },
 
             },
             message: '',
             modeToggle: 'security',
-            addresses: []
-
+            addresses: [],
+            basePriceError: false,
+            dryCarpetCleaningError: false,
+            furnitureAndCoatingsCleaningError: false,
+            industrialCleaningError: false,
+            officeCleaningError: false,
+            poolCleaningError: false,
+            repairAndConstructionCleaningError: false,
+            springCleaningError: false,
+            standardRoomCleaningError: false,
+            passwordMatchError: false,
+            passwordLengthError: false,
+            usernameError: false,
+            emailFormatError: false,
+            emailError: false,
+            addressError: false,
+            emailDuplicateError: false
         };
     }
-
 
 
     changeCode = (event) => {
@@ -93,26 +107,30 @@ class SignUpService extends Component {
         }
     };
 
-    changeUsername = (event) => {
+    /*changeUsername = (event) => {
         const updatedService = {
             ...this.state.service,
             username: event.target.value
         };
         this.setState({service: updatedService});
-        if (event.target.value.length < 3) {
-            event.target.classList.add('is-invalid');
-        } else {
-            event.target.classList.remove('is-invalid');
-        }
-    };
+
+    };*/
 
     changeEmail = (event) => {
-
         const updatedService = {
             ...this.state.service,
             email: event.target.value
         };
+        if (event.target.value.length >= 6 && event.target.value.length <= 50 &&
+            event.target.value.indexOf("@") !== -1) {
+            this.serviceApi.isEmailExists(event.target.value)
+                .then(response => {
+                    this.setState({emailDuplicateError: response});
+                });
+        }
         this.setState({service: updatedService});
+        this.validateLength(6, 50, event.target);
+        if (!this.state.emailError) this.validateEmail(event.target);
     };
 
     changePhone = (event) => {
@@ -121,7 +139,7 @@ class SignUpService extends Component {
             phone: event.target.value
         };
         this.setState({service: updatedService});
-        if (event.target.value.length < 18) {
+        if (event.target.value.length < 17) {
             event.target.classList.add('is-invalid');
         } else {
             event.target.classList.remove('is-invalid');
@@ -134,34 +152,66 @@ class SignUpService extends Component {
             password: event.target.value
         };
         this.setState({service: updatedService});
+        if (event.target.value.length < 6 || event.target.value.length > 30) {
+            this.setState({passwordLengthError: true});
+            event.target.classList.add('invalid');
+        } else {
+            this.setState({passwordLengthError: false});
+            event.target.classList.remove('invalid');
+        }
     };
 
     changePasswordConfirm = (event) => {
         this.setState({confirmPassword: event.target.value});
         if (event.target.value !== this.state.service.password) {
-            event.target.classList.add('is-invalid');
+            event.target.classList.add('invalid');
+            this.setState({passwordMatchError: true});
         } else {
-            event.target.classList.remove('is-invalid');
+            event.target.classList.remove('invalid');
+            this.setState({passwordMatchError: false});
         }
     };
 
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name + 'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name + 'Error']: false});
+        }
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({emailFormatError: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({emailFormatError: true});
+        }
+    }
+
     validate = () => {
-        if (this.state.service.password !== this.state.confirmPassword
-            || this.state.service.password.length < 3) {
+        if (this.state.passwordLengthError || this.state.passwordMatchError || this.state.usernameError ||
+            this.state.addressError || this.state.emailFormatError || this.emailError ||
+            this.state.emailDuplicateError) {
             return false;
         }
-        if (this.state.service.username.length < 3) {
-            return false;
-        }
-        return !(this.state.service.email === '' && this.state.service.phone === '+375');
+        return !(this.state.service.email === '' && this.state.service.phone === '' ||
+            this.state.service.username === '' || this.state.service.password === '');
     };
 
 
     preRegister = () => {
-        if (this.validate()) {
+        if (this.validate() && this.validateCleaningTypes()) {
             this.setState({disabled: true});
 
-            const objDto = {...this.state.service};
+            const objDto = {
+                ...this.state.service,
+                phone: this.state.service.phone.replace('+', '')
+            };
 
             let formData = new FormData();
             formData.append("objDto", JSON.stringify(objDto));
@@ -190,7 +240,7 @@ class SignUpService extends Component {
                     this.setState({verificationStatus: true});
                     let login;
                     if (this.state.service.email === '') {
-                        login = this.state.service.phone;
+                        login = this.state.service.phone.replace('+', '');
                     } else {
                         login = this.state.service.email;
                     }
@@ -229,6 +279,45 @@ class SignUpService extends Component {
     //     }
     // };
 
+    validateCleaningType(cleaningTypes, typeName) {
+        const cleaningTime = cleaningTypes.cleaningTime[typeName + 'Time'];
+        const cleaningPrice = cleaningTypes.price[typeName];
+        if (cleaningTypes[typeName]) {
+            if (cleaningTime == null || +cleaningTime < 0 || cleaningTime.toString().length > 9 ||
+                cleaningPrice == null || +cleaningPrice < 0 || cleaningPrice.toString().length > 15) {
+                this.setState({[typeName + 'Error']: true});
+                return false
+            } else {
+                if (this.state[typeName + 'Error']) {
+                    this.setState({[typeName + 'Error']: false});
+                }
+                return true;
+            }
+        } else {
+            if (this.state[typeName + 'Error']) this.setState({[typeName + 'Error']: false});
+            return true;
+        }
+    }
+
+    validateCleaningTypes() {
+        const basePrice = this.state.service.cleaningTypes.price.basePrice;
+        if (basePrice == null || +basePrice < 0 || basePrice.toString().length > 20) {
+            this.setState({basePriceError: true});
+            console.log("adding base price error");
+            return false;
+        } else {
+            if (this.state.basePriceError) this.setState({basePriceError: false});
+            return this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'poolCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
+        }
+    }
+
     submitHandler = (e) => {
         e.preventDefault();
         this.props.updateService(this.state.service, this.props.token);
@@ -243,7 +332,10 @@ class SignUpService extends Component {
         this.setState({service: updatedService});
         if (name === 'address') {
             this.setState({tempAddress: e.target.value});
+            this.validateLength(4, 100, event.target);
             this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+        } else if (name === "username") {
+            this.validateLength(2, 50, event.target);
         }
     };
 
@@ -283,7 +375,7 @@ class SignUpService extends Component {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
             ...this.state.service.cleaningTypes.cleaningTime,
-            [name]: event.target.value
+            [name]: +event.target.value
         };
         const updatedTypes = {
             ...this.state.service.cleaningTypes,
@@ -300,7 +392,7 @@ class SignUpService extends Component {
         const name = event.target.name;
         const updatedPriceDto = {
             ...this.state.service.cleaningTypes.price,
-            [name]: event.target.value
+            [name]: +event.target.value
         };
         const updatedTypes = {
             ...this.state.service.cleaningTypes,
@@ -326,6 +418,16 @@ class SignUpService extends Component {
     };
 
     render() {
+        let {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError
+        } = this.state;
+        let cleaningTypesErrors = {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError
+        };
         return (
             <div className="container signup-component">
                 <div className="overlay"/>
@@ -366,6 +468,7 @@ class SignUpService extends Component {
 
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
+                                           errors={cleaningTypesErrors}
                                            onChangeTypeHandler={this.onChangeTypeHandler}
                                            onChangePriceHandler={this.onChangePriceHandler}
                                            onChangeTimeHandler={this.onChangeTimeHandler}
@@ -405,24 +508,18 @@ const MainPanel = (props) => {
             <div className="form-group row">
                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Description</label>
                 <div className="col-sm-8">
-                    <input type="text" className="form-control input-left-space col-sm-6" id="profileFormDescription"
-                           placeholder="Description"
-                           name="description"
-                           value={props.service.description}
-                           onChange={props.onChangeHandler}
-                    />
+                    <input type="text" className="form-control label-left-space col-sm-6" maxLength={255}
+                           placeholder="Description" name="description" value={props.service.description}
+                           onChange={props.onChangeHandler}/>
                 </div>
             </div>
             <div className="form-group row">
                 <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
                 <div className="col-sm-8 dropdown">
-                    <input type="text" className="form-control dropdown-toggle input-left-space col-sm-6"
-                           id="profileFormAddress"
-                           data-toggle="dropdown" placeholder="Address"
-                           name="address"
-                           value={props.tempAddress}
-                           onChange={props.onChangeHandler}
-                    />
+                    <input type="text" className="form-control dropdown-toggle label-left-space col-sm-6"
+                           id="profileFormAddress" data-toggle="dropdown" placeholder="Address"
+                           name="address" value={props.tempAddress} onChange={props.onChangeHandler}/>
+                    <p className="errorMessage">Address size must be of 4 to 100</p>
                     <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
                 </div>
             </div>

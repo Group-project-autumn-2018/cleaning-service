@@ -27,9 +27,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
 
         http.authorizeRequests()
-                .antMatchers("/api/customer/registration", "/api/customer/verify",
+                .antMatchers("/api/customer/registration", "/api/customer/verify", "/api/cleaning/email",
                         "/api/cleaning/registration", "/api/cleaning/verify", "/api/cleaning/registration/service",
-                        "/dist/**", "/", "/oauth/token", "/api/cleaning/*/image", "/api/order", "/api/cleaning/search/companies").permitAll()
+                        "/dist/**", "/", "/oauth/token", "/api/cleaning/*/image", "/api/order",
+                        "/api/cleaning/search/companies").permitAll()
                 .antMatchers("/api/**", "/oauth/user", "/queue/**", "/notifications").authenticated()
                 .antMatchers(HttpMethod.OPTIONS).permitAll();
     }
