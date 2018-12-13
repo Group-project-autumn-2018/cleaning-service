@@ -282,7 +282,7 @@ class ProfileForm extends Component {
     changeModeToggle = (event) => {
         event.preventDefault();
         if (event.target.name === 'feedback') {
-            fetchEntity('feedback?count=6&service-id=' + this.props.serviceId, "/cleaning", this.props.token)
+            fetchEntity('feedback?size=6&service-id=' + this.props.serviceId, "/cleaning", this.props.token)
                 .then((list) => {
                     let trigger = false;
                     if (list.length > 5) {

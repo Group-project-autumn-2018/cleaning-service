@@ -136,17 +136,6 @@ public class CleaningServiceController {
         }
     }
 
-    @PostMapping("/registration")
-    public ResponseEntity register(@RequestBody CleaningCompanyDto objDto
-                                   //, @RequestParam(name = "logotype", required = false) MultipartFile logotype
-    ) {
-        //ObjectMapper mapper = new ObjectMapper();
-        //CleaningCompanyDto registrationDto = mapper.readValue(objDto, CleaningCompanyDto.class);
-        cleaningCompanyService.registerCompany(objDto, null);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-
-    }
-
     @PostMapping("/verify")
     public ResponseEntity verify(@RequestBody VerifyDto verifyDto) {
         Optional<Boolean> result = cleaningCompanyService.verify(verifyDto);
