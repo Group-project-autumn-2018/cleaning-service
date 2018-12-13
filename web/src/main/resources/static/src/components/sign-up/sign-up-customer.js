@@ -57,7 +57,7 @@ class SignUpCustomer extends Component {
 
     changePhone = (event) => {
         this.setState({phone: event.target.value});
-        if (event.target.value.length < 18) {
+        if (event.target.value.length < 17) {
             event.target.classList.add('invalid');
         } else {
             event.target.classList.remove('invalid');
@@ -149,7 +149,7 @@ class SignUpCustomer extends Component {
                 username: this.state.username,
                 password: this.state.password,
                 email: this.state.email,
-                phone: this.state.phone
+                phone: this.state.phone.replace('+', '')
             };
             this.customerApiService.preRegister(obj).then(resp => {
                 if (resp !== 202) {
@@ -171,7 +171,7 @@ class SignUpCustomer extends Component {
                     this.setState({verificationStatus: true});
                     let login;
                     if (this.state.email === '') {
-                        login = this.state.phone;
+                        login = this.state.phone.replace('+', '');
                     } else {
                         login = this.state.email;
                     }
@@ -242,7 +242,8 @@ class SignUpCustomer extends Component {
                                     <div className="form-group">
                                         <label htmlFor="tel" className="col-form-label">Phone number</label>
                                         <MaskedInput
-                                            mask={['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/, '-', /\d/, /\d/]}
+                                            mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, '-',
+                                                /\d/, /\d/, '-', /\d/, /\d/]}
                                             className="form-control"
                                             placeholder="+375(__)___-__-__"
                                             guide={false}

@@ -35,7 +35,7 @@ const LoginForm = (props) => {
                             <div className="form-group">
                                 <label htmlFor="tel" className="col-form-label">Phone number</label>
                                 <MaskedInput
-                                    mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-',
+                                    mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, '-',
                                         /\d/, /\d/, '-', /\d/, /\d/]}
                                     className="form-control"
                                     placeholder="+375(__)___-__-__"

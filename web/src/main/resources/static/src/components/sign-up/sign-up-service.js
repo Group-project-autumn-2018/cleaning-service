@@ -139,7 +139,7 @@ class SignUpService extends Component {
             phone: event.target.value
         };
         this.setState({service: updatedService});
-        if (event.target.value.length < 18) {
+        if (event.target.value.length < 17) {
             event.target.classList.add('is-invalid');
         } else {
             event.target.classList.remove('is-invalid');
@@ -208,7 +208,10 @@ class SignUpService extends Component {
         if (this.validate() && this.validateCleaningTypes()) {
             this.setState({disabled: true});
 
-            const objDto = {...this.state.service};
+            const objDto = {
+                ...this.state.service,
+                phone: this.state.service.phone.replace('+', '')
+            };
 
             let formData = new FormData();
             formData.append("objDto", JSON.stringify(objDto));
@@ -237,7 +240,7 @@ class SignUpService extends Component {
                     this.setState({verificationStatus: true});
                     let login;
                     if (this.state.service.email === '') {
-                        login = this.state.service.phone;
+                        login = this.state.service.phone.replace('+', '');
                     } else {
                         login = this.state.service.email;
                     }
