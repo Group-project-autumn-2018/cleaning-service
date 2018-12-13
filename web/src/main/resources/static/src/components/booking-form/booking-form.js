@@ -3,7 +3,6 @@ import {connect} from 'react-redux';
 import './booking-form.css';
 import SelectItemsList from "./select-items-list";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
-import {Link} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import CustomerApi from "../services/customer-api";
@@ -34,7 +33,10 @@ class BookingForm extends Component {
             email: this.props.email,
             price: '',
             estimatedTime: '',
-            addresses: []
+            addresses: [],
+            smallRoomsError: false,
+            bigRoomsError: false,
+            bathroomsError: false
         }
     }
 
@@ -43,14 +45,38 @@ class BookingForm extends Component {
     };
 
     changeSmallRooms = (event) => {
+        let value = event.target.value;
+        if (value.length > 3) {
+            event.target.classList.add('invalid');
+            this.setState({smallRoomsError: true})
+        } else {
+            event.target.classList.remove('invalid');
+            this.setState({smallRoomsError: false})
+        }
         this.setState({smallRoomsCount: event.target.value});
     };
 
     changeBigRooms = (event) => {
+        let value = event.target.value;
+        if (value.length > 3) {
+            event.target.classList.add('invalid');
+            this.setState({bigRoomsError: true})
+        } else {
+            event.target.classList.remove('invalid');
+            this.setState({bigRoomsError: false})
+        }
         this.setState({bigRoomsCount: event.target.value});
     };
 
     changeBathrooms = (event) => {
+        let value = event.target.value;
+        if (value.length > 3) {
+            event.target.classList.add('invalid');
+            this.setState({bathroomsError: true})
+        } else {
+            event.target.classList.remove('invalid');
+            this.setState({bathroomsError: false})
+        }
         this.setState({bathroomsCount: event.target.value});
     };
 
@@ -75,11 +101,16 @@ class BookingForm extends Component {
         this.setState({email: event.target.value});
     };
 
-    onSubmit = () => {
-        if (this.props.id) {
-            this.props.updateOrder({...this.state, customer: this.props.id})
-        } else {
-            this.props.updateOrder({...this.state})
+    onSubmit = (event) => {
+        event.preventDefault();
+        if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
+            if (this.props.id) {
+                this.props.updateOrder({...this.state, customer: this.props.id});
+                this.props.history.push("/companies")
+            } else {
+                this.props.updateOrder({...this.state});
+                this.props.history.push("/companies")
+            }
         }
     };
 
@@ -117,7 +148,7 @@ class BookingForm extends Component {
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
-                <form className="form-booking card person-card">
+                <form className="form-booking card person-card" onSubmit={this.onSubmit}>
                     <h3 className=""><b>Booking form</b></h3>
 
                     <div className="bookingRow">
@@ -141,7 +172,7 @@ class BookingForm extends Component {
                                     <input type="text" className="form-control dropdown-toggle long"
                                            id="profileFormAddress"
                                            data-toggle="dropdown" placeholder="Your address..."
-                                           name="address"
+                                           name="address" required={true}
                                            onChange={this.onChangeHandler}/>
                                     <DropdownAddressList array={this.state.addresses}
                                                          onClickHandler={this.onClickAddressHandler}/>
@@ -157,17 +188,18 @@ class BookingForm extends Component {
                         <div className="form-group">
                             <label htmlFor="smallRooms" className="col-form-label">Small rooms</label>
                             <input type="text" id="smallRooms" className="form-control short"
-                                   placeholder="under 20 m²" required autoFocus onChange={this.changeSmallRooms}/>
+                                   placeholder="under 20 m²" required={true} autoFocus
+                                   onChange={this.changeSmallRooms}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bigRooms" className="col-form-label">Big rooms</label>
                             <input type="text" id="bigRooms" className="form-control short"
-                                   placeholder="over 20 m²" required autoFocus onChange={this.changeBigRooms}/>
+                                   placeholder="over 20 m²" required={true} autoFocus onChange={this.changeBigRooms}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bathrooms" className="col-form-label">Bathrooms</label>
                             <input type="text" id="bathrooms" className="form-control short"
-                                   placeholder="number of bathrooms..." required autoFocus
+                                   placeholder="number of bathrooms..." required={true} autoFocus
                                    onChange={this.changeBathrooms}/>
                         </div>
                     </div>
@@ -202,17 +234,17 @@ class BookingForm extends Component {
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
                                     <input type="email" className="form-control short" id="email"
-                                           placeholder="example@gmail.com" required onChange={this.changeEmail}/>
+                                           placeholder="example@gmail.com" required={true} onChange={this.changeEmail}/>
                                     <div className="email-feedback"/>
                                 </div>
                             </div>
                         }
                     </div>
 
-                    <div className="confirm" onClick={this.onSubmit}>
-                        <Link to="/companies" className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
+                    <div className="confirm">
+                        <button className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
                             Consider proposals
-                        </Link>
+                        </button>
                     </div>
                 </form>
             </div>
