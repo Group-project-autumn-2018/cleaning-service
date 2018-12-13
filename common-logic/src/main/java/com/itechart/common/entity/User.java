@@ -30,10 +30,11 @@ public class User implements Serializable {
     @Column(name = "password")
     private String password;
 
-    @Size(min = 6, max = 50)
+    @Size(max = 50)
     @Column(name = "email")
     private String email;
 
+    @Size(max = 20)
     @Column(name = "phone")
     private String phone;
 
