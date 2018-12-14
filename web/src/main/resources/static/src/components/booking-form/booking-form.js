@@ -9,7 +9,6 @@ import OpenStreetMapApi from "../services/openstreetmap-api";
 import CustomerApi from "../services/customer-api";
 import ConfirmModalToggleButton from "../companies/confirm-modal-toggle-button";
 import CustomerConfirmModalForm from "../companies/customer-confirm-modal-form";
-import {fetchCompaniesPOST} from "../api/api-actions";
 
 class BookingForm extends Component {
 
@@ -122,12 +121,12 @@ class BookingForm extends Component {
     };
 
     componentDidUpdate() {
-        if (this.props.companies[0].averagePrice && !this.company.averagePrice) {
+        /*if (this.props.companies[0].averagePrice && !this.company.averagePrice) {
             const id = this.props.companyId;
             this.company = this.props.companies.filter(company => company.id == id)[0];
             console.log(this.company);
 
-        }
+        }*/
     };
 
     bookingConfirm = () => {
@@ -144,16 +143,40 @@ class BookingForm extends Component {
             estimatedTime: "",
             sort: ""
         };
-        this.props.fetchCompaniesPOST(searchCompanyDto, this.entityURN, this.props.token);
+        this.fetchCompaniesPOST(searchCompanyDto, this.entityURN, this.props.token).then((companies) => {
+            const id = this.props.companyId;
+            this.company = companies.filter(company => company.id == id)[0];
+            console.log(this.company);
+            if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
+                this.props.updateOrder({
+                    ...this.state, customer: this.props.id,
+                    company: this.company.id,
+                    companyName: this.company.username,
+                    price: this.company.averagePrice,
+                    estimatedTime: this.company.estimatedTime
+                })
+            }
+        });
+    };
 
-        if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
-            this.props.updateOrder({
-                ...this.state, customer: this.props.id,
-                companyName: this.company.username,
-                price: this.company.averagePrice,
-                estimatedTime: this.company.estimatedTime
-            })
+    async fetchCompaniesPOST(entity, entityURN, token) {
+        let header = {
+            'Content-Type': 'application/json'
+        };
+
+        if (token) {
+            header = {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         }
+        let options = {
+            headers: header,
+            method: 'POST',
+            body: JSON.stringify(entity)
+        };
+        return await fetch(`/api${entityURN}`, options).then(resolve => resolve.json());
     };
 
     onChangeHandler = (e) => {
@@ -315,9 +338,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateOrder: (order) => {
             dispatch(orderActions.prepareOrderForUpdate(order))
-        },
-        fetchCompaniesPOST: (entity, entityURN, token) => {
-            dispatch(fetchCompaniesPOST(entity, entityURN, token));
         }
     }
 };
