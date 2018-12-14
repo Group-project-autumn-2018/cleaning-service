@@ -98,7 +98,7 @@ class ProfileForm extends Component {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
         } else if (name === "email" && value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
-            this.serviceApi.isEmailExists(value)
+            this.serviceApi.isEmailExists(value.toLowerCase())
                 .then(response => {
                     this.setState({emailDuplicateError: response});
                 });
@@ -307,7 +307,8 @@ class ProfileForm extends Component {
             !this.state.emailDuplicateError && this.validateCleaningTypes() && !this.state.passwordError) {
             const service = {
                 ...this.state.service,
-                password: this.state.service.newPassword
+                password: this.state.service.newPassword,
+                email: this.state.service.email.toLowerCase()
             };
             const entity = new FormData();
             if (this.state.logo !== '') {

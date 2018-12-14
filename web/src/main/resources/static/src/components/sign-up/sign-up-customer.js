@@ -44,10 +44,10 @@ class SignUpCustomer extends Component {
     };
 
     changeEmail = (event) => {
-        this.setState({email: event.target.value});
+        this.setState({email: event.target.value.toLowerCase()});
         if (event.target.value.length >= 6 && event.target.value.length <= 50 &&
             event.target.value.indexOf("@") !== -1) {
-            this.serviceApi.isEmailExists(event.target.value)
+            this.serviceApi.isEmailExists(event.target.value.toLowerCase())
                 .then(response => {
                     this.setState({emailDuplicateError: response});
                 });
