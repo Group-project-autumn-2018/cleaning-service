@@ -6,10 +6,11 @@ import moment from 'moment';
 const Order = ({order}) => {
 
     let colorClassName = "col";
-    let address = '';
-    if (order.address) {
-        address = order.address.address ? order.address.address : order.address
-    }
+    // let addresss = '';
+    // if (order.address) {
+    //     addresss = order.address.address ? order.address.address : order.address;
+    //     console.log(addresss)
+    // }
     const time = moment(order.cleaningTime, "HH:mm:ss").format("HH:mm");
 
     switch (order.status) {
@@ -31,7 +32,7 @@ const Order = ({order}) => {
         <tr className="row bg-light px-5">
             <td className="col">{order.cleaningType}</td>
 
-            <td className="col-2">{address}</td>
+            <td className="col-2">{order.address.address}</td>
             <td className="col-2">
                 <ul>
                     {order.smallRoomsCount ? <li>{`Small rooms ${order.smallRoomsCount}`}</li> : ""}
