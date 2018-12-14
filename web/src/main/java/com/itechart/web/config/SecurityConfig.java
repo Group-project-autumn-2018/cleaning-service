@@ -3,14 +3,15 @@ package com.itechart.web.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.core.annotation.Order;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -40,6 +41,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Configuration
+@Order(99)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
@@ -63,7 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests().anyRequest().authenticated()
                 .antMatchers("/api/customer/registration", "/api/customer/verify",
-                        "/api/cleaning/registration", "/api/cleaning/verify",
+                        "/api/cleaning/registration", "/api/cleaning/verify", "/login/google", "/login/facebook",
                         "/dist/**", "/", "/oauth/token").permitAll()
                 .antMatchers(HttpMethod.OPTIONS).permitAll();
     }

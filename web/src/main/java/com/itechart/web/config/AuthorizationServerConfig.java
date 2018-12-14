@@ -2,8 +2,7 @@ package com.itechart.web.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
+import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -55,8 +54,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final AuthenticationManager authenticationManager;
 
     private final UserDetailsService userDetailsService;
-
-
 
 
     @Autowired
@@ -127,18 +124,27 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
 
-
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
         clients.inMemory()
                 .withClient("cleaning-app")
-                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
+                .authorizedGrantTypes("client_credentials", "password", "refresh_token", "authorization_code")
                 .authorities("ROLE_TRUSTED_CLIENT")
                 .scopes("read", "write")
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
                 .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
-                .secret(bCryptPasswordEncoder.encode("secret")).redirectUris("localhost:8080/login/facebook");
+                .secret(bCryptPasswordEncoder.encode("secret"))
+                .resourceIds(resourceId)
+//        .and().withClient("acme")
+//                .authorizedGrantTypes("authorization_code", "refresh_token")
+//                .authorities("ROLE_TRUSTED_CLIENT")
+//                .scopes("read", "write")
+//                .accessTokenValiditySeconds(accessTokenValiditySeconds)
+//                .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
+//                .secret(bCryptPasswordEncoder.encode("secret"))
+//                .resourceIds("acme-client")
+        ;
     }
 
 

@@ -63,7 +63,8 @@ class SignIn extends Component {
                         </label>
                     </div>
                     <button className="btn btn-lg btn-primary btn-block">Sign in</button>
-                    <a href="/login/facebook" className="btn btn-lg btn-primary btn-block">Google</a>
+                    <a href="/login/google" className="btn btn-lg btn-primary btn-block">Google</a>
+                    <a href="/login/facebook" className="btn btn-lg btn-primary btn-block">facebook</a>
                     <p className="mt-5 mb-3">&copy; 2018</p>
                 </form>
 
