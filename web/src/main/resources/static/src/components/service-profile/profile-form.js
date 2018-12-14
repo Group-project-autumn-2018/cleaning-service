@@ -75,11 +75,9 @@ class ProfileForm extends Component {
             });
     };
 
-    testNo = () => {
-        fetch("/api/order/test?access_token=" + this.props.token);
-    };
 
     onChangeHandler = (e) => {
+
         const name = e.target.name;
         const value = e.target.value;
         if (name === 'password') {
@@ -185,7 +183,9 @@ class ProfileForm extends Component {
     }
 
     onChangeLogoHandler = (event) => {
-        this.setState({logo: event.target.files[0]});
+        if(event.target.files[0].size < 1048576) {
+            this.setState({logo: event.target.files[0]});
+        }
     };
 
     onClickAddressHandler = (event) => {
@@ -397,7 +397,6 @@ class ProfileForm extends Component {
                             </button>}
                     </div>
                 </form>
-                <button className="btn btn-primary" onClick={this.testNo}>Test</button>
                 <ToastContainer autoClose={15000} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )
