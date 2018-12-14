@@ -45,7 +45,7 @@ class ProfileForm extends Component {
             confPassword: '',
             addresses: [],
             success: false,
-            passwordError: true,
+            passwordError: false,
             newPasswordError: false,
             confirmPasswordDelete: false,
             feedbackList: [],
@@ -289,6 +289,11 @@ class ProfileForm extends Component {
                     }
                     this.setState({feedbackList: list, isMoreThanFiveFeedback: trigger})
                 });
+        }
+        if (event.target.name === 'security') {
+            this.setState({passwordError: true});
+        } else {
+            this.setState({passwordError: false, newPasswordError: false, passwordMatch: true});
         }
         this.setState({modeToggle: event.target.name});
         console.log(event.target.name);
