@@ -15,7 +15,6 @@ class CustomerConfirmModalForm extends Component {
         this.props.history.push("/customer/orders")
     };
 
-
     render() {
         return (
             <div className="modal fade" id="confirm-modal" tabIndex="-1" role="dialog"
@@ -41,12 +40,15 @@ class CustomerConfirmModalForm extends Component {
                                 <div className="col-6">Rooms</div>
                                 <div className="col-6">
                                     <ul>
-                                        {this.props.order.smallRoomsCount ?
+                                        {this.props.order.smallRoomsCount !== '' ?
                                             <li>{`Small rooms ${this.props.order.smallRoomsCount}`}</li> : ''
                                         }
-
-                                        <li>{`Big rooms ${this.props.order.bigRoomsCount}`}</li>
-                                        <li>{`Bathrooms ${this.props.order.bathroomsCount}`}</li>
+                                        {this.props.order.bigRoomsCount !== '' ?
+                                            <li>{`Big rooms ${this.props.order.bigRoomsCount}`}</li> : ''
+                                        }
+                                        {this.props.order.bathroomsCount !== '' ?
+                                            <li>{`Bathrooms ${this.props.order.bathroomsCount}`}</li> : ''
+                                        }
                                     </ul>
                                 </div>
                             </div>

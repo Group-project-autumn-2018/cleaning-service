@@ -6,11 +6,7 @@ import moment from 'moment';
 const Order = ({order}) => {
 
     let colorClassName = "col";
-    // let addresss = '';
-    // if (order.address) {
-    //     addresss = order.address.address ? order.address.address : order.address;
-    //     console.log(addresss)
-    // }
+
     const time = moment(order.cleaningTime, "HH:mm:ss").format("HH:mm");
 
     switch (order.status) {
