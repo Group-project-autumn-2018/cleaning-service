@@ -7,3 +7,7 @@
 .navbar.navbar-expand-lg a {
     color: white;
 }
+
+.navbar > .custom-header {
+    flex-grow: unset;
+}
