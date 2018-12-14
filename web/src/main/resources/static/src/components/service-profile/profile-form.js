@@ -45,7 +45,7 @@ class ProfileForm extends Component {
             confPassword: '',
             addresses: [],
             success: false,
-            passwordError: false,
+            passwordError: true,
             newPasswordError: false,
             confirmPasswordDelete: false,
             feedbackList: [],
@@ -257,23 +257,21 @@ class ProfileForm extends Component {
         if (name === 'confPassword') {
             this.setState({
                 passwordMatch: password === this.state.service.newPassword,
-                passwordError: !(password === this.state.service.newPassword),
                 confPassword: password
             });
         } else {
             this.setState({service: {...this.state.service, [name]: password}});
             if (this.state.confPassword) {
                 this.setState({
-                    passwordMatch: password === this.state.confPassword,
-                    passwordError: !(password === this.state.confPassword)
+                    passwordMatch: password === this.state.confPassword
                 });
             }
             if (password.length < 6 || password.length > 30) {
                 e.target.classList.add('invalid');
-                this.setState({passwordError: true, newPasswordError: true})
+                this.setState({newPasswordError: true})
             } else {
                 e.target.classList.remove('invalid');
-                this.setState({passwordError: false, newPasswordError: false})
+                this.setState({newPasswordError: false})
             }
         }
 
@@ -300,7 +298,8 @@ class ProfileForm extends Component {
         event.preventDefault();
         console.log(this.state);
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
-            !this.state.emailFormatError && !this.state.emailDuplicateError && this.validateCleaningTypes()) {
+            this.state.passwordMatch && !this.state.newPasswordError && !this.state.emailFormatError &&
+            !this.state.emailDuplicateError && this.validateCleaningTypes() && !this.state.passwordError) {
             const service = {
                 ...this.state.service,
                 password: this.state.service.newPassword
@@ -374,6 +373,7 @@ class ProfileForm extends Component {
                                                                             updatePassword={this.onChangeHandler}
                                                                             checkPasswordMatch={this.checkPasswordMatch}
                                                                             newPasswordError={this.state.newPasswordError}/> : null}
+
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
                                            errors={cleaningTypesErrors}
