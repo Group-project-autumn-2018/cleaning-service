@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Chart from '../order-schedules/Chart';
-import {fetchNumberTypes} from "../api/api-actions";
+import {fetchNumber} from "../api/api-actions";
 import connect from "react-redux/es/connect/connect";
 
 class TypeDiagram extends Component {
@@ -8,40 +8,17 @@ class TypeDiagram extends Component {
 
     entityURN = '/order/getNumber';
 
-    componentDidMount() {
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
-    }
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
-            chartData:{}
-        }
-    }
-
-    componentWillMount(){
-        this.getChartData();
-    }
-
-    getChartData(){
-        // Ajax calls here
-        this.setState({
             chartData:{
                 labels: ['Standard room cleaning', 'Spring cleaning', 'Cleaning after repair and construction', 'Dry carpet cleaning',
                     'Office cleaning', 'Dry cleaning of furniture and coatings', 'Industrial cleaning', 'Pool cleaning'],
                 datasets:[
                     {
                         label:'Orders by types cleaning',
-                        data:[
-                            this.props.fetchOrders( this.entityURN, this.props.token, this.props.userID,'Standard room cleaning' ),
-                            5,
-                            15,
-                            10,
-                            14,
-                            32,
-                            0,
-                            5
-                        ],
+                        data: this.state.dataArr,
                         backgroundColor:[
                             'rgba(255, 99, 132, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
@@ -54,8 +31,24 @@ class TypeDiagram extends Component {
                         ]
                     }
                 ]
+            },
+            dataArr: []
+        }
+    }
+
+    componentWillMount(){
+        this.getChartData();
+    }
+
+    getChartData(){
+        // Ajax calls here
+        fetch().then(response.json()).then(
+            data => {
+                this.setState({dataArr: data});
+                console.log(data)
             }
-        });
+        );
+
     }
 
     render() {
@@ -75,7 +68,7 @@ class TypeDiagram extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        orders: state.entities,
+
         token: state.user.token,
         userID: state.user.id,
     }
@@ -84,7 +77,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchOrders: ( entityURN, token, userID, cleaningType) => {
-            dispatch(fetchNumberTypes( entityURN, token, userID, cleaningType))
+            dispatch(fetchNumber( entityURN, token, userID, cleaningType))
         }
     }
 };

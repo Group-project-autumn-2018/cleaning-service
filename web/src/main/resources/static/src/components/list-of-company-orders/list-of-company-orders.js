@@ -33,7 +33,7 @@ class ListOfCompanyOrders extends Component {
 
     handleChange = (e) => {
 
-        const statuses=['NEW', 'CONFIRMED', 'REJECTED'];
+        const statuses=['NEW', 'CONFIRMED', 'REJECTED', 'COMPLETED'];
 
         let value;
         let name;

@@ -1,5 +1,6 @@
 package com.itechart.service.repository;
 
+import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecificationExecutor<Order> {
@@ -32,6 +35,6 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     List<Order> findAllByCompany_IdAndStatus(Long id, Status status);
 
-    List<Order> findAllByCompany_IdAndFrequency(Long id, Frequency duration);
+    List<Order> findAllByCompany_IdAndFrequency(Long id, Frequency frequency);
 
 }

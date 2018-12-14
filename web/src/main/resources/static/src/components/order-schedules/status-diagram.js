@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ChartBar from '../order-schedules/ChartBar';
-import {fetchNumberTypes} from "../api/api-actions";
+import {fetchNumber} from "../api/api-actions";
 import connect from "react-redux/es/connect/connect";
 
 class StatusDiagram extends Component {
@@ -32,7 +32,7 @@ class StatusDiagram extends Component {
                     {
                         label:'Orders by status',
                         data:[
-                            this.props.fetchOrders( this.entityURN, this.props.token, this.props.userID,'NEW' ),
+                            13,
                             20,
                             15
                         ],
@@ -73,7 +73,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchOrders: ( entityURN, token, userID, cleaningType) => {
-            dispatch(fetchNumberTypes( entityURN, token, userID, cleaningType))
+            dispatch(fetchNumber( entityURN, token, userID, cleaningType))
         }
     }
 };

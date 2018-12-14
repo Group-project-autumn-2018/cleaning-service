@@ -26,7 +26,8 @@ class SortFilter extends Component {
     statusOptions= [
         {value: 'NEW', label: 'New'},
         {value: 'CONFIRMED', label: 'Confirmed'},
-        {value: 'REJECTED', label: 'Rejected'}
+        {value: 'REJECTED', label: 'Rejected'},
+        {value: 'COMPLETED', label: 'Completed'}
     ];
 
     sortOptions = [

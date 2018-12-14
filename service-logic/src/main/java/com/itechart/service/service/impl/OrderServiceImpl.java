@@ -3,6 +3,7 @@ package com.itechart.service.service.impl;
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
@@ -27,6 +28,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

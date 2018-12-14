@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import ChartLine from '../order-schedules/ChartLine';
-import {fetchNumberTypes} from "../api/api-actions";
+import {fetchNumber} from "../api/api-actions";
 import connect from "react-redux/es/connect/connect";
 
 class FrequencyDiagram extends Component {
@@ -32,7 +32,7 @@ class FrequencyDiagram extends Component {
                     {
                         label:'Orders by duration',
                         data:[
-                            this.props.fetchOrders( this.entityURN, this.props.token, this.props.userID,'ONLY_ONCE' ),
+                            13,
                             20,
                             15,
                             15
@@ -75,7 +75,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         fetchOrders: ( entityURN, token, userID, cleaningType) => {
-            dispatch(fetchNumberTypes( entityURN, token, userID, cleaningType))
+            dispatch(fetchNumber( entityURN, token, userID, cleaningType))
         }
     }
 };
