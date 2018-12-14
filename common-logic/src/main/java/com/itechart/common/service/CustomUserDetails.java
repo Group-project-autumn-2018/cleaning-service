@@ -8,6 +8,5 @@ public interface CustomUserDetails extends UserDetails {
 
     String getName();
     Long getId();
-
     Address getAddress();
 }

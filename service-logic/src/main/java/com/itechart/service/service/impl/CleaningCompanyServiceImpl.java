@@ -12,6 +12,9 @@ import com.itechart.service.mapper.CleaningCompanyMapper;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.service.CleaningCompanyService;
 import com.itechart.service.service.CleaningTypesService;
+import com.itechart.service.specification.CompanySpecification;
+import com.itechart.service.specification.CompanySpecificationBuilder;
+import com.itechart.service.specification.OrderSpecificationsBuilder;
 import com.itechart.service.util.ServiceVerification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +22,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -41,6 +46,8 @@ import java.time.LocalTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Service
 public class CleaningCompanyServiceImpl implements CleaningCompanyService {
@@ -81,6 +88,11 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     @Override
     public Page<CleaningCompany> findPaginated(int page, int size) {
         return cleaningCompanyRepository.findAll(PageRequest.of(page, size, Sort.by("username", "id")));
+    }
+
+    @Override
+    public Page<CleaningCompany> findPaginated(Pageable pageable) {
+        return cleaningCompanyRepository.findAll(pageable);
     }
 
     @Transactional
@@ -134,7 +146,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Override
     public void saveLogotype(MultipartFile logotype, Long id) {
-         try {
+        try {
             if (logotype != null && logotype.getBytes().length > 0) {
                 File file = new File(FILE_PATH);
                 if (!file.exists()) {
@@ -165,6 +177,26 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
             }
             return Files.readAllBytes(Paths.get(FILE_PATH, DEFAULT_LOGO_NAME));
         }
+    }
+
+    @Override
+    public Page<CleaningCompany> findPaginatedWithSearch(String search, Pageable pageable) {
+        CompanySpecificationBuilder builder = getSpecificationBuilder(search);
+        Specification<CleaningCompany> spec = builder.build();
+        Page<CleaningCompany> companies = cleaningCompanyRepository.findAll(spec, pageable);
+
+        return companies;
+    }
+
+    private CompanySpecificationBuilder getSpecificationBuilder(String search) {
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        CompanySpecificationBuilder builder = new CompanySpecificationBuilder();
+
+        while (matcher.find()) {
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+        return builder;
     }
 
     @Transactional

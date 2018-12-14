@@ -14,6 +14,7 @@ import Companies from '../companies/companies'
 import MainProfile from '../main-profile';
 import ServiceInfo from "../service-info/service-info";
 import CustomerOrdersList from '../customer-orders/customer-orders-list';
+import CompaniesWithSearch from '../customer-orders/companies-with-search';
 
 class AppRouting extends Component {
 
@@ -28,6 +29,7 @@ class AppRouting extends Component {
                 <Route path="/registration/service" component={ServiceRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies} />
+
                 <Redirect to="/"/>
             </Switch>
         );
@@ -46,6 +48,7 @@ class AppRouting extends Component {
                     <Route path="/booking" component={BookingForm}/>
                     <Route path="/companies" component={Companies}/>
                     <Route path="/customer/orders" component={CustomerOrdersList}/>
+
                     <Redirect to="/"/>
                 </Switch>
             ) : (
@@ -54,6 +57,7 @@ class AppRouting extends Component {
                     <Route path="/profile" component={MainProfile}/>
                     <Route path="/logout" component={Logout}/>
                     <Route path="/login" component={SignIn}/>
+                    <Route path="/company/search" component={CompaniesWithSearch}/>
                     <Route path="/company/:id/feedback" render={({match}) => {
                         const {id} = match.params;
                         return <Feedback serviceId={id} />

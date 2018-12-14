@@ -1,5 +1,6 @@
 package com.itechart.web.controller;
 
+import com.itechart.common.service.UserService;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.service.dto.CleaningCompanyDto;
 import com.itechart.service.dto.FeedbackDto;
@@ -16,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -38,11 +40,16 @@ public class CleaningServiceController {
 
     private final FeedbackService feedbackService;
 
+    private final UserService userService;
+
     @Autowired
-    public CleaningServiceController(CleaningCompanyService cleaningCompanyService, SearchCompanyService searchCompanyService, FeedbackService feedbackService) {
+    public CleaningServiceController(CleaningCompanyService cleaningCompanyService,
+                                     SearchCompanyService searchCompanyService,
+                                     FeedbackService feedbackService, UserService userService) {
         this.cleaningCompanyService = cleaningCompanyService;
         this.searchCompanyService = searchCompanyService;
         this.feedbackService = feedbackService;
+        this.userService = userService;
     }
 
     @PostMapping("/search/companies")
@@ -81,6 +88,16 @@ public class CleaningServiceController {
         return cleaningCompanyService.findPaginated(page, size);
     }
 
+    @GetMapping("/search")
+    public Page<CleaningCompany> getCompany(@RequestParam(value = "search", required = false) String search,
+                                            Pageable pageable) {
+        if (search != null) {
+            return cleaningCompanyService.findPaginatedWithSearch(search, pageable);
+        } else {
+            return cleaningCompanyService.findPaginated(pageable);
+        }
+    }
+
     @PostMapping(value = "/{cleaningId}")
     public ResponseEntity update(@RequestParam(name = "logo", required = false) MultipartFile logo,
                                  @RequestParam(name = "company") String companyDto) {
@@ -110,26 +127,14 @@ public class CleaningServiceController {
     }
 
     @GetMapping("/feedback")
-    public ResponseEntity getFeedback(@RequestParam(value = "count", required = false) Integer count,
-                                      @RequestParam(value = "service-id") Long serviceId) {
-        List<Feedback> feedback;
-        if (count != null) {
-            feedback = feedbackService.getTop(serviceId, count);
+    public ResponseEntity getFeedback(@RequestParam(value = "size", required = false) Long size,
+                                      @RequestParam(value = "page", required = false) Integer page,
+                                      @RequestParam(value = "service-id") Long serviceId, Pageable pageable) {
+        if (page == null) {
+            return ResponseEntity.ok(feedbackService.getTop(serviceId, size));
         } else {
-            feedback = feedbackService.getAll(serviceId);
+            return ResponseEntity.ok(feedbackService.getAllByCompany(serviceId, pageable));
         }
-        return ResponseEntity.ok(feedback);
-    }
-
-    @PostMapping("/registration")
-    public ResponseEntity register(@RequestBody CleaningCompanyDto objDto
-                                   //, @RequestParam(name = "logotype", required = false) MultipartFile logotype
-    ) {
-        //ObjectMapper mapper = new ObjectMapper();
-        //CleaningCompanyDto registrationDto = mapper.readValue(objDto, CleaningCompanyDto.class);
-        cleaningCompanyService.registerCompany(objDto, null);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).build();
-
     }
 
     @PostMapping("/verify")
@@ -148,6 +153,11 @@ public class CleaningServiceController {
     @GetMapping("/{id}/image")
     public ResponseEntity getLogo(@PathVariable Long id) throws IOException {
         return ResponseEntity.ok(cleaningCompanyService.getLogotype(id));
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity isEmailExists(@RequestParam(name = "email") String email) {
+        return ResponseEntity.ok(userService.isEmailExists(email));
     }
 
     @ExceptionHandler(IOException.class)

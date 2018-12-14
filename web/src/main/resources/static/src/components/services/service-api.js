@@ -49,9 +49,13 @@ export default class ServiceApi {
         return res.status;
     }
 
-
     async verifyService(object) {
         const res = await this.sendPostRequest(JSON.stringify(object), 'api/cleaning/verify');
         return res.status;
+    }
+
+    async isEmailExists(email) {
+        const result = await fetch("/api/cleaning/email?email=" + email);
+        return result.json();
     }
 }

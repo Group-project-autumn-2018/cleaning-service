@@ -6,9 +6,11 @@ import './profile-form.css';
 import {fetchEntity, fetchUpdateEntity} from '../api/api-actions';
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
+import ServiceApi from "../services/service-api";
 
 
 class ProfileForm extends Component {
+    serviceApi = new ServiceApi();
 
     state = {
         URN: "/customer/profile",
@@ -53,8 +55,8 @@ class ProfileForm extends Component {
 
     submitHandler = (e) => {
         e.preventDefault();
-
-        if (!this.state.usernameError && !this.state.emailError && !this.state.addressError && !this.state.passwordError) {
+        if (!this.state.usernameError && !this.state.emailError && !this.state.emailDuplicateError &&
+            !this.state.addressError && !this.state.passwordError) {
             fetchUpdateEntity(this.state.customer, this.state.URN, this.props.token).then(response => {
                 if (response.status === 200) {
                     this.setState({
@@ -85,10 +87,16 @@ class ProfileForm extends Component {
             case 'email':
                 if (!/[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)/.test(value)) {
                     e.target.classList.add('invalid');
-                    this.setState({emailError: true})
+                    this.setState({emailFormatError: true})
                 } else {
                     e.target.classList.remove('invalid');
-                    this.setState({emailError: false})
+                    this.setState({emailFormatError: false})
+                }
+                if (value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
+                    this.serviceApi.isEmailExists(value)
+                        .then(response => {
+                            this.setState({emailDuplicateError: response});
+                        });
                 }
                 break;
             case 'password':
@@ -110,17 +118,16 @@ class ProfileForm extends Component {
                     this.setState({addressError: false});
                     if (value.length > 5) {
                         console.log('opensm');
-                        this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
+                        this.openStreetMapApi.getAddress(value)
+                            .then(response => this.setState({addresses: response}));
                     }
                     value = {
                         ...this.state.customer.address,
                         address: value
                     };
-
                 }
                 break;
         }
-
         const updatedCustomer = {
             ...this.state.customer,
             [name]: name === "cleaningNotifications" ? e.target.checked : value
@@ -163,7 +170,6 @@ class ProfileForm extends Component {
                 this.setState({passwordError: false, newPasswordError: false})
             }
         }
-
     };
 
     render() {
@@ -191,6 +197,9 @@ class ProfileForm extends Component {
                                    value={this.state.customer.email}
                                    onChange={this.onChangeHandler}
                             />
+                            {this.state.emailDuplicateError ?
+                                <p className="errorMessage" style={{visibility: "visible"}}>
+                                    This email is already registered, choose another one.</p> : null}
                             <p className="errorMessage">Invalid email</p>
                         </div>
                     </div>
@@ -243,19 +252,15 @@ class ProfileForm extends Component {
                                                                   checkPasswordMatch={this.checkPasswordMatch}
                                                                   error={this.state.error}
                                                                   newPasswordError={this.state.newPasswordError}
-
                     />}
                     <div className="text-center">
                         {this.state.success ? <p className="success"><i className="fa fa-check"></i>Updated</p> :
                             <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>}
                     </div>
                 </form>
-
             </div>
         )
-
     }
-
 }
 
 const mapStateToProps = (state) => {

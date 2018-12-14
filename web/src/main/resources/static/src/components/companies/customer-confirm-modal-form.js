@@ -4,6 +4,7 @@ import * as orderActions from "../actions/order-actions";
 import {fetchSaveEntity} from '../api/api-actions';
 import './confirm-modal-css.css';
 import {withRouter} from "react-router-dom";
+import Moment from 'react-moment';
 
 class CustomerConfirmModalForm extends Component {
 
@@ -13,7 +14,6 @@ class CustomerConfirmModalForm extends Component {
         await fetchSaveEntity({...this.props.order}, this.URN, this.props.user.token);
         this.props.history.push("/customer/orders")
     };
-
 
     render() {
         return (
@@ -40,15 +40,22 @@ class CustomerConfirmModalForm extends Component {
                                 <div className="col-6">Rooms</div>
                                 <div className="col-6">
                                     <ul>
-                                        <li>{`Small rooms ${this.props.order.smallRoomsCount}`}</li>
-                                        <li>{`Big rooms ${this.props.order.bigRoomsCount}`}</li>
-                                        <li>{`Bathrooms ${this.props.order.bathroomsCount}`}</li>
+                                        {this.props.order.smallRoomsCount !== '' ?
+                                            <li>{`Small rooms ${this.props.order.smallRoomsCount}`}</li> : ''
+                                        }
+                                        {this.props.order.bigRoomsCount !== '' ?
+                                            <li>{`Big rooms ${this.props.order.bigRoomsCount}`}</li> : ''
+                                        }
+                                        {this.props.order.bathroomsCount !== '' ?
+                                            <li>{`Bathrooms ${this.props.order.bathroomsCount}`}</li> : ''
+                                        }
                                     </ul>
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col-6">Cleaning Date</div>
-                                <div className="col-6">{this.props.order.cleaningDay}</div>
+                                <div className="col-6"><Moment
+                                    format='DD-MM-YYYY'>{this.props.order.cleaningDay}</Moment></div>
                             </div>
                             <div className="row">
                                 <div className="col-6">Cleaning Start Time</div>
