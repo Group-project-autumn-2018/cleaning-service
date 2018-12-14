@@ -45,6 +45,10 @@ class AppRouting extends Component {
                         const {id} = match.params;
                         return <Feedback serviceId={id} />
                     }}/>
+                    <Route path="/booking/:id" render={({match}) => {
+                        const {id} = match.params;
+                        return <BookingForm companyId={id}/>
+                    }}/>
                     <Route path="/booking" component={BookingForm}/>
                     <Route path="/companies" component={Companies}/>
                     <Route path="/customer/orders" component={CustomerOrdersList}/>
@@ -61,6 +65,10 @@ class AppRouting extends Component {
                     <Route path="/company/:id/feedback" render={({match}) => {
                         const {id} = match.params;
                         return <Feedback serviceId={id} />
+                    }}/>
+                    <Route path="/booking/:id" render={({match}) => {
+                        const {id} = match.params;
+                        return <BookingForm companyId={id}/>
                     }}/>
                     <Route path="/booking" component={BookingForm}/>
                     <Route exact path="/companies" component={Companies}/>

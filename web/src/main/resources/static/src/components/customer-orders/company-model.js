@@ -1,13 +1,11 @@
 import React, {Component} from 'react';
 import Rating from 'react-rating';
-import {Link} from "react-router-dom";
-import {withRouter} from "react-router-dom";
+import {Link, withRouter} from "react-router-dom";
 
 class CompanyForSearching extends Component {
 
     onClick = () => {
-        /////
-        this.props.history.push("/booking");
+        this.props.history.push(`/booking/${this.props.company.id}`);
     };
 
     render() {
@@ -24,8 +22,7 @@ class CompanyForSearching extends Component {
                 </td>
                 <td className="col">
                     <div>
-                        <button type="button" data-toggle="modal" data-target="#confirm-modal"
-                                className="btn btn-secondary btn btn-success"
+                        <button type="button" className="btn btn-secondary btn btn-success"
                                 onClick={this.onClick}>
                             Make an order
                         </button>
@@ -35,6 +32,5 @@ class CompanyForSearching extends Component {
         )
     }
 }
-
 
 export default withRouter(CompanyForSearching);

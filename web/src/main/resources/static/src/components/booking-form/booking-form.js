@@ -3,14 +3,21 @@ import {connect} from 'react-redux';
 import './booking-form.css';
 import SelectItemsList from "./select-items-list";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
+import {withRouter} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import CustomerApi from "../services/customer-api";
+import ConfirmModalToggleButton from "../companies/confirm-modal-toggle-button";
+import CustomerConfirmModalForm from "../companies/customer-confirm-modal-form";
+import {fetchCompaniesPOST} from "../api/api-actions";
 
 class BookingForm extends Component {
 
+    company = {};
     openStreetMapApi = new OpenStreetMapApi();
     customerApiService = new CustomerApi();
+
+    entityURN = '/cleaning/search/companies';
 
     constructor(props) {
         super(props);
@@ -23,9 +30,9 @@ class BookingForm extends Component {
             },
             companyName: '',
             cleaningType: this.types[0],
-            smallRoomsCount: '',
-            bigRoomsCount: '',
-            bathroomsCount: '',
+            smallRoomsCount: '0',
+            bigRoomsCount: '0',
+            bathroomsCount: '0',
             cleaningDay: '',
             cleaningTime: this.time[0],
             frequency: this.frequency[0],
@@ -53,7 +60,7 @@ class BookingForm extends Component {
             event.target.classList.remove('invalid');
             this.setState({smallRoomsError: false})
         }
-        this.setState({smallRoomsCount: event.target.value});
+        this.setState({smallRoomsCount: event.target.value.toString()});
     };
 
     changeBigRooms = (event) => {
@@ -65,7 +72,7 @@ class BookingForm extends Component {
             event.target.classList.remove('invalid');
             this.setState({bigRoomsError: false})
         }
-        this.setState({bigRoomsCount: event.target.value});
+        this.setState({bigRoomsCount: event.target.value.toString()});
     };
 
     changeBathrooms = (event) => {
@@ -77,7 +84,7 @@ class BookingForm extends Component {
             event.target.classList.remove('invalid');
             this.setState({bathroomsError: false})
         }
-        this.setState({bathroomsCount: event.target.value});
+        this.setState({bathroomsCount: event.target.value.toString()});
     };
 
     changeCleaningDay = (event) => {
@@ -114,6 +121,41 @@ class BookingForm extends Component {
         }
     };
 
+    componentDidUpdate() {
+        if (this.props.companies[0].averagePrice && !this.company.averagePrice) {
+            const id = this.props.companyId;
+            this.company = this.props.companies.filter(company => company.id == id)[0];
+            console.log(this.company);
+
+        }
+    };
+
+    bookingConfirm = () => {
+        const searchCompanyDto = {
+            cleaningType: this.state.cleaningType,
+            smallRoomsCount: this.state.smallRoomsCount,
+            bigRoomsCount: this.state.bigRoomsCount,
+            bathroomsCount: this.state.bathroomsCount,
+            address: this.props.isAuthenticated ? this.props.address.address : this.props.orderUpdate.address.address,
+            latitude: this.props.isAuthenticated ? this.props.address.lat : this.props.orderUpdate.address.lat,
+            longitude: this.props.isAuthenticated ? this.props.address.lon : this.props.orderUpdate.address.lon,
+            email: this.props.orderUpdate.email,
+            price: "",
+            estimatedTime: "",
+            sort: ""
+        };
+        this.props.fetchCompaniesPOST(searchCompanyDto, this.entityURN, this.props.token);
+
+        if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
+            this.props.updateOrder({
+                ...this.state, customer: this.props.id,
+                companyName: this.company.username,
+                price: this.company.averagePrice,
+                estimatedTime: this.company.estimatedTime
+            })
+        }
+    };
+
     onChangeHandler = (e) => {
         this.setState({address: {...this.state.address, address: e.target.value}});
         const name = e.target.name;
@@ -128,7 +170,6 @@ class BookingForm extends Component {
             ...this.state,
             address: {...this.state.address, lat: address.lat, lon: address.lon}
         };
-        console.log(address.lat + ' ' + address.lon);
         this.setState({...updatedOrder, addresses: []});
     };
 
@@ -145,6 +186,7 @@ class BookingForm extends Component {
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
+        console.log(this.props);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -187,19 +229,19 @@ class BookingForm extends Component {
                     <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="smallRooms" className="col-form-label">Small rooms</label>
-                            <input type="text" id="smallRooms" className="form-control short"
-                                   placeholder="under 20 m²" required={true} autoFocus
+                            <input type="number" id="smallRooms" className="form-control short"
+                                   placeholder="under 20 m²" autoFocus
                                    onChange={this.changeSmallRooms}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bigRooms" className="col-form-label">Big rooms</label>
-                            <input type="text" id="bigRooms" className="form-control short"
-                                   placeholder="over 20 m²" required={true} autoFocus onChange={this.changeBigRooms}/>
+                            <input type="number" id="bigRooms" className="form-control short"
+                                   placeholder="over 20 m²" autoFocus onChange={this.changeBigRooms}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bathrooms" className="col-form-label">Bathrooms</label>
-                            <input type="text" id="bathrooms" className="form-control short"
-                                   placeholder="number of bathrooms..." required={true} autoFocus
+                            <input type="number" id="bathrooms" className="form-control short"
+                                   placeholder="number of bathrooms..." autoFocus
                                    onChange={this.changeBathrooms}/>
                         </div>
                     </div>
@@ -241,12 +283,21 @@ class BookingForm extends Component {
                         }
                     </div>
 
-                    <div className="confirm">
-                        <button className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
-                            Consider proposals
-                        </button>
+                    <div>
+                        {this.props.companyId ?
+                            <div className="confirm">
+                                <ConfirmModalToggleButton onClick={this.bookingConfirm}/>
+                            </div>
+                            :
+                            <div className="confirm">
+                                <button className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
+                                    Consider proposals
+                                </button>
+                            </div>
+                        }
                     </div>
                 </form>
+                <CustomerConfirmModalForm/>
             </div>
         );
     }
@@ -254,7 +305,9 @@ class BookingForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.user
+        ...state.user,
+        orderUpdate: state.orderUpdate,
+        companies: state.entities
     }
 };
 
@@ -262,8 +315,11 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateOrder: (order) => {
             dispatch(orderActions.prepareOrderForUpdate(order))
+        },
+        fetchCompaniesPOST: (entity, entityURN, token) => {
+            dispatch(fetchCompaniesPOST(entity, entityURN, token));
         }
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BookingForm));
