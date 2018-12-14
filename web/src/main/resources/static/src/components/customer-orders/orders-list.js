@@ -6,6 +6,8 @@ const OrdersList = ({orders}) => {
     const ordersList = orders.map(order =>
         <Order key={order.id} order={order}/>
     );
+
+
     return (
         <div className="container-fluid bg-light w-100 h-100">
             <table className="table table-hover mt-2">

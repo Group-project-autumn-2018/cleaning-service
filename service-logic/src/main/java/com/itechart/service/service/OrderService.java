@@ -10,15 +10,17 @@ public interface OrderService {
 
     void saveOrder(OrderDto orderDto);
 
+    void changeStatus(String status, Long id);
+
     Page<OrderDto> findPaginated(Pageable pageable);
 
     Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable);
 
-    Page<OrderDto> findPaginatedWithServiceId(Long id, Pageable pageable);
-
     Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable);
 
     Page<OrderDto> findPaginatedWithSearchAndId(Long id, String search, Pageable pageable);
+
+    Page<OrderDto> findPaginatedWithServiceId(Long id, Pageable pageable);
 
     Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType, String status, Pageable pageable);
 
@@ -31,6 +33,5 @@ public interface OrderService {
     int getNumberOfOrdersByStatus (Long id, String status);
 
     int getNumberOfOrdersByFrequency(Long id, String duration);
-
 
 }

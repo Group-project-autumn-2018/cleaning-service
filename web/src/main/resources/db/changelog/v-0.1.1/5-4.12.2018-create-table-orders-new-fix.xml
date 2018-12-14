@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet author="Dmitriy Lipgart" id="1543412736052-27">
+        <createTable tableName="orders">
+            <column autoIncrement="true" name="id" type="BIGSERIAL">
+                <constraints primaryKey="true" primaryKeyName="orders_pkey"/>
+            </column>
+            <column name="address" type="VARCHAR(255)"/>
+            <column name="lat" type="FLOAT8"/>
+            <column name="lon" type="FLOAT8"/>
+            <column name="bathrooms_count" type="INTEGER"/>
+            <column name="big_rooms_count" type="INTEGER"/>
+            <column name="cleaning_day" type="date"/>
+            <column name="cleaning_time" type="time"/>
+            <column name="cleaning_type" type="VARCHAR(255)"/>
+            <column name="duration" type="VARCHAR(255)"/>
+            <column name="customer_email" type="VARCHAR(255)"/>
+            <column name="estimated_time" type="INTEGER"/>
+            <column name="frequency" type="VARCHAR(255)"/>
+            <column name="price" type="numeric(19, 2)"/>
+            <column name="small_rooms_count" type="INTEGER"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="service_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="customer_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

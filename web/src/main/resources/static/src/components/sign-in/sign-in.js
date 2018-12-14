@@ -22,7 +22,7 @@ class SignIn extends Component {
                 this.props.history.push("/customer/orders");
                 break;
             case "service":
-                this.props.history.push("/service/orders");
+                this.props.history.push("/profile");
                 break;
         }
     }

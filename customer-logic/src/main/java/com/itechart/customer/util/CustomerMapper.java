@@ -1,11 +1,9 @@
 package com.itechart.customer.util;
 
-import com.itechart.common.entity.Address;
 import com.itechart.customer.dto.CustomerProfileDto;
 import com.itechart.customer.dto.CustomerProfileUpdateDto;
 import com.itechart.customer.entity.Customer;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -25,13 +23,10 @@ public abstract class CustomerMapper {
         }
         customer.setEmail(customerProfileUpdateDto.getEmail());
         customer.setPhone(customerProfileUpdateDto.getPhone());
-        Address address = customer.getAddress();
-        address.setAddress(customerProfileUpdateDto.getAddress());
-        customer.setAddress(address);
+        customer.setAddress(customerProfileUpdateDto.getAddress());
         customer.setCleaningNotifications(customerProfileUpdateDto.getCleaningNotifications());
         return customer;
     }
 
-    @Mapping(target = "address", source = "address.address")
     public abstract CustomerProfileDto mapCustomerToCustomerProfileDto(Customer customer);
 }

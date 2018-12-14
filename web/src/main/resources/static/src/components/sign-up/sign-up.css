@@ -26,3 +26,42 @@
 .verification {
     margin-top: 6%;
 }
+
+input.invalid {
+    border-color: #b64644;
+}
+
+input.invalid:focus {
+    border-color: #f94345;
+    box-shadow: 0 0 14px 1px #f94345 !important;
+}
+
+p.errorMessage {
+    color: #b62920;
+    visibility: hidden;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+input.invalid ~ p.errorMessage {
+    visibility: visible;
+}
+
+.custom-card-group {
+    width: 70%;
+}
+
+.custom-icon {
+    position: relative;
+    left: 35%;
+    margin-top: 5%;
+    width: 40%;
+}
+
+.fa-8x {
+    font-size: 8em;
+}
+
+.space-left {
+    margin-left: 10%;
+}

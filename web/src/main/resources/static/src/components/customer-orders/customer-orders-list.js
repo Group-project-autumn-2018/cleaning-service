@@ -25,20 +25,35 @@ class CustomerOrdersList extends Component {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
         } else {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
+
         }
     }
 
 
     handlePageChange = (page) => {
-        this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID);
+        const sort = this.state.sort ? this.state.sort : '';
+        const search = this.state.search ? this.state.search : '';
+        const sortParam = search + sort;
+        if (this.props.role === 'admin') {
+            this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, null, sortParam);
+        } else {
+            this.props.fetchOrders(page - 1, this.props.itemsCountPerPage, this.entityURN,
+                this.props.token, this.props.userID, sortParam);
+        }
     };
 
     handleChange = (e) => {
-        const value = e.target.value.replace(/ /g, "_");
-        const name = e.target.name;
-        this.setState({[name]: value})
-
+        let value;
+        let name;
+        if (e.value) {
+            value = e.value;
+            name = "cleaningType";
+        } else {
+            value = e.target.value;
+            name = e.target.name;
+        }
+        this.setState({[name]: value.replace(/ /g, "_")})
     };
 
     handleSearch = () => {
@@ -78,36 +93,39 @@ class CustomerOrdersList extends Component {
 
     showAll = () => {
         this.setState({search: null});
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN,
-            this.props.token, this.props.userID);
+        if (this.props.role === 'admin') {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
+        } else {
+            this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
+        }
     };
 
     render() {
-            return (
-                <div className="bg-light container-fluid w-100 h-100 order-list">
-                    <h1 className="text-center">{this.props.role === 'admin' ? "All Orders" : "Your Orders"}
-                    </h1>
-                    <div className="position-relative nav-container">
-                        <Link to="/booking" type="button" className="btn btn-primary new-order-btn">New Order</Link>
+        return (
+            <div className="bg-light container-fluid w-100 h-100 order-list">
+                <h1 className="text-center">{this.props.role === 'admin' ? "All Orders" : "Your Orders"}
+                </h1>
+                <div className="position-relative nav-container">
+                    <Link to="/booking" type="button" className="btn btn-primary new-order-btn">New Order</Link>
 
-                        <nav aria-label="Page navigation" className="mx-auto">
-                            <Pagination activePage={this.props.activePage + 1}
-                                        itemsCountPerPage={this.props.itemsCountPerPage}
-                                        totalItemsCount={this.props.totalItemsCount}
-                                        pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages : 5}
-                                        onChange={this.handlePageChange}
-                                        itemClass="page-item"
-                                        linkClass="page-link"
-                                        innerClass="pagination justify-content-center"
-                            />
-                        </nav>
-                    </div>
-                    <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}
-                                      onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
-                                      selectedSortOption={this.state.selectedSortOption}
-                                      showAll={this.showAll}/>
-                    <OrdersList orders={this.props.orders}/>
-                </div>)
+                    <nav aria-label="Page navigation" className="mx-auto">
+                        <Pagination activePage={this.props.activePage + 1}
+                                    itemsCountPerPage={this.props.itemsCountPerPage}
+                                    totalItemsCount={this.props.totalItemsCount}
+                                    pageRangeDisplayed={this.props.totalPages < 5 ? this.props.totalPages : 5}
+                                    onChange={this.handlePageChange}
+                                    itemClass="page-item"
+                                    linkClass="page-link"
+                                    innerClass="pagination justify-content-center"
+                        />
+                    </nav>
+                </div>
+                <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}
+                                  onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
+                                  selectedSortOption={this.state.selectedSortOption}
+                                  showAll={this.showAll}/>
+                <OrdersList orders={this.props.orders}/>
+            </div>)
     }
 }
 

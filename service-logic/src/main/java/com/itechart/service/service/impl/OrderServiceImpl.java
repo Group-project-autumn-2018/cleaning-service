@@ -3,7 +3,6 @@ package com.itechart.service.service.impl;
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
-import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
@@ -11,18 +10,23 @@ import com.itechart.service.repository.CleaningCompanyRepository;
 import com.itechart.service.repository.OrderRepository;
 import com.itechart.service.service.OrderService;
 import com.itechart.service.specification.OrderSpecificationsBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -32,8 +36,10 @@ public class OrderServiceImpl implements OrderService {
     private final EmailService emailService;
 
     private final OrderRepository orderRepository;
-
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
     private final CleaningCompanyRepository cleaningCompanyRepository;
+
+    private SimpMessagingTemplate simpMessagingTemplate;
 
     @Value("${order.check.delay}")
     private Long orderStatusCheckDelay;
@@ -46,11 +52,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EmailService emailService,
-                            CleaningCompanyRepository cleaningCompanyRepository) {
+                            CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate
+    ) {
         this.orderRepository = orderRepository;
         this.emailService = emailService;
         this.cleaningCompanyRepository = cleaningCompanyRepository;
-
+        this.simpMessagingTemplate = simpMessagingTemplate;
     }
 
     @Override
@@ -63,7 +70,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderDto getOne(Long id) {
-        return mapper.mapOrderToOrderDto(orderRepository.getOne(id));
+        Order order;
+        try {
+            order = orderRepository.getOne(id);
+            return mapper.mapOrderToOrderDto(order);
+        } catch (EntityNotFoundException ex) {
+            logger.warn("Entity order not found");
+            return null;
+        }
     }
 
 
@@ -72,8 +86,9 @@ public class OrderServiceImpl implements OrderService {
         if (order.getStatus() != Status.CONFIRMED) {
             order.setStatus(Status.REJECTED);
             orderRepository.saveAndFlush(order);
+            logger.info("Order #" + id + " rejected by timeout");
         }
-        System.out.println("task");
+
     }
 
 
@@ -81,14 +96,33 @@ public class OrderServiceImpl implements OrderService {
     public void saveOrder(OrderDto orderDto) {
         Order order = mapper.mapOrderDtoToOrder(orderDto);
         Order savedOrder = orderRepository.saveAndFlush(order);
+        Long savedOrderId = savedOrder.getId();
         Long companyId = savedOrder.getCompany().getId();
         CleaningCompany company = cleaningCompanyRepository.findById(companyId).get();
-        String subject = "New order №" + savedOrder.getId();
-        String text = " You have new order №" + savedOrder.getId();
-        emailService.sendSimpleMessage(company.getEmail(), subject, text);
+        String companyEmail = company.getEmail();
+        String subject = "New order №" + savedOrderId;
+        String text = " You have a new order №" + savedOrderId + System.lineSeparator()
+                + " http://localhost:8080/service/orders/" + savedOrderId;
+        emailService.sendSimpleMessage(companyEmail, subject, text);
+        setCheckOrderStatusDelay(savedOrderId);
+        //todo remove delay
+        Date sendMessageTime = new Date(new Date().getTime() + 30000);
+        taskScheduler.schedule(
+                () -> sendMessageToClient(companyEmail, savedOrderId),
+                sendMessageTime);
+        logger.info(companyEmail, savedOrderId);
 
-        Date date = new Date(new Date().getTime() + orderStatusCheckDelay);
-        taskScheduler.schedule(() -> checkOrderStatus(savedOrder.getId()), date);
+    }
+
+    private void setCheckOrderStatusDelay(Long savedOrderId) {
+        Date checkOrderStatusTime = new Date(new Date().getTime() + orderStatusCheckDelay);
+        taskScheduler.schedule(() -> checkOrderStatus(savedOrderId), checkOrderStatusTime);
+    }
+
+
+    public void sendMessageToClient(String serviceName, Long orderId) {
+        simpMessagingTemplate.convertAndSendToUser(serviceName, "/queue/reply", orderId);
+        logger.info("Notification sent to " + serviceName);
     }
 
     @Bean
@@ -99,24 +133,48 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDto> findPaginatedWithSearchAndId(Long id, String search, Pageable pageable) {
-
         OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
         builder.with("customer", id);
+        Specification<Order> spec = builder.build();
+        Page<Order> orders = orderRepository.findAll(spec, pageable);
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable) {
+        Page<Order> orders = orderRepository.findAllByCustomer_Id(pageable, id);
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable) {
+
+        OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
         Specification<Order> spec = builder.build();
         Page<Order> orders = orderRepository.findAll(spec, pageable);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
 
+    private OrderSpecificationsBuilder getSpecificationBuilder(String search) {
+        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
+        Matcher matcher = pattern.matcher(search + ",");
+        OrderSpecificationsBuilder builder = new OrderSpecificationsBuilder();
 
-   @Override
-   public Page<OrderDto> findPaginatedWithCleaningType(Long id, String cleaningType, Pageable pageable) {
+        while (matcher.find()) {
+            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
+        }
+        return builder;
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithCleaningType(Long id, String cleaningType, Pageable pageable) {
 
 
-       Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType( pageable, id, cleaningType);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType( pageable, id, cleaningType);
 
-       return orders.map(order -> mapper.mapOrderToOrderDto(order));
-   }
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
 
     @Override
     public Page<OrderDto> findPaginatedWithStatus(Long id, String status, Pageable pageable) {
@@ -137,28 +195,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable) {
-
-        Page<Order> orders = orderRepository.findAllByCustomer_Id(pageable, id);
-
-        return orders.map(order -> mapper.mapOrderToOrderDto(order));
-    }
-
-    @Override
     public Page<OrderDto> findPaginatedWithServiceId(Long id, Pageable pageable) {
 
         Page<Order> orders = orderRepository.findAllByCompany_Id(pageable, id);
-
-        return orders.map(order -> mapper.mapOrderToOrderDto(order));
-    }
-
-
-    @Override
-    public Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable) {
-
-        OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
-        Specification<Order> spec = builder.build();
-        Page<Order> orders = orderRepository.findAll(spec, pageable);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
@@ -184,14 +223,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
 
-    private OrderSpecificationsBuilder getSpecificationBuilder(String search) {
-        Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
-        Matcher matcher = pattern.matcher(search + ",");
-        OrderSpecificationsBuilder builder = new OrderSpecificationsBuilder();
 
-        while (matcher.find()) {
-            builder.with(matcher.group(1), matcher.group(2), matcher.group(3));
-        }
-        return builder;
+    @Transactional
+    @Override
+    public void changeStatus(String status, Long id) {
+        Order order = orderRepository.getOne(id);
+
+        Status currentStatus = Status.valueOf(status);
+        emailService.sendSimpleMessage(order.getEmail(), "Order " + status + " " + LocalDate.now(),
+                "You order was " + status);
+        orderRepository.changeStatus(currentStatus, id);
     }
 }

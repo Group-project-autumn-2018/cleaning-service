@@ -9,7 +9,7 @@
             <column name="user_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
-            <column name="role_id" type="BIGINT">
+            <column name="roles_id" type="BIGINT">
                 <constraints nullable="false"/>
             </column>
         </createTable>

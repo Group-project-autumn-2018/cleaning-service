@@ -13,23 +13,29 @@ const LoginForm = (props) => {
                                 <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
 
                                 <input type="text" className="form-control" id="profileFormName" placeholder="Name"
-                                       name="username"
+                                       name="username" disabled={props.disabled}
                                        value={props.service.username}
                                        onChange={props.onChangeHandler}
                                 />
-
+                                {props.usernameError ?
+                                    <p className="errorMessage">Username size must be of length 2 to 50</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="email" className="col-form-label">Email</label>
-                                <input type="email" className="form-control" id="email"
+                                <input type="email" className="form-control" name="email"
                                        placeholder="example@gmail.com" value={props.service.email}
                                        onChange={props.changeEmail} disabled={props.disabled}/>
-                                <div className="email-feedback"/>
+                                {(props.emailFormatError || props.emailError) ?
+                                    <p className="errorMessage">Email size must be of length 6 to 50 and it must have
+                                        correct form</p> : null}
+                                {props.emailDuplicateError ?
+                                    <p className="errorMessage" style={{visibility: "visible"}}>
+                                        This email is already registered, choose another one.</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="tel" className="col-form-label">Phone number</label>
                                 <MaskedInput
-                                    mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', ' ', /\d/, /\d/, /\d/, '-',
+                                    mask={['+', '3', '7', '5', '(', /[0-9]/, /\d/, ')', /\d/, /\d/, /\d/, '-',
                                         /\d/, /\d/, '-', /\d/, /\d/]}
                                     className="form-control"
                                     placeholder="+375(__)___-__-__"
@@ -53,7 +59,8 @@ const LoginForm = (props) => {
                                 <input type="password" className="form-control" id="password"
                                        placeholder="Type your password" value={props.service.password}
                                        onChange={props.changePassword} disabled={props.disabled}/>
-                                <div className="password-feedback"/>
+                                {props.passwordLengthError ? <p className="errorMessage">
+                                    Password needs to be between 6 and 30 characters long</p> : null}
                             </div>
                             <div className="form-group">
                                 <label htmlFor="password_conf" className="col-form-label">Password
@@ -61,7 +68,8 @@ const LoginForm = (props) => {
                                 <input type="password" className="form-control" id="password_conf"
                                        placeholder="Type your password again" value={props.confirmPassword}
                                        onChange={props.changePasswordConfirm} disabled={props.disabled}/>
-                                <div className="password_conf-feedback"/>
+                                {props.passwordMatchError ?
+                                    <p className="text-center text-danger">Passwords don't match</p> : null}
                             </div>
                         </div>
                     </div>

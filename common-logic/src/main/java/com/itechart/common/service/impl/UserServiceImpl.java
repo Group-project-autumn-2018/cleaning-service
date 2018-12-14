@@ -4,8 +4,8 @@ import com.itechart.common.entity.User;
 import com.itechart.common.repository.UserRepository;
 import com.itechart.common.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,9 +19,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getCurrentUser() {
-        UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext()
-                .getAuthentication().getPrincipal();
-        String username = userDetails.getUsername();
-        return userRepository.findByUsername(username);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) authentication.getPrincipal();
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public boolean isEmailExists(String email) {
+        return userRepository.existsUserByEmail(email);
     }
 }

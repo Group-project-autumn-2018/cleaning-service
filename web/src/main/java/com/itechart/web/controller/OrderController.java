@@ -1,5 +1,4 @@
 package com.itechart.web.controller;
-
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,13 +6,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+
 @RestController
 @RequestMapping("api/order")
 public class OrderController {
 
 
     private final OrderServiceImpl orderService;
-
 
     @Autowired
     public OrderController(OrderServiceImpl orderService) {
@@ -73,9 +73,19 @@ public class OrderController {
         return 0;
     }
 
-
     @PostMapping
     public void saveOrder(@RequestBody OrderDto orderDto) {
         orderService.saveOrder(orderDto);
+    }
+
+    @PostMapping(value = "/{id}")
+    public void update(@PathVariable Long id,
+                       @RequestBody String status) {
+        orderService.changeStatus(status, id);
+    }
+
+    @GetMapping("/test")
+    public void testNo(Principal principal) {
+        orderService.sendMessageToClient(principal.getName(), 5L);
     }
 }

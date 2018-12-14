@@ -1,72 +1,188 @@
 import React, {Component} from 'react';
 import ChangePassword from '../customers-profile-form/change-password'
-import MaskedInput, {conformToMask} from 'react-text-mask';
 import '../customers-profile-form/profile-form.css';
-import {updateEntity} from '../actions/admin-actions';
+import {updateService} from '../actions/service-actions';
 import './service-profile.css';
 import OpenStreetMapApi from "../services/openstreetmap-api";
-import DropdownAddressList from './dropdown-address-list';
 import CleaningTypesForm from './cleaning-types-form';
+import {connect} from "react-redux";
+import {fetchEntity} from "../api/api-actions";
+import MainPanel from './main-panel';
+import {connectWs} from '../actions/notification-actions';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import FeedbackList from "../service-info/feedback-list";
+import ServiceApi from "../services/service-api";
 
 
 class ProfileForm extends Component {
     openStreetMapApi = new OpenStreetMapApi();
+    serviceApi = new ServiceApi();
 
-    serviceURN = '/cleaning';
-
-    state = {
-        logo: '',
-        modeToggle: 'main',
-        service: {
-            username: '',
-            address: '',
-            phone: '',
-            cleaningTypesDto: {
-                standardRoomCleaning: false,
-                springCleaning: false,
-                repairAndConstructionCleaning: false,
-                dryCarpetCleaning: false,
-                officeCleaning: false,
-                furnitureAndCoatingsCleaning: false,
-                industrialCleaning: false,
-                poolCleaning: false,
-                priceDto: {},
-                cleaningTimeDto: {}
-            }
-        },
-        phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
-            '-', /\d/, /\d/],
-        passwordMatch: true,
-        newPassword: '',
-        addresses: []
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            tempAddress: '',
+            logo: '',
+            modeToggle: 'main',
+            service: {
+                id: '',
+                newPassword: '',
+                username: '',
+                email: '',
+                description: '',
+                address: {
+                    address: '',
+                    lat: 0,
+                    lon: 0
+                },
+                phone: '',
+                cleaningTypes: {}
+            },
+            phoneNumberMask: ['+', /[0-9]/, /\d/, /\d/, '(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, '-', /\d/, /\d/,
+                '-', /\d/, /\d/],
+            passwordMatch: true,
+            confPassword: '',
+            addresses: [],
+            success: false,
+            passwordError: false,
+            newPasswordError: false,
+            confirmPasswordDelete: false,
+            feedbackList: [],
+            isMoreThanFiveFeedback: false,
+            usernameError: false,
+            addressError: false,
+            emailError: false,
+            emailFormatError: false,
+            basePriceError: false,
+            dryCarpetCleaningError: false,
+            furnitureAndCoatingsCleaningError: false,
+            industrialCleaningError: false,
+            officeCleaningError: false,
+            poolCleaningError: false,
+            repairAndConstructionCleaningError: false,
+            springCleaningError: false,
+            standardRoomCleaningError: false,
+            emailDuplicateError: false
+        };
+    }
 
     componentDidMount() {
-        /*fetchEntity(this.props.serviceId, this.serviceURN, this.props.token)
+        this.props.connectWs(this.props.token);
+        fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
             .then((service) => {
-                this.setState({service: service})
-            });*/
+                this.setState({service: service, tempAddress: service.address.address})
+            });
     };
 
-    submitHandler = (e) => {
-        e.preventDefault();
-        console.log("submit");
-        this.props.updateEntity(this.state.service, this.serviceURN, this.props.token);
-
+    testNo = () => {
+        fetch("/api/order/test?access_token=" + this.props.token);
     };
 
     onChangeHandler = (e) => {
         const name = e.target.name;
-        //console.log(e.target.value);
+        const value = e.target.value;
+        if (name === 'password') {
+            if (value.length < 6 || value.length > 30) {
+                e.target.classList.add('invalid');
+                this.setState({passwordError: true})
+            } else {
+                e.target.classList.remove('invalid');
+                this.setState({passwordError: false})
+            }
+        }
         const updatedService = {
             ...this.state.service,
-            [name]: name === "cleaningNotifications" ? e.target.checked : e.target.value
+            [name]: name === "cleaningNotifications" ? e.target.checked : value
         };
-        this.setState({service: updatedService});
-        if (name === 'address' && e.target.value.length > 5) {
-            this.openStreetMapApi.getAddress(e.target.value).then(response => this.setState({addresses: response}));
+        this.setState({service: updatedService, success: false});
+        if (name === 'address') {
+            this.setState({tempAddress: value});
+            this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
+        } else if (name === "email" && value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
+            this.serviceApi.isEmailExists(value)
+                .then(response => {
+                    this.setState({emailDuplicateError: response});
+                });
         }
+        this.formValidation(e);
     };
+
+    validateLength(firstBoundary, lastBoundary, target) {
+        if (target.value.length < firstBoundary || target.value.length > lastBoundary) {
+            target.classList.add('invalid');
+            this.setState({[target.name + 'Error']: true});
+        } else {
+            target.classList.remove('invalid');
+            this.setState({[target.name + 'Error']: false});
+        }
+    }
+
+    validateEmail(target) {
+        const re = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+        if (re.test(target.value)) {
+            target.classList.remove('invalid');
+            this.setState({emailFormatError: false});
+        } else {
+            target.classList.add('invalid');
+            this.setState({emailFormatError: true});
+        }
+    }
+
+    formValidation(event) {
+        const name = event.target.name;
+        switch (name) {
+            case "username":
+                this.validateLength(2, 50, event.target);
+                break;
+            case "email":
+                this.validateLength(6, 50, event.target);
+                if (!this.state.emailError) this.validateEmail(event.target);
+                break;
+            case "address":
+                this.validateLength(4, 100, event.target);
+                break;
+        }
+    }
+
+    validateCleaningType(cleaningTypes, typeName) {
+        const cleaningTime = cleaningTypes.cleaningTime[typeName + 'Time'];
+        const cleaningPrice = cleaningTypes.price[typeName];
+        if (cleaningTypes[typeName]) {
+            if (cleaningTime == null || +cleaningTime < 0 || cleaningTime.toString().length > 9 ||
+                cleaningPrice == null || +cleaningPrice < 0 || cleaningPrice.toString().length > 15) {
+                this.setState({[typeName + 'Error']: true});
+                return false
+            } else {
+                if (this.state[typeName + 'Error']) {
+                    this.setState({[typeName + 'Error']: false});
+                }
+                return true;
+            }
+        } else {
+            if (this.state[typeName + 'Error']) this.setState({[typeName + 'Error']: false});
+            return true;
+        }
+    }
+
+    validateCleaningTypes() {
+        const basePrice = this.state.service.cleaningTypes.price.basePrice;
+        if (basePrice == null || +basePrice < 0 || basePrice.toString().length > 20) {
+            this.setState({basePriceError: true});
+            console.log("adding base price error");
+            return false;
+        } else {
+            if (this.state.basePriceError) this.setState({basePriceError: false});
+            return this.validateCleaningType(this.state.service.cleaningTypes, 'dryCarpetCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'furnitureAndCoatingsCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'industrialCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'officeCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'poolCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'repairAndConstructionCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'springCleaning') &&
+                this.validateCleaningType(this.state.service.cleaningTypes, 'standardRoomCleaning');
+        }
+    }
 
     onChangeLogoHandler = (event) => {
         this.setState({logo: event.target.files[0]});
@@ -74,10 +190,14 @@ class ProfileForm extends Component {
 
     onClickAddressHandler = (event) => {
         const address = this.state.addresses.find(address => address.place_id === event.target.id);
-        const updatedService = {
-            ...this.state.service,
+        const updatedAddress = {
+            address: this.state.tempAddress,
             lat: address.lat,
             lon: address.lon
+        };
+        const updatedService = {
+            ...this.state.service,
+            address: updatedAddress
         };
         console.log(address.lat + ' ' + address.lon);
         this.setState({service: updatedService, addresses: []});
@@ -86,12 +206,12 @@ class ProfileForm extends Component {
     onChangeTypeHandler = (event) => {
         const name = event.target.name;
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
+            ...this.state.service.cleaningTypes,
             [name]: event.target.checked
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -99,16 +219,16 @@ class ProfileForm extends Component {
     onChangeTimeHandler = (event) => {
         const name = event.target.name;
         const updatedCleaningTimeDto = {
-            ...this.state.service.cleaningTypesDto.cleaningTimeDto,
-            [name]: event.target.value
+            ...this.state.service.cleaningTypes.cleaningTime,
+            [name]: +event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
-            cleaningTimeDto: updatedCleaningTimeDto
+            ...this.state.service.cleaningTypes,
+            cleaningTime: updatedCleaningTimeDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -116,16 +236,16 @@ class ProfileForm extends Component {
     onChangePriceHandler = (event) => {
         const name = event.target.name;
         const updatedPriceDto = {
-            ...this.state.service.cleaningTypesDto.priceDto,
-            [name]: event.target.value
+            ...this.state.service.cleaningTypes.price,
+            [name]: +event.target.value
         };
         const updatedTypes = {
-            ...this.state.service.cleaningTypesDto,
-            priceDto: updatedPriceDto
+            ...this.state.service.cleaningTypes,
+            price: updatedPriceDto
         };
         const updatedService = {
             ...this.state.service,
-            cleaningTypesDto: updatedTypes
+            cleaningTypes: updatedTypes
         };
         this.setState({service: updatedService});
     };
@@ -133,25 +253,93 @@ class ProfileForm extends Component {
 
     checkPasswordMatch = (e) => {
         const name = e.target.name;
-        console.log(e.target.value);
-        console.log(e.target.name);
-        this.setState({[name]: e.target.value});
+        const password = e.target.value;
         if (name === 'confPassword') {
-            this.setState({passwordMatch: e.target.value === this.state.newPassword});
+            this.setState({
+                passwordMatch: password === this.state.service.newPassword,
+                passwordError: !(password === this.state.service.newPassword),
+                confPassword: password
+            });
+        } else {
+            this.setState({service: {...this.state.service, [name]: password}});
+            if (this.state.confPassword) {
+                this.setState({
+                    passwordMatch: password === this.state.confPassword,
+                    passwordError: !(password === this.state.confPassword)
+                });
+            }
+            if (password.length < 6 || password.length > 30) {
+                e.target.classList.add('invalid');
+                this.setState({passwordError: true, newPasswordError: true})
+            } else {
+                e.target.classList.remove('invalid');
+                this.setState({passwordError: false, newPasswordError: false})
+            }
         }
+
     };
 
     changeModeToggle = (event) => {
         event.preventDefault();
+        if (event.target.name === 'feedback') {
+            fetchEntity('feedback?size=6&service-id=' + this.props.serviceId, "/cleaning", this.props.token)
+                .then((list) => {
+                    let trigger = false;
+                    if (list.length > 5) {
+                        list.pop();
+                        trigger = true;
+                    }
+                    this.setState({feedbackList: list, isMoreThanFiveFeedback: trigger})
+                });
+        }
         this.setState({modeToggle: event.target.name});
         console.log(event.target.name);
     };
 
+    saveService = (event) => {
+        event.preventDefault();
+        console.log(this.state);
+        if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
+            !this.state.emailFormatError && !this.state.emailDuplicateError && this.validateCleaningTypes()) {
+            const service = {
+                ...this.state.service,
+                password: this.state.service.newPassword
+            };
+            const entity = new FormData();
+            if (this.state.logo !== '') {
+                entity.append('logo', this.state.logo, this.state.logo.name);
+            }
+            const serviceJson = JSON.stringify(service);
+            entity.append('company', serviceJson);
+            this.props.updateService(entity, this.props.token, this.state.service.id);
+            this.setState({
+                success: true
+            });
+        }
+    };
+
+    downloadAllFeedback = () => {
+        fetchEntity('feedback?service-id=' + this.props.serviceId, "/cleaning", this.props.token)
+            .then((list) => {
+                this.setState({feedbackList: list, isMoreThanFiveFeedback: false})
+            });
+    };
+
     render() {
+        let {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError
+        } = this.state;
+        let cleaningTypesErrors = {
+            basePriceError, dryCarpetCleaningError, furnitureAndCoatingsCleaningError,
+            industrialCleaningError, officeCleaningError, poolCleaningError, repairAndConstructionCleaningError,
+            springCleaningError, standardRoomCleaningError
+        };
         return (
             <div className="profile-form-container">
                 <form className="container profile-form" onSubmit={this.submitHandler}>
-                    <h3 className="text-center"> My profile</h3>
+                    <h4 className="text-center"> My profile</h4>
                     <nav>
                         <div className="nav nav-tabs service-tabs" role="tablist">
                             <button className={`nav-item nav-link ${this.state.modeToggle === 'main' ? 'active' : ''}`}
@@ -170,6 +358,12 @@ class ProfileForm extends Component {
                                     name="other" onClick={this.changeModeToggle}>
                                 Other settings
                             </button>
+                            <button
+                                className={`nav-item nav-link ${this.state.modeToggle === 'feedback' ? 'active' : ''}`}
+                                data-toggle="tab" role="tab" aria-selected="true"
+                                name="feedback" onClick={this.changeModeToggle}>
+                                Feedback
+                            </button>
                         </div>
                     </nav>
                     {this.state.modeToggle === 'main' ?
@@ -177,92 +371,42 @@ class ProfileForm extends Component {
                                    onChangeLogoHandler={this.onChangeLogoHandler}
                                    onClickAddressHandler={this.onClickAddressHandler}/> : null}
                     {this.state.modeToggle === 'security' ? <ChangePassword passwordMatch={this.state.passwordMatch}
-                                                                            checkPasswordMatch={this.checkPasswordMatch}/> : null}
+                                                                            updatePassword={this.onChangeHandler}
+                                                                            checkPasswordMatch={this.checkPasswordMatch}
+                                                                            newPasswordError={this.state.newPasswordError}/> : null}
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
+                                           errors={cleaningTypesErrors}
                                            onChangeTypeHandler={this.onChangeTypeHandler}
                                            onChangePriceHandler={this.onChangePriceHandler}
-                                           onChangeTimeHandler={this.onChangeTimeHandler}
-                        /> : null}
+                                           onChangeTimeHandler={this.onChangeTimeHandler}/> : null}
+                    {this.state.modeToggle === 'feedback' ?
+                        <FeedbackPanel feedbackList={this.state.feedbackList}
+                                       isMoreThanFiveFeedback={this.state.isMoreThanFiveFeedback}
+                                       downloadAllFeedback={this.downloadAllFeedback}/> : null}
                     <div className="text-center">
-                        <button type="submit" className="btn btn-lg btn-primary col-sm-4 ">Save</button>
+                        {this.state.success ? <p className="success"><i className="fa fa-check"/>Updated</p> :
+                            <button type="submit" className="btn btn-lg btn-primary col-sm-4"
+                                    onClick={this.saveService}>
+                                Save
+                            </button>}
                     </div>
                 </form>
+                <button className="btn btn-primary" onClick={this.testNo}>Test</button>
+                <ToastContainer autoClose={15000} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )
     }
 }
 
-const MainPanel = (props) => {
+const FeedbackPanel = (props) => {
     return (
         <React.Fragment>
-            <div className="form-group row">
-                <label htmlFor="profileFormLogo" className="col-sm-4 col-form-label">Logo</label>
-                <div className="custom-file col-sm-5 profile-service-input">
-                    <input type="file" className="custom-file-input" id="inputGroupFile01"
-                           onChange={props.onChangeLogoHandler} aria-describedby="inputGroupFileAddon01"/>
-                    <label className="custom-file-label" htmlFor="inputGroupFile01">
-                        {props.logo !== '' ? props.logo.name : "Choose file"}</label>
-                </div>
-            </div>
-            <div className="form-group row">
-                <label htmlFor="profileFormName" className="col-sm-4 col-form-label">Name</label>
-                <div className="col-sm-8">
-                    <input type="text" className="form-control" id="profileFormName" placeholder="Name"
-                           name="username"
-                           value={props.service.username}
-                           onChange={props.onChangeHandler}
-                    />
-                </div>
-            </div>
-            <div className="form-group row">
-                <label htmlFor="profileFormEmail" className="col-sm-4 col-form-label">Email</label>
-                <div className="col-sm-8">
-                    <input type="email" className="form-control" id="profileFormEmail" placeholder="Email"
-                           name="email"
-                           value={props.service.email}
-                           onChange={props.onChangeHandler}
-                    />
-                </div>
-            </div>
-            <div className="form-group row">
-                <label htmlFor="profileFormPhone" className="col-sm-4 col-form-label">Phone</label>
-                <div className="col-sm-8">
-                    <MaskedInput
-                        mask={props.phoneNumberMask}
-                        className="form-control"
-                        placeholder="375(__)___-____"
-                        guide={false}
-                        id="profileFormPhone"
-                        name="phone"
-                        value={conformToMask(props.service.phone ? props.service.phone : "",
-                            props.phoneNumberMask, {guide: false}).conformedValue}
-                        onChange={props.onChangeHandler}
-                    />
-                </div>
-            </div>
-            <div className="form-group row">
-                <label htmlFor="profileFormAddress" className="col-sm-4 col-form-label">Address</label>
-                <div className="col-sm-8 dropdown">
-                    <input type="text" className="form-control dropdown-toggle" id="profileFormAddress"
-                           data-toggle="dropdown" placeholder="Address"
-                           name="address"
-                           value={props.service.address}
-                           onChange={props.onChangeHandler}
-                    />
-                    <DropdownAddressList array={props.addresses} onClickHandler={props.onClickAddressHandler}/>
-                </div>
-            </div>
-
-            <div className="form-check text-center">
-                <input className="form-check-input" type="checkbox" id="gridCheck1"
-                       name="cleaningNotifications"
-                       checked={props.service.cleaningNotifications}
-                       onChange={props.onChangeHandler}/>
-                <label className="form-check-label" htmlFor="gridCheck1">
-                    Remind me about cleaning
-                </label>
-            </div>
+            <FeedbackList array={props.feedbackList}/>
+            {props.isMoreThanFiveFeedback ?
+                <button type="button" className="btn btn-lg btn-primary col-sm-4" onClick={props.downloadAllFeedback}>
+                    Download more
+                </button> : null}
         </React.Fragment>
     )
 };
@@ -276,14 +420,17 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        updateEntity: (serviceId, serviceURN, token) => {
-            dispatch(updateEntity(serviceId, serviceURN, token))
+        updateService: (service, token, id) => {
+            dispatch(updateService(service, token, id))
+        },
+        connectWs: (token) => {
+            dispatch(connectWs(token))
         }
     }
 };
 
-export default ProfileForm;
-//export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
+//export default ProfileForm;
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileForm);
 
 
 

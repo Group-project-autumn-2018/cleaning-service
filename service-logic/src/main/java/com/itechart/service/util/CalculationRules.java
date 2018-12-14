@@ -1,12 +1,14 @@
 package com.itechart.service.util;
 
-import com.itechart.service.dto.OrderDto;
+import com.itechart.service.dto.SearchCompanyDto;
 import com.itechart.service.entity.CleaningTypes;
 import com.itechart.service.repository.CleaningCompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+@Component
 public class CalculationRules {
 
     private Double priceCoefficient = new Double(0);
@@ -18,25 +20,25 @@ public class CalculationRules {
         this.cleaningCompanyRepository = cleaningCompanyRepository;
     }
 
-    public BigDecimal calculateAvaregePrice(OrderDto orderDto) {
+    public BigDecimal calculateAveragePrice(SearchCompanyDto searchCompanyDto, Long companyId) {
         BigDecimal averagePrice = BigDecimal.ZERO;
         CleaningTypes cleaningTypes = null;
-        if (orderDto.getCompany() == null) {
+        if (companyId == null) {
             return BigDecimal.ZERO;
         }
-        cleaningTypes = cleaningCompanyRepository.getOne(orderDto.getCompany()).getCleaningTypes();
+        cleaningTypes = cleaningCompanyRepository.getOne(companyId).getCleaningTypes();
 
         if (cleaningTypes == null) {
             return BigDecimal.ZERO;
         }
 
-        getValueFromCleaningTypes(orderDto.getCleaningType(), cleaningTypes);
+        getValueFromCleaningTypes(searchCompanyDto.getCleaningType(), cleaningTypes);
 
-        averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), orderDto.getSmallRoomsCount(),
+        averagePrice = averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), searchCompanyDto.getSmallRoomsCount(),
                 cleaningTypes.getPrice().getSmallRoom()));
-        averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), orderDto.getBigRoomsCount(),
+        averagePrice = averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), searchCompanyDto.getBigRoomsCount(),
                 cleaningTypes.getPrice().getBigRoom()));
-        averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), orderDto.getBathroomsCount(),
+        averagePrice = averagePrice.add(getRoomPrice(cleaningTypes.getPrice().getBasePrice(), searchCompanyDto.getBathroomsCount(),
                 cleaningTypes.getPrice().getBathroom()));
         averagePrice = averagePrice.multiply(BigDecimal.valueOf(priceCoefficient));
 
@@ -86,25 +88,25 @@ public class CalculationRules {
         return (basePrice.multiply(BigDecimal.valueOf(roomsCount))).multiply(BigDecimal.valueOf(roomsCoefficient));
     }
 
-    public Integer getEndCleaningTime(OrderDto orderDto) {
+    public Integer getEndCleaningTime(SearchCompanyDto searchCompanyDto, Long companyId) {
         Integer timeInMinutes = 0;
         CleaningTypes cleaningTypes = null;
-        if (orderDto.getCompany() == null) {
+        if (companyId == null) {
             return 0;
         }
-        cleaningTypes = cleaningCompanyRepository.getOne(orderDto.getCompany()).getCleaningTypes();
+        cleaningTypes = cleaningCompanyRepository.getOne(companyId).getCleaningTypes();
 
         if (cleaningTypes == null) {
             return 0;
         }
-        getValueFromCleaningTypes(orderDto.getCleaningType(), cleaningTypes);
+        getValueFromCleaningTypes(searchCompanyDto.getCleaningType(), cleaningTypes);
 
         timeInMinutes += (cleaningTypes.getCleaningTime().getSmallRoomCleaningTime() *
-                orderDto.getSmallRoomsCount());
+                searchCompanyDto.getSmallRoomsCount());
         timeInMinutes += (cleaningTypes.getCleaningTime().getBigRoomCleaningTime() *
-                orderDto.getBigRoomsCount());
+                searchCompanyDto.getBigRoomsCount());
         timeInMinutes += (cleaningTypes.getCleaningTime().getBathroomCleaningTime() *
-                orderDto.getBathroomsCount());
+                searchCompanyDto.getBathroomsCount());
         timeInMinutes = (int)(timeInMinutes * cleaningTime);
 
         return timeInMinutes;

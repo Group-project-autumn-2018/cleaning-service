@@ -2,7 +2,6 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
 
     const userIDParam = userID ? `&userID=${userID}` : '';
     const searchParam = search ? search : '';
-
     return dispatch => {
         fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}${userIDParam}${searchParam}`)
             .then(resolve => resolve.json()).then(response => {
@@ -16,7 +15,6 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
         });
     }
 };
-
 
 export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userID, cleaningType, status, search) => {
 
@@ -39,7 +37,7 @@ export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userI
     }
 };
 
-export const fetchNumberTypes = ( entityURN, token, userID, cleaningType) => {
+export const fetchNumber = ( entityURN, token, userID, cleaningType) => {
 
     const userIDParam = userID ? `&userID=${userID}` : '';
     const cleaningTypeParam=cleaningType ? `&cleaningType=${cleaningType}` : '';
@@ -52,6 +50,33 @@ export const fetchNumberTypes = ( entityURN, token, userID, cleaningType) => {
         });
     }
 };
+
+export const fetchCompaniesPOST = (entity, entityURN, token) => {
+    let header = {
+        'Content-Type': 'application/json'
+    };
+
+    if (token) {
+        header = {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        }
+    }
+    let options = {
+        headers: header,
+        method: 'POST',
+        body: JSON.stringify(entity)
+
+    };
+    return dispatch => {
+        fetch(`/api${entityURN}`, options).then(resolve => resolve.json()).then(response => {
+            console.log(response);
+            dispatch(fetchEntitiesSuccess(response));
+        })
+    }
+};
+
 
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
 

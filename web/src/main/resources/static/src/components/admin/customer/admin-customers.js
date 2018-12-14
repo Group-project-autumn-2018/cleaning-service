@@ -13,6 +13,7 @@ class AdminCustomers extends Component {
     componentWillMount() {
         const {fetchData} = this.props;
         fetchData(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
+
     }
 
     handlePageChange = (page) => {

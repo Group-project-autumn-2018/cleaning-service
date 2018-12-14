@@ -5,6 +5,75 @@
 .home-wrapper {
     overflow-x: hidden;
 }
+
 .profile-service-input {
     margin-left: 2%;
+}
+
+div.toast-container {
+    background: #57ab8f;
+    border-radius: 5px;
+    color: white;
+}
+
+.toast-container .btn {
+    display: block;
+}
+
+.toast-container i {
+    font-size: 2rem;
+    color: white;
+    margin: 0 10px;
+}
+
+.profile-form-container {
+    min-height: 100%;
+    background-color: white;
+    padding-top: 40px;
+}
+
+.profile-form {
+    max-width: 40%;
+    z-index: 3;
+}
+
+.profile-form button, .profile-form h3 {
+    margin: 20px auto;
+}
+
+input.form-control {
+    width: 100%
+}
+
+div.col-sm-8 {
+    padding: 0;
+}
+
+#profileFormPhone {
+    margin-bottom: 1.5rem;
+}
+
+input.invalid {
+    border-color: #b64644;
+}
+
+input.invalid:focus {
+    border-color: #f94345;
+    box-shadow: 0 0 14px 1px #f94345 !important;
+}
+
+p.errorMessage {
+    color: #b62920;
+    visibility: hidden;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+p.success {
+    color: #0e9f51;
+    font-size: 2.5rem;
+}
+
+input.invalid ~ p.errorMessage {
+    visibility: visible;
 }

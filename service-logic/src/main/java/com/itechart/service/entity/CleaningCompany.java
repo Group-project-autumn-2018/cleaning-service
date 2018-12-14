@@ -8,6 +8,8 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
@@ -18,13 +20,25 @@ import javax.persistence.*;
 @Table(name = "services")
 @PrimaryKeyJoinColumn(name = "id")
 public class CleaningCompany extends User {
+    @Size(max = 255)
     @Column(name = "description")
     private String description;
 
     @Column(name = "confirmed")
     private Boolean confirmed;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
+    @Column(name = "average_rating")
+    private Integer averageRating;
+
+    @Transient
+    private BigDecimal averagePrice;
+
+    @Transient
+    private Integer estimatedTime;
+
+    @Transient
+    private Double distance;
+
+    @OneToOne(targetEntity = CleaningTypes.class, mappedBy = "company")
     private CleaningTypes cleaningTypes;
 }
