@@ -3,7 +3,6 @@ package com.itechart.service.service.impl;
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
-import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
@@ -205,24 +204,46 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int getNumberOfOrdersByType(Long id, String cleaningType){
-        List<Order> orders =orderRepository.findAllByCompany_IdAndCleaningType(id, cleaningType);
-        return orders.size();
+    public int[] getNumbersOfOrdersByType(Long id, String cleaningTypes){
+        String[] types = cleaningTypes.split(";");
+
+        int[] nums=new int[types.length];
+
+        for(int i=0;i<types.length;i++){
+            List<Order> orders=orderRepository.findAllByCompany_IdAndCleaningType(id, types[i]);
+            nums[i]=orders.size();
+        }
+
+        return nums;
     }
 
     @Override
-    public int getNumberOfOrdersByStatus(Long id, String status){
-        Status currentStatus =Status.valueOf(status);
-        List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,currentStatus );
-        return  orders.size();
+    public int[] getNumbersOfOrdersByStatus(Long id, String statuses){
+       String[] arrayOfStatuses = statuses.split(";");
+
+       int[] nums =new int[arrayOfStatuses.length];
+
+       for(int i=0;i<arrayOfStatuses.length;i++){
+           List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,arrayOfStatuses[i]);
+           nums[i]=orders.size();
+       }
+
+        return nums;
     }
 
-    @Override
-    public int getNumberOfOrdersByFrequency (Long id, String frequency){
-        Frequency currentFrequency =Frequency.valueOf(frequency);
-        List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id, currentFrequency);
-        return  orders.size();
-    }
+/*    @Override
+    public int[] getNumbersOfOrdersByFrequency (Long id, String frequences){
+        String[] arrayOfFrequences = frequences.split(";");
+
+        int[] nums=new int[arrayOfFrequences.length];
+
+        for(int i=0;i<arrayOfFrequences.length;i++){
+            List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id,arrayOfFrequences[i]);
+            nums[i]=orders.size();
+        }
+
+        return  nums;
+    }*/
 
 
 

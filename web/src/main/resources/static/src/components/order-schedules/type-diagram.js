@@ -18,7 +18,7 @@ class TypeDiagram extends Component {
                 datasets:[
                     {
                         label:'Orders by types cleaning',
-                        data: this.state.dataArr,
+                        data: [],
                         backgroundColor:[
                             'rgba(255, 99, 132, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
@@ -32,7 +32,6 @@ class TypeDiagram extends Component {
                     }
                 ]
             },
-            dataArr: []
         }
     }
 
@@ -42,7 +41,11 @@ class TypeDiagram extends Component {
 
     getChartData(){
         // Ajax calls here
-        fetch().then(response.json()).then(
+        let  cleaningTypeParam = "&cleaningTypes=Standard room cleaning;Spring cleaning;Cleaning after repair and construction;Dry carpet cleaning;" +
+            "Office cleaning;Dry cleaning of furniture and coatings;Industrial cleaning;Pool cleaning";
+        const userIDParam = this.props.userID ? `&userID=${this.props.userID}` : "";
+
+        fetch(`/api${this.entityURN}?access_token=${this.props.token}${userIDParam}${cleaningTypeParam}`).then(response.json()).then(
             data => {
                 this.setState({dataArr: data});
                 console.log(data)

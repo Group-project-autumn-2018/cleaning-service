@@ -59,18 +59,19 @@ public class OrderController {
     }
 
     @GetMapping("/getNumber")
-    public  int getNumberOfTypes(@RequestParam(value = "cleaningType", required = false) String cleaningType,
-                                 @RequestParam(value = "status", required = false) String status,
-                                 @RequestParam(value = "frequency", required = false) String frequency,
+    public int[] getNumbersOfTypes(@RequestParam(value = "cleaningTypes", required = false) String cleaningTypes,
+                                 @RequestParam(value = "statuses", required = false) String statuses,
+                                 @RequestParam(value = "frequences", required = false) String frequences,
                                  @RequestParam(value = "userID", required = false) Long id){
-        if (cleaningType != null && !cleaningType.equals("")) {
-            return orderService.getNumberOfOrdersByType(id, cleaningType);
-        } else if (status != null && !status.equals("")) {
-            return orderService.getNumberOfOrdersByStatus(id, status);
-        } else if (frequency != null && !frequency.equals("")){
-            return orderService.getNumberOfOrdersByFrequency(id, frequency);
-        }
-        return 0;
+        int[] array=new int[7];
+        if (cleaningTypes != null ) {
+            return orderService.getNumbersOfOrdersByType(id, cleaningTypes);
+        } else if (statuses != null ) {
+            return orderService.getNumbersOfOrdersByStatus(id, statuses);
+        } /*else if(frequences!=null) {
+            return orderService.getNumbersOfOrdersByFrequency(id, frequences);
+        }*/
+        return array;
     }
 
     @PostMapping

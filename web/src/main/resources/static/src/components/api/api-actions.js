@@ -64,20 +64,20 @@ export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userI
     }
 };
 
-export const fetchNumber = ( entityURN, token, userID, cleaningType, status, frequency) => {
+export const fetchNumber = ( entityURN, token, userID, cleaningTypes, statuses, frequences) => {
 
-    const userIDParam = userID ? `&userID=${userID}` : '';
-    const cleaningTypeParam=cleaningType ? `&cleaningType=${cleaningType}` : '';
-    const statusParam=cleaningType ? `&status=${status}` : '';
-    const frequencyParam=cleaningType ? `&frequency=${frequency}` : '';
+    const userIDParam = userID ? `&userID=${userID}` : "";
+    const cleaningTypeParam=cleaningTypes ? `&cleaningTypes=${cleaningTypes}` : [];
+    const statusParam=statuses ? `&statuses=${statuses}` : [];
+    const frequencyParam=frequences ? `&frequences=${frequences}` : [];
 
 
-    return dispatch => {
+
         fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${frequencyParam}`)
             .then(resolve => resolve.json()).then(response => {
-            dispatch(fetchEntitiesSuccess(response.content));
+            this.setState({dataArr: data});
         });
-    }
+
 };
 
 export const fetchUpdateEntity = async (entity, entityURN, token) => {

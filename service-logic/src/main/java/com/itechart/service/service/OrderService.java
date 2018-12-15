@@ -28,10 +28,10 @@ public interface OrderService {
 
     Page<OrderDto> findPaginatedWithStatus (Long id, String status, Pageable pageable);
 
-    int getNumberOfOrdersByType (Long id, String cleaningType );
+    int[] getNumbersOfOrdersByType (Long id, String cleaningTypes );
 
-    int getNumberOfOrdersByStatus (Long id, String status);
+    int[] getNumbersOfOrdersByStatus (Long id, String statuses);
 
-    int getNumberOfOrdersByFrequency(Long id, String duration);
+ //   int[] getNumbersOfOrdersByFrequency(Long id, String frequences);
 
 }

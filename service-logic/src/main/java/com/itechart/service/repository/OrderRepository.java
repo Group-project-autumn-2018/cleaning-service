@@ -1,6 +1,5 @@
 package com.itechart.service.repository;
 
-import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import org.springframework.data.domain.Page;
@@ -33,8 +32,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
 
     List<Order> findAllByCompany_IdAndCleaningType(Long id, String cleaningType);
 
-    List<Order> findAllByCompany_IdAndStatus(Long id, Status status);
+    List<Order> findAllByCompany_IdAndStatus(Long id, String status);
 
-    List<Order> findAllByCompany_IdAndFrequency(Long id, Frequency frequency);
+    List<Order> findAllByCompany_IdAndFrequency(Long id, String frequency);
 
 }
