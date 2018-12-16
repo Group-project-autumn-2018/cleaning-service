@@ -27,22 +27,17 @@ class TypeDiagram extends Component {
 
     getChartData(){
         // Ajax calls here
-        let  cleaningTypeParam = "&cleaningTypes=Standard room cleaning;Spring cleaning;Cleaning after repair and construction;Dry carpet cleaning;" +
+        let  types = "Standard room cleaning;Spring cleaning;Cleaning after repair and construction;Dry carpet cleaning;" +
             "Office cleaning;Dry cleaning of furniture and coatings;Industrial cleaning;Pool cleaning";
 
-        const userIDParam = this.props.userID ? `&userID=${this.props.userID}` : "";
 
         this.setState({
             chartData:{
                 labels: ['New', 'Confirmed', 'Rejected'],
                 datasets:[
                     {
-                        label:'Orders by status',
-                        data:[
-                            13,
-                            20,
-                            15
-                        ],
+                        label:'Orders by types',
+                        data: fetchNumber(this.entityURN,this.props.token,this.props.userID,types),
                         backgroundColor:[
                             'rgba(255, 99, 132, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
@@ -82,8 +77,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchOrders: (page, size, entityURN, token, userID, cleaningType, status) => {
-            dispatch(fetchNumber(page, size, entityURN, token, userID, cleaningType, status))
+        fetchOrders: ( entityURN, token, userID, cleaningType, status) => {
+            dispatch(fetchNumber( entityURN, token, userID, cleaningType, status))
         }
     }
 };
