@@ -2,6 +2,7 @@ package com.itechart.web.config;
 
 import com.itechart.common.entity.User;
 import com.itechart.common.repository.UserRepository;
+import com.itechart.common.service.impl.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpRequest;
+import org.springframework.http.client.ClientHttpRequestExecution;
+import org.springframework.http.client.ClientHttpRequestInterceptor;
+import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,6 +30,7 @@ import org.springframework.security.oauth2.client.filter.OAuth2ClientAuthenticat
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableOAuth2Client;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -40,6 +46,7 @@ import org.springframework.web.filter.CompositeFilter;
 import org.springframework.web.filter.CorsFilter;
 
 import javax.servlet.Filter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,11 +75,22 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                         "/api/cleaning/search/companies").permitAll()
                 .antMatchers("/api/**", "/oauth/user", "/queue/**", "/notifications").authenticated()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class);
+                .and().addFilterBefore(ssoFilter(), BasicAuthenticationFilter.class)
+                .oauth2Login()
+                .userInfoEndpoint()
+                .userService(this.customOAuth2UserService())
+
+        ;
 //                .exceptionHandling()
 //                .authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/")).and().logout()
 //                .logoutSuccessUrl("/").permitAll().and().csrf()
 //                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+    }
+
+
+    @Bean
+    public DefaultOAuth2UserService customOAuth2UserService() {
+        return new CustomOAuth2UserService();
     }
 
 
