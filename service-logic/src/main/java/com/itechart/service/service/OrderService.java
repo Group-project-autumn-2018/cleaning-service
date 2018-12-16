@@ -32,6 +32,6 @@ public interface OrderService {
 
     int[] getNumbersOfOrdersByStatus (Long id, String statuses);
 
- //   int[] getNumbersOfOrdersByFrequency(Long id, String frequences);
+    int[] getNumbersOfOrdersByFrequency(Long id, String frequences);
 
 }

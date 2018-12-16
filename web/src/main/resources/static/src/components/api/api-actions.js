@@ -67,16 +67,17 @@ export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userI
 export const fetchNumber = ( entityURN, token, userID, cleaningTypes, statuses, frequences) => {
 
     const userIDParam = userID ? `&userID=${userID}` : "";
-    const cleaningTypeParam=cleaningTypes ? `&cleaningTypes=${cleaningTypes}` : [];
-    const statusParam=statuses ? `&statuses=${statuses}` : [];
-    const frequencyParam=frequences ? `&frequences=${frequences}` : [];
+    const cleaningTypeParam = cleaningTypes ? `&cleaningTypes=${cleaningTypes}` : [];
+    const statusParam = statuses ? `&statuses=${statuses}` : [];
+    const frequencyParam = frequences ? `&frequences=${frequences}` : [];
 
 
-
-        fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${frequencyParam}`)
-            .then(resolve => resolve.json()).then(response => {
-            this.setState({dataArr: data});
-        });
+    return dispatch => {
+    fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${frequencyParam}`)
+        .then(resolve => resolve.json()).then(response => {
+        console.log(response);
+    });
+}
 
 };
 

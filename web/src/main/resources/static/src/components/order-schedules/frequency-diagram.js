@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
 import ChartLine from '../order-schedules/ChartLine';
-import {fetchNumber} from "../api/api-actions";
-import connect from "react-redux/es/connect/connect";
 
 class FrequencyDiagram extends Component {
 
-
     entityURN = '/order/getNumber';
 
-    componentDidMount() {
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
-    }
 
     constructor(){
         super();
@@ -27,21 +21,26 @@ class FrequencyDiagram extends Component {
         // Ajax calls here
         this.setState({
             chartData:{
-                labels: ['ONLY ONCE', 'EVERY WEEK', 'EVERY TWO WEEKS', 'EVERY MONTH'],
+                labels: ['Boston', 'Worcester', 'Springfield', 'Lowell', 'Cambridge', 'New Bedford'],
                 datasets:[
                     {
-                        label:'Orders by duration',
+                        label:'Population',
                         data:[
-                            13,
-                            20,
-                            15,
-                            15
+                            617594,
+                            181045,
+                            153060,
+                            106519,
+                            105162,
+                            95072
                         ],
                         backgroundColor:[
                             'rgba(255, 99, 132, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
                             'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)'
+                            'rgba(75, 192, 192, 0.6)',
+                            'rgba(153, 102, 255, 0.6)',
+                            'rgba(255, 159, 64, 0.6)',
+                            'rgba(255, 99, 132, 0.6)'
                         ]
                     }
                 ]
@@ -64,20 +63,6 @@ class FrequencyDiagram extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        orders: state.entities,
-        token: state.user.token,
-        userID: state.user.id,
-    }
-};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchOrders: ( entityURN, token, userID, cleaningType) => {
-            dispatch(fetchNumber( entityURN, token, userID, cleaningType))
-        }
-    }
-};
 
-export default connect(mapStateToProps, mapDispatchToProps) (FrequencyDiagram);
+export default FrequencyDiagram;

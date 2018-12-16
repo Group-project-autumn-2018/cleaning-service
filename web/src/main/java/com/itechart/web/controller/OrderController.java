@@ -1,4 +1,5 @@
 package com.itechart.web.controller;
+
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.service.impl.OrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,15 +64,16 @@ public class OrderController {
                                  @RequestParam(value = "statuses", required = false) String statuses,
                                  @RequestParam(value = "frequences", required = false) String frequences,
                                  @RequestParam(value = "userID", required = false) Long id){
-        int[] array=new int[7];
+        int[] nums=new int[]{1,2,3,4,5,6,7};
         if (cleaningTypes != null ) {
-            return orderService.getNumbersOfOrdersByType(id, cleaningTypes);
+            nums= orderService.getNumbersOfOrdersByType(id, cleaningTypes);
         } else if (statuses != null ) {
-            return orderService.getNumbersOfOrdersByStatus(id, statuses);
-        } /*else if(frequences!=null) {
-            return orderService.getNumbersOfOrdersByFrequency(id, frequences);
-        }*/
-        return array;
+            nums= orderService.getNumbersOfOrdersByStatus(id, statuses);
+        } else if(frequences!=null) {
+            nums= orderService.getNumbersOfOrdersByFrequency(id, frequences);
+        }
+        return  nums;
+
     }
 
     @PostMapping

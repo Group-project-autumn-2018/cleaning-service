@@ -231,7 +231,7 @@ public class OrderServiceImpl implements OrderService {
         return nums;
     }
 
-/*    @Override
+    @Override
     public int[] getNumbersOfOrdersByFrequency (Long id, String frequences){
         String[] arrayOfFrequences = frequences.split(";");
 
@@ -243,7 +243,7 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return  nums;
-    }*/
+    }
 
 
 

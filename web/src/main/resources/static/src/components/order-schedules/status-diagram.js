@@ -1,16 +1,9 @@
 import React, {Component} from 'react';
 import ChartBar from '../order-schedules/ChartBar';
-import {fetchNumber} from "../api/api-actions";
-import connect from "react-redux/es/connect/connect";
 
 class StatusDiagram extends Component {
 
-
     entityURN = '/order/getNumber';
-
-    componentDidMount() {
-        this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
-    }
 
     constructor(){
         super();
@@ -62,20 +55,5 @@ class StatusDiagram extends Component {
     }
 }
 
-const mapStateToProps = (state) => {
-    return {
-        orders: state.entities,
-        token: state.user.token,
-        userID: state.user.id,
-    }
-};
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        fetchOrders: ( entityURN, token, userID, cleaningType) => {
-            dispatch(fetchNumber( entityURN, token, userID, cleaningType))
-        }
-    }
-};
-
-export default connect(mapStateToProps, mapDispatchToProps) (StatusDiagram);
+export default StatusDiagram;

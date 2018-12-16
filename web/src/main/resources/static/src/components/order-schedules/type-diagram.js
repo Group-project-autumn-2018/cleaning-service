@@ -8,32 +8,18 @@ class TypeDiagram extends Component {
 
     entityURN = '/order/getNumber';
 
+    componentDidMount() {
+        this.props.fetchOrders( this.entityURN, this.props.token, this.props.userID);
+    }
 
-    constructor(props){
-        super(props);
+
+    constructor(){
+        super();
         this.state = {
-            chartData:{
-                labels: ['Standard room cleaning', 'Spring cleaning', 'Cleaning after repair and construction', 'Dry carpet cleaning',
-                    'Office cleaning', 'Dry cleaning of furniture and coatings', 'Industrial cleaning', 'Pool cleaning'],
-                datasets:[
-                    {
-                        label:'Orders by types cleaning',
-                        data: [],
-                        backgroundColor:[
-                            'rgba(255, 99, 132, 0.6)',
-                            'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)',
-                            'rgba(75, 192, 192, 0.6)',
-                            'rgba(153, 102, 255, 0.6)',
-                            'rgba(255, 159, 64, 0.6)',
-                            'rgba(255, 0, 255, 0.6)',
-                            'rgba(255, 0, 0, 0.6)'
-                        ]
-                    }
-                ]
-            },
+            chartData:{}
         }
     }
+
 
     componentWillMount(){
         this.getChartData();
@@ -43,16 +29,32 @@ class TypeDiagram extends Component {
         // Ajax calls here
         let  cleaningTypeParam = "&cleaningTypes=Standard room cleaning;Spring cleaning;Cleaning after repair and construction;Dry carpet cleaning;" +
             "Office cleaning;Dry cleaning of furniture and coatings;Industrial cleaning;Pool cleaning";
+
         const userIDParam = this.props.userID ? `&userID=${this.props.userID}` : "";
 
-        fetch(`/api${this.entityURN}?access_token=${this.props.token}${userIDParam}${cleaningTypeParam}`).then(response.json()).then(
-            data => {
-                this.setState({dataArr: data});
-                console.log(data)
+        this.setState({
+            chartData:{
+                labels: ['New', 'Confirmed', 'Rejected'],
+                datasets:[
+                    {
+                        label:'Orders by status',
+                        data:[
+                            13,
+                            20,
+                            15
+                        ],
+                        backgroundColor:[
+                            'rgba(255, 99, 132, 0.6)',
+                            'rgba(54, 162, 235, 0.6)',
+                            'rgba(255, 206, 86, 0.6)'
+                        ]
+                    }
+                ]
             }
+        }
         );
-
     }
+
 
     render() {
         return (
@@ -71,7 +73,8 @@ class TypeDiagram extends Component {
 
 const mapStateToProps = (state) => {
     return {
-
+        ...state.pagination,
+        orders: state.entities,
         token: state.user.token,
         userID: state.user.id,
     }
@@ -79,10 +82,11 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        fetchOrders: ( entityURN, token, userID, cleaningType) => {
-            dispatch(fetchNumber( entityURN, token, userID, cleaningType))
+        fetchOrders: (page, size, entityURN, token, userID, cleaningType, status) => {
+            dispatch(fetchNumber(page, size, entityURN, token, userID, cleaningType, status))
         }
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps) (TypeDiagram);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TypeDiagram);
