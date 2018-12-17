@@ -2,6 +2,11 @@ import {disconnect} from '../actions/notification-actions';
 
 const initialAuthState = {
     isAuthenticated: false,
+    address: {
+        address: null,
+        lat: null,
+        lon: null
+    },
     name: null,
     email: null,
     role: [],

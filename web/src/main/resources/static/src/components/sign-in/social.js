@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import {parseJwtToken, authSuccess} from '../actions/auth-actions';
+import {authSuccess, parseJwtToken} from '../actions/auth-actions';
 
 class SocialLogin extends Component {
 
@@ -10,6 +10,7 @@ class SocialLogin extends Component {
         const decodedToken = parseJwtToken(token);
         const tokenExpirationDate = Date.now() + (decodedToken.expiration * 1000);
         const payload = {
+            id: decodedToken.user_id,
             isAuthenticated: true,
             name: decodedToken.name,
             email: decodedToken.user_name,

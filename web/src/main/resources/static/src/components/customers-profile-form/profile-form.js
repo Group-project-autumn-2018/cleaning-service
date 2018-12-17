@@ -214,7 +214,7 @@ class ProfileForm extends Component {
                             <input type="text" className="form-control" id="profileFormAddress"
                                    placeholder="Address"
                                    name="address"
-                                   value={this.state.customer.address.address}
+                                   value={this.state.customer.address ? this.state.customer.address.address : ""}
                                    onChange={this.onChangeHandler}
                             />
                             <DropdownAddressList array={this.state.addresses}

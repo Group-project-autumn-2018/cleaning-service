@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Service
+@Service(value = "UserDetailsServiceImpl")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;

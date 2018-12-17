@@ -3,22 +3,24 @@ package com.itechart.web.config.social;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itechart.common.repository.UserRepository;
+import com.itechart.common.service.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -32,11 +34,11 @@ public class CustomTokenProvider {
     @Autowired
     private TokenStore tokenStore;
 
-    @Autowired
-    private JwtAccessTokenConverter accessTokenConverter;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    @Qualifier("UserDetailsServiceImpl")
+    private UserDetailsService userDetailsService;
+
 
     @Autowired
     UserRepository userRepository;
@@ -73,10 +75,19 @@ public class CustomTokenProvider {
         scope.add("read");
         scope.add("write");
         token.setScope(scope);
+        CustomUserDetails existingUser = null;
+        try {
+            existingUser = (CustomUserDetails) userDetailsService.loadUserByUsername(email);
+        } catch (UsernameNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        String jwtAccessToken = this.getJWTToken(email,
+        Long id = existingUser.getId();
+
+        String jwtAccessToken = this.getJWTToken(id, email,
                 (String) oAuth2AuthenticationToken.getPrincipal().getAttributes().get("name"),
                 accessTokenValiditySeconds);
+
 
         token.setValue(jwtAccessToken);
 
@@ -88,13 +99,16 @@ public class CustomTokenProvider {
 
     private OAuth2Authentication convertAuthentication(Authentication authentication, String authorizedClientRegistrationId) {
 
-        OAuth2Request request = new OAuth2Request(null, authorizedClientRegistrationId, authentication.getAuthorities(), true, null, null, null, null, null);
+        OAuth2Request request = new OAuth2Request(null, authorizedClientRegistrationId,
+                authentication.getAuthorities(), true, null,
+                null, null, null, null);
         return new OAuth2Authentication(request, authentication);
     }
 
-    private String getJWTToken(String email, String name, int validity) {
+    private String getJWTToken(Long id, String email, String name, int validity) {
 
         Map<String, Object> payload = new HashMap<>();
+        payload.put("user_id", id);
         payload.put("user_name", email);
         payload.put("name", name);
         payload.put("expiration", validity - 1);
