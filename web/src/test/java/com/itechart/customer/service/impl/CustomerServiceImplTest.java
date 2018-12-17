@@ -1,4 +1,4 @@
-package com.itechart.customer.service;
+package com.itechart.customer.service.impl;
 
 import com.itechart.common.service.EmailService;
 import com.itechart.common.service.RoleService;
@@ -6,6 +6,7 @@ import com.itechart.common.service.SMSService;
 import com.itechart.customer.dto.CustomerRegistrationDto;
 import com.itechart.customer.dto.VerifyDto;
 import com.itechart.customer.repository.CustomerRepository;
+import com.itechart.customer.service.CustomerServiceImpl;
 import com.itechart.customer.util.CustomerVerification;
 import org.junit.Assert;
 import org.junit.Before;
@@ -114,7 +115,7 @@ public class CustomerServiceImplTest {
         customerService.registerCustomer(registrationDto);
         CustomerVerification verification = verifications.get(encodedToken);
 
-        verification.setAddingTime(LocalTime.now().minusMinutes(15));
+        verification.setAddingTime(LocalTime.now().minusMinutes(10));
         customerService.clearOldVerifications();
         Assert.assertNotNull(verifications.get(encodedToken));
 

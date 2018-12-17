@@ -21,6 +21,8 @@ public interface OrderRepository extends JpaRepository<Order, Long>, JpaSpecific
     @Query("update Order set status = :status where id = :orderId")
     void changeStatus(@Param("status") Status status, @Param("orderId") Long orderId);
 
+    List<Order> findAllByCompany_Id(Long id);
+
     Page<Order> findAllByCustomer_Id(Pageable pageable, Long id);
 
     Page<Order> findAllByCompany_Id(Pageable pageable, Long id);

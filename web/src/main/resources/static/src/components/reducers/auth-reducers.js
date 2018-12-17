@@ -2,6 +2,11 @@ import {disconnect} from '../actions/notification-actions';
 
 const initialAuthState = {
     isAuthenticated: false,
+    address: {
+        address: null,
+        lat: null,
+        lon: null
+    },
     name: null,
     email: null,
     role: [],
@@ -17,11 +22,13 @@ const authReducer = (state = initialAuthState, action) => {
             return {
                 ...action.payload
             };
+            break;
         case 'AUTH_FAIL':
             if (action.payload === 'Bad credentials') {
                 return {...state, error: 'Invalid login or password'};
             }
             return {...state, error: action.payload};
+            break;
         case 'LOGOUT':
             disconnect();
             return {

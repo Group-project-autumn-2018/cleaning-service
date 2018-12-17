@@ -4,21 +4,12 @@ const b64DecodeUnicode = str =>
             '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
         ).join(''));
 
-const parseJwtToken = token =>
+export const parseJwtToken = token =>
     JSON.parse(
         b64DecodeUnicode(
             token.split('.')[1].replace('-', '+').replace('_', '/')
         )
     );
-
-const parseJwt = (token) => {
-    try {
-        return parseJwtToken(token);
-    } catch (e) {
-        console.log(e);
-        return null;
-    }
-};
 
 const basicAuth = () => {
     let clientId = "cleaning-app";
@@ -47,8 +38,7 @@ const fetchToken = (body, dispatch) => {
         })
         .then((response) => {
                 response.json().then((data) => {
-                    let decodedToken = parseJwt(data.access_token);
-                    console.log(decodedToken);
+                    let decodedToken = parseJwtToken(data.access_token);
                     const tokenExpirationDate = Date.now() + (data.expires_in * 1000);
                     let payload = {
                         address: {
@@ -63,7 +53,7 @@ const fetchToken = (body, dispatch) => {
                         role: decodedToken.authorities,
                         token: data.access_token,
                         tokenExpirationDate: tokenExpirationDate,
-                        refreshToken: data.refresh_token,
+                        refreshToken: data.refresh_token
                     };
                     dispatch(authSuccess(payload));
                     dispatch(setAuthTimeout(data.expires_in * 1000))

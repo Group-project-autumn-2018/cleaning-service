@@ -1,4 +1,5 @@
 package com.itechart.web.config;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,8 +28,8 @@ import java.util.Arrays;
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private int accessTokenValiditySeconds = 3600;
     private int refreshTokenValiditySeconds = 30000;
@@ -36,12 +37,18 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Value("${security.oauth2.resource.id}")
     private String resourceId;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+
+    private final UserDetailsService userDetailsService;
+
 
     @Autowired
-    @Qualifier("userDetailsServiceImpl")
-    UserDetailsService userDetailsService;
+    public AuthorizationServerConfig(BCryptPasswordEncoder bCryptPasswordEncoder, AuthenticationManager authenticationManager,
+                                     @Qualifier("UserDetailsServiceImpl") UserDetailsService userDetailsService) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.authenticationManager = authenticationManager;
+        this.userDetailsService = userDetailsService;
+    }
 
     @Autowired
     public void authenticationManager(AuthenticationManagerBuilder builder) throws Exception {
@@ -80,6 +87,11 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     }
 
     @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
     @Primary
     public DefaultTokenServices tokenServices() {
         DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
@@ -88,26 +100,25 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         return defaultTokenServices;
     }
 
-
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) {
         security.tokenKeyAccess("permitAll()")
                 .checkTokenAccess("isAuthenticated()").allowFormAuthenticationForClients();
     }
 
-
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
-
         clients.inMemory()
                 .withClient("cleaning-app")
-                .authorizedGrantTypes("client_credentials", "password", "refresh_token")
+                .authorizedGrantTypes("client_credentials", "password", "refresh_token", "authorization_code")
                 .authorities("ROLE_TRUSTED_CLIENT")
                 .scopes("read", "write")
                 .accessTokenValiditySeconds(accessTokenValiditySeconds)
                 .refreshTokenValiditySeconds(refreshTokenValiditySeconds)
-                .secret(bCryptPasswordEncoder.encode("secret"));
+                .secret(bCryptPasswordEncoder.encode("secret"))
+                .resourceIds(resourceId)
+        ;
     }
 
 

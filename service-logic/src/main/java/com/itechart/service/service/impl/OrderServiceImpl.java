@@ -46,27 +46,27 @@ public class OrderServiceImpl implements OrderService {
     @Value("${order.check.delay}")
     private Long orderStatusCheckDelay;
 
-    @Autowired
-    private TaskScheduler taskScheduler;
+    private final TaskScheduler taskScheduler;
 
-    @Autowired
-    private OrderMapper mapper;
+    private final OrderMapper mapper;
 
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, EmailService emailService,
-                            CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate
-    ) {
+                            CleaningCompanyRepository cleaningCompanyRepository, SimpMessagingTemplate simpMessagingTemplate,
+                            OrderMapper mapper, TaskScheduler taskScheduler) {
         this.orderRepository = orderRepository;
         this.emailService = emailService;
         this.cleaningCompanyRepository = cleaningCompanyRepository;
         this.simpMessagingTemplate = simpMessagingTemplate;
+        this.mapper = mapper;
+        this.taskScheduler = taskScheduler;
     }
 
     @Override
     public Page<OrderDto> findPaginated(Pageable pageable) {
 
         Page<Order> orders = orderRepository.findAll(pageable);
-        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+        return orders.map(mapper::mapOrderToOrderDto);
     }
 
 
@@ -113,8 +113,8 @@ public class OrderServiceImpl implements OrderService {
                 () -> sendMessageToClient(companyEmail, savedOrderId),
                 sendMessageTime);
         logger.info(companyEmail, savedOrderId);
-
     }
+
 
     private void setCheckOrderStatusDelay(Long savedOrderId) {
         Date checkOrderStatusTime = new Date(new Date().getTime() + orderStatusCheckDelay);
@@ -139,13 +139,13 @@ public class OrderServiceImpl implements OrderService {
         builder.with("customer", id);
         Specification<Order> spec = builder.build();
         Page<Order> orders = orderRepository.findAll(spec, pageable);
-        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+        return orders.map(mapper::mapOrderToOrderDto);
     }
 
     @Override
     public Page<OrderDto> findPaginatedWithId(Long id, Pageable pageable) {
         Page<Order> orders = orderRepository.findAllByCustomer_Id(pageable, id);
-        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+        return orders.map(mapper::mapOrderToOrderDto);
     }
 
     @Override
@@ -154,8 +154,7 @@ public class OrderServiceImpl implements OrderService {
         OrderSpecificationsBuilder builder = getSpecificationBuilder(search);
         Specification<Order> spec = builder.build();
         Page<Order> orders = orderRepository.findAll(spec, pageable);
-
-        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+        return orders.map(mapper::mapOrderToOrderDto);
     }
 
     private OrderSpecificationsBuilder getSpecificationBuilder(String search) {
