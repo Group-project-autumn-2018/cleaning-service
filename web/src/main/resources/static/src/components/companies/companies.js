@@ -39,8 +39,7 @@ class Companies extends Component {
 
     componentDidMount() {
         this.props.fetchCompaniesPOST(this.searchCompanyDto, this.entityURN, this.props.token);
-    }
-    ;
+    };
 
     render() {
         return (
