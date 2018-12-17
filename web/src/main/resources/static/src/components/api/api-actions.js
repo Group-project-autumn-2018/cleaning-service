@@ -2,6 +2,7 @@ export const fetchEntities = (page, size, entityURN, token, userID, search) => {
 
     const userIDParam = userID ? `&userID=${userID}` : '';
     const searchParam = search ? search : '';
+
     return dispatch => {
         fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}${userIDParam}${searchParam}`)
             .then(resolve => resolve.json()).then(response => {
@@ -42,6 +43,38 @@ export const fetchCompaniesPOST = (entity, entityURN, token) => {
     }
 };
 
+export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userID, cleaningType, status, search) => {
+
+    const userIDParam = userID ? `&userID=${userID}` : '';
+    const cleaningTypeParam = cleaningType ? `&cleaningType=${cleaningType}` : '';
+    const statusParam = status ? `&status=${status}` : '';
+    const searchParam = search ? search : '';
+
+    return dispatch => {
+        fetch(`/api${entityURN}?page=${page}&size=${size}&access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${searchParam}`)
+            .then(resolve => resolve.json()).then(response => {
+            const pagination = {
+                totalItemsCount: response.totalElements,
+                activePage: response.number,
+                totalPages: response.totalPages
+            };
+            dispatch(fetchEntitiesSuccess(response.content));
+            dispatch(setPagination(pagination));
+        });
+    }
+};
+
+export const fetchNumber = async (entityURN, token, userID, cleaningTypes, statuses, frequences) => {
+
+    const userIDParam = userID ? `&userID=${userID}` : "";
+    const cleaningTypeParam = cleaningTypes ? `&cleaningTypes=${cleaningTypes}` : [];
+    const statusParam = statuses ? `&statuses=${statuses}` : [];
+    const frequencyParam = frequences ? `&frequences=${frequences}` : [];
+
+
+    return await fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${frequencyParam}`)
+        .then(resolve => resolve.json());
+};
 
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
 

@@ -3,6 +3,7 @@ package com.itechart.service.service.impl;
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
@@ -27,6 +28,7 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -166,6 +168,87 @@ public class OrderServiceImpl implements OrderService {
         }
         return builder;
     }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithCleaningType(Long id, String cleaningType, Pageable pageable) {
+
+
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType( pageable, id, cleaningType);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithStatus(Long id, String status, Pageable pageable) {
+
+        Status currentStatus =Status.valueOf(status);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndStatus(pageable, id, currentStatus);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType,String status ,Pageable pageable) {
+
+        Status currentStatus = Status.valueOf(status);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus( pageable, id, cleaningType, currentStatus);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public Page<OrderDto> findPaginatedWithServiceId(Long id, Pageable pageable) {
+
+        Page<Order> orders = orderRepository.findAllByCompany_Id(pageable, id);
+
+        return orders.map(order -> mapper.mapOrderToOrderDto(order));
+    }
+
+    @Override
+    public int[] getNumbersOfOrdersByType(Long id, String cleaningTypes){
+        String[] types = cleaningTypes.split(";");
+
+        int[] nums=new int[types.length];
+
+        for(int i=0;i<types.length;i++){
+            List<Order> orders=orderRepository.findAllByCompany_IdAndCleaningType(id, types[i]);
+            nums[i]=orders.size();
+        }
+
+        return nums;
+    }
+
+    @Override
+    public int[] getNumbersOfOrdersByStatus(Long id, String statuses){
+       String[] arrayOfStatuses = statuses.split(";");
+
+       int[] nums =new int[arrayOfStatuses.length];
+
+       for(int i=0;i<arrayOfStatuses.length;i++){
+           Status currentStatus=Status.valueOf((arrayOfStatuses[i]));
+           List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,currentStatus);
+           nums[i]=orders.size();
+       }
+
+        return nums;
+    }
+
+    @Override
+    public int[] getNumbersOfOrdersByFrequency (Long id, String frequences){
+        String[] arrayOfFrequences = frequences.split(";");
+
+        int[] nums=new int[arrayOfFrequences.length];
+
+        for(int i=0;i<arrayOfFrequences.length;i++){
+            Frequency currentFrequency=Frequency.valueOf(arrayOfFrequences[i]);
+            List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id,currentFrequency);
+            nums[i]=orders.size();
+        }
+
+        return  nums;
+    }
+
+
 
     @Transactional
     @Override
