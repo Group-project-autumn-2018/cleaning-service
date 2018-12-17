@@ -57,7 +57,11 @@ class ProfileForm extends Component {
         e.preventDefault();
         if (!this.state.usernameError && !this.state.emailError && !this.state.emailDuplicateError &&
             !this.state.addressError && !this.state.passwordError) {
-            fetchUpdateEntity(this.state.customer, this.state.URN, this.props.token).then(response => {
+            const newCustomer = {
+                ...this.state.customer,
+                email: this.state.customer.email.toLowerCase()
+            };
+            fetchUpdateEntity(newCustomer, this.state.URN, this.props.token).then(response => {
                 if (response.status === 200) {
                     this.setState({
                         success: true, changePassword: false, confirmPassword: null,
@@ -93,7 +97,7 @@ class ProfileForm extends Component {
                     this.setState({emailFormatError: false})
                 }
                 if (value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
-                    this.serviceApi.isEmailExists(value)
+                    this.serviceApi.isEmailExists(value.toLowerCase())
                         .then(response => {
                             this.setState({emailDuplicateError: response});
                         });

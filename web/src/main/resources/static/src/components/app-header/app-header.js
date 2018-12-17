@@ -12,8 +12,12 @@ class AppHeader extends Component {
             <div>
                 <nav className="navbar navbar-expand-lg justify-content-between">
                     <Link className="navbar-brand" to="/">Cleaning service</Link>
-                    <div className="navbar navbar-expand mr-5" id="navbarNav">
-
+                    <button className="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <i className="fa fa-bars" aria-hidden="true"/>
+                    </button>
+                    <div className="collapse navbar-collapse mr-5 custom-header" id="navbarNav">
                         {this.props.isAuthenticated ?
                             <ul className="navbar-nav">
                                 {this.props.role[0] === 'admin' ?

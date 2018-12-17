@@ -75,11 +75,9 @@ class ProfileForm extends Component {
             });
     };
 
-    testNo = () => {
-        fetch("/api/order/test?access_token=" + this.props.token);
-    };
 
     onChangeHandler = (e) => {
+
         const name = e.target.name;
         const value = e.target.value;
         if (name === 'password') {
@@ -100,7 +98,7 @@ class ProfileForm extends Component {
             this.setState({tempAddress: value});
             this.openStreetMapApi.getAddress(value).then(response => this.setState({addresses: response}));
         } else if (name === "email" && value.length >= 6 && value.length <= 50 && value.indexOf("@") !== -1) {
-            this.serviceApi.isEmailExists(value)
+            this.serviceApi.isEmailExists(value.toLowerCase())
                 .then(response => {
                     this.setState({emailDuplicateError: response});
                 });
@@ -185,7 +183,9 @@ class ProfileForm extends Component {
     }
 
     onChangeLogoHandler = (event) => {
-        this.setState({logo: event.target.files[0]});
+        if(event.target.files[0].size < 1048576) {
+            this.setState({logo: event.target.files[0]});
+        }
     };
 
     onClickAddressHandler = (event) => {
@@ -257,23 +257,21 @@ class ProfileForm extends Component {
         if (name === 'confPassword') {
             this.setState({
                 passwordMatch: password === this.state.service.newPassword,
-                passwordError: !(password === this.state.service.newPassword),
                 confPassword: password
             });
         } else {
             this.setState({service: {...this.state.service, [name]: password}});
             if (this.state.confPassword) {
                 this.setState({
-                    passwordMatch: password === this.state.confPassword,
-                    passwordError: !(password === this.state.confPassword)
+                    passwordMatch: password === this.state.confPassword
                 });
             }
             if (password.length < 6 || password.length > 30) {
                 e.target.classList.add('invalid');
-                this.setState({passwordError: true, newPasswordError: true})
+                this.setState({newPasswordError: true})
             } else {
                 e.target.classList.remove('invalid');
-                this.setState({passwordError: false, newPasswordError: false})
+                this.setState({newPasswordError: false})
             }
         }
 
@@ -292,6 +290,11 @@ class ProfileForm extends Component {
                     this.setState({feedbackList: list, isMoreThanFiveFeedback: trigger})
                 });
         }
+        if (event.target.name === 'security') {
+            this.setState({passwordError: true});
+        } else {
+            this.setState({passwordError: false, newPasswordError: false, passwordMatch: true});
+        }
         this.setState({modeToggle: event.target.name});
         console.log(event.target.name);
     };
@@ -300,10 +303,12 @@ class ProfileForm extends Component {
         event.preventDefault();
         console.log(this.state);
         if (!this.state.usernameError && !this.state.emailError && !this.state.addressError &&
-            !this.state.emailFormatError && !this.state.emailDuplicateError && this.validateCleaningTypes()) {
+            this.state.passwordMatch && !this.state.newPasswordError && !this.state.emailFormatError &&
+            !this.state.emailDuplicateError && this.validateCleaningTypes() && !this.state.passwordError) {
             const service = {
                 ...this.state.service,
-                password: this.state.service.newPassword
+                password: this.state.service.newPassword,
+                email: this.state.service.email.toLowerCase()
             };
             const entity = new FormData();
             if (this.state.logo !== '') {
@@ -374,6 +379,7 @@ class ProfileForm extends Component {
                                                                             updatePassword={this.onChangeHandler}
                                                                             checkPasswordMatch={this.checkPasswordMatch}
                                                                             newPasswordError={this.state.newPasswordError}/> : null}
+
                     {this.state.modeToggle === 'other' ?
                         <CleaningTypesForm {...this.state.service}
                                            errors={cleaningTypesErrors}
@@ -392,7 +398,6 @@ class ProfileForm extends Component {
                             </button>}
                     </div>
                 </form>
-                <button className="btn btn-primary" onClick={this.testNo}>Test</button>
                 <ToastContainer autoClose={15000} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )

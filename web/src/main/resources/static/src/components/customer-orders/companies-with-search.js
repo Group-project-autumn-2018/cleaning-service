@@ -28,7 +28,6 @@ class CompaniesWithSearch extends Component {
     showAll = () => {
         this.setState({search: null});
         this.props.fetchOrders(0, this.state.itemsCountPerPage, this.entityURN, this.props.token, null);
-
     };
 
     handleSearch = () => {
@@ -39,7 +38,6 @@ class CompaniesWithSearch extends Component {
         this.setState({search: search});
         this.props.fetchOrders(0, this.state.itemsCountPerPage, this.entityURN + "/search",
             this.props.token, null, search);
-
     };
 
 

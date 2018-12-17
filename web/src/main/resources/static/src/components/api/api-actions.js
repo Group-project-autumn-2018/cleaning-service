@@ -37,7 +37,6 @@ export const fetchCompaniesPOST = (entity, entityURN, token) => {
     };
     return dispatch => {
         fetch(`/api${entityURN}`, options).then(resolve => resolve.json()).then(response => {
-            console.log(response);
             dispatch(fetchEntitiesSuccess(response));
         })
     }
