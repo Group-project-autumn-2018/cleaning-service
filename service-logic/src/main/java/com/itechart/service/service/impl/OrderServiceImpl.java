@@ -3,6 +3,7 @@ package com.itechart.service.service.impl;
 import com.itechart.common.service.EmailService;
 import com.itechart.service.dto.OrderDto;
 import com.itechart.service.entity.CleaningCompany;
+import com.itechart.service.entity.Frequency;
 import com.itechart.service.entity.Order;
 import com.itechart.service.entity.Status;
 import com.itechart.service.mapper.OrderMapper;
@@ -224,7 +225,8 @@ public class OrderServiceImpl implements OrderService {
        int[] nums =new int[arrayOfStatuses.length];
 
        for(int i=0;i<arrayOfStatuses.length;i++){
-           List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,arrayOfStatuses[i]);
+           Status currentStatus=Status.valueOf((arrayOfStatuses[i]));
+           List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,currentStatus);
            nums[i]=orders.size();
        }
 
@@ -238,7 +240,8 @@ public class OrderServiceImpl implements OrderService {
         int[] nums=new int[arrayOfFrequences.length];
 
         for(int i=0;i<arrayOfFrequences.length;i++){
-            List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id,arrayOfFrequences[i]);
+            Frequency currentFrequency=Frequency.valueOf(arrayOfFrequences[i]);
+            List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id,currentFrequency);
             nums[i]=orders.size();
         }
 

@@ -1,44 +1,53 @@
 import React, {Component} from 'react';
 import ChartBar from '../order-schedules/ChartBar';
+import {fetchNumber} from "../api/api-actions";
+import connect from "react-redux/es/connect/connect";
 
 class StatusDiagram extends Component {
 
     entityURN = '/order/getNumber';
 
-    constructor(){
-        super();
+    status="NEW;CONFIRMED;REJECTED;COMPLETED"
+
+    constructor(props) {
+        super(props);
         this.state = {
-            chartData:{}
-        }
-    }
-
-    componentWillMount(){
-        this.getChartData();
-    }
-
-    getChartData(){
-        // Ajax calls here
-        this.setState({
-            chartData:{
-                labels: ['New', 'Confirmed', 'Rejected'],
-                datasets:[
+            chartData: {
+                labels: ['New', 'Confirmed', 'Rejected', 'Completed'],
+                datasets: [
                     {
-                        label:'Orders by status',
-                        data:[
-                            13,
-                            20,
-                            15
-                        ],
-                        backgroundColor:[
+                        label: 'Orders by status',
+                        data: [1,1,2,2],
+                        backgroundColor: [
                             'rgba(255, 99, 132, 0.6)',
                             'rgba(54, 162, 235, 0.6)',
-                            'rgba(255, 206, 86, 0.6)'
+                            'rgba(255, 206, 86, 0.6)',
+                            'rgba(255, 0, 255, 0.6)'
                         ]
                     }
                 ]
             }
-        });
+        }
     }
+
+    componentDidMount() {
+        fetchNumber(this.entityURN, this.props.token, this.props.userID,0,this.status).then((object) => {
+
+                const updatedDatasets = {
+                    ...this.state.chartData.datasets[0],
+                    data: object
+                };
+                const updatedChartData = {
+                    ...this.state.chartData,
+                    datasets: [updatedDatasets]
+                };
+                console.log(updatedChartData);
+                this.setState({chartData: updatedChartData});
+            }
+        );
+    }
+
+
 
     render() {
         return (
@@ -55,5 +64,13 @@ class StatusDiagram extends Component {
     }
 }
 
+const mapStateToProps = (state) => {
+    return {
+        orders: state.entities,
+        token: state.user.token,
+        userID: state.user.id
+    }
+};
 
-export default StatusDiagram;
+export default connect(mapStateToProps)(StatusDiagram);
+

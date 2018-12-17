@@ -46,7 +46,7 @@ export const fetchCompaniesPOST = (entity, entityURN, token) => {
 export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userID, cleaningType, status, search) => {
 
     const userIDParam = userID ? `&userID=${userID}` : '';
-    const cleaningTypeParam=cleaningType ? `&cleaningType=${cleaningType}` : '';
+    const cleaningTypeParam = cleaningType ? `&cleaningType=${cleaningType}` : '';
     const statusParam = status ? `&status=${status}` : '';
     const searchParam = search ? search : '';
 
@@ -64,7 +64,7 @@ export const fetchEntitiesByTypeAndStatus = (page, size, entityURN, token, userI
     }
 };
 
-export const fetchNumber = ( entityURN, token, userID, cleaningTypes, statuses, frequences) => {
+export const fetchNumber = async (entityURN, token, userID, cleaningTypes, statuses, frequences) => {
 
     const userIDParam = userID ? `&userID=${userID}` : "";
     const cleaningTypeParam = cleaningTypes ? `&cleaningTypes=${cleaningTypes}` : [];
@@ -72,13 +72,8 @@ export const fetchNumber = ( entityURN, token, userID, cleaningTypes, statuses, 
     const frequencyParam = frequences ? `&frequences=${frequences}` : [];
 
 
-    return dispatch => {
-    fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${frequencyParam}`)
-        .then(resolve => resolve.json()).then(response => {
-        console.log(response);
-    });
-}
-
+    return await fetch(`/api${entityURN}?access_token=${token}${userIDParam}${cleaningTypeParam}${statusParam}${frequencyParam}`)
+        .then(resolve => resolve.json());
 };
 
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
