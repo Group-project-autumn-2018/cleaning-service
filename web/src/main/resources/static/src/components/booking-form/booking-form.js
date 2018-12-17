@@ -120,15 +120,6 @@ class BookingForm extends Component {
         }
     };
 
-    componentDidUpdate() {
-        /*if (this.props.companies[0].averagePrice && !this.company.averagePrice) {
-            const id = this.props.companyId;
-            this.company = this.props.companies.filter(company => company.id == id)[0];
-            console.log(this.company);
-
-        }*/
-    };
-
     bookingConfirm = () => {
         const searchCompanyDto = {
             cleaningType: this.state.cleaningType,
@@ -153,7 +144,8 @@ class BookingForm extends Component {
                     company: this.company.id,
                     companyName: this.company.username,
                     price: this.company.averagePrice,
-                    estimatedTime: this.company.estimatedTime
+                    estimatedTime: this.company.estimatedTime,
+                    address: this.props.address
                 })
             }
         });
