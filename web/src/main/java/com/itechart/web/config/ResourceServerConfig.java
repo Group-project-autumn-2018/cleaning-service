@@ -49,7 +49,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/customer/registration", "/api/customer/verify",
+                .antMatchers("/api/customer/registration", "/api/customer/verify", "/api/cleaning/email",
                         "/api/cleaning/registration", "/api/cleaning/verify", "/api/cleaning/registration/service",
                         "/dist/**", "/", "/oauth/token", "/api/cleaning/*/image", "/api/order", "/success",
                         "/api/cleaning/search/companies").permitAll()
