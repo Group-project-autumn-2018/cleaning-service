@@ -3,15 +3,20 @@ import {connect} from 'react-redux';
 import './booking-form.css';
 import SelectItemsList from "./select-items-list";
 import DropdownAddressList from "../service-profile/dropdown-address-list";
-import {Link} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import * as orderActions from "../actions/order-actions";
 import OpenStreetMapApi from "../services/openstreetmap-api";
 import CustomerApi from "../services/customer-api";
+import ConfirmModalToggleButton from "../companies/confirm-modal-toggle-button";
+import CustomerConfirmModalForm from "../companies/customer-confirm-modal-form";
 
 class BookingForm extends Component {
 
+    company = {};
     openStreetMapApi = new OpenStreetMapApi();
     customerApiService = new CustomerApi();
+
+    entityURN = '/cleaning/search/companies';
 
     constructor(props) {
         super(props);
@@ -24,9 +29,9 @@ class BookingForm extends Component {
             },
             companyName: '',
             cleaningType: this.types[0],
-            smallRoomsCount: '',
-            bigRoomsCount: '',
-            bathroomsCount: '',
+            smallRoomsCount: '0',
+            bigRoomsCount: '0',
+            bathroomsCount: '0',
             cleaningDay: '',
             cleaningTime: this.time[0],
             frequency: this.frequency[0],
@@ -34,7 +39,10 @@ class BookingForm extends Component {
             email: this.props.email,
             price: '',
             estimatedTime: '',
-            addresses: []
+            addresses: [],
+            smallRoomsError: false,
+            bigRoomsError: false,
+            bathroomsError: false
         }
     }
 
@@ -43,15 +51,39 @@ class BookingForm extends Component {
     };
 
     changeSmallRooms = (event) => {
-        this.setState({smallRoomsCount: event.target.value});
+        let value = event.target.value;
+        if (value.length > 3) {
+            event.target.classList.add('invalid');
+            this.setState({smallRoomsError: true})
+        } else {
+            event.target.classList.remove('invalid');
+            this.setState({smallRoomsError: false})
+        }
+        this.setState({smallRoomsCount: event.target.value.toString()});
     };
 
     changeBigRooms = (event) => {
-        this.setState({bigRoomsCount: event.target.value});
+        let value = event.target.value;
+        if (value.length > 3) {
+            event.target.classList.add('invalid');
+            this.setState({bigRoomsError: true})
+        } else {
+            event.target.classList.remove('invalid');
+            this.setState({bigRoomsError: false})
+        }
+        this.setState({bigRoomsCount: event.target.value.toString()});
     };
 
     changeBathrooms = (event) => {
-        this.setState({bathroomsCount: event.target.value});
+        let value = event.target.value;
+        if (value.length > 3) {
+            event.target.classList.add('invalid');
+            this.setState({bathroomsError: true})
+        } else {
+            event.target.classList.remove('invalid');
+            this.setState({bathroomsError: false})
+        }
+        this.setState({bathroomsCount: event.target.value.toString()});
     };
 
     changeCleaningDay = (event) => {
@@ -75,12 +107,68 @@ class BookingForm extends Component {
         this.setState({email: event.target.value});
     };
 
-    onSubmit = () => {
-        if (this.props.id) {
-            this.props.updateOrder({...this.state, customer: this.props.id})
-        } else {
-            this.props.updateOrder({...this.state})
+    onSubmit = (event) => {
+        event.preventDefault();
+        if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
+            if (this.props.id) {
+                this.props.updateOrder({...this.state, customer: this.props.id});
+                this.props.history.push("/companies")
+            } else {
+                this.props.updateOrder({...this.state});
+                this.props.history.push("/companies")
+            }
         }
+    };
+
+    bookingConfirm = () => {
+        const searchCompanyDto = {
+            cleaningType: this.state.cleaningType,
+            smallRoomsCount: this.state.smallRoomsCount,
+            bigRoomsCount: this.state.bigRoomsCount,
+            bathroomsCount: this.state.bathroomsCount,
+            address: this.props.isAuthenticated ? this.props.address.address : this.props.orderUpdate.address.address,
+            latitude: this.props.isAuthenticated ? this.props.address.lat : this.props.orderUpdate.address.lat,
+            longitude: this.props.isAuthenticated ? this.props.address.lon : this.props.orderUpdate.address.lon,
+            email: this.props.orderUpdate.email,
+            price: "",
+            estimatedTime: "",
+            sort: ""
+        };
+        this.fetchCompaniesPOST(searchCompanyDto, this.entityURN, this.props.token).then((companies) => {
+            const id = this.props.companyId;
+            this.company = companies.filter(company => company.id == id)[0];
+            console.log(this.company);
+            if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
+                this.props.updateOrder({
+                    ...this.state, customer: this.props.id,
+                    company: this.company.id,
+                    companyName: this.company.username,
+                    price: this.company.averagePrice,
+                    estimatedTime: this.company.estimatedTime,
+                    address: this.props.address
+                })
+            }
+        });
+    };
+
+    async fetchCompaniesPOST(entity, entityURN, token) {
+        let header = {
+            'Content-Type': 'application/json'
+        };
+
+        if (token) {
+            header = {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        }
+        let options = {
+            headers: header,
+            method: 'POST',
+            body: JSON.stringify(entity)
+        };
+        return await fetch(`/api${entityURN}`, options).then(resolve => resolve.json());
     };
 
     onChangeHandler = (e) => {
@@ -97,7 +185,6 @@ class BookingForm extends Component {
             ...this.state,
             address: {...this.state.address, lat: address.lat, lon: address.lon}
         };
-        console.log(address.lat + ' ' + address.lon);
         this.setState({...updatedOrder, addresses: []});
     };
 
@@ -114,10 +201,11 @@ class BookingForm extends Component {
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
+        console.log(this.props);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
-                <form className="form-booking card person-card">
+                <form className="form-booking card person-card" onSubmit={this.onSubmit}>
                     <h3 className=""><b>Booking form</b></h3>
 
                     <div className="bookingRow">
@@ -141,7 +229,7 @@ class BookingForm extends Component {
                                     <input type="text" className="form-control dropdown-toggle long"
                                            id="profileFormAddress"
                                            data-toggle="dropdown" placeholder="Your address..."
-                                           name="address"
+                                           name="address" required={true}
                                            onChange={this.onChangeHandler}/>
                                     <DropdownAddressList array={this.state.addresses}
                                                          onClickHandler={this.onClickAddressHandler}/>
@@ -156,18 +244,19 @@ class BookingForm extends Component {
                     <div className="bookingRow">
                         <div className="form-group">
                             <label htmlFor="smallRooms" className="col-form-label">Small rooms</label>
-                            <input type="text" id="smallRooms" className="form-control short"
-                                   placeholder="under 20 m²" required autoFocus onChange={this.changeSmallRooms}/>
+                            <input type="number" id="smallRooms" className="form-control short"
+                                   placeholder="under 20 m²" autoFocus
+                                   onChange={this.changeSmallRooms}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bigRooms" className="col-form-label">Big rooms</label>
-                            <input type="text" id="bigRooms" className="form-control short"
-                                   placeholder="over 20 m²" required autoFocus onChange={this.changeBigRooms}/>
+                            <input type="number" id="bigRooms" className="form-control short"
+                                   placeholder="over 20 m²" autoFocus onChange={this.changeBigRooms}/>
                         </div>
                         <div className="form-group">
                             <label htmlFor="bathrooms" className="col-form-label">Bathrooms</label>
-                            <input type="text" id="bathrooms" className="form-control short"
-                                   placeholder="number of bathrooms..." required autoFocus
+                            <input type="number" id="bathrooms" className="form-control short"
+                                   placeholder="number of bathrooms..." autoFocus
                                    onChange={this.changeBathrooms}/>
                         </div>
                     </div>
@@ -202,19 +291,28 @@ class BookingForm extends Component {
                                 <div className="form-group">
                                     <label htmlFor="email" className="col-form-label">Email</label>
                                     <input type="email" className="form-control short" id="email"
-                                           placeholder="example@gmail.com" required onChange={this.changeEmail}/>
+                                           placeholder="example@gmail.com" required={true} onChange={this.changeEmail}/>
                                     <div className="email-feedback"/>
                                 </div>
                             </div>
                         }
                     </div>
 
-                    <div className="confirm" onClick={this.onSubmit}>
-                        <Link to="/companies" className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
-                            Consider proposals
-                        </Link>
+                    <div>
+                        {this.props.companyId ?
+                            <div className="confirm">
+                                <ConfirmModalToggleButton onClick={this.bookingConfirm}/>
+                            </div>
+                            :
+                            <div className="confirm">
+                                <button className="btn btn-lg btn-primary btn-block btnProposals" type="submit">
+                                    Consider proposals
+                                </button>
+                            </div>
+                        }
                     </div>
                 </form>
+                <CustomerConfirmModalForm/>
             </div>
         );
     }
@@ -222,7 +320,9 @@ class BookingForm extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        ...state.user
+        ...state.user,
+        orderUpdate: state.orderUpdate,
+        companies: state.entities
     }
 };
 
@@ -234,4 +334,4 @@ const mapDispatchToProps = (dispatch) => {
     }
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(BookingForm);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(BookingForm));

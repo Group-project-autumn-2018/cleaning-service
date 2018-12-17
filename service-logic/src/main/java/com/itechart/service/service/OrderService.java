@@ -19,4 +19,19 @@ public interface OrderService {
     Page<OrderDto> findPaginatedWithSearch(String search, Pageable pageable);
 
     Page<OrderDto> findPaginatedWithSearchAndId(Long id, String search, Pageable pageable);
+
+    Page<OrderDto> findPaginatedWithServiceId(Long id, Pageable pageable);
+
+    Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType, String status, Pageable pageable);
+
+    Page<OrderDto> findPaginatedWithCleaningType (Long id, String cleaningType, Pageable pageable);
+
+    Page<OrderDto> findPaginatedWithStatus (Long id, String status, Pageable pageable);
+
+    int[] getNumbersOfOrdersByType (Long id, String cleaningTypes );
+
+    int[] getNumbersOfOrdersByStatus (Long id, String statuses);
+
+    int[] getNumbersOfOrdersByFrequency(Long id, String frequences);
+
 }

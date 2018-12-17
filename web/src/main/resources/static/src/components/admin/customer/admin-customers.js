@@ -10,7 +10,7 @@ class AdminCustomers extends Component {
 
     entityURN = '/customer';
 
-    componentDidMount() {
+    componentWillMount() {
         const {fetchData} = this.props;
         fetchData(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
 

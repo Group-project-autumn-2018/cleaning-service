@@ -12,9 +12,11 @@ class CompanyConfirmModalForm extends Component {
         super(props);
         this.state = {
             order: {
-                id: 1,
+                id: '',
                 customer: '',
-                address: '',
+                address: {
+                    address: ""
+                },
                 cleaningType: '',
                 smallRoomsCount: '',
                 bigRoomsCount: '',

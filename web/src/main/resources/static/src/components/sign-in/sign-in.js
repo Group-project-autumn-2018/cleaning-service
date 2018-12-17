@@ -9,7 +9,7 @@ class SignIn extends Component {
         e.preventDefault();
         let login = this.refs.login.value;
         let password = this.refs.password.value;
-        this.props.fetchAccessToken(login, password);
+        this.props.fetchAccessToken(login.toLowerCase(), password);
     };
 
     componentDidUpdate() {
@@ -22,7 +22,7 @@ class SignIn extends Component {
                 this.props.history.push("/customer/orders");
                 break;
             case "service":
-                this.props.history.push("/profile");
+                this.props.history.push("/service/orders");
                 break;
         }
     }

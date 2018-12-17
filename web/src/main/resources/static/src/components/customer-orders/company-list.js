@@ -1,10 +1,10 @@
 import React from 'react';
-import Company from './company-model';
+import CompanyModel from './company-model';
 
 
 const CompaniesList = ({companies}) => {
     const companiesList = companies.map((company) =>
-        <Company key={company.id} company={company}/>
+        <CompanyModel key={company.id} company={company}/>
     );
 
     return (

@@ -1,6 +1,3 @@
-
-
-
 const initialPaginationState = {
     itemsCountPerPage: 10,
     activePage: 0

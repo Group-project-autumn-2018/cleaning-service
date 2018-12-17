@@ -38,7 +38,7 @@ public class SMSServiceImpl implements SMSService {
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
 
         MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
-        map.add("phone", phoneNumber);
+        map.add("phone", phoneNumber.contains("+") ? phoneNumber : "+" + phoneNumber);
         map.add("msg", text);
         map.add("device", deviceCode.toString());
         map.add("token", token);

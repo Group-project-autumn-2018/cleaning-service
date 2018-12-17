@@ -15,11 +15,11 @@
             <column name="bathrooms_count" type="INTEGER"/>
             <column name="big_rooms_count" type="INTEGER"/>
             <column name="cleaning_day" type="date"/>
-            <column name="cleaning_time" type="VARCHAR(255)"/>
+            <column name="cleaning_time" type="TIME"/>
             <column name="cleaning_type" type="VARCHAR(255)"/>
             <column name="duration" type="VARCHAR(255)"/>
             <column name="unregistered_customer_email" type="VARCHAR(255)"/>
-            <column name="estimated_time" type="TIME WITHOUT TIME ZONE"/>
+            <column name="estimated_time" type="INTEGER"/>
             <column name="frequency" type="VARCHAR(255)"/>
             <column name="price" type="numeric(19, 2)"/>
             <column name="small_rooms_count" type="INTEGER"/>
