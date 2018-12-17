@@ -17,11 +17,13 @@ const authReducer = (state = initialAuthState, action) => {
             return {
                 ...action.payload
             };
+            break;
         case 'AUTH_FAIL':
             if (action.payload === 'Bad credentials') {
                 return {...state, error: 'Invalid login or password'};
             }
             return {...state, error: action.payload};
+            break;
         case 'LOGOUT':
             disconnect();
             return {

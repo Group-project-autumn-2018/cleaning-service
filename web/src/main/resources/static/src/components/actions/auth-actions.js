@@ -1,10 +1,15 @@
-const parseJwt = (token) => {
-    try {
-        return JSON.parse(atob(token.split('.')[1]));
-    } catch (e) {
-        return null;
-    }
-};
+const b64DecodeUnicode = str =>
+    decodeURIComponent(
+        Array.prototype.map.call(atob(str), c =>
+            '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
+        ).join(''));
+
+export const parseJwtToken = token =>
+    JSON.parse(
+        b64DecodeUnicode(
+            token.split('.')[1].replace('-', '+').replace('_', '/')
+        )
+    );
 
 const basicAuth = () => {
     let clientId = "cleaning-app";
@@ -33,7 +38,7 @@ const fetchToken = (body, dispatch) => {
         })
         .then((response) => {
                 response.json().then((data) => {
-                    let decodedToken = parseJwt(data.access_token);
+                    let decodedToken = parseJwtToken(data.access_token);
                     const tokenExpirationDate = Date.now() + (data.expires_in * 1000);
                     let payload = {
                         address: {

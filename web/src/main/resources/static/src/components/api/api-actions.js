@@ -43,6 +43,34 @@ export const fetchCompaniesPOST = (entity, entityURN, token) => {
 };
 
 
+export const fetchUserInfo = () => {
+    const url = "/api/userinfo";
+    fetch(url)
+        .then((response) => {
+            response.json().then((user) => {
+                const tokenExpirationDate = Date.now() + (data.expires_in * 1000);
+                let payload = {
+                    address: {
+                        address: data.address,
+                        lat: data.lat,
+                        lon: data.lon
+                    },
+                    id: decodedToken.id,
+                    isAuthenticated: true,
+                    name: data.name,
+                    email: decodedToken.user_name,
+                    role: decodedToken.authorities,
+                    token: data.access_token,
+                    tokenExpirationDate: tokenExpirationDate,
+                    refreshToken: data.refresh_token
+                };
+                dispatch(authSuccess(payload));
+                dispatch(setAuthTimeout(data.expires_in * 1000))
+            });
+        })
+};
+
+
 export const fetchUpdateEntity = async (entity, entityURN, token) => {
 
     let options = {
