@@ -19,9 +19,9 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class SMSServiceImpl implements SMSService {
     private final RestTemplate restTemplate;
-    //    @Value("${gsm.device.code}")
+    @Value("${gsm.device.code}")
     private Integer deviceCode;
-    //    @Value("${gsm.token}")
+    @Value("${gsm.token}")
     private String token;
     @Value("${gsm.gateway.url}")
     private String gatewayUrl;
