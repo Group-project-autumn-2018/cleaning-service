@@ -2,6 +2,7 @@ package com.itechart.web.config.social;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.itechart.common.entity.Address;
 import com.itechart.common.repository.UserRepository;
 import com.itechart.common.service.CustomUserDetails;
 import io.jsonwebtoken.Jwts;
@@ -83,10 +84,11 @@ public class CustomTokenProvider {
         }
 
         Long id = existingUser.getId();
+        Address address = existingUser.getAddress();
 
         String jwtAccessToken = this.getJWTToken(id, email,
                 (String) oAuth2AuthenticationToken.getPrincipal().getAttributes().get("name"),
-                accessTokenValiditySeconds);
+                accessTokenValiditySeconds, address);
 
 
         token.setValue(jwtAccessToken);
@@ -105,9 +107,13 @@ public class CustomTokenProvider {
         return new OAuth2Authentication(request, authentication);
     }
 
-    private String getJWTToken(Long id, String email, String name, int validity) {
+    private String getJWTToken(Long id, String email, String name, int validity, Address address) {
 
         Map<String, Object> payload = new HashMap<>();
+
+        if (address != null) {
+            payload.put("address", address);
+        }
         payload.put("user_id", id);
         payload.put("user_name", email);
         payload.put("name", name);

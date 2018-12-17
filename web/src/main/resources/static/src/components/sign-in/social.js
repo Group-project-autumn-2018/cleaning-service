@@ -10,6 +10,11 @@ class SocialLogin extends Component {
         const decodedToken = parseJwtToken(token);
         const tokenExpirationDate = Date.now() + (decodedToken.expiration * 1000);
         const payload = {
+            address: {
+                address: decodedToken.address.address,
+                lat: decodedToken.address.lat,
+                lon: decodedToken.address.lon
+            },
             id: decodedToken.user_id,
             isAuthenticated: true,
             name: decodedToken.name,

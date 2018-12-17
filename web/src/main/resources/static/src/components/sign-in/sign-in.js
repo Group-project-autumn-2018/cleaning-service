@@ -43,14 +43,16 @@ class SignIn extends Component {
                     <input ref="password" type="password" id="inputPassword" className="form-control"
                            placeholder="Password"
                            required/>
-                    <div className="checkbox mb-3">
-                        <label>
-                            <input type="checkbox" value="remember-me"/> Remember me
-                        </label>
-                    </div>
+
                     <button className="btn btn-lg btn-primary btn-block">Sign in</button>
-                    <a href="/oauth2/authorization/google" className="btn btn-lg btn-primary btn-block">Google</a>
-                    <a href="/oauth2/authorization/facebook" className="btn btn-lg btn-primary btn-block">facebook</a>
+
+                    <div className="d-flex p-2 justify-content-around align-items-center social-container">
+                        <a href="/oauth2/authorization/google" className="social-btn"><i
+                            className="fa fa-facebook-square"></i></a>
+                        <a href="/oauth2/authorization/facebook" className="social-btn"><i
+                            className="fa fa-google-plus-square"></i></a>
+                    </div>
+
                     <p className="mt-5 mb-3">&copy; 2018</p>
                 </form>
 

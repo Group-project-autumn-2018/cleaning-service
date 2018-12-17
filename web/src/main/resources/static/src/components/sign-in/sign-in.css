@@ -53,3 +53,28 @@
     background: rgba(169, 169, 169, 0.69);
     z-index: 2;
 }
+
+.social-container {
+    height: 90px;
+}
+
+.social-btn i {
+    font-size: 2.5rem;
+    color: white;
+    text-shadow: 1px 1px 4px #363738;
+    transition: all .3s linear;
+}
+
+.social-btn a {
+    display: block;
+    cursor: pointer;
+}
+
+.social-btn i:hover {
+    color: white;
+    text-shadow: 2px 3px 4px #363738;
+}
+
+
+
+

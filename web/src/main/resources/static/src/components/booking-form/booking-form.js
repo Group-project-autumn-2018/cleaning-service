@@ -46,6 +46,12 @@ class BookingForm extends Component {
         }
     }
 
+    componentDidMount() {
+        if (this.props.address) {
+            this.setState({address: this.props.address})
+        }
+    }
+
     changeType = (event) => {
         this.setState({cleaningType: event.target.value});
     };
@@ -201,7 +207,6 @@ class BookingForm extends Component {
         "Industrial cleaning", "Pool cleaning"];
 
     render() {
-        console.log(this.props);
         return (
             <div className='text-center booking-component container'>
                 <div className="overlay"/>
@@ -212,14 +217,14 @@ class BookingForm extends Component {
 
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            {this.props.isAuthenticated ?
+                            {this.state.address.address ?
 
                                 <div className="col-sm-8 dropdown">
                                     <div>
                                         <input type="text" className="form-control long"
                                                id="bookingFormAddress" placeholder="Your address..."
                                                name="address"
-                                               value={this.props.address.address}
+                                               value={this.state.address.address}
                                                disabled={true}
                                         />
                                     </div>
