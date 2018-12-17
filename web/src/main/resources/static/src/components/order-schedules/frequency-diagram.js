@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ChartLine from '../order-schedules/ChartLine';
+import ChartLine from './ChartLine';
 import {fetchNumber} from "../api/api-actions";
 import connect from "react-redux/es/connect/connect";
 

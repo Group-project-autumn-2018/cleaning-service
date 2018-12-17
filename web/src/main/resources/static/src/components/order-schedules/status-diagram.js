@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import ChartBar from '../order-schedules/ChartBar';
+import ChartBar from './ChartBar';
 import {fetchNumber} from "../api/api-actions";
 import connect from "react-redux/es/connect/connect";
 
@@ -7,7 +7,7 @@ class StatusDiagram extends Component {
 
     entityURN = '/order/getNumber';
 
-    status="NEW;CONFIRMED;REJECTED;COMPLETED"
+    status = "NEW;CONFIRMED;REJECTED;COMPLETED";
 
     constructor(props) {
         super(props);
