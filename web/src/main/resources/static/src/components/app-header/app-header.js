@@ -25,7 +25,8 @@ class AppHeader extends Component {
                                 <NavigationItem link="/profile">
                                     You logged in as <u>{this.props.name}</u>
                                 </NavigationItem>
-                                <NavigationItem link="/customer/orders">Orders</NavigationItem>
+                                <NavigationItem
+                                    link={this.props.role === "customer" ? "/customer/orders" : "/service/orders"}>Orders</NavigationItem>
                                 <NavigationItem link="/company/search">Companies</NavigationItem>
                                 <NavigationItem link="/logout">Log Out</NavigationItem>
                             </ul> :

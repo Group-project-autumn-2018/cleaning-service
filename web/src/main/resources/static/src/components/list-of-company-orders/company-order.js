@@ -9,7 +9,7 @@ class CompanyOrder extends Component {
             <tr className="row bg-light px-5" className="row">
 
                 <td className="col"><Link
-                    to={`/service/orders/${this.props.order.company}`}>{this.props.order.cleaningType}</Link>
+                    to={`/service/orders/${this.props.order.id}`}>{this.props.order.cleaningType}</Link>
                 </td>
                 <td className="col">{this.props.order.status}</td>
                 <td className="col">{this.props.order.cleaningDay}</td>
