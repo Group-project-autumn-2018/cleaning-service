@@ -170,8 +170,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDto> findPaginatedWithCleaningType(Long id, String cleaningType, Pageable pageable) {
-
-
+        cleaningType = cleaningType.replace(" ", "-");
         Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType( pageable, id, cleaningType);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
@@ -188,7 +187,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType,String status ,Pageable pageable) {
-
+        cleaningType = cleaningType.replace(" ", "-");
         Status currentStatus = Status.valueOf(status);
         Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus( pageable, id, cleaningType, currentStatus);
 
