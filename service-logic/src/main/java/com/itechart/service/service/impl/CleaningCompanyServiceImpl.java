@@ -129,6 +129,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         company.setDescription(registrationDto.getDescription());
         company.setUsername(registrationDto.getUsername());
         company.setConfirmed(false);
+        company.setAverageRating(0);
         company.setEmail(registrationDto.getEmail());
         company.setPhone(registrationDto.getPhone());
         Role companyRole = roleService.getRole("service");
