@@ -36,7 +36,6 @@ public class CompanySpecification implements Specification<CleaningCompany> {
                 return builder.like(builder.upper(root.get("username")), "%" + value.toUpperCase() + "%");
             }
             case "cleaningType": {
-
                 return builder.equal(root.get("cleaningTypes").get(value), true);
             }
             default: {
