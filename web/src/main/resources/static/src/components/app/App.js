@@ -17,7 +17,7 @@ class App extends Component {
             <BrowserRouter>
                 <div className="home-wrapper">
                     <AppHeader/>
-                    <AppRouting isAuthenticated={this.props.isAuthenticated} isAdmin={this.props.role[0] === 'admin'}/>
+                    <AppRouting isAuthenticated={this.props.isAuthenticated} role={this.props.role[0]}/>
                 </div>
             </BrowserRouter>
         );

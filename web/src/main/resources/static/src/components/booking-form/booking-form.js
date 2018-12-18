@@ -9,6 +9,7 @@ import OpenStreetMapApi from "../services/openstreetmap-api";
 import CustomerApi from "../services/customer-api";
 import ConfirmModalToggleButton from "../companies/confirm-modal-toggle-button";
 import CustomerConfirmModalForm from "../companies/customer-confirm-modal-form";
+import {fetchCustomerSuccess, fetchEntity} from "../api/api-actions";
 
 class BookingForm extends Component {
 
@@ -42,14 +43,20 @@ class BookingForm extends Component {
             addresses: [],
             smallRoomsError: false,
             bigRoomsError: false,
-            bathroomsError: false
+            bathroomsError: false,
+            addressExists: false
         }
     }
 
     componentDidMount() {
-        if (this.props.address) {
-            this.setState({address: this.props.address})
-        }
+        fetchEntity(this.props.id, "/customer", this.props.token)
+            .then((customer) => {
+                this.props.fetchCustomerSuccess(customer);
+                if (customer.address.address) {
+                    this.setState({address: customer.address, addressExists: true})
+                }
+            });
+
     }
 
     changeType = (event) => {
@@ -217,7 +224,7 @@ class BookingForm extends Component {
 
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            {this.props.isAuthenticated ?
+                            {this.state.addressExists ?
 
                                 <div className="col-sm-8 dropdown">
                                     <div>
@@ -326,6 +333,7 @@ class BookingForm extends Component {
 const mapStateToProps = (state) => {
     return {
         ...state.user,
+        customer: state.customer,
         orderUpdate: state.orderUpdate,
         companies: state.entities
     }
@@ -335,6 +343,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         updateOrder: (order) => {
             dispatch(orderActions.prepareOrderForUpdate(order))
+        },
+        fetchCustomerSuccess: (payload) => {
+            dispatch(fetchCustomerSuccess(payload));
         }
     }
 };

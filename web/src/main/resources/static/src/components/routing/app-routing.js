@@ -30,65 +30,88 @@ class AppRouting extends Component {
                 <Route path="/registration/customer" component={CustomerRegistration}/>
                 <Route path="/registration/service" component={ServiceRegistration}/>
                 <Route path="/booking" component={BookingForm}/>
-                <Route path="/companies" component={Companies} />
+                <Route path="/companies" component={Companies}/>
                 <Route path="/success" component={Social}/>
                 <Redirect to="/"/>
             </Switch>
         );
         if (this.props.isAuthenticated) {
-            routes = this.props.isAdmin ? (
-                <Switch>
-                    <Route exact path="/" component={HomeMainSection}/>
-                    <Route path="/profile" component={MainProfile}/>
-                    <Route path="/logout" component={Logout}/>
-                    <Route path="/admin" component={AdminMain}/>
-                    <Route path="/login" component={SignIn}/>
-                    <Route path="/company/:id/feedback" render={({match}) => {
-                        const {id} = match.params;
-                        return <Feedback serviceId={id} />
-                    }}/>
-                    <Route path="/booking/:id" render={({match}) => {
-                        const {id} = match.params;
-                        return <BookingForm companyId={id}/>
-                    }}/>
-                    <Route path="/booking" component={BookingForm}/>
-                    <Route path="/companies" component={Companies}/>
-                    <Route path="/customer/orders" component={CustomerOrdersList}/>
-                    <Route path="/service/orders" component={ListOfCompanyOrders}/>
-                    <Redirect to="/"/>
-                </Switch>
-            ) : (
-                <Switch>
-                    <Route exact path="/" component={HomeMainSection}/>
-                    <Route path="/profile" component={MainProfile}/>
-                    <Route path="/logout" component={Logout}/>
-                    <Route path="/login" component={SignIn}/>
-                    <Route path="/company/search" component={CompaniesWithSearch}/>
-                    <Route path="/company/:id/feedback" render={({match}) => {
-                        const {id} = match.params;
-                        return <Feedback serviceId={id} />
-                    }}/>
-                    <Route path="/booking/:id" render={({match}) => {
-                        const {id} = match.params;
-                        return <BookingForm companyId={id}/>
-                    }}/>
-                    <Route path="/booking" component={BookingForm}/>
-                    <Route exact path="/companies" component={Companies}/>
-                    <Route exact path="/company/:id" render={({match}) => {
-                        const {id} = match.params;
-                        return <ServiceInfo itemId={id} />
-                    }}/>
-                    <Route path="/service/orders/:id"
-                           render={({match}) => {
-                               const {id} = match.params;
-                               return <CompanyConfirmModalForm orderId={id}/>
-                           }}
-                    />
-                    <Route path="/customer/orders" component={CustomerOrdersList}/>
-                    <Route path="/service/orders" component={ListOfCompanyOrders}/>
-                    <Redirect to="/"/>
-                </Switch>
-            )
+
+            switch (this.props.role) {
+                case"admin":
+                    routes = (
+                        <Switch>
+                            <Route exact path="/" component={HomeMainSection}/>
+                            <Route path="/profile" component={MainProfile}/>
+                            <Route path="/logout" component={Logout}/>
+                            <Route path="/admin" component={AdminMain}/>
+                            <Route path="/login" component={SignIn}/>
+                            <Route path="/company/:id/feedback" render={({match}) => {
+                                const {id} = match.params;
+                                return <Feedback serviceId={id}/>
+                            }}/>
+                            <Route path="/booking/:id" render={({match}) => {
+                                const {id} = match.params;
+                                return <BookingForm companyId={id}/>
+                            }}/>
+                            <Route path="/booking" component={BookingForm}/>
+                            <Route path="/companies" component={Companies}/>
+                            <Route path="/customer/orders" component={CustomerOrdersList}/>
+                            <Route path="/service/orders" component={ListOfCompanyOrders}/>
+                            <Redirect to="/"/>
+                        </Switch>
+                    );
+
+                    break;
+                case"customer":
+                    routes =
+                        <Switch>
+                            <Route exact path="/" component={HomeMainSection}/>
+                            <Route path="/profile" component={MainProfile}/>
+                            <Route path="/logout" component={Logout}/>
+                            <Route path="/login" component={SignIn}/>
+                            <Route path="/company/search" component={CompaniesWithSearch}/>
+                            <Route path="/company/:id/feedback" render={({match}) => {
+                                const {id} = match.params;
+                                return <Feedback serviceId={id}/>
+                            }}/>
+
+
+                            <Route exact path="/companies" component={Companies}/>
+                            < Route path="/booking/:id" render={({match}) => {
+                                const {id} = match.params;
+                                return <BookingForm companyId={id}/>
+                            }}/>
+                            <Route path="/booking" component={BookingForm}/>
+
+                            <Route exact path="/company/:id" render={({match}) => {
+                                const {id} = match.params;
+                                return <ServiceInfo itemId={id}/>
+                            }}/>
+                            <Route path="/customer/orders" component={CustomerOrdersList}/>
+                            <Redirect to="/"/>
+                        </Switch>;
+
+                    break;
+                case"service":
+                    routes =
+                        <Switch>
+                            <Route exact path="/" component={HomeMainSection}/>
+                            <Route path="/profile" component={MainProfile}/>
+                            <Route path="/logout" component={Logout}/>
+                            <Route path="/login" component={SignIn}/>
+                            <Route path="/service/orders/:id"
+                                   render={({match}) => {
+                                       const {id} = match.params;
+                                       return <CompanyConfirmModalForm orderId={id}/>
+                                   }}
+                            />
+                            <Route path="/service/orders" component={ListOfCompanyOrders}/>
+                            <Redirect to="/"/>
+                        </Switch>;
+                    break;
+            }
+
         }
 
         return (

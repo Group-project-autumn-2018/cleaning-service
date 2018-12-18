@@ -113,6 +113,7 @@ export const authSuccess = (payload) => {
     };
 };
 
+
 export const authFail = (error) => {
     return {
         type: 'AUTH_FAIL',

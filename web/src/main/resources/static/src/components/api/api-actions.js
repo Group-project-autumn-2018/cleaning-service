@@ -212,6 +212,13 @@ export const prepareEntityForUpdate = (entity) => {
     }
 };
 
+export const fetchCustomerSuccess = (payload) => {
+    return {
+        type: 'FETCH_CUSTOMER_SUCCESS',
+        payload: payload
+    };
+};
+
 const updateEntitySuccess = (entity) => {
     return {
         type: 'UPDATE_ENTITY_SUCCESS',
