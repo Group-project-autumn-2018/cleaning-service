@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -171,7 +172,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDto> findPaginatedWithCleaningType(Long id, String cleaningType, Pageable pageable) {
         cleaningType = cleaningType.replace(" ", "-");
-        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType( pageable, id, cleaningType);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType(pageable, id, cleaningType);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
@@ -179,17 +180,17 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Page<OrderDto> findPaginatedWithStatus(Long id, String status, Pageable pageable) {
 
-        Status currentStatus =Status.valueOf(status);
+        Status currentStatus = Status.valueOf(status);
         Page<Order> orders = orderRepository.findAllByCompany_IdAndStatus(pageable, id, currentStatus);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
 
     @Override
-    public Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType,String status ,Pageable pageable) {
+    public Page<OrderDto> findPaginatedWithCleaningTypeAndStatus(Long id, String cleaningType, String status, Pageable pageable) {
         cleaningType = cleaningType.replace(" ", "-");
         Status currentStatus = Status.valueOf(status);
-        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus( pageable, id, cleaningType, currentStatus);
+        Page<Order> orders = orderRepository.findAllByCompany_IdAndCleaningTypeAndStatus(pageable, id, cleaningType, currentStatus);
 
         return orders.map(order -> mapper.mapOrderToOrderDto(order));
     }
@@ -203,49 +204,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public int[] getNumbersOfOrdersByType(Long id, String cleaningTypes){
-        String[] types = cleaningTypes.split(";");
+    public int[] getNumbersOfOrdersByType(Long id, String cleaningTypes) {
+        String[] types = cleaningTypes.replace(' ', '-').split(";");
 
-        int[] nums=new int[types.length];
+        int[] nums = new int[types.length];
 
-        for(int i=0;i<types.length;i++){
-            List<Order> orders=orderRepository.findAllByCompany_IdAndCleaningType(id, types[i]);
-            nums[i]=orders.size();
+        for (int i = 0; i < types.length; i++) {
+            List<Order> orders = orderRepository.findAllByCompany_IdAndCleaningType(id, types[i]);
+            nums[i] = orders.size();
         }
 
         return nums;
     }
 
     @Override
-    public int[] getNumbersOfOrdersByStatus(Long id, String statuses){
-       String[] arrayOfStatuses = statuses.split(";");
+    public int[] getNumbersOfOrdersByStatus(Long id, String statuses) {
+        String[] arrayOfStatuses = statuses.split(";");
 
-       int[] nums =new int[arrayOfStatuses.length];
+        int[] nums = new int[arrayOfStatuses.length];
 
-       for(int i=0;i<arrayOfStatuses.length;i++){
-           Status currentStatus=Status.valueOf((arrayOfStatuses[i]));
-           List<Order> orders=orderRepository.findAllByCompany_IdAndStatus(id,currentStatus);
-           nums[i]=orders.size();
-       }
+        for (int i = 0; i < arrayOfStatuses.length; i++) {
+            Status currentStatus = Status.valueOf((arrayOfStatuses[i]));
+            List<Order> orders = orderRepository.findAllByCompany_IdAndStatus(id, currentStatus);
+            nums[i] = orders.size();
+        }
 
         return nums;
     }
 
     @Override
-    public int[] getNumbersOfOrdersByFrequency (Long id, String frequences){
+    public int[] getNumbersOfOrdersByFrequency(Long id, String frequences) {
         String[] arrayOfFrequences = frequences.split(";");
 
-        int[] nums=new int[arrayOfFrequences.length];
+        int[] nums = new int[arrayOfFrequences.length];
 
-        for(int i=0;i<arrayOfFrequences.length;i++){
-            Frequency currentFrequency=Frequency.valueOf(arrayOfFrequences[i]);
-            List<Order> orders=orderRepository.findAllByCompany_IdAndFrequency(id,currentFrequency);
-            nums[i]=orders.size();
+        for (int i = 0; i < arrayOfFrequences.length; i++) {
+            Frequency currentFrequency = Frequency.valueOf(arrayOfFrequences[i]);
+            List<Order> orders = orderRepository.findAllByCompany_IdAndFrequency(id, currentFrequency);
+            nums[i] = orders.size();
         }
 
-        return  nums;
+        return nums;
     }
-
 
 
     @Transactional
