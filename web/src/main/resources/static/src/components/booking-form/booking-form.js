@@ -29,9 +29,9 @@ class BookingForm extends Component {
             },
             companyName: '',
             cleaningType: this.types[0],
-            smallRoomsCount: '0',
-            bigRoomsCount: '0',
-            bathroomsCount: '0',
+            smallRoomsCount: 0,
+            bigRoomsCount: 0,
+            bathroomsCount: 0,
             cleaningDay: '',
             cleaningTime: this.time[0],
             frequency: this.frequency[0],
@@ -65,7 +65,7 @@ class BookingForm extends Component {
             event.target.classList.remove('invalid');
             this.setState({smallRoomsError: false})
         }
-        this.setState({smallRoomsCount: event.target.value.toString()});
+        this.setState({smallRoomsCount: event.target.value});
     };
 
     changeBigRooms = (event) => {
@@ -77,7 +77,7 @@ class BookingForm extends Component {
             event.target.classList.remove('invalid');
             this.setState({bigRoomsError: false})
         }
-        this.setState({bigRoomsCount: event.target.value.toString()});
+        this.setState({bigRoomsCount: event.target.value});
     };
 
     changeBathrooms = (event) => {
@@ -89,7 +89,7 @@ class BookingForm extends Component {
             event.target.classList.remove('invalid');
             this.setState({bathroomsError: false})
         }
-        this.setState({bathroomsCount: event.target.value.toString()});
+        this.setState({bathroomsCount: event.target.value});
     };
 
     changeCleaningDay = (event) => {
@@ -142,7 +142,7 @@ class BookingForm extends Component {
         };
         this.fetchCompaniesPOST(searchCompanyDto, this.entityURN, this.props.token).then((companies) => {
             const id = this.props.companyId;
-            this.company = companies.filter(company => company.id == id)[0];
+            this.company = companies.filter(company => (company.id !== undefined && company.id == id))[0];
             console.log(this.company);
             if (!this.state.smallRoomsError && !this.state.bigRoomsError && !this.state.bathroomsError) {
                 this.props.updateOrder({
@@ -217,7 +217,7 @@ class BookingForm extends Component {
 
                         <div className="form-group">
                             <label htmlFor="address" className="col-form-label">Address</label>
-                            {this.state.address.address ?
+                            {this.props.isAuthenticated ?
 
                                 <div className="col-sm-8 dropdown">
                                     <div>
