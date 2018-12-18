@@ -53,7 +53,7 @@ class CustomerOrdersList extends Component {
             value = e.target.value;
             name = e.target.name;
         }
-        this.setState({[name]: value.replace(/ /g, "-")})
+        this.setState({[name]: value.replace(/ /g, "_")})
     };
 
     handleSearch = () => {

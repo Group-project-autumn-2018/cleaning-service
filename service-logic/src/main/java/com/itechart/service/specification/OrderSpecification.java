@@ -29,7 +29,7 @@ public class OrderSpecification implements Specification<Order> {
         String field = criteria.getKey();
         String value = null;
         if (criteria.getValue() instanceof String) {
-            value = ((String) criteria.getValue()).replaceAll("_", " ");
+            value = (String) criteria.getValue();
         }
 
 
