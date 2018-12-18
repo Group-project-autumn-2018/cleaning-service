@@ -117,7 +117,7 @@ public class CustomerServiceImpl implements CustomerService {
         customer.setPassword(bCryptPasswordEncoder.encode(registrationDto.getPassword()));
         customer.setAddingDate(LocalDate.now());
         Address address = new Address();
-        address.setAddress(" ");
+        address.setAddress("");
         address.setLat(0.0);
         address.setLon(0.0);
         customer.setAddress(address);

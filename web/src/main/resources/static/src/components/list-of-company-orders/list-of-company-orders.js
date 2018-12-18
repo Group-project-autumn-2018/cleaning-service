@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import './list-of-company-orders.css';
 import ListOrders from '../list-of-company-orders/company-orders';
 import {connect} from 'react-redux';
-import {fetchEntitiesByTypeAndStatus} from '../api/api-actions';
+import {fetchEntitiesByTypeAndStatus, fetchEntity} from '../api/api-actions';
 import Pagination from "react-js-pagination";
 import SortFilter from "../list-of-company-orders/sort-list";
 import TypeDiagram from "../order-schedules/type-diagram";
 import DaysDiagram from "../order-schedules/frequency-diagram";
 import StatusDiagram from "../order-schedules/status-diagram";
+import {connectWs} from '../actions/notification-actions';
+import {ToastContainer} from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 class ListOfCompanyOrders extends Component {
 
@@ -24,6 +27,11 @@ class ListOfCompanyOrders extends Component {
 
     componentDidMount() {
         this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
+        this.props.connectWs(this.props.token);
+        fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
+            .then((service) => {
+                this.setState({service: service, tempAddress: service.address.address})
+            });
     }
 
     handlePageChange = (page) => {
@@ -94,6 +102,7 @@ class ListOfCompanyOrders extends Component {
                 <TypeDiagram/>
                 <StatusDiagram/>
                 <DaysDiagram/>
+                <ToastContainer autoClose={15000} toastClassName='toast-container' position="bottom-right"/>
             </div>
         )
     }
@@ -112,6 +121,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         fetchOrders: (page, size, entityURN, token, userID, cleaningType, status) => {
             dispatch(fetchEntitiesByTypeAndStatus(page, size, entityURN, token, userID, cleaningType, status))
+        },
+        connectWs: (token) => {
+            dispatch(connectWs(token))
         }
     }
 };

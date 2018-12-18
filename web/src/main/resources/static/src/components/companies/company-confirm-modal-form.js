@@ -44,7 +44,7 @@ class CompanyConfirmModalForm extends Component {
     onConfirm = () => {
         fetchUpdateMultipartEntity("CONFIRMED", this.URN, this.props.user.token, this.props.orderId)
             .then(status => {
-                if (status === 201) {
+                if (status.status === 200) {
                     this.props.history.push("/service/orders");
                 }
             });
@@ -54,7 +54,7 @@ class CompanyConfirmModalForm extends Component {
         fetchUpdateMultipartEntity("REJECTED", this.URN, this.props.user.token, this.props.orderId)
             .then(status => {
 
-                if (status === 201) {
+                if (status.status === 200) {
                     this.props.history.push("/service/orders");
                 }
 
