@@ -102,8 +102,6 @@ class CustomerOrdersList extends Component {
 
     render() {
         return (
-            this.props.orders.length > 0 ?
-
             <div className="bg-light container-fluid w-100 h-100 order-list">
                 <h1 className="text-center">{this.props.role === 'admin' ? "All Orders" : "Your Orders"}
                 </h1>
@@ -126,11 +124,12 @@ class CustomerOrdersList extends Component {
                                   onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
                                   selectedSortOption={this.state.selectedSortOption}
                                   showAll={this.showAll}/>
-                <OrdersList orders={this.props.orders}/>
-            </div> :
-                <div className="bg-light container-fluid w-100 h-100 pt-3 order-list">
-                    <h1 className="text-center">No orders</h1>
-                </div>
+                {this.props.orders.length > 0 ? <OrdersList orders={this.props.orders}/> :
+                    <div className="bg-light container-fluid w-100 h-100 pt-3 order-list">
+                        <h1 className="text-center">No orders</h1>
+                    </div>
+                }
+            </div>
         )
     }
 }
