@@ -28,7 +28,7 @@ class ListOfCompanyOrders extends Component {
     componentDidMount() {
         this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token, this.props.userID);
         this.props.connectWs(this.props.token);
-        fetchEntity(this.props.serviceId, "/cleaning", this.props.token)
+        fetchEntity(this.props.userID, "/cleaning", this.props.token)
             .then((service) => {
                 this.setState({service: service, tempAddress: service.address.address})
             });
