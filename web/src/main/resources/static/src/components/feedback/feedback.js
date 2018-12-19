@@ -14,7 +14,8 @@ class Feedback extends Component {
             rating: 0,
             text: '',
             isRateCorrect: false,
-            isTextCorrect: false
+            isTextCorrect: false,
+            isFeedbackExists: false
         }
     }
 
@@ -41,8 +42,9 @@ class Feedback extends Component {
             };
             this.serviceApi.sendFeedback(obj, this.props.token).then((status) => {
                     if (status === 201) {
-                        console.log("successful");
                         this.props.history.push('/company/' + this.props.serviceId);
+                    } else if (status === 406) {
+                        this.setState({isFeedbackExists: true});
                     }
                 }
             )
@@ -80,6 +82,8 @@ class Feedback extends Component {
                                                     onChange={this.changeRating} initialRating={this.state.rating}/>
                                         </h5>
                                         <p>{this.state.isRateCorrect ? null : 'You have to choose rate'}</p>
+                                        {this.state.isFeedbackExists ?
+                                            <p className="text-warning">Feedback already exists !</p> : null}
                                     </div>
                                 </div>
                                 <div className="card-body p-3">

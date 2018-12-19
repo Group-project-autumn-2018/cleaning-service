@@ -6,6 +6,7 @@ import Rating from 'react-rating';
 import FeedbackList from './feedback-list';
 import './service-info.css';
 import Pagination from "react-js-pagination";
+import SimpleMap from "../map/simple-map";
 
 
 class ServiceInfo extends Component {
@@ -13,7 +14,11 @@ class ServiceInfo extends Component {
         super(props);
         this.state = {
             service: {
-                address: {},
+                address: {
+                    address: '',
+                    lat: 0,
+                    lon: 0
+                },
                 cleaningTypes: {}
             },
             feedbackList: [],
@@ -30,16 +35,20 @@ class ServiceInfo extends Component {
             });
         fetchEntity(`feedback?size=5&page=${this.state.page}&service-id=${this.props.itemId}`, "/cleaning", this.props.token)
             .then((page) => {
-                this.setState({feedbackList: page.content, page: page.number, totalElements: page.totalElements,
-                    totalPages: page.totalPages})
+                this.setState({
+                    feedbackList: page.content, page: page.number, totalElements: page.totalElements,
+                    totalPages: page.totalPages
+                })
             });
     }
 
     handlePageChange = (page) => {
         fetchEntity(`feedback?size=5&page=${page - 1}&service-id=${this.props.itemId}`, "/cleaning", this.props.token)
             .then((page) => {
-                this.setState({feedbackList: page.content, page: page.number, totalElements: page.totalElements,
-                    totalPages: page.totalPages})
+                this.setState({
+                    feedbackList: page.content, page: page.number, totalElements: page.totalElements,
+                    totalPages: page.totalPages
+                })
             });
     };
 
@@ -48,9 +57,12 @@ class ServiceInfo extends Component {
             <div className="container">
                 <div className="card service-info">
                     <div className="card-img-block">
-                        <img className="img-fluid"
-                             src="http://www.picpedia.org/handwriting/images/cleaning.jpg"
-                             alt="Card image cap"/>
+                        {this.state.service.address.lat !== 0 ?
+                            <SimpleMap lat={this.state.service.address.lat.toString()}
+                                       lng={this.state.service.address.lon.toString()}/> : <img className="img-fluid"
+                                                                                                src="http://www.picpedia.org/handwriting/images/cleaning.jpg"
+                                                                                                alt="Card image cap"/>}
+
                     </div>
                     <div className="card-body pt-5">
                         <img src={`/api/cleaning/${this.props.itemId}/image`} alt="logo-image" className="logo"/>
@@ -96,13 +108,13 @@ class ServiceInfo extends Component {
                 <FeedbackList array={this.state.feedbackList}/>
                 <nav aria-label="Page navigation" className="mx-auto">
                     {this.state.totalElements > 5 ? <Pagination activePage={this.state.page + 1}
-                                itemsCountPerPage={5}
-                                totalItemsCount={this.state.totalElements}
-                                pageRangeDisplayed={this.state.totalPages < 5 ? this.state.totalPages : 5}
-                                onChange={this.handlePageChange}
-                                itemClass="page-item"
-                                linkClass="page-link"
-                                innerClass="pagination justify-content-center"/> : null}
+                                                                itemsCountPerPage={5}
+                                                                totalItemsCount={this.state.totalElements}
+                                                                pageRangeDisplayed={this.state.totalPages < 5 ? this.state.totalPages : 5}
+                                                                onChange={this.handlePageChange}
+                                                                itemClass="page-item"
+                                                                linkClass="page-link"
+                                                                innerClass="pagination justify-content-center"/> : null}
                 </nav>
             </div>
         )
