@@ -49,14 +49,15 @@ class BookingForm extends Component {
     }
 
     componentDidMount() {
-        fetchEntity(this.props.id, "/customer", this.props.token)
-            .then((customer) => {
-                this.props.fetchCustomerSuccess(customer);
-                if (customer.address.address) {
-                    this.setState({address: customer.address, addressExists: true})
-                }
-            });
-
+        if (this.props.id) {
+            fetchEntity(this.props.id, "/customer", this.props.token)
+                .then((customer) => {
+                    this.props.fetchCustomerSuccess(customer);
+                    if (customer.address.address) {
+                        this.setState({address: customer.address, addressExists: true})
+                    }
+                });
+        }
     }
 
     changeType = (event) => {
