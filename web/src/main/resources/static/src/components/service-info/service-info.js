@@ -107,14 +107,15 @@ class ServiceInfo extends Component {
                 </div>
                 <FeedbackList array={this.state.feedbackList}/>
                 <nav aria-label="Page navigation" className="mx-auto">
-                    {this.state.totalElements > 5 ? <Pagination activePage={this.state.page + 1}
-                                                                itemsCountPerPage={5}
-                                                                totalItemsCount={this.state.totalElements}
-                                                                pageRangeDisplayed={this.state.totalPages < 5 ? this.state.totalPages : 5}
-                                                                onChange={this.handlePageChange}
-                                                                itemClass="page-item"
-                                                                linkClass="page-link"
-                                                                innerClass="pagination justify-content-center"/> : null}
+                    {this.state.totalElements > 5 ?
+                        <Pagination activePage={this.state.page + 1}
+                                    itemsCountPerPage={5}
+                                    totalItemsCount={this.state.totalElements}
+                                    pageRangeDisplayed={this.state.totalPages < 5 ? this.state.totalPages : 5}
+                                    onChange={this.handlePageChange}
+                                    itemClass="page-item"
+                                    linkClass="page-link"
+                                    innerClass="pagination justify-content-center"/> : null}
                 </nav>
             </div>
         )
