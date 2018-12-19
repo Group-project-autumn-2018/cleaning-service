@@ -18,6 +18,12 @@ const initialAuthState = {
 
 const authReducer = (state = initialAuthState, action) => {
     switch (action.type) {
+        case 'LOGOUT':
+            disconnect();
+            return {
+                ...initialAuthState
+            };
+            break;
         case 'AUTH_SUCCESS':
             return {
                 ...action.payload
@@ -29,11 +35,6 @@ const authReducer = (state = initialAuthState, action) => {
             }
             return {...state, error: action.payload};
             break;
-        case 'LOGOUT':
-            disconnect();
-            return {
-                ...initialAuthState
-            };
         default:
             return state;
     }

@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
@@ -18,6 +19,8 @@ import static org.junit.Assert.*;
 
 @SpringBootTest(classes = CleaningServiceApplication.class)
 @RunWith(SpringRunner.class)
+@TestPropertySource(
+        locations = "classpath:application-integrationtest.properties")
 public class OrderMapperTest {
 
 

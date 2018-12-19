@@ -1,5 +1,6 @@
 package com.itechart.web.config;
 
+import com.itechart.web.config.social.CustomAuthenticationFailureHandler;
 import com.itechart.web.config.social.CustomOAuth2UserService;
 import com.itechart.web.config.social.CustomOidcUserService;
 import com.itechart.web.config.social.OAuth2AuthenticationSuccessHandler;
@@ -57,6 +58,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .and()
                 .oauth2Login()
+                .failureHandler(this.customAuthenticationFailureHandler())
                 .successHandler(this.oAuth2AuthenticationSuccessHandler())
                 .loginPage("/")
                 .userInfoEndpoint()
@@ -74,6 +76,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Bean
     public CustomOidcUserService customOidcUserService() {
         return new CustomOidcUserService();
+    }
+
+    @Bean
+    public CustomAuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
     }
 
     @Bean

@@ -47,9 +47,10 @@ class SignIn extends Component {
                     <button className="btn btn-lg btn-primary btn-block">Sign in</button>
 
                     <div className="d-flex p-2 justify-content-around align-items-center social-container">
-                        <a href="/oauth2/authorization/google" className="social-btn"><i
-                            className="fa fa-facebook-square"></i></a>
                         <a href="/oauth2/authorization/facebook" className="social-btn"><i
+                            className="fa fa-facebook-square"></i></a>
+
+                        <a href="/oauth2/authorization/google" className="social-btn"><i
                             className="fa fa-google-plus-square"></i></a>
                     </div>
 

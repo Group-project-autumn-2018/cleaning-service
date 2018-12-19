@@ -139,6 +139,11 @@
             <artifactId>liquibase-maven-plugin</artifactId>
             <version>${liquibaseVersion}</version>
         </dependency>
+        <!--<dependency>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-tomcat</artifactId>-->
+        <!--<scope>provided</scope>-->
+        <!--</dependency>-->
         <!-- just for jdk 9+
         <dependency>
             <groupId>javax.xml.bind</groupId>
@@ -163,7 +168,7 @@
         -->
     </dependencies>
     <build>
-        <finalName>mapstruct</finalName>
+        <finalName>Cleaning</finalName>
         <plugins>
             <plugin>
                 <groupId>org.liquibase</groupId>

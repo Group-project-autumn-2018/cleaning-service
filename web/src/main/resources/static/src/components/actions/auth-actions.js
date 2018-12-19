@@ -90,11 +90,13 @@ export const setAuthTimeout = (expirationTime) => {
 
 export const checkAuthStatus = () => {
     return (dispatch, getState) => {
-        const tokenExpirationDate = new Date(getState().user.tokenExpirationDate);
-        if (!tokenExpirationDate || tokenExpirationDate < new Date()) {
-            dispatch(logout())
-        } else {
-            dispatch(setAuthTimeout(tokenExpirationDate - new Date()));
+        if (getState().user.token) {
+            const tokenExpirationDate = new Date(getState().user.tokenExpirationDate);
+            if (!tokenExpirationDate || tokenExpirationDate < new Date()) {
+                dispatch(logout())
+            } else {
+                dispatch(setAuthTimeout(tokenExpirationDate - new Date()));
+            }
         }
     }
 };
