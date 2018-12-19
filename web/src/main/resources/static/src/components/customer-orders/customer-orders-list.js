@@ -92,7 +92,7 @@ class CustomerOrdersList extends Component {
     };
 
     showAll = () => {
-        this.setState({search: null});
+        this.setState({search: null, company: "", address: ""});
         if (this.props.role === 'admin') {
             this.props.fetchOrders(0, this.props.itemsCountPerPage, this.entityURN, this.props.token);
         } else {
@@ -123,7 +123,10 @@ class CustomerOrdersList extends Component {
                 <SearchSortFilter onChange={this.handleChange} onClick={this.handleSearch}
                                   onSort={this.handleSort} selectedTypeOption={this.state.selectedTypeOption}
                                   selectedSortOption={this.state.selectedSortOption}
-                                  showAll={this.showAll}/>
+                                  showAll={this.showAll}
+                                  company={this.state.company}
+                                  address={this.state.address}
+                />
                 {this.props.orders.length > 0 ? <OrdersList orders={this.props.orders}/> :
                     <div className="bg-light container-fluid w-100 h-100 pt-3 order-list">
                         <h1 className="text-center">No orders</h1>
