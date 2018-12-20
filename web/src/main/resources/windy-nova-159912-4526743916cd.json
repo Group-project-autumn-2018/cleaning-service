@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "windy-nova-159912",
+  "private_key_id": "4526743916cd285dad64a8ed3c16e6c9f891b0bd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCQmWSy0IZ0wLTp\nz6naj/D9048FPeNqvAlTwiCU3E+RzOsysaI5ZKigUxvgnazCh9l3kXpzQrtzFTdz\nQEMVTE3JPYtC0cuZJlcDA28j5kzTGwGlMAskJOscCKA7TvfpzVkGUTeFSc3T5+yA\n30LHhwVOAbPE2pAIloa1k95YBflKIOqhfb+0mUPSUPq2nHPljAnHVntp91Iky4dJ\nwiksspCdOEyxo8/pq60PxREtx3LP1rY4cSTlDa7dtltCtWPVSnH2mVdiQYhuyJMl\nZARcGy2JZAHAZY1MCa6HLy73Z2k3XBH3lwy04Mjuyk6W1h631cC8ngyKbZ2WmbYS\nw7YteIPFAgMBAAECggEAIdx581HXmrGh6/rgSLlacuY+4LhccBs2h/G21YU98OOu\n1EE6vvvubRTpO1FRKoDLkS91IFapNMrsIEYVL4Cd2plZ6jzc07FhwOfl998vcGQr\nn3Y/tagbkoYGl7znW03mIg+U09azp4LxJECkD7tzp4/IfDm+bvRo+U52S+CiPxRa\nH1B+VO0Kr/8mPvlEnkwFK0/sA8FHn2zFiMm7os83jkzEUe9IXEqpudDQspjG4kpf\ncPv3OLsqzbgkm8UebMQkodDM7Cif7nxnpIYDTh1hweSbIsd0mwqei3f6FlkyZ2R9\nzeW/qw4WHHHqW+pJ6v+NgvBisZD1EP/mbzcuMiOIpQKBgQDC5kIaEQLS2AGjz/Kx\nJg7/adZcd/fp39ZhJs6uyElEGvJF0qo8ew1Hyzz4M5HNYxpVXYm4RBD8km9Pj/8J\nD4hBvjEX2LrXdrThUkvzUwGClnOUyGYvyIipufxArftp7QQDOj+D21+A1sBMEmKY\nb5zq5Ao8ueV+8tzpAHhWUqi8TwKBgQC97kQTpEx37tpaYqBK+HWX1FU2Yx8xz8B4\nw4hUkV5VX9sPLtlgh4oYQt8HfTIinOfaWhrZBpEL43DGin/fNAJRv9kU1cgUFZzs\n4DG1MGOEBzND3GGGeTEGTSYG/FGLrsfdl28YV0yEfHT8qk5Luk+LyrNgwTU46Z0m\nfsanvlvVqwKBgDbXZdhB2yKLB4MZu3efdu7l0By64Tac9ozlx5ik4QDZ+DwveBmG\nookGJkTM9gTuEvXcWSlRddosNkgUA7Z/+V5Oby//myuPynvwlVCFldIyFZnS/fYK\nHnJr1BA7JJh8yflChabLrsbpJrkBH183YNczjbHiuTIMkp65tCLOJY6/AoGBAIEB\n7UW2LKauG6yXHy+tMhquBC9MBq1L4v1kOx7OGtg8osveU5Kondk62sj4dexizW1Y\nFLJjLnR3yWtiOdb/ObATcr0fNKbHw252He1nb8EHLwAiGjA/81fHYVQPYMhTMLjI\nGpLbAUNgUgopF8OCSnO2fD71HVSKAc9a/06DE1e/AoGAb2kWJ5KW+hqieZcpGzKj\nSK0Tb71vu0jhUThV01rhpneNi6P+49SaRonyb4tk5Es6NEhQaGy960Zprlqz7v0X\nlEW2UPLLgY/r60F9Q75qMnCx5K8/lRENnZae08ErUvDVMwQdcq3wgd4kb4c4kXe9\nQuzKXOqNkp/rMczJdhXUpl0=\n-----END PRIVATE KEY-----\n",
+  "client_email": "cleaning-service@windy-nova-159912.iam.gserviceaccount.com",
+  "client_id": "117729883831835822400",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/cleaning-service%40windy-nova-159912.iam.gserviceaccount.com"
+}
