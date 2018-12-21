@@ -3,6 +3,7 @@ package com.itechart.service.service.impl;
 import com.itechart.common.entity.Address;
 import com.itechart.common.entity.Role;
 import com.itechart.common.service.EmailService;
+import com.itechart.common.service.FileStorageService;
 import com.itechart.common.service.RoleService;
 import com.itechart.common.service.SMSService;
 import com.itechart.customer.dto.VerifyDto;
@@ -18,6 +19,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -34,12 +37,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -67,6 +66,8 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
     private final CleaningTypesService cleaningTypesService;
     private final RestTemplate restTemplate;
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final FileStorageService storageService;
+    private final CacheManager manager;
 
     @Autowired
     public CleaningCompanyServiceImpl(CleaningCompanyRepository cleaningCompanyRepository,
@@ -74,7 +75,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
                                       EmailService emailService, RoleService roleService,
                                       SMSService smsService,
                                       CleaningTypesService cleaningTypesService,
-                                      RestTemplate restTemplate) {
+                                      RestTemplate restTemplate, FileStorageService storageService, CacheManager manager) {
         this.cleaningCompanyRepository = cleaningCompanyRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.emailService = emailService;
@@ -82,6 +83,8 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
         this.smsService = smsService;
         this.cleaningTypesService = cleaningTypesService;
         this.restTemplate = restTemplate;
+        this.storageService = storageService;
+        this.manager = manager;
     }
 
     @Override
@@ -146,36 +149,33 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Override
     public void saveLogotype(MultipartFile logotype, Long id) {
+        manager.getCache(id.toString()).clear();
         try {
             if (logotype != null && logotype.getBytes().length > 0) {
-                File file = new File(FILE_PATH);
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                Files.write(Paths.get(FILE_PATH, id.toString()), logotype.getBytes());
+                storageService.saveLogotype(logotype, id.toString());
             }
         } catch (IOException e) {
             logger.error(e.getMessage());
         }
     }
 
+
     @Override
+    @Cacheable(value = "logotypes")
     public byte[] getLogotype(Long serviceId) throws IOException {
-        Path filePath = Paths.get(FILE_PATH, serviceId.toString());
-        Path defaultLogoPath = Paths.get(FILE_PATH, DEFAULT_LOGO_NAME);
-        if (Files.exists(filePath)) {
-            return Files.readAllBytes(filePath);
-        } else if (Files.exists(defaultLogoPath)) {
-            return Files.readAllBytes(defaultLogoPath);
+        if (storageService.isFileExist(serviceId.toString())) {
+            return storageService.getLogotype(serviceId.toString());
+        } else if (storageService.isFileExist(DEFAULT_LOGO_NAME)) {
+            return storageService.getLogotype(DEFAULT_LOGO_NAME);
         } else {
             ResponseEntity<byte[]> responseEntity = restTemplate.exchange(DEFAULT_LOGO_URL, HttpMethod.GET,
                     new HttpEntity<Void>(new HttpHeaders()), byte[].class);
             if (responseEntity.hasBody() && responseEntity.getBody().length > 0) {
-                Files.write(Paths.get(FILE_PATH, DEFAULT_LOGO_NAME), responseEntity.getBody());
+                storageService.saveLogotype(responseEntity.getBody(), DEFAULT_LOGO_NAME);
             } else {
                 throw new IOException("Error downloading default logo.");
             }
-            return Files.readAllBytes(Paths.get(FILE_PATH, DEFAULT_LOGO_NAME));
+            return storageService.getLogotype(DEFAULT_LOGO_NAME);
         }
     }
 
