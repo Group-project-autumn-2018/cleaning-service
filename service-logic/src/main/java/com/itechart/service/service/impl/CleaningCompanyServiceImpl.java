@@ -149,7 +149,7 @@ public class CleaningCompanyServiceImpl implements CleaningCompanyService {
 
     @Override
     public void saveLogotype(MultipartFile logotype, Long id) {
-        manager.getCache(id.toString()).clear();
+        Objects.requireNonNull(manager.getCache("logotypes")).evict(id);
         try {
             if (logotype != null && logotype.getBytes().length > 0) {
                 storageService.saveLogotype(logotype, id.toString());
