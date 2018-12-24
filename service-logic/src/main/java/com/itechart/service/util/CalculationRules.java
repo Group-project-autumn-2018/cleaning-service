@@ -51,7 +51,7 @@ public class CalculationRules {
                 priceCoefficient = cleaningType.getPrice().getStandardRoomCleaning();
                 cleaningTime = cleaningType.getCleaningTime().getStandardRoomCleaningTime();
                 break;
-            case "Spring-cleaning":
+            case "Spring cleaning":
                 priceCoefficient = cleaningType.getPrice().getSpringCleaning();
                 cleaningTime = cleaningType.getCleaningTime().getSpringCleaningTime();
                 break;

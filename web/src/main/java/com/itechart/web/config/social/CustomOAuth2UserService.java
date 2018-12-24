@@ -9,6 +9,8 @@ import com.itechart.customer.repository.CustomerRepository;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.LockedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -22,9 +24,8 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
-public class CustomOAuth2UserService extends DefaultOAuth2UserService {
+public class CustomOAuth2UserService extends DefaultOAuth2UserService implements SsoSaveUserHandler {
 
-    private static final Log log = LogFactory.getLog(CustomOAuth2UserService.class);
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
@@ -34,6 +35,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private RoleService roleService;
+
+
+    @Override
+    public UserDetailsServiceImpl getUserDetailsService() {
+        return userDetailsService;
+    }
+
+    @Override
+    public CustomerRepository getCustomerRepository() {
+        return customerRepository;
+    }
+
+    @Override
+    public RoleService getRoleService() {
+        return roleService;
+    }
 
 
     @Override
@@ -48,32 +65,11 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         Map<String, Object> attributes = oath2User.getAttributes();
         Set<GrantedAuthority> authorities = (Set<GrantedAuthority>) oath2User.getAuthorities();
-        this.saveUser(attributes);
+        saveUser(attributes); // interface method
         OAuth2User result = new DefaultOAuth2User(authorities, attributes, "email");
         return result;
     }
 
-    private void saveUser(Map<String, Object> attributes) {
-        String email = (String) attributes.get("email");
 
-        CustomUserDetails user = null;
-        try {
-            user = (CustomUserDetails) userDetailsService.loadUserByUsername(email);
-            log.info("User " + email + " already exists");
-        } catch (UsernameNotFoundException e) {
-            log.info("User " + email + " doesn't exists. Saving...");
-        }
-        if (user == null) {
-            Customer newUser = new Customer();
-            newUser.setUsername((String) attributes.get("name"));
-            newUser.setEmail(email);
-            LocalDate date = LocalDate.now();
-            Role role = roleService.getRole("customer");
-            newUser.setRoles(Collections.singletonList(role));
-            newUser.setAddingDate(date);
-            customerRepository.save(newUser);
-            log.info("New customer saved " + email);
-        }
-    }
 }
 

@@ -32,6 +32,7 @@ class AppRouting extends Component {
                 <Route path="/booking" component={BookingForm}/>
                 <Route path="/companies" component={Companies}/>
                 <Route path="/success" component={Social}/>
+                <Route path="/failure" component={Social}/>
                 <Redirect to="/"/>
             </Switch>
         );

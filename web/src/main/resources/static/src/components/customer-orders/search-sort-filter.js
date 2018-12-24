@@ -38,6 +38,11 @@ class SearchSortFilter extends Component {
         this.props.onSort(selectedSortOption);
     };
 
+    clearHandler = () => {
+        this.setState({selectedSortOption: null, selectedTypeOption: null});
+        this.props.showAll()
+    };
+
     render() {
 
         const {selectedSortOption, selectedTypeOption} = this.state;
@@ -50,13 +55,18 @@ class SearchSortFilter extends Component {
                         placeholder="Choose type" className="search-item" value={selectedTypeOption}/>
 
                 <input type="text" placeholder="Address" onChange={this.props.onChange}
-                       className="search-item" name="address"/>
+                       className="search-item" name="address"
+                       value={this.props.address}
+
+                />
                 <input type="text" placeholder="Cleaning Company" onChange={this.props.onChange}
-                       className="search-item" name="company"/>
+                       className="search-item" name="company"
+                       value={this.props.company}
+                />
 
                 <button className="btn btn-primary search-item" onClick={this.props.onClick}>Search</button>
 
-                <button className="btn btn-secondary " onClick={this.props.showAll}>Clear</button>
+                <button className="btn btn-secondary" onClick={this.clearHandler}>Clear</button>
 
                 <Select options={this.sortOptions} onChange={this.selectSortHandler} name="sort"
                         className="search-item" isClearable={true} placeholder="Sort by"

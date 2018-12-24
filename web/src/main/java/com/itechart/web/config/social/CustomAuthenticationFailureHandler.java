@@ -1,4 +1,4 @@
-package com.itechart.web.config;
+package com.itechart.web.config.social;
 
 
 import org.springframework.http.HttpStatus;
@@ -18,8 +18,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException {
 
-        response.setStatus(HttpStatus.UNAUTHORIZED.value());
-        getRedirectStrategy().sendRedirect(request, response, "index");
+        response.setStatus(HttpStatus.LOCKED.value());
+        String error = exception.getMessage();
+        getRedirectStrategy().sendRedirect(request, response, "http://localhost:8080/failure?error=" + error);
 
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableJpaRepositories(basePackages = {"com.itechart"})
 @EntityScan(basePackages = {"com.itechart"})
 @ComponentScan(basePackages = {"com.itechart"})
-public class CleaningServiceApplication extends SpringBootServletInitializer {
+public class CleaningServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CleaningServiceApplication.class, args);
