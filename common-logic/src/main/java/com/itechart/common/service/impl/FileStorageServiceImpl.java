@@ -46,7 +46,14 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     public void saveLogotype(MultipartFile logotype, String filename) throws IOException {
-        saveFile(logotype, filename);
+        if (isFileExist(filename)) {
+            try {
+                client.files().deleteV2('/' + filename);
+                saveFile(logotype, filename);
+            } catch (DbxException e) {
+                throw new IOException(e.getMessage());
+            }
+        } else saveFile(logotype, filename);
     }
 
     @Override
